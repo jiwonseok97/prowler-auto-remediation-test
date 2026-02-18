@@ -31,16 +31,19 @@ PoC repository for AWS IaC security automation using:
 1. Create repo and scaffold interactively:
    - `python bootstrap_repo.py`
 2. Configure GitHub Actions secrets in the created repo:
-   - `AWS_ACCESS_KEY_ID`
-   - `AWS_SECRET_ACCESS_KEY`
-   - `AWS_DEFAULT_REGION`
-   - `AI_MODEL`
-   - `AI_API_KEY`
-3. Trigger `Prowler Security Scan & AI Remediation` workflow.
-4. Review PR `remediation-<run_id>`, merge it.
-5. On merge to `main`, apply workflow runs and re-scan validates reduction of findings.
+   - `./setup_github_secrets.ps1 -Repo <owner>/prowler-auto-remediation-test`
+   - Required secrets:
+     - `AWS_ACCESS_KEY_ID`
+     - `AWS_SECRET_ACCESS_KEY`
+     - `AWS_DEFAULT_REGION`
+     - `AI_MODEL` (Bedrock example: `anthropic.claude-3-haiku-20240307-v1:0`)
+     - `AI_API_KEY` (Bedrock only uses AWS credentials, so placeholder like `bedrock` is acceptable)
+3. Run workflow `Prowler Security Scan and AI Remediation` with `workflow_dispatch`.
+4. Review PR `remediation-<run_id>`, merge it into `main`.
+5. On merge push to `main`, `apply` job runs automatically and uploads post-apply scan artifacts.
 
 ## Notes
 - Some controls cannot be auto-remediated safely (for example org/FMS/root MFA).
 - Unsupported findings are logged only.
 - `terraform/test_infra` is intentionally vulnerable and must remain separate from remediation code.
+- If tokens or AWS keys were pasted into terminal/chat logs, rotate them immediately.

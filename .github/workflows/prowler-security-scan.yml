@@ -21,7 +21,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
       - uses: hashicorp/setup-terraform@v3
       - uses: actions/setup-python@v5
         with:
@@ -30,7 +29,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install prowler pyyaml
+          pip install prowler
 
       - name: Terraform init (vulnerable baseline)
         env:
@@ -67,51 +66,111 @@ jobs:
       - name: Upload scan artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: prowler-artifacts
+          name: prowler-artifacts-${{ github.run_id }}
           path: artifacts/
 
-  ai_remediation:
+  ai_generate:
     if: github.event_name == 'workflow_dispatch'
     needs: plan
     runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+      AI_MODEL: ${{ secrets.AI_MODEL }}
+      AI_API_KEY: ${{ secrets.AI_API_KEY }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
+      - name: Install AI dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install boto3
+
       - name: Download scan artifacts
         uses: actions/download-artifact@v4
         with:
-          name: prowler-artifacts
+          name: prowler-artifacts-${{ github.run_id }}
           path: artifacts
 
-      - name: Generate remediation Terraform
-        env:
-          AI_MODEL: ${{ secrets.AI_MODEL }}
-          AI_API_KEY: ${{ secrets.AI_API_KEY }}
+      - name: Generate category remediation Terraform (Bedrock)
         run: |
           python iac/scripts/generate_remediation.py \
             --prowler-json artifacts/prowler-findings-normalized.json \
             --snippet-root iac/snippets \
-            --output terraform/remediation/main.tf \
-            --run-id ${{ github.run_id }} \
-            --log artifacts/remediation.log
-          python iac/scripts/inject_lifecycle.py --target terraform/remediation/main.tf
+            --output-dir terraform/remediation \
+            --artifact-dir artifacts/remediation \
+            --run-id ${{ github.run_id }}
 
-      - name: Create remediation PR
+      - name: Inject lifecycle to generated files
+        run: |
+          shopt -s nullglob
+          for f in terraform/remediation/generated_*.tf; do
+            python iac/scripts/inject_lifecycle.py --target "$f"
+          done
+
+      - name: Upload remediation artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: remediation-artifacts-${{ github.run_id }}
+          path: |
+            terraform/remediation/generated_*.tf
+            artifacts/remediation/
+
+  pr_per_category:
+    if: github.event_name == 'workflow_dispatch'
+    needs: ai_generate
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        category: [iam, s3, network-ec2-vpc, cloudtrail, cloudwatch]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download remediation artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: remediation-artifacts-${{ github.run_id }}
+          path: downloaded
+
+      - name: Prepare category files
+        id: prep
+        run: |
+          mkdir -p terraform/remediation artifacts/remediation
+          SRC="downloaded/terraform/remediation/generated_${{ matrix.category }}.tf"
+          if [ ! -f "$SRC" ]; then
+            echo "has_file=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          cp "$SRC" "terraform/remediation/generated_${{ matrix.category }}.tf"
+          if [ -f "downloaded/artifacts/remediation/${{ matrix.category }}.log" ]; then
+            cp "downloaded/artifacts/remediation/${{ matrix.category }}.log" "artifacts/remediation/${{ matrix.category }}.log"
+          fi
+          if [ -f "downloaded/artifacts/remediation/manifest.json" ]; then
+            cp "downloaded/artifacts/remediation/manifest.json" "artifacts/remediation/manifest.json"
+          fi
+          echo "has_file=true" >> "$GITHUB_OUTPUT"
+
+      - name: Create category remediation PR
+        if: steps.prep.outputs.has_file == 'true'
         uses: peter-evans/create-pull-request@v7
         with:
-          branch: remediation-${{ github.run_id }}
-          title: "AI remediation ${{ github.run_id }}"
+          base: main
+          branch: remediation-${{ github.run_id }}-${{ matrix.category }}
+          title: "AI remediation (${{ matrix.category }}) run ${{ github.run_id }}"
           body: |
-            Auto-generated remediation from Prowler findings.
-            Categories: iam, s3, network-ec2-vpc, cloudtrail, cloudwatch
-            Unsupported findings are logged only.
-          commit-message: "chore: AI remediation for run ${{ github.run_id }}"
+            Auto-generated remediation for category `${{ matrix.category }}` from Prowler findings.
+            Source: Bedrock model `${{ secrets.AI_MODEL }}`
+            Flow: scan -> AI generate -> category PR -> merge -> apply.
+          commit-message: "chore: remediation ${{ matrix.category }} for run ${{ github.run_id }}"
           add-paths: |
-            terraform/remediation/main.tf
-            artifacts/remediation.log
+            terraform/remediation/generated_${{ matrix.category }}.tf
+            artifacts/remediation/${{ matrix.category }}.log
+            artifacts/remediation/manifest.json
 
   apply:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'

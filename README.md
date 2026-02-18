@@ -4,7 +4,7 @@ AWS IaC 보안 자동화를 검증하기 위한 PoC 저장소입니다.
 
 이 저장소는 다음 3가지를 분리해서 관리합니다.
 - 취약한 기준 인프라: `terraform/test_infra`
-- AI/룰 기반으로 생성되는 Remediation 코드: `terraform/remediation`
+- Bedrock(Claude 3 Haiku) 기반으로 생성되는 Remediation 코드: `terraform/remediation/generated_<category>.tf`
 - Prowler 결과 파싱, 코드 생성, 안전 적용 보조 스크립트: `iac/scripts`
 
 ## 1. 목표
@@ -57,6 +57,7 @@ prowler-auto-remediation-test/
 - GitHub Personal Access Token (classic 권장, `repo` 권한 필요)
 - GitHub CLI(`gh`) - 시크릿 자동 등록 시 필요
 - AWS IAM User Access Key (PoC용 최소 권한 계정 권장)
+- Bedrock 모델 액세스 활성화(Claude 3 Haiku) 및 `bedrock:InvokeModel` 권한
 
 ## 4. 입력값 설명
 `bootstrap_repo.py` 실행 시 아래 항목을 입력합니다.
@@ -91,9 +92,10 @@ python .\bootstrap_repo.py
 3. GitHub Actions 수동 실행
 - Actions 탭 -> `Prowler Security Scan and AI Remediation` -> `Run workflow`
 
-4. 생성된 PR 확인 및 Merge
-- 브랜치명: `remediation-<run_id>`
-- 변경 파일: `terraform/remediation/main.tf`, `artifacts/remediation.log` 등
+4. 생성된 카테고리별 PR 확인 및 Merge
+- 브랜치명: `remediation-<run_id>-<category>`
+- 예시: `remediation-1234567890-iam`, `remediation-1234567890-s3`
+- 변경 파일: `terraform/remediation/generated_<category>.tf`, `artifacts/remediation/<category>.log`
 
 5. Merge 후 apply 자동 실행 확인
 - `main` push 트리거로 apply job 실행
@@ -105,11 +107,14 @@ python .\bootstrap_repo.py
 - Prowler 스캔 실행
 - 결과 파일 아티팩트 업로드
 
-`ai_remediation` job:
+`ai_generate` job:
 - Prowler 결과 다운로드
-- `generate_remediation.py`로 snippet 기반 코드 생성
+- `generate_remediation.py`가 Bedrock Runtime을 호출해 카테고리별 Terraform 생성
 - `inject_lifecycle.py`로 `prevent_destroy`, `ignore_changes` 삽입
-- `remediation-<run_id>` PR 자동 생성
+
+`pr_per_category` job:
+- `iam`, `s3`, `network-ec2-vpc`, `cloudtrail`, `cloudwatch` 매트릭스 실행
+- 카테고리별 개별 PR 자동 생성
 
 `apply` job (`main` push 시):
 - `auto_import.sh` 실행 (import map 존재 시)
@@ -121,7 +126,8 @@ python .\bootstrap_repo.py
 ## 7. 스크립트 설명
 - `iac/scripts/generate_remediation.py`
   - Prowler JSON/JSONL/ASFF 형식 일부를 파싱
-  - 지원 카테고리만 추출해 `terraform/remediation/main.tf` 생성
+  - 지원 카테고리별로 Bedrock을 호출해 `terraform/remediation/generated_<category>.tf` 생성
+  - Bedrock 실패 시 snippet 기반 fallback 적용
   - 미지원 항목은 로그만 남김
 
 - `iac/scripts/inject_lifecycle.py`

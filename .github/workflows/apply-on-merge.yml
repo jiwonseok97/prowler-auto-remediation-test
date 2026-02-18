@@ -1,0 +1,99 @@
+﻿name: Apply Remediation On Merge
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "terraform/remediation/**"
+      - "iac/scripts/**"
+
+permissions:
+  contents: read
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+      TF_VAR_region: ${{ secrets.AWS_DEFAULT_REGION }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+
+      - name: Prepare scripts
+        run: |
+          perl -i -pe 's/^\x{FEFF}//' iac/scripts/*.sh
+          sed -i 's/\r$//' iac/scripts/*.sh
+          chmod +x iac/scripts/*.sh
+
+      - name: Build apply manifest
+        run: python iac/scripts/builder_to_manifest.py --root terraform/remediation --output artifacts/apply-manifest.json
+
+      - name: Apply each category
+        run: |
+          python - <<'PY'
+          import json, subprocess
+          from pathlib import Path
+          manifest = Path('artifacts/apply-manifest.json')
+          if not manifest.exists():
+              print('no manifest, skip apply')
+              raise SystemExit(0)
+          m = json.loads(manifest.read_text(encoding='utf-8'))
+          cats = m.get('categories', [])
+          if not cats:
+              print('no remediation categories, skip apply')
+              raise SystemExit(0)
+          for c in cats:
+              cat = c['category']
+              p = c['path']
+              state_dir = f"artifacts/{cat}"
+              subprocess.run(['bash', 'iac/scripts/auto_import.sh', p, f'{p}/import-map.txt'], check=True)
+              subprocess.run(['bash', 'iac/scripts/resilient_apply.sh', p, state_dir], check=True)
+          PY
+
+  verify:
+    needs: [apply]
+    runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Wait propagation
+        run: sleep 150
+
+      - name: Re-scan and compare fail count
+        run: |
+          python -m pip install --upgrade pip
+          pip install "prowler>=3.11,<4.0" || pip install prowler
+          mkdir -p artifacts
+          prowler aws --compliance cis_1.4_aws -M json-asff -o artifacts -F post-remediation || prowler aws -M json-asff -o artifacts -F post-remediation || true
+          FOUND="$(find artifacts -maxdepth 1 -type f -name 'post-remediation*.json*' | head -n 1)"
+          if [ -z "$FOUND" ]; then
+            echo "post_fail=0" | tee artifacts/verify.log
+            exit 0
+          fi
+          python iac/scripts/convert_findings.py --input "$FOUND" --output artifacts/post-normalized.json > artifacts/post-summary.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          baseline = 0
+          manifest = Path('terraform/remediation/manifest.json')
+          if manifest.exists():
+              baseline = json.loads(manifest.read_text(encoding='utf-8')).get('baseline_fail_count', 0)
+          post = len(json.loads(Path('artifacts/post-normalized.json').read_text(encoding='utf-8')))
+          Path('artifacts/verify.log').write_text(f'baseline_fail={baseline}\npost_fail={post}\nreduced={baseline-post}\n', encoding='utf-8')
+          print(f'baseline_fail={baseline}, post_fail={post}, reduced={baseline-post}')
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: verify-${{ github.run_id }}
+          path: artifacts/

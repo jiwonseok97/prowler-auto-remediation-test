@@ -52,9 +52,12 @@ prowler-auto-remediation-test/
 - `generate-remediation`: findings 정규화 -> Bedrock/Builder 생성 -> manifest 생성
 - `create-category-pr`: iam/s3/network-ec2-vpc/cloudtrail/cloudwatch 카테고리별 PR
 - `wait-for-merge`: 수동 merge 또는 auto_merge=true 시 자동 merge 시도
-- `apply`(main push): category별 auto import + resilient apply
-- `verify`: 150초 대기 후 재스캔, baseline 대비 FAIL 감소 기록
 - `cleanup`: 입력 cleanup=true 시 취약 인프라 destroy
+
+## Merge 후 자동 적용 (`.github/workflows/apply-on-merge.yml`)
+- 트리거: `main` push (remediation 파일 변경 시)
+- `apply`: category별 auto import + resilient apply
+- `verify`: 150초 대기 후 재스캔, baseline 대비 FAIL 감소 기록
 
 ## 필요 Secrets
 - `AWS_ACCESS_KEY_ID`

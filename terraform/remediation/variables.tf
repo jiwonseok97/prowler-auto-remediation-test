@@ -1,9 +1,10 @@
-﻿variable "aws_region" {
+﻿variable "region" {
   type        = string
   description = "AWS region for remediation apply"
 }
 
-variable "remediation_run_id" {
+variable "account_id" {
   type        = string
-  default     = "manual"
+  description = "AWS account ID"
+  default     = ""
 }

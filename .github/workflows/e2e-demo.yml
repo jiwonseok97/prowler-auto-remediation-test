@@ -1,0 +1,291 @@
+﻿name: E2E Vulnerable AWS + Auto Remediation Demo
+
+on:
+  workflow_dispatch:
+    inputs:
+      auto_merge:
+        description: "자동 머지 수행"
+        required: true
+        default: false
+        type: boolean
+      skip_deploy:
+        description: "취약 인프라 배포 건너뛰기"
+        required: true
+        default: false
+        type: boolean
+      cleanup:
+        description: "마지막에 취약 인프라 destroy"
+        required: true
+        default: false
+        type: boolean
+  push:
+    branches: ["main"]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  deploy-vulnerable:
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.skip_deploy != 'true'
+    runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+      TF_VAR_region: ${{ secrets.AWS_DEFAULT_REGION }}
+      TF_VAR_account_id: ${{ secrets.AWS_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+      - name: Terraform init/apply vulnerable infra
+        run: |
+          terraform -chdir=terraform/test_infra init -input=false
+          terraform -chdir=terraform/test_infra apply -auto-approve -input=false
+      - name: Upload deploy artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: deploy-vulnerable-${{ github.run_id }}
+          path: terraform/test_infra/*.tfstate*
+
+  scan:
+    if: github.event_name == 'workflow_dispatch' && (needs.deploy-vulnerable.result == 'success' || needs.deploy-vulnerable.result == 'skipped')
+    needs: [deploy-vulnerable]
+    runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install prowler 3.11 line
+        run: |
+          python -m pip install --upgrade pip
+          pip install "prowler>=3.11,<4.0" || pip install prowler
+      - name: Run Prowler CIS scan
+        run: |
+          mkdir -p artifacts
+          prowler aws --compliance cis_1.4_aws -M json-asff -o artifacts -F pre-remediation || prowler aws -M json-asff -o artifacts -F pre-remediation || true
+          FOUND="$(find artifacts -maxdepth 1 -type f -name 'pre-remediation*.json*' | head -n 1)"
+          if [ -z "$FOUND" ]; then
+            echo "[]" > artifacts/pre-remediation-normalized.json
+          else
+            cp "$FOUND" artifacts/pre-remediation-normalized.json
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: scan-${{ github.run_id }}
+          path: artifacts/
+
+  generate-remediation:
+    if: github.event_name == 'workflow_dispatch'
+    needs: [scan]
+    runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+      AI_MODEL: ${{ secrets.AI_MODEL }}
+      AI_API_KEY: ${{ secrets.AI_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install script dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install boto3
+      - uses: actions/download-artifact@v4
+        with:
+          name: scan-${{ github.run_id }}
+          path: artifacts
+      - name: Convert scan findings
+        run: |
+          python iac/scripts/convert_findings.py --input artifacts/pre-remediation-normalized.json --output artifacts/normalized-findings.json
+      - name: Generate remediation by category
+        run: |
+          python iac/scripts/generate_remediation.py \
+            --normalized-findings artifacts/normalized-findings.json \
+            --snippet-root iac/snippets \
+            --output-root terraform/remediation \
+            --run-id ${{ github.run_id }} \
+            --log artifacts/remediation/summary.log
+      - name: Inject lifecycle
+        run: |
+          find terraform/remediation -type f -name main.tf | while read f; do
+            python iac/scripts/inject_lifecycle.py --target "$f"
+          done
+      - name: Build manifest
+        run: |
+          python iac/scripts/builder_to_manifest.py --root terraform/remediation --output terraform/remediation/manifest.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: remediation-${{ github.run_id }}
+          path: |
+            terraform/remediation/**
+            artifacts/remediation/**
+
+  create-category-pr:
+    if: github.event_name == 'workflow_dispatch'
+    needs: [generate-remediation]
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        category: [iam, s3, network-ec2-vpc, cloudtrail, cloudwatch]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: remediation-${{ github.run_id }}
+          path: downloaded
+      - id: prepare
+        name: Prepare category
+        run: |
+          SRC="downloaded/terraform/remediation/${{ matrix.category }}/main.tf"
+          if [ ! -f "$SRC" ]; then
+            echo "has=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          mkdir -p "terraform/remediation/${{ matrix.category }}"
+          cp "$SRC" "terraform/remediation/${{ matrix.category }}/main.tf"
+          if [ -f "downloaded/terraform/remediation/${{ matrix.category }}/imports.sh" ]; then
+            cp "downloaded/terraform/remediation/${{ matrix.category }}/imports.sh" "terraform/remediation/${{ matrix.category }}/imports.sh"
+          fi
+          if [ -f "downloaded/terraform/remediation/manifest.json" ]; then
+            cp "downloaded/terraform/remediation/manifest.json" "terraform/remediation/manifest.json"
+          fi
+          echo "has=true" >> "$GITHUB_OUTPUT"
+      - name: Create PR per category
+        if: steps.prepare.outputs.has == 'true'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          base: main
+          branch: remediation-${{ github.run_id }}-${{ matrix.category }}
+          title: "E2E remediation ${{ matrix.category }} run ${{ github.run_id }}"
+          body: |
+            Category remediation generated from Prowler findings.
+            Merge this PR to trigger apply/verify on main.
+          commit-message: "chore: remediation ${{ matrix.category }} run ${{ github.run_id }}"
+          add-paths: |
+            terraform/remediation/${{ matrix.category }}/main.tf
+            terraform/remediation/${{ matrix.category }}/imports.sh
+            terraform/remediation/manifest.json
+
+  wait-for-merge:
+    if: github.event_name == 'workflow_dispatch'
+    needs: [create-category-pr]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Optional auto merge
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ "${{ github.event.inputs.auto_merge }}" != "true" ]; then
+            echo "auto_merge=false, 수동 merge 후 push(main)로 apply 실행됩니다."
+            exit 0
+          fi
+          prs=$(gh pr list --state open --json number,headRefName --jq '.[] | select(.headRefName | startswith("remediation-${{ github.run_id }}-")) | .number')
+          if [ -z "$prs" ]; then
+            echo "merge 대상 PR 없음"
+            exit 0
+          fi
+          for pr in $prs; do
+            gh pr merge "$pr" --squash --auto --delete-branch || gh pr merge "$pr" --squash --delete-branch
+          done
+
+  apply:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+      - name: Prepare scripts
+        run: |
+          perl -i -pe 's/^\x{FEFF}//' iac/scripts/*.sh
+          sed -i 's/\r$//' iac/scripts/*.sh
+          chmod +x iac/scripts/*.sh
+      - name: Build apply manifest
+        run: |
+          python iac/scripts/builder_to_manifest.py --root terraform/remediation --output artifacts/apply-manifest.json
+      - name: Apply each category
+        run: |
+          python - <<'PY'
+          import json, subprocess
+          from pathlib import Path
+          m = json.loads(Path('artifacts/apply-manifest.json').read_text(encoding='utf-8'))
+          for c in m.get('categories', []):
+              cat = c['category']
+              p = c['path']
+              state_dir = f"artifacts/{cat}"
+              subprocess.run(['bash','iac/scripts/auto_import.sh', p, f'{p}/import-map.txt'], check=True)
+              subprocess.run(['bash','iac/scripts/resilient_apply.sh', p, state_dir], check=True)
+          PY
+
+  verify:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [apply]
+    runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Wait propagation
+        run: sleep 150
+      - name: Re-scan and compare fail count
+        run: |
+          python -m pip install --upgrade pip
+          pip install "prowler>=3.11,<4.0" || pip install prowler
+          mkdir -p artifacts
+          prowler aws --compliance cis_1.4_aws -M json-asff -o artifacts -F post-remediation || prowler aws -M json-asff -o artifacts -F post-remediation || true
+          FOUND="$(find artifacts -maxdepth 1 -type f -name 'post-remediation*.json*' | head -n 1)"
+          if [ -z "$FOUND" ]; then
+            echo "post_fail=0" | tee artifacts/verify.log
+            exit 0
+          fi
+          python iac/scripts/convert_findings.py --input "$FOUND" --output artifacts/post-normalized.json > artifacts/post-summary.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          baseline = 0
+          manifest = Path('terraform/remediation/manifest.json')
+          if manifest.exists():
+              baseline = json.loads(manifest.read_text(encoding='utf-8')).get('baseline_fail_count', 0)
+          post = len(json.loads(Path('artifacts/post-normalized.json').read_text(encoding='utf-8')))
+          Path('artifacts/verify.log').write_text(f'baseline_fail={baseline}\npost_fail={post}\nreduced={baseline-post}\n', encoding='utf-8')
+          print(f'baseline_fail={baseline}, post_fail={post}, reduced={baseline-post}')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: verify-${{ github.run_id }}
+          path: artifacts/
+
+  cleanup:
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.cleanup == 'true'
+    runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+      TF_VAR_region: ${{ secrets.AWS_DEFAULT_REGION }}
+      TF_VAR_account_id: ${{ secrets.AWS_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+      - name: Destroy vulnerable infra
+        run: |
+          terraform -chdir=terraform/test_infra init -input=false
+          terraform -chdir=terraform/test_infra destroy -auto-approve -input=false

@@ -77,6 +77,8 @@ def builder_tf(category: str, findings: list[dict[str, Any]]) -> str:
 
 
 def render_category_file(category: str, run_id: str, snippet: str, ai_tf: str, built_tf: str) -> str:
+    # Comment out snippet so placeholder values (REPLACE_*) don't break terraform apply
+    snippet_commented = "\n".join(f"# {line}" for line in snippet.strip().splitlines()) if snippet.strip() else ""
     return (
         'terraform {\n'
         '  required_version = ">= 1.5.0"\n'
@@ -87,12 +89,19 @@ def render_category_file(category: str, run_id: str, snippet: str, ai_tf: str, b
         '    }\n'
         '  }\n'
         '}\n\n'
-        'provider "aws" {}\n\n'
+        'variable "region" {\n'
+        '  type    = string\n'
+        '  default = ""\n'
+        '}\n\n'
+        'provider "aws" {\n'
+        '  region = var.region != "" ? var.region : null\n'
+        '}\n\n'
         f"# category: {category}\n"
         f"# run_id: {run_id}\n\n"
-        f"# snippet_baseline\n{snippet.strip()}\n\n"
-        f"# ai_generated\n{ai_tf.strip()}\n\n"
-        f"# builder_generated\n{built_tf.strip()}\n"
+        f"# === snippet reference (not applied) ===\n"
+        f"{snippet_commented}\n\n"
+        f"# === ai_generated ===\n{ai_tf.strip()}\n\n"
+        f"# === builder_generated ===\n{built_tf.strip()}\n"
     )
 
 

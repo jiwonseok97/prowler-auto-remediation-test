@@ -1,6 +1,6 @@
 ﻿# Prowler Auto Remediation Test
 
-AWS 취약 인프라를 의도적으로 배포하고, Prowler 3.11 스캔 결과를 기반으로 Bedrock(Claude 3 Haiku) + Builder가 Remediation Terraform을 생성하여 카테고리별 PR, Merge 후 Apply, 재스캔 FAIL 감소까지 시연하는 E2E PoC입니다.
+AWS 취약 인프라를 의도적으로 배포하고, Prowler 3.11 스캔 결과를 기반으로 Bedrock(Claude 3 Haiku) + Builder가 Remediation Terraform을 생성하여 카테고리별 PR, Merge 후 Apply, 재스캔 FAIL 감소까지 시연하는 E2E PoC.
 
 ## 디렉토리
 ```text

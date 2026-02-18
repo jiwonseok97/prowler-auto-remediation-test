@@ -1,0 +1,9 @@
+﻿[example] init complete for terraform/remediation
+[example] auto import: no map, skipped
+[example] plan check: no replacement detected
+[example] apply #1 completed
+[example] drift check after #1: residual changes found
+[example] apply #2 completed
+[example] drift check after #2: no further changes
+[example] post-apply prowler: previous failed controls reduced in supported categories
+[example] unsupported controls logged only: fms, organizations, root-mfa

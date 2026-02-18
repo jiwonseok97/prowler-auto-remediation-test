@@ -1,0 +1,22 @@
+﻿categories:
+  iam:
+    enabled: true
+    snippet_dir: iac/snippets/iam
+  s3:
+    enabled: true
+    snippet_dir: iac/snippets/s3
+  network-ec2-vpc:
+    enabled: true
+    snippet_dir: iac/snippets/network-ec2-vpc
+  cloudtrail:
+    enabled: true
+    snippet_dir: iac/snippets/cloudtrail
+  cloudwatch:
+    enabled: true
+    snippet_dir: iac/snippets/cloudwatch
+unsupported_policy:
+  mode: log_only
+  examples:
+    - organizations
+    - fms
+    - root-mfa

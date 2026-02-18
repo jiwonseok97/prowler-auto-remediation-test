@@ -1,0 +1,135 @@
+﻿name: Prowler Security Scan and AI Remediation
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  plan:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: hashicorp/setup-terraform@v3
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install prowler pyyaml
+
+      - name: Terraform init (vulnerable baseline)
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+        run: terraform -chdir=terraform/test_infra init -input=false
+
+      - name: Run Prowler scan
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+        run: |
+          mkdir -p artifacts
+          prowler aws -M json-asff -o artifacts -F prowler-findings || true
+          if [ -f artifacts/prowler-findings.json ]; then
+            cp artifacts/prowler-findings.json artifacts/prowler-findings-normalized.json
+          else
+            echo "[]" > artifacts/prowler-findings-normalized.json
+          fi
+
+      - name: Upload scan artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: prowler-artifacts
+          path: artifacts/
+
+  ai_remediation:
+    if: github.event_name == 'workflow_dispatch'
+    needs: plan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Download scan artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: prowler-artifacts
+          path: artifacts
+
+      - name: Generate remediation Terraform
+        env:
+          AI_MODEL: ${{ secrets.AI_MODEL }}
+          AI_API_KEY: ${{ secrets.AI_API_KEY }}
+        run: |
+          python iac/scripts/generate_remediation.py \
+            --prowler-json artifacts/prowler-findings-normalized.json \
+            --snippet-root iac/snippets \
+            --output terraform/remediation/main.tf \
+            --run-id ${{ github.run_id }} \
+            --log artifacts/remediation.log
+          python iac/scripts/inject_lifecycle.py --target terraform/remediation/main.tf
+
+      - name: Create remediation PR
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: remediation-${{ github.run_id }}
+          title: "AI remediation ${{ github.run_id }}"
+          body: |
+            Auto-generated remediation from Prowler findings.
+            Categories: iam, s3, network-ec2-vpc, cloudtrail, cloudwatch
+            Unsupported findings are logged only.
+          commit-message: "chore: AI remediation for run ${{ github.run_id }}"
+          add-paths: |
+            terraform/remediation/main.tf
+            artifacts/remediation.log
+
+  apply:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+
+      - name: Prepare bash scripts
+        run: chmod +x iac/scripts/*.sh
+
+      - name: Terraform init remediation
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+        run: terraform -chdir=terraform/remediation init -input=false
+
+      - name: Auto import singleton resources
+        run: bash iac/scripts/auto_import.sh terraform/remediation artifacts/import-map.txt
+
+      - name: Resilient apply (drift/replacement guard)
+        run: bash iac/scripts/resilient_apply.sh terraform/remediation artifacts
+
+      - name: Post-apply Prowler re-scan
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+        run: |
+          pip install prowler
+          prowler aws -M json-asff -o artifacts -F prowler-after-apply || true
+
+      - name: Upload apply artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: apply-artifacts-${{ github.run_id }}
+          path: artifacts/

@@ -28,9 +28,14 @@ def detect_category(finding: dict) -> str | None:
         [
             str(finding.get("CheckID", "")),
             str(finding.get("CheckTitle", "")),
+            str(finding.get("Title", "")),
+            str(finding.get("Description", "")),
+            str(finding.get("GeneratorId", "")),
             str(finding.get("ServiceName", "")),
             str(finding.get("StatusExtended", "")),
             str(finding.get("ResourceType", "")),
+            str(finding.get("Types", "")),
+            str(finding.get("ProductFields", "")),
         ]
     )
     haystack = normalize(joined)
@@ -67,6 +72,18 @@ def read_findings(path: Path) -> list[dict]:
     return rows
 
 
+def finding_status(finding: dict) -> str:
+    direct = str(finding.get("Status", "")).strip().lower()
+    if direct:
+        return direct
+    compliance = finding.get("Compliance", {})
+    if isinstance(compliance, dict):
+        status = str(compliance.get("Status", "")).strip().lower()
+        if status:
+            return status
+    return ""
+
+
 def render_remediation(snippet_root: Path, categories: set[str], run_id: str) -> str:
     sections = [
         "# This file is generated. Do not edit manually.",
@@ -98,7 +115,7 @@ def main() -> int:
     unsupported = 0
 
     for f in findings:
-        status = str(f.get("Status", "")).lower()
+        status = finding_status(f)
         if status and status not in {"fail", "failed"}:
             continue
         cat = detect_category(f)

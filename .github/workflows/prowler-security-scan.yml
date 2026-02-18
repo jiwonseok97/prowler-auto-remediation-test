@@ -56,11 +56,13 @@ jobs:
         run: |
           mkdir -p artifacts
           prowler aws -M json-asff -o artifacts -F prowler-findings || true
-          if [ -f artifacts/prowler-findings.json ]; then
-            cp artifacts/prowler-findings.json artifacts/prowler-findings-normalized.json
-          else
-            echo "[]" > artifacts/prowler-findings-normalized.json
+          FOUND_FILE="$(find artifacts -maxdepth 1 -type f -name 'prowler-findings*.json*' | head -n 1)"
+          if [ -z "$FOUND_FILE" ]; then
+            echo "[ERROR] Prowler 결과 파일을 찾지 못했습니다."
+            ls -la artifacts || true
+            exit 1
           fi
+          cp "$FOUND_FILE" artifacts/prowler-findings-normalized.json
 
       - name: Upload scan artifacts
         uses: actions/upload-artifact@v4
@@ -125,6 +127,7 @@ jobs:
 
       - name: Prepare bash scripts
         run: |
+          perl -i -pe 's/^\x{FEFF}//' iac/scripts/*.sh
           sed -i 's/\r$//' iac/scripts/*.sh
           chmod +x iac/scripts/*.sh
 

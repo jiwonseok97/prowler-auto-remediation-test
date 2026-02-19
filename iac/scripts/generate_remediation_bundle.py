@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Generate remediation terraform files from prioritized findings."""
 import argparse
+import hashlib
 import json
 import re
 from datetime import datetime, timezone
@@ -102,11 +103,12 @@ def materialize_vars(tf_code: str, finding: Dict[str, Any], account_id: str, reg
 
 def uniquify_resource_names(tf_code: str, suffix: str) -> Tuple[str, List[Tuple[str, str]]]:
     mapping: List[Tuple[str, str]] = []
+    tag = hashlib.sha1(suffix.encode("utf-8")).hexdigest()[:10]
 
     def repl(m: re.Match) -> str:
         rtype = m.group(1)
         rname = m.group(2)
-        new_name = f"{rname}_{suffix[:12]}"
+        new_name = f"{rname}_{tag}"
         mapping.append((f"{rtype}.{new_name}", rtype))
         return f'resource "{rtype}" "{new_name}" {{'
 
@@ -181,7 +183,9 @@ def main() -> None:
         if not cat:
             continue
 
-        key = safe_id(cid)
+        key = safe_id(
+            f"{cid}_{f.get('resource_arn', '')}_{f.get('region', '')}_{f.get('resource_id', '')}"
+        )
 
         if f.get("manual_required") or f.get("non_terraform"):
             overall["categories"][cat].append(

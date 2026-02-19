@@ -1,6 +1,11 @@
-resource "aws_s3_bucket_policy" "fix_config_bucket_policy_7d3084496f" {
-  bucket = "aws-config-logs-132410971304-ap-northeast-2"
-  policy = <<POLICY
+resource "aws_s3_bucket" "fix_config_delivery_bucket_4c1ba50bad" {
+  bucket = "aws-config-logs-132410971304-sa-east-1"
+}
+
+resource "aws_s3_bucket_policy" "fix_config_bucket_policy_4c1ba50bad" {
+  bucket     = "aws-config-logs-132410971304-sa-east-1"
+  depends_on = [aws_s3_bucket.fix_config_delivery_bucket_4c1ba50bad]
+  policy     = <<POLICY
 {
   "Version": "2012-10-17",
   "Statement": [
@@ -11,13 +16,13 @@ resource "aws_s3_bucket_policy" "fix_config_bucket_policy_7d3084496f" {
         "Service": "config.amazonaws.com"
       },
       "Action": "s3:GetBucketAcl",
-      "Resource": "arn:aws:s3:::aws-config-logs-132410971304-ap-northeast-2",
+      "Resource": "arn:aws:s3:::aws-config-logs-132410971304-sa-east-1",
       "Condition": {
         "StringEquals": {
           "aws:SourceAccount": "132410971304"
         },
         "ArnLike": {
-          "aws:SourceArn": "arn:aws:config:ap-northeast-2:132410971304:*"
+          "aws:SourceArn": "arn:aws:config:sa-east-1:132410971304:*"
         }
       }
     },
@@ -28,13 +33,13 @@ resource "aws_s3_bucket_policy" "fix_config_bucket_policy_7d3084496f" {
         "Service": "config.amazonaws.com"
       },
       "Action": "s3:ListBucket",
-      "Resource": "arn:aws:s3:::aws-config-logs-132410971304-ap-northeast-2",
+      "Resource": "arn:aws:s3:::aws-config-logs-132410971304-sa-east-1",
       "Condition": {
         "StringEquals": {
           "aws:SourceAccount": "132410971304"
         },
         "ArnLike": {
-          "aws:SourceArn": "arn:aws:config:ap-northeast-2:132410971304:*"
+          "aws:SourceArn": "arn:aws:config:sa-east-1:132410971304:*"
         }
       }
     },
@@ -45,14 +50,14 @@ resource "aws_s3_bucket_policy" "fix_config_bucket_policy_7d3084496f" {
         "Service": "config.amazonaws.com"
       },
       "Action": "s3:PutObject",
-      "Resource": "arn:aws:s3:::aws-config-logs-132410971304-ap-northeast-2/AWSLogs/132410971304/Config/*",
+      "Resource": "arn:aws:s3:::aws-config-logs-132410971304-sa-east-1/AWSLogs/132410971304/Config/*",
       "Condition": {
         "StringEquals": {
           "s3:x-amz-acl": "bucket-owner-full-control",
           "aws:SourceAccount": "132410971304"
         },
         "ArnLike": {
-          "aws:SourceArn": "arn:aws:config:ap-northeast-2:132410971304:*"
+          "aws:SourceArn": "arn:aws:config:sa-east-1:132410971304:*"
         }
       }
     }
@@ -61,7 +66,7 @@ resource "aws_s3_bucket_policy" "fix_config_bucket_policy_7d3084496f" {
 POLICY
 }
 
-resource "aws_config_configuration_recorder" "fix_config_recorder_7d3084496f" {
+resource "aws_config_configuration_recorder" "fix_config_recorder_4c1ba50bad" {
   name     = "default"
   role_arn = "arn:aws:iam::132410971304:role/aws-service-role/config.amazonaws.com/AWSServiceRoleForConfig"
 
@@ -71,14 +76,14 @@ resource "aws_config_configuration_recorder" "fix_config_recorder_7d3084496f" {
   }
 }
 
-resource "aws_config_delivery_channel" "fix_config_delivery_channel_7d3084496f" {
+resource "aws_config_delivery_channel" "fix_config_delivery_channel_4c1ba50bad" {
   name           = "default"
-  s3_bucket_name = "aws-config-logs-132410971304-ap-northeast-2"
-  depends_on     = [aws_s3_bucket_policy.fix_config_bucket_policy_7d3084496f, aws_config_configuration_recorder.fix_config_recorder_7d3084496f]
+  s3_bucket_name = "aws-config-logs-132410971304-sa-east-1"
+  depends_on     = [aws_s3_bucket_policy.fix_config_bucket_policy_4c1ba50bad, aws_config_configuration_recorder.fix_config_recorder_4c1ba50bad]
 }
 
-resource "aws_config_configuration_recorder_status" "fix_config_recorder_status_7d3084496f" {
+resource "aws_config_configuration_recorder_status" "fix_config_recorder_status_4c1ba50bad" {
   name       = "default"
   is_enabled = true
-  depends_on = [aws_config_delivery_channel.fix_config_delivery_channel_7d3084496f]
+  depends_on = [aws_config_delivery_channel.fix_config_delivery_channel_4c1ba50bad]
 }

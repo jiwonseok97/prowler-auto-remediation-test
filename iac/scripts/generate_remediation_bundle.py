@@ -29,6 +29,7 @@ OPTIONAL_IMPORT_TYPES = {
     "aws_network_acl_rule",
 }
 USE_BEDROCK_FALLBACK = os.getenv("BEDROCK_FALLBACK", "").strip().lower() in {"1", "true", "yes"}
+CW_ALARM_TAG_PERMISSION_CACHE: Dict[str, bool] = {}
 
 
 def safe_id(x: str) -> str:
@@ -1101,6 +1102,26 @@ def cloudwatch_log_group_exists(name: str, region: str) -> bool:
     return False
 
 
+def cloudwatch_allows_alarm_tag_read(region: str, account_id: str) -> bool:
+    key = f"{region}:{account_id}"
+    if key in CW_ALARM_TAG_PERMISSION_CACHE:
+        return CW_ALARM_TAG_PERMISSION_CACHE[key]
+    try:
+        cw = boto3.client("cloudwatch", region_name=region)
+        probe_arn = f"arn:aws:cloudwatch:{region}:{account_id}:alarm:__remediation_permission_probe__"
+        cw.list_tags_for_resource(ResourceARN=probe_arn)
+        CW_ALARM_TAG_PERMISSION_CACHE[key] = True
+        return True
+    except Exception as exc:
+        msg = str(exc).lower()
+        if "accessdenied" in msg or "not authorized" in msg:
+            CW_ALARM_TAG_PERMISSION_CACHE[key] = False
+            return False
+        # For non-auth errors (e.g., resource not found), assume permission exists.
+        CW_ALARM_TAG_PERMISSION_CACHE[key] = True
+        return True
+
+
 def main() -> None:
     p = argparse.ArgumentParser()
     p.add_argument("--input", required=True)
@@ -1225,6 +1246,18 @@ def main() -> None:
         elif cid_l.startswith("prowler-cloudtrail_") or cid_l.startswith("cloudtrail_"):
             tf_code = build_cloudtrail_tf(f, a.region, a.account_id)
         elif cid_l.startswith("prowler-cloudwatch_") or cid_l.startswith("cloudwatch_"):
+            if not cloudwatch_allows_alarm_tag_read(a.region, a.account_id):
+                overall["categories"][cat].append(
+                    {
+                        "check_id": cid,
+                        "manual_required": True,
+                        "files": [],
+                        "priority": f.get("osfp", {}).get("priority_bucket", "P3"),
+                        "score": f.get("osfp", {}).get("priority_score", 0),
+                        "reason": "insufficient_runner_permission_cloudwatch_listtags",
+                    }
+                )
+                continue
             tf_code = build_cloudwatch_metric_alarm_tf(f, a.account_id, a.region)
         elif template_path and Path(template_path).exists():
             tf_code = Path(template_path).read_text(encoding="utf-8")

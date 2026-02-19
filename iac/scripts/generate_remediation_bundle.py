@@ -485,6 +485,21 @@ def build_cloudtrail_required_bucket_policy_tf(
     )
 
 
+def cloudtrail_supports_dataevents_patch(region: str, trail_name: str) -> bool:
+    if not trail_name:
+        return False
+    try:
+        ct = boto3.client("cloudtrail", region_name=region)
+        resp = ct.get_event_selectors(TrailName=trail_name)
+        advanced = resp.get("AdvancedEventSelectors", []) or []
+        # If advanced selectors are in use, in-place event_selector mutation is high-risk and often rejected.
+        if isinstance(advanced, list) and len(advanced) > 0:
+            return False
+        return True
+    except Exception:
+        return False
+
+
 def build_cloudtrail_tf(finding: Dict[str, Any], region: str, account_id: str) -> str:
     cid_l = str(finding.get("check_id", "")).lower()
     trail_name = extract_trail_name(finding.get("resource_arn", ""))
@@ -516,6 +531,8 @@ def build_cloudtrail_tf(finding: Dict[str, Any], region: str, account_id: str) -
     if "log_file_validation_enabled" in cid_l:
         lines.append("  enable_log_file_validation    = true")
     elif "s3_dataevents_" in cid_l:
+        if not cloudtrail_supports_dataevents_patch(region, name):
+            return ""
         policy_prefix = build_cloudtrail_required_bucket_policy_tf(name, s3_bucket, account_id, region)
         lines.append("  enable_log_file_validation    = true")
         lines.extend(

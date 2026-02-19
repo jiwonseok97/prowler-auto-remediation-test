@@ -30,6 +30,7 @@ OPTIONAL_IMPORT_TYPES = {
 }
 USE_BEDROCK_FALLBACK = os.getenv("BEDROCK_FALLBACK", "").strip().lower() in {"1", "true", "yes"}
 CW_ALARM_TAG_PERMISSION_CACHE: Dict[str, bool] = {}
+EBS_ENCRYPTION_PERMISSION_CACHE: Dict[str, bool] = {}
 
 
 def safe_id(x: str) -> str:
@@ -1217,6 +1218,28 @@ def cloudwatch_allows_alarm_tag_read(region: str, account_id: str) -> bool:
         return True
 
 
+def ec2_allows_enable_ebs_encryption(region: str, account_id: str) -> bool:
+    key = f"{region}:{account_id}"
+    if key in EBS_ENCRYPTION_PERMISSION_CACHE:
+        return EBS_ENCRYPTION_PERMISSION_CACHE[key]
+    try:
+        ec2 = boto3.client("ec2", region_name=region)
+        ec2.enable_ebs_encryption_by_default(DryRun=True)
+        EBS_ENCRYPTION_PERMISSION_CACHE[key] = True
+        return True
+    except Exception as exc:
+        msg = str(exc).lower()
+        if "dryrunoperation" in msg:
+            EBS_ENCRYPTION_PERMISSION_CACHE[key] = True
+            return True
+        if "unauthorizedoperation" in msg or "accessdenied" in msg or "not authorized" in msg:
+            EBS_ENCRYPTION_PERMISSION_CACHE[key] = False
+            return False
+        # Unknown error should not block generation.
+        EBS_ENCRYPTION_PERMISSION_CACHE[key] = True
+        return True
+
+
 def main() -> None:
     p = argparse.ArgumentParser()
     p.add_argument("--input", required=True)
@@ -1335,6 +1358,18 @@ def main() -> None:
         elif "ec2_securitygroup_allow_ingress_from_internet_to_all_ports" in cid_l:
             tf_code = build_sg_restrict_all_ports_tf(f, a.region)
         elif "ec2_ebs_volume_encryption" in cid_l:
+            if not ec2_allows_enable_ebs_encryption(a.region, a.account_id):
+                overall["categories"][cat].append(
+                    {
+                        "check_id": cid,
+                        "manual_required": True,
+                        "files": [],
+                        "priority": f.get("osfp", {}).get("priority_bucket", "P3"),
+                        "score": f.get("osfp", {}).get("priority_score", 0),
+                        "reason": "insufficient_runner_permission_enable_ebs_encryption_default",
+                    }
+                )
+                continue
             tf_code = build_ebs_encryption_by_default_tf()
         elif "accessanalyzer_enabled" in cid_l:
             tf_code = build_access_analyzer_tf(f, a.region, a.account_id)

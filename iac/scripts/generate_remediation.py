@@ -22,8 +22,6 @@ CREATE_MISSING_HINTS = (
     "accessanalyzer_enabled",
     "config_recorder_all_regions_enabled",
 )
-REGIONAL_SERVICES = {"ec2", "vpc", "cloudtrail", "cloudwatch", "logs", "config", "kms", "accessanalyzer"}
-
 
 def is_supported_service(finding: Dict[str, Any]) -> bool:
     service = str(finding.get("service", "")).strip().lower()
@@ -46,28 +44,13 @@ def infer_service(finding: Dict[str, Any]) -> str:
     return cid.split("_", 1)[0] if "_" in cid else ""
 
 
-def arn_region(arn: str) -> str:
-    if not arn.startswith("arn:"):
-        return ""
-    parts = arn.split(":")
-    if len(parts) < 4:
-        return ""
-    return parts[3].strip()
-
-
-def classify_action(finding: Dict[str, Any], target_region: str) -> str:
+def classify_action(finding: Dict[str, Any]) -> str:
     cid = str(finding.get("check_id", "")).strip().lower()
     arn = str(finding.get("resource_arn", "")).strip()
-    service = infer_service(finding)
-
     if finding.get("manual_required") or finding.get("non_terraform"):
         return "SKIP"
     if not is_supported_service(finding):
         return "SKIP"
-    if arn and service in REGIONAL_SERVICES:
-        a_region = arn_region(arn)
-        if a_region and target_region and a_region != target_region:
-            return "SKIP"
     if arn:
         return "IMPORT_AND_PATCH"
     if any(hint in cid for hint in GLOBAL_CHECK_HINTS):
@@ -77,12 +60,12 @@ def classify_action(finding: Dict[str, Any], target_region: str) -> str:
     return "SKIP"
 
 
-def build_plan(rows: List[Dict[str, Any]], target_region: str) -> Dict[str, Any]:
+def build_plan(rows: List[Dict[str, Any]]) -> Dict[str, Any]:
     plan_rows: List[Dict[str, Any]] = []
     for row in rows:
         if str(row.get("status", "")).upper() != "FAIL":
             continue
-        action = classify_action(row, target_region)
+        action = classify_action(row)
         plan_rows.append(
             {
                 "check_id": row.get("check_id", ""),
@@ -120,7 +103,7 @@ def main() -> None:
     out_root.mkdir(parents=True, exist_ok=True)
 
     full_baseline_fail = len([r for r in rows if str(r.get("status", "")).upper() == "FAIL"])
-    plan = build_plan(rows, args.region)
+    plan = build_plan(rows)
     plan_path = out_root / "remediation_plan.json"
     plan_path.write_text(json.dumps(plan, indent=2), encoding="utf-8")
 

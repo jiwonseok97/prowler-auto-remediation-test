@@ -1320,6 +1320,9 @@ def main() -> None:
     for f in fail_rows:
         cid = f.get("check_id", "unknown")
         cat = category_of(f.get("service", ""), cid)
+        finding_region = str(f.get("region", "") or a.region).strip()
+        if not finding_region:
+            finding_region = a.region
         if not cat:
             overall["skipped"].append({"check_id": cid, "reason": "unsupported_category"})
             continue
@@ -1327,7 +1330,7 @@ def main() -> None:
         cid_l = cid.lower()
         trail_name = extract_trail_name(f.get("resource_arn", ""))
         if not trail_name and "cloudtrail_" in cid_l:
-            trail_name = str(pick_default_trail(a.region).get("Name", ""))
+            trail_name = str(pick_default_trail(finding_region).get("Name", ""))
         if "cloudtrail_kms_encryption_enabled" in cid_l:
             overall["categories"][cat].append(
                 {
@@ -1400,11 +1403,11 @@ def main() -> None:
         elif "vpc_flow_logs_enabled" in cid_l:
             tf_code = build_vpc_flow_logs_tf(f, a.account_id)
         elif "networkacl_allow_ingress_any_port" in cid_l or "networkacl_allow_ingress_tcp_port_22" in cid_l or "networkacl_allow_ingress_tcp_port_3389" in cid_l:
-            tf_code = build_nacl_restrict_ingress_tf(f, a.region)
+            tf_code = build_nacl_restrict_ingress_tf(f, finding_region)
         elif "ec2_securitygroup_allow_ingress_from_internet_to_all_ports" in cid_l:
-            tf_code = build_sg_restrict_all_ports_tf(f, a.region)
+            tf_code = build_sg_restrict_all_ports_tf(f, finding_region)
         elif "ec2_ebs_volume_encryption" in cid_l:
-            if not ec2_allows_enable_ebs_encryption(a.region, a.account_id):
+            if not ec2_allows_enable_ebs_encryption(finding_region, a.account_id):
                 overall["categories"][cat].append(
                     {
                         "check_id": cid,
@@ -1418,15 +1421,15 @@ def main() -> None:
                 continue
             tf_code = build_ebs_encryption_by_default_tf()
         elif "accessanalyzer_enabled" in cid_l:
-            tf_code = build_access_analyzer_tf(f, a.region, a.account_id)
+            tf_code = build_access_analyzer_tf(f, finding_region, a.account_id)
         elif "config_recorder_all_regions_enabled" in cid_l:
-            tf_code = build_config_recorder_tf(f, a.region, a.account_id)
+            tf_code = build_config_recorder_tf(f, finding_region, a.account_id)
         elif "kms_cmk_rotation_enabled" in cid_l:
             tf_code = build_kms_rotation_tf(f)
         elif cid_l.startswith("prowler-cloudtrail_") or cid_l.startswith("cloudtrail_"):
-            tf_code = build_cloudtrail_tf(f, a.region, a.account_id)
+            tf_code = build_cloudtrail_tf(f, finding_region, a.account_id)
         elif cid_l.startswith("prowler-cloudwatch_") or cid_l.startswith("cloudwatch_"):
-            if not cloudwatch_allows_alarm_tag_read(a.region, a.account_id):
+            if not cloudwatch_allows_alarm_tag_read(finding_region, a.account_id):
                 overall["categories"][cat].append(
                     {
                         "check_id": cid,
@@ -1438,7 +1441,7 @@ def main() -> None:
                     }
                 )
                 continue
-            tf_code = build_cloudwatch_metric_alarm_tf(f, a.account_id, a.region)
+            tf_code = build_cloudwatch_metric_alarm_tf(f, a.account_id, finding_region)
         elif template_path and Path(template_path).exists():
             tf_code = Path(template_path).read_text(encoding="utf-8")
         elif USE_BEDROCK_FALLBACK:
@@ -1465,12 +1468,12 @@ def main() -> None:
             continue
 
         if "securitygroup_default_restrict_traffic" in cid.lower():
-            vpc_id = lookup_vpc_for_sg(f.get("resource_arn", ""), f.get("region", a.region))
+            vpc_id = lookup_vpc_for_sg(f.get("resource_arn", ""), finding_region)
             if vpc_id:
                 f["_vpc_id"] = vpc_id
                 tf_code = tf_code.replace("var.vpc_id", f'"{vpc_id}"')
 
-        tf_code = materialize_vars(tf_code, f, a.account_id, a.region)
+        tf_code = materialize_vars(tf_code, f, a.account_id, finding_region)
         tf_code, resource_addrs = uniquify_resource_names(tf_code, key)
 
         if "resource " not in tf_code:

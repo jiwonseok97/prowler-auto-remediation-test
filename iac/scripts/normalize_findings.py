@@ -19,7 +19,6 @@ SUPPORTED_SERVICES = {
     "kms",
     "accessanalyzer",
 }
-REGIONAL_SERVICES = {"ec2", "vpc", "cloudtrail", "cloudwatch", "logs", "config", "kms", "accessanalyzer"}
 NON_TERRAFORM_PREFIX = ("guardduty_", "securityhub_", "inspector_", "iam_root_")
 MANUAL_CHECK_KEYWORDS = ("mfa", "root", "access_key", "organizations")
 
@@ -121,11 +120,6 @@ def normalize(rows: List[Dict[str, Any]], default_account: str, default_region: 
         account_id = first(r.get("AccountId"), r.get("AwsAccountId"), default_account)
         region = first(r.get("Region"), parse_region_from_arn(resource_arn), default_region)
         severity = first(r.get("Severity", {}).get("Label"), r.get("Severity"), "MEDIUM").upper()
-
-        # Pipeline is single-region apply. Skip out-of-target regional findings to keep
-        # baseline aligned with what Terraform can actually remediate in this run.
-        if default_region and service in REGIONAL_SERVICES and region and region != default_region:
-            continue
 
         non_tf = check_id.startswith(NON_TERRAFORM_PREFIX)
         manual = non_tf or any(k in check_id for k in MANUAL_CHECK_KEYWORDS)

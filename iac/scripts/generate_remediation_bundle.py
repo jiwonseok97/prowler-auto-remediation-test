@@ -253,7 +253,7 @@ def import_id_for_type(resource_type: str, finding: Dict[str, Any]) -> str:
         "aws_s3_bucket_server_side_encryption_configuration",
         "aws_s3_bucket_policy",
     }:
-        return extract_bucket(arn)
+        return finding.get("_trail_bucket", "") or extract_bucket(arn)
     if resource_type == "aws_cloudtrail":
         return finding.get("_trail_name", "") or extract_trail_name(arn)
     if resource_type == "aws_cloudwatch_log_group":
@@ -401,7 +401,87 @@ def build_vpc_flow_logs_tf(finding: Dict[str, Any], account_id: str) -> str:
     )
 
 
-def build_cloudtrail_tf(finding: Dict[str, Any], region: str) -> str:
+def build_cloudtrail_required_bucket_policy_tf(
+    trail_name: str,
+    bucket: str,
+    account_id: str,
+    region: str,
+) -> str:
+    if not trail_name or not bucket:
+        return ""
+
+    source_arn = f"arn:aws:cloudtrail:{region}:{account_id}:trail/{trail_name}"
+    policy_doc: Dict[str, Any] = {"Version": "2012-10-17", "Statement": []}
+    try:
+        s3 = boto3.client("s3")
+        resp = s3.get_bucket_policy(Bucket=bucket)
+        raw = resp.get("Policy", "")
+        if raw:
+            loaded = json.loads(raw)
+            if isinstance(loaded, dict):
+                policy_doc = loaded
+    except Exception:
+        pass
+
+    stmts = policy_doc.get("Statement", [])
+    if not isinstance(stmts, list):
+        stmts = [stmts] if stmts else []
+
+    has_acl = False
+    has_put = False
+    for s in stmts:
+        if not isinstance(s, dict):
+            continue
+        principal = s.get("Principal", {})
+        service = principal.get("Service", "") if isinstance(principal, dict) else ""
+        action = s.get("Action", [])
+        actions = [action] if isinstance(action, str) else (action if isinstance(action, list) else [])
+        actions_l = [str(a).lower() for a in actions]
+        if str(service).lower() == "cloudtrail.amazonaws.com" and "s3:getbucketacl" in actions_l:
+            has_acl = True
+        if str(service).lower() == "cloudtrail.amazonaws.com" and "s3:putobject" in actions_l:
+            has_put = True
+
+    if not has_acl:
+        stmts.append(
+            {
+                "Sid": "AWSCloudTrailAclCheck20150319",
+                "Effect": "Allow",
+                "Principal": {"Service": "cloudtrail.amazonaws.com"},
+                "Action": "s3:GetBucketAcl",
+                "Resource": f"arn:aws:s3:::{bucket}",
+                "Condition": {"StringEquals": {"aws:SourceArn": source_arn}},
+            }
+        )
+    if not has_put:
+        stmts.append(
+            {
+                "Sid": "AWSCloudTrailWrite20150319",
+                "Effect": "Allow",
+                "Principal": {"Service": "cloudtrail.amazonaws.com"},
+                "Action": "s3:PutObject",
+                "Resource": f"arn:aws:s3:::{bucket}/AWSLogs/{account_id}/*",
+                "Condition": {
+                    "StringEquals": {
+                        "s3:x-amz-acl": "bucket-owner-full-control",
+                        "aws:SourceArn": source_arn,
+                    }
+                },
+            }
+        )
+    policy_doc["Statement"] = stmts
+    policy_json = json.dumps(policy_doc, indent=2)
+    return (
+        'resource "aws_s3_bucket_policy" "fix_cloudtrail_bucket_policy" {\n'
+        f'  bucket = "{bucket}"\n'
+        "  policy = <<POLICY\n"
+        f"{policy_json}\n"
+        "POLICY\n"
+        "}\n\n"
+    )
+
+
+def build_cloudtrail_tf(finding: Dict[str, Any], region: str, account_id: str) -> str:
     cid_l = str(finding.get("check_id", "")).lower()
     trail_name = extract_trail_name(finding.get("resource_arn", ""))
     detail = get_cloudtrail_detail(region, trail_name) if trail_name else {}
@@ -414,6 +494,7 @@ def build_cloudtrail_tf(finding: Dict[str, Any], region: str) -> str:
     if not name or not s3_bucket:
         return ""
     finding["_trail_name"] = name
+    finding["_trail_bucket"] = s3_bucket
 
     include_global = "true" if bool(detail.get("IncludeGlobalServiceEvents", True)) else "false"
     multi_region = "true" if bool(detail.get("IsMultiRegionTrail", True)) else "false"
@@ -431,8 +512,7 @@ def build_cloudtrail_tf(finding: Dict[str, Any], region: str) -> str:
     if "log_file_validation_enabled" in cid_l:
         lines.append("  enable_log_file_validation    = true")
     elif "s3_dataevents_" in cid_l:
-        if not cloudtrail_bucket_policy_ready(s3_bucket):
-            return ""
+        policy_prefix = build_cloudtrail_required_bucket_policy_tf(name, s3_bucket, account_id, region)
         lines.append("  enable_log_file_validation    = true")
         lines.extend(
             [
@@ -481,7 +561,10 @@ def build_cloudtrail_tf(finding: Dict[str, Any], region: str) -> str:
             "",
         ]
     )
-    return "\n".join(lines)
+    body = "\n".join(lines)
+    if "s3_dataevents_" in cid_l:
+        return policy_prefix + body
+    return body
 
 
 def cloudtrail_bucket_policy_ready(bucket: str) -> bool:
@@ -700,7 +783,7 @@ def main() -> None:
         elif "vpc_flow_logs_enabled" in cid_l:
             tf_code = build_vpc_flow_logs_tf(f, a.account_id)
         elif cid_l.startswith("prowler-cloudtrail_") or cid_l.startswith("cloudtrail_"):
-            tf_code = build_cloudtrail_tf(f, a.region)
+            tf_code = build_cloudtrail_tf(f, a.region, a.account_id)
         elif cid_l.startswith("prowler-cloudwatch_") or cid_l.startswith("cloudwatch_"):
             tf_code = build_cloudwatch_metric_alarm_tf(f, a.account_id, a.region)
         elif template_path and Path(template_path).exists():

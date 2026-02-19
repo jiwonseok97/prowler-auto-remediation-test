@@ -13,6 +13,10 @@ on:
     paths:
       - "remediation/**"
 
+concurrency:
+  group: security-pipeline-03-apply-main
+  cancel-in-progress: false
+
 permissions:
   id-token: write
   contents: read

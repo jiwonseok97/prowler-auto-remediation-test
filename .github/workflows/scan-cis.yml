@@ -18,6 +18,10 @@ on:
         type: string
         default: us-east-1
 
+concurrency:
+  group: security-pipeline-01-scan-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   id-token: write
   contents: read

@@ -30,6 +30,10 @@ on:
     workflows: ["Security Pipeline - 01 Scan Baseline"]
     types: [completed]
 
+concurrency:
+  group: security-pipeline-02-remediate-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   id-token: write
   contents: write

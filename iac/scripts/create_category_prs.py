@@ -29,10 +29,11 @@ def main() -> None:
     a = p.parse_args()
 
     manifest = json.loads(Path(a.manifest).read_text(encoding="utf-8"))
-    account = a.account_id
-
     run(["git", "config", "user.name", "github-actions[bot]"], check=False)
     run(["git", "config", "user.email", "41898282+github-actions[bot]@users.noreply.github.com"], check=False)
+
+    open_prs_raw = run(["gh", "pr", "list", "--state", "open", "--json", "number,headRefName,title"], check=False)
+    open_prs = json.loads(open_prs_raw) if open_prs_raw else []
 
     for cat in manifest.get("categories", []):
         category = cat["category"]
@@ -43,7 +44,30 @@ def main() -> None:
             print(f"skip {category}: no terraform files")
             continue
 
-        branch = f"remediation/{category}"
+        branch = f"remediation/{category}-{a.run_id}"
+        branch_prefix = f"remediation/{category}"
+        message = f"PR-merge / remediation: {category}"
+
+        # Close stale PRs for the same category before creating a new run-scoped PR.
+        for pr in open_prs:
+            head = str(pr.get("headRefName", ""))
+            number = pr.get("number")
+            if not number:
+                continue
+            if head == branch:
+                continue
+            if head == branch_prefix or head.startswith(f"{branch_prefix}-"):
+                run(
+                    [
+                        "gh",
+                        "pr",
+                        "close",
+                        str(number),
+                        "--comment",
+                        f"Superseded by newer remediation run branch `{branch}`.",
+                    ],
+                    check=False,
+                )
 
         run(["git", "checkout", "main"], check=False)
         run(["git", "checkout", "-B", branch, "main"])
@@ -53,9 +77,8 @@ def main() -> None:
             print(f"skip {category}: no file changes")
             run(["git", "checkout", "main"], check=False)
             continue
-        message = f"PR-merge / remediation: {category}"
         run(["git", "commit", "-m", message], check=False)
-        run(["git", "push", "-u", "origin", branch, "--force"])
+        run(["git", "push", "-u", "origin", branch])
 
         top5 = "\n".join(f"- {x}" for x in cat.get("top5", [])[:5]) or "- none"
         manual = "\n".join(f"- {x}" for x in cat.get("manual_required", [])) or "- none"
@@ -76,10 +99,6 @@ def main() -> None:
             "## Remaining Manual Required\n"
             f"{manual}\n"
         )
-
-        existing = run(["gh", "pr", "list", "--state", "open", "--head", branch, "--json", "number"], check=False)
-        if existing and len(json.loads(existing)) > 0:
-            continue
 
         p = subprocess.run(
             [

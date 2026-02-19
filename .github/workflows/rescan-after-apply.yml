@@ -5,6 +5,10 @@ on:
     workflows: ["Security Pipeline - 03 Apply Merged Generated Terraform Remediation"]
     types: [completed]
 
+concurrency:
+  group: security-pipeline-04-rescan-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   id-token: write
   contents: read

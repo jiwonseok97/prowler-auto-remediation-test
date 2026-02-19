@@ -2,6 +2,12 @@ name: Apply On Merged Remediation
 
 on:
   workflow_dispatch:
+    inputs:
+      categories:
+        description: "Comma-separated categories (iam,s3,network-ec2-vpc,cloudtrail,cloudwatch)"
+        required: false
+        type: string
+        default: ""
   push:
     branches: ["main"]
     paths:
@@ -56,19 +62,67 @@ jobs:
         id: cats
         shell: bash
         run: |
+          VALID="iam s3 network-ec2-vpc cloudtrail cloudwatch"
+          APPLY_ROOT="remediation"
+          mkdir -p artifacts
+
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            CATS="iam,s3,network-ec2-vpc,cloudtrail,cloudwatch"
+            CATS="${{ inputs.categories }}"
+            if [ -z "$CATS" ]; then
+              CATS="iam,s3,network-ec2-vpc,cloudtrail,cloudwatch"
+            fi
           else
             BEFORE="${{ github.event.before }}"
             AFTER="${{ github.sha }}"
-            CATS="$(git diff --name-only "$BEFORE" "$AFTER" | awk -F/ '/^remediation\// {print $2}' | sort -u | paste -sd, -)"
+            CHANGED_FILES="$(git diff --name-only "$BEFORE" "$AFTER" | awk '/^remediation\// {print}')"
+            SCOPE="artifacts/apply_scope"
+            rm -rf "$SCOPE"
+            mkdir -p "$SCOPE"
+
+            while IFS= read -r f; do
+              [ -z "$f" ] && continue
+              cat="$(echo "$f" | awk -F/ '{print $2}')"
+              if ! echo " $VALID " | grep -q " $cat "; then
+                continue
+              fi
+              mkdir -p "$SCOPE/$cat"
+              cp "$f" "$SCOPE/$cat/$(basename "$f")"
+            done <<< "$CHANGED_FILES"
+
+            for cat in $VALID; do
+              if [ -f "remediation/$cat/import-map.txt" ]; then
+                mkdir -p "$SCOPE/$cat"
+                cp "remediation/$cat/import-map.txt" "$SCOPE/$cat/import-map.txt"
+              fi
+            done
+
+            CATS="$(find "$SCOPE" -mindepth 1 -maxdepth 1 -type d -printf '%f\n' | sort -u | paste -sd, -)"
+            APPLY_ROOT="$SCOPE"
           fi
+
+          FILTERED=""
+          IFS=',' read -r -a raw <<< "$CATS"
+          for c in "${raw[@]}"; do
+            c="$(echo "$c" | tr -d '[:space:]')"
+            [ -z "$c" ] && continue
+            if echo " $VALID " | grep -q " $c "; then
+              if [ -z "$FILTERED" ]; then
+                FILTERED="$c"
+              else
+                FILTERED="$FILTERED,$c"
+              fi
+            fi
+          done
+
+          CATS="$FILTERED"
           echo "categories=$CATS" >> "$GITHUB_OUTPUT"
+          echo "apply_root=$APPLY_ROOT" >> "$GITHUB_OUTPUT"
           echo "changed_categories=$CATS"
+          echo "apply_root=$APPLY_ROOT"
 
       - name: Apply category by category
         run: |
-          bash iac/scripts/resilient_apply.sh remediation artifacts "${{ steps.cats.outputs.categories }}"
+          bash iac/scripts/resilient_apply.sh "${{ steps.cats.outputs.apply_root }}" artifacts "${{ steps.cats.outputs.categories }}"
 
       - name: Upload apply artifacts
         uses: actions/upload-artifact@v4

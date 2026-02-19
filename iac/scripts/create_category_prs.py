@@ -49,7 +49,8 @@ def main() -> None:
                 if pr["headRefName"].startswith(stale_prefix):
                     run(["gh", "pr", "close", str(pr["number"]), "--delete-branch"], check=False)
 
-        run(["git", "checkout", "-B", branch])
+        run(["git", "checkout", "main"], check=False)
+        run(["git", "checkout", "-B", branch, "main"])
         run(["git", "add", str(path)], check=False)
         run(["git", "add", str(Path(a.manifest))], check=False)
         if not has_staged_changes():

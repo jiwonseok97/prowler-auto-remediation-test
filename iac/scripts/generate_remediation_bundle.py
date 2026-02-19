@@ -14,10 +14,11 @@ from typing import Any, Dict, List, Optional, Tuple
 import boto3
 import yaml
 
-CATEGORIES = ["iam", "s3", "cloudtrail", "cloudwatch"]
+CATEGORIES = ["iam", "s3", "network-ec2-vpc", "cloudtrail", "cloudwatch"]
 OPTIONAL_IMPORT_TYPES = {
     "aws_s3_bucket_public_access_block",
     "aws_s3_bucket_server_side_encryption_configuration",
+    "aws_s3_account_public_access_block",
 }
 
 
@@ -34,10 +35,14 @@ def load_map(path: Path) -> Dict[str, Any]:
 def category_of(service: str, check_id: str) -> str:
     s = (service or "").lower()
     c = (check_id or "").lower()
+    if c.startswith("prowler-"):
+        c = c.split("prowler-", 1)[1]
     if s == "iam" or c.startswith("iam_"):
         return "iam"
     if s == "s3" or c.startswith("s3_"):
         return "s3"
+    if s in {"ec2", "vpc"} or c.startswith("ec2_") or c.startswith("vpc_"):
+        return "network-ec2-vpc"
     if s == "cloudtrail" or c.startswith("cloudtrail_"):
         return "cloudtrail"
     if s in {"cloudwatch", "logs"} or c.startswith("cloudwatch_") or c.startswith("logs_"):
@@ -101,7 +106,32 @@ def materialize_vars(tf_code: str, finding: Dict[str, Any], account_id: str, reg
     if log_group:
         out = out.replace("var.log_group_name", f'"{log_group}"')
     out = out.replace("var.kms_key_arn", f'"{kms}"')
+    out = out.replace("var.account_id", f'"{account_id}"')
+    out = out.replace("var.region", f'"{region}"')
+    out = re.sub(r'variable\s+"[^"]+"\s*\{[^{}]*\}\s*', "", out, flags=re.DOTALL)
     return out
+
+
+def extract_sg_id(arn: str) -> str:
+    if ":security-group/" in arn:
+        return arn.split(":security-group/", 1)[1]
+    return ""
+
+
+def lookup_vpc_for_sg(arn: str, region: str) -> str:
+    sg_id = extract_sg_id(arn)
+    if not sg_id:
+        return ""
+    try:
+        ec2 = boto3.client("ec2", region_name=region)
+        resp = ec2.describe_security_groups(GroupIds=[sg_id])
+        for sg in resp.get("SecurityGroups", []):
+            vpc_id = sg.get("VpcId", "")
+            if vpc_id:
+                return vpc_id
+    except Exception:
+        return ""
+    return ""
 
 
 def uniquify_resource_names(tf_code: str, suffix: str) -> Tuple[str, List[Tuple[str, str]]]:
@@ -121,14 +151,22 @@ def uniquify_resource_names(tf_code: str, suffix: str) -> Tuple[str, List[Tuple[
 
 def infer_template_by_rule(check_id: str, category: str) -> Optional[str]:
     c = check_id.lower()
+    if c.startswith("prowler-"):
+        c = c.split("prowler-", 1)[1]
     if category == "iam" and "password" in c and "policy" in c:
         return "iac/snippets/iam/fix-iam_password_policy_strong.tf"
     if category == "s3" and ("public" in c or "acl" in c or "policy" in c):
+        if "account_level_public_access" in c:
+            return "iac/snippets/s3/fix-s3_account_public_access_block.tf"
         return "iac/snippets/s3/fix-s3_bucket_public_access_block.tf"
     if category == "s3" and ("encrypt" in c or "encryption" in c):
         return "iac/snippets/s3/fix-s3_bucket_default_encryption.tf"
     if category == "cloudtrail" and ("log_file_validation" in c or "validation" in c):
         return "iac/snippets/cloudtrail/fix-cloudtrail_log_file_validation_enabled.tf"
+    if category == "cloudtrail" and ("kms_encryption" in c or "kms" in c):
+        return "iac/snippets/cloudtrail/fix-cloudtrail_kms_encryption_enabled.tf"
+    if category == "network-ec2-vpc" and "securitygroup_default_restrict_traffic" in c:
+        return "iac/snippets/network-ec2-vpc/fix-ec2_securitygroup_default_restrict_traffic.tf"
     if category == "cloudwatch" and ("kms" in c or "encrypt" in c or "encryption" in c):
         return "iac/snippets/cloudwatch/fix-cloudwatch_log_group_encrypted.tf"
     return None
@@ -144,6 +182,10 @@ def import_id_for_type(resource_type: str, finding: Dict[str, Any]) -> str:
         return extract_log_group(arn)
     if resource_type == "aws_iam_account_password_policy":
         return finding.get("account_id", "")
+    if resource_type == "aws_s3_account_public_access_block":
+        return finding.get("account_id", "")
+    if resource_type == "aws_default_security_group":
+        return finding.get("_vpc_id", "")
     return ""
 
 
@@ -210,6 +252,7 @@ def main() -> None:
         "baseline_fail_count": len([x for x in rows if x.get("status") == "FAIL"]),
         "categories": {},
         "import_map": {},
+        "skipped": [],
     }
 
     for cat in CATEGORIES:
@@ -224,6 +267,7 @@ def main() -> None:
         cid = f.get("check_id", "unknown")
         cat = category_of(f.get("service", ""), cid)
         if not cat:
+            overall["skipped"].append({"check_id": cid, "reason": "unsupported_category"})
             continue
 
         key = safe_id(
@@ -267,6 +311,12 @@ def main() -> None:
             except Exception:
                 tf_code = ""
 
+        if "securitygroup_default_restrict_traffic" in cid.lower():
+            vpc_id = lookup_vpc_for_sg(f.get("resource_arn", ""), f.get("region", a.region))
+            if vpc_id:
+                f["_vpc_id"] = vpc_id
+                tf_code = tf_code.replace("var.vpc_id", f'"{vpc_id}"')
+
         tf_code = materialize_vars(tf_code, f, a.account_id, a.region)
         tf_code, resource_addrs = uniquify_resource_names(tf_code, key)
 
@@ -279,6 +329,19 @@ def main() -> None:
                     "priority": f.get("osfp", {}).get("priority_bucket", "P3"),
                     "score": f.get("osfp", {}).get("priority_score", 0),
                     "reason": "generation_failed_or_invalid_hcl",
+                }
+            )
+            continue
+
+        if "var." in tf_code:
+            overall["categories"][cat].append(
+                {
+                    "check_id": cid,
+                    "manual_required": True,
+                    "files": [],
+                    "priority": f.get("osfp", {}).get("priority_bucket", "P3"),
+                    "score": f.get("osfp", {}).get("priority_score", 0),
+                    "reason": "unresolved_variables",
                 }
             )
             continue

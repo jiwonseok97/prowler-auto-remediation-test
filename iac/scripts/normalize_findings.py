@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Any, Dict, List
 
 SKIP_SERVICES = {"account", "root", "organizations", "support"}
-SUPPORTED_SERVICES = {"iam", "s3", "cloudtrail", "cloudwatch", "logs"}
+SUPPORTED_SERVICES = {"iam", "s3", "cloudtrail", "cloudwatch", "logs", "ec2", "vpc"}
 NON_TERRAFORM_PREFIX = ("guardduty_", "securityhub_", "inspector_", "iam_root_")
 MANUAL_CHECK_KEYWORDS = ("mfa", "root", "access_key", "organizations")
 
@@ -48,11 +48,16 @@ def parse_service(f: Dict[str, Any], check_id: str) -> str:
         if f"/{token}/" in gid or gid.startswith(f"{token}_") or f"_{token}_" in gid:
             return token
 
-    prefix = check_id.split("_", 1)[0] if "_" in check_id else check_id
+    cid = check_id
+    if cid.startswith("prowler-"):
+        cid = cid.split("prowler-", 1)[1]
+    prefix = cid.split("_", 1)[0] if "_" in cid else cid
     if prefix in SUPPORTED_SERVICES.union(SKIP_SERVICES):
         return prefix
+    if prefix in {"ec2", "vpc"}:
+        return prefix
 
-    arn = first(f.get("ProductArn"))
+    arn = first(f.get("ProductArn"), parse_resource_arn(f))
     parts = arn.split(":")
     if len(parts) > 2 and parts[2] in SUPPORTED_SERVICES.union(SKIP_SERVICES):
         return parts[2]

@@ -4,7 +4,7 @@ set -euo pipefail
 ROOT="${1:-remediation}"
 mkdir -p artifacts/validation
 
-for c in iam s3 cloudtrail cloudwatch; do
+for c in iam s3 network-ec2-vpc cloudtrail cloudwatch; do
   d="$ROOT/$c"
   [ -d "$d" ] || continue
 

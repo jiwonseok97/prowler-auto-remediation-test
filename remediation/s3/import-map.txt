@@ -1,0 +1,2 @@
+aws_s3_bucket_policy.fix_s3_secure_transport_1b8b187fae|aws-config-logs-132410971304-ap-northeast-2|true|prowler-s3_bucket_secure_transport_policy
+aws_s3_bucket_policy.fix_s3_secure_transport_e6194aac3b|vuln-cloudtrail-ap-northeast-2-f9fd7730|true|prowler-s3_bucket_secure_transport_policy

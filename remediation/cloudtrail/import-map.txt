@@ -1,1 +1,1 @@
-aws_cloudtrail.fix_cloudtrail_21ff33774c|security-cloudtail|false|prowler-cloudtrail_s3_dataevents_read_enabled
+

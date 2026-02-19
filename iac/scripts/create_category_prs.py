@@ -40,14 +40,7 @@ def main() -> None:
         if not path.exists():
             continue
 
-        branch = f"remediation/{category}-{account}-{a.run_id}"
-
-        stale_prefix = f"remediation/{category}-{account}-"
-        rows = run(["gh", "pr", "list", "--state", "open", "--json", "number,headRefName"], check=False)
-        if rows:
-            for pr in json.loads(rows):
-                if pr["headRefName"].startswith(stale_prefix):
-                    run(["gh", "pr", "close", str(pr["number"]), "--delete-branch"], check=False)
+        branch = f"remediation/{category}"
 
         run(["git", "checkout", "main"], check=False)
         run(["git", "checkout", "-B", branch, "main"])
@@ -91,7 +84,7 @@ def main() -> None:
                 "--head",
                 branch,
                 "--title",
-                f"[AutoRemediation] {category} {account} {a.run_id}",
+                f"[AutoRemediation] {category} {account}",
                 "--body",
                 body,
             ],

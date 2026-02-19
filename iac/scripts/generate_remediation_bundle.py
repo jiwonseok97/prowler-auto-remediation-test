@@ -431,6 +431,8 @@ def build_cloudtrail_tf(finding: Dict[str, Any], region: str) -> str:
     if "log_file_validation_enabled" in cid_l:
         lines.append("  enable_log_file_validation    = true")
     elif "s3_dataevents_" in cid_l:
+        if not cloudtrail_bucket_policy_ready(s3_bucket):
+            return ""
         lines.append("  enable_log_file_validation    = true")
         lines.extend(
             [
@@ -480,6 +482,40 @@ def build_cloudtrail_tf(finding: Dict[str, Any], region: str) -> str:
         ]
     )
     return "\n".join(lines)
+
+
+def cloudtrail_bucket_policy_ready(bucket: str) -> bool:
+    if not bucket:
+        return False
+    try:
+        s3 = boto3.client("s3")
+        resp = s3.get_bucket_policy(Bucket=bucket)
+        raw = resp.get("Policy", "")
+        if not raw:
+            return False
+        doc = json.loads(raw)
+        stmts = doc.get("Statement", [])
+        if not isinstance(stmts, list):
+            stmts = [stmts]
+        has_acl = False
+        has_put = False
+        for s in stmts:
+            if not isinstance(s, dict):
+                continue
+            principal = s.get("Principal", {})
+            service = ""
+            if isinstance(principal, dict):
+                service = str(principal.get("Service", "")).lower()
+            action = s.get("Action", [])
+            actions = [action] if isinstance(action, str) else (action if isinstance(action, list) else [])
+            actions_l = [str(a).lower() for a in actions]
+            if "cloudtrail.amazonaws.com" in service and "s3:getbucketacl" in actions_l:
+                has_acl = True
+            if "cloudtrail.amazonaws.com" in service and "s3:putobject" in actions_l:
+                has_put = True
+        return has_acl and has_put
+    except Exception:
+        return False
 
 
 CLOUDWATCH_PATTERNS: Dict[str, str] = {

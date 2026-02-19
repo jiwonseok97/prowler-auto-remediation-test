@@ -7,7 +7,19 @@ from pathlib import Path
 from typing import Any, Dict, List
 
 SKIP_SERVICES = {"account", "root", "organizations", "support"}
-SUPPORTED_SERVICES = {"iam", "s3", "cloudtrail", "cloudwatch", "logs", "ec2", "vpc"}
+SUPPORTED_SERVICES = {
+    "iam",
+    "s3",
+    "cloudtrail",
+    "cloudwatch",
+    "logs",
+    "ec2",
+    "vpc",
+    "config",
+    "kms",
+    "accessanalyzer",
+}
+REGIONAL_SERVICES = {"ec2", "vpc", "cloudtrail", "cloudwatch", "logs", "config", "kms", "accessanalyzer"}
 NON_TERRAFORM_PREFIX = ("guardduty_", "securityhub_", "inspector_", "iam_root_")
 MANUAL_CHECK_KEYWORDS = ("mfa", "root", "access_key", "organizations")
 
@@ -77,6 +89,15 @@ def parse_resource_arn(f: Dict[str, Any]) -> str:
     return ""
 
 
+def parse_region_from_arn(arn: str) -> str:
+    if not arn.startswith("arn:"):
+        return ""
+    parts = arn.split(":")
+    if len(parts) < 4:
+        return ""
+    return str(parts[3]).strip()
+
+
 def is_fail(f: Dict[str, Any]) -> bool:
     status = first(f.get("Result"), f.get("Compliance", {}).get("Status"), f.get("RecordState"), f.get("result")).upper()
     return status in {"FAIL", "FAILED", "ACTIVE", "NON_COMPLIANT"}
@@ -98,8 +119,13 @@ def normalize(rows: List[Dict[str, Any]], default_account: str, default_region: 
 
         resource_arn = parse_resource_arn(r)
         account_id = first(r.get("AccountId"), r.get("AwsAccountId"), default_account)
-        region = first(r.get("Region"), default_region)
+        region = first(r.get("Region"), parse_region_from_arn(resource_arn), default_region)
         severity = first(r.get("Severity", {}).get("Label"), r.get("Severity"), "MEDIUM").upper()
+
+        # Pipeline is single-region apply. Skip out-of-target regional findings to keep
+        # baseline aligned with what Terraform can actually remediate in this run.
+        if default_region and service in REGIONAL_SERVICES and region and region != default_region:
+            continue
 
         non_tf = check_id.startswith(NON_TERRAFORM_PREFIX)
         manual = non_tf or any(k in check_id for k in MANUAL_CHECK_KEYWORDS)

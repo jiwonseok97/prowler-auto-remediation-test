@@ -2,8 +2,638 @@
   "category": "network-ec2-vpc",
   "account": "132410971304",
   "region": "ap-northeast-2",
-  "created_at": "2026-02-19T16:12:23.728414+00:00",
+  "created_at": "2026-02-19T17:49:06.234168+00:00",
   "items": [
+    {
+      "check_id": "prowler-ec2_networkacl_allow_ingress_any_port",
+      "manual_required": false,
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0e8faca2c3368de06_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 58.5,
+      "resources": [
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_4f00e16e3d",
+          "arn": "acl-0e8faca2c3368de06:false:51:-1:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_7a55ca522b",
+          "arn": "acl-0572e1ab82993bb20:false:51:-1:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_ad31ee5796",
+          "arn": "acl-0aefc1d1492a25a53:false:51:-1:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_0b5d90591c",
+          "arn": "acl-0cc9eb5e31cc1d70f:false:51:-1:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_eb9320ba53",
+          "arn": "acl-0d23e762ebdfb131c:false:51:-1:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        }
+      ],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0e8faca2c3368de06_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_networkacl_allow_ingress_any_port",
+      "manual_required": false,
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0572e1ab82993bb20_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 58.5,
+      "resources": [
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_4f00e16e3d",
+          "arn": "acl-0e8faca2c3368de06:false:51:-1:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_7a55ca522b",
+          "arn": "acl-0572e1ab82993bb20:false:51:-1:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_ad31ee5796",
+          "arn": "acl-0aefc1d1492a25a53:false:51:-1:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_0b5d90591c",
+          "arn": "acl-0cc9eb5e31cc1d70f:false:51:-1:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_eb9320ba53",
+          "arn": "acl-0d23e762ebdfb131c:false:51:-1:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        }
+      ],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0572e1ab82993bb20_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_networkacl_allow_ingress_any_port",
+      "manual_required": false,
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0aefc1d1492a25a53_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 58.5,
+      "resources": [
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_4f00e16e3d",
+          "arn": "acl-0e8faca2c3368de06:false:51:-1:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_7a55ca522b",
+          "arn": "acl-0572e1ab82993bb20:false:51:-1:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_ad31ee5796",
+          "arn": "acl-0aefc1d1492a25a53:false:51:-1:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_0b5d90591c",
+          "arn": "acl-0cc9eb5e31cc1d70f:false:51:-1:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_eb9320ba53",
+          "arn": "acl-0d23e762ebdfb131c:false:51:-1:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        }
+      ],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0aefc1d1492a25a53_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_networkacl_allow_ingress_any_port",
+      "manual_required": false,
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0cc9eb5e31cc1d70f_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 58.5,
+      "resources": [
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_4f00e16e3d",
+          "arn": "acl-0e8faca2c3368de06:false:51:-1:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_7a55ca522b",
+          "arn": "acl-0572e1ab82993bb20:false:51:-1:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_ad31ee5796",
+          "arn": "acl-0aefc1d1492a25a53:false:51:-1:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_0b5d90591c",
+          "arn": "acl-0cc9eb5e31cc1d70f:false:51:-1:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_eb9320ba53",
+          "arn": "acl-0d23e762ebdfb131c:false:51:-1:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        }
+      ],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0cc9eb5e31cc1d70f_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_networkacl_allow_ingress_any_port",
+      "manual_required": false,
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0d23e762ebdfb131c_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 58.5,
+      "resources": [
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_4f00e16e3d",
+          "arn": "acl-0e8faca2c3368de06:false:51:-1:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_7a55ca522b",
+          "arn": "acl-0572e1ab82993bb20:false:51:-1:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_ad31ee5796",
+          "arn": "acl-0aefc1d1492a25a53:false:51:-1:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_0b5d90591c",
+          "arn": "acl-0cc9eb5e31cc1d70f:false:51:-1:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_eb9320ba53",
+          "arn": "acl-0d23e762ebdfb131c:false:51:-1:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        }
+      ],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0d23e762ebdfb131c_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_networkacl_allow_ingress_tcp_port_22",
+      "manual_required": false,
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0e8faca2c3368de06_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 58.5,
+      "resources": [
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_99b74d2457",
+          "arn": "acl-0e8faca2c3368de06:false:52:6:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_ec1218ba4f",
+          "arn": "acl-0572e1ab82993bb20:false:52:6:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_3f5a395d75",
+          "arn": "acl-0aefc1d1492a25a53:false:52:6:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_60a3e04b67",
+          "arn": "acl-0cc9eb5e31cc1d70f:false:52:6:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_28b9416268",
+          "arn": "acl-0d23e762ebdfb131c:false:52:6:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        }
+      ],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0e8faca2c3368de06_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_networkacl_allow_ingress_tcp_port_22",
+      "manual_required": false,
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0572e1ab82993bb20_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 58.5,
+      "resources": [
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_99b74d2457",
+          "arn": "acl-0e8faca2c3368de06:false:52:6:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_ec1218ba4f",
+          "arn": "acl-0572e1ab82993bb20:false:52:6:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_3f5a395d75",
+          "arn": "acl-0aefc1d1492a25a53:false:52:6:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_60a3e04b67",
+          "arn": "acl-0cc9eb5e31cc1d70f:false:52:6:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_28b9416268",
+          "arn": "acl-0d23e762ebdfb131c:false:52:6:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        }
+      ],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0572e1ab82993bb20_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_networkacl_allow_ingress_tcp_port_22",
+      "manual_required": false,
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0aefc1d1492a25a53_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 58.5,
+      "resources": [
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_99b74d2457",
+          "arn": "acl-0e8faca2c3368de06:false:52:6:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_ec1218ba4f",
+          "arn": "acl-0572e1ab82993bb20:false:52:6:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_3f5a395d75",
+          "arn": "acl-0aefc1d1492a25a53:false:52:6:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_60a3e04b67",
+          "arn": "acl-0cc9eb5e31cc1d70f:false:52:6:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_28b9416268",
+          "arn": "acl-0d23e762ebdfb131c:false:52:6:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        }
+      ],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0aefc1d1492a25a53_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_networkacl_allow_ingress_tcp_port_22",
+      "manual_required": false,
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0cc9eb5e31cc1d70f_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 58.5,
+      "resources": [
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_99b74d2457",
+          "arn": "acl-0e8faca2c3368de06:false:52:6:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_ec1218ba4f",
+          "arn": "acl-0572e1ab82993bb20:false:52:6:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_3f5a395d75",
+          "arn": "acl-0aefc1d1492a25a53:false:52:6:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_60a3e04b67",
+          "arn": "acl-0cc9eb5e31cc1d70f:false:52:6:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_28b9416268",
+          "arn": "acl-0d23e762ebdfb131c:false:52:6:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        }
+      ],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0cc9eb5e31cc1d70f_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_networkacl_allow_ingress_tcp_port_22",
+      "manual_required": false,
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0d23e762ebdfb131c_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 58.5,
+      "resources": [
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_99b74d2457",
+          "arn": "acl-0e8faca2c3368de06:false:52:6:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_ec1218ba4f",
+          "arn": "acl-0572e1ab82993bb20:false:52:6:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_3f5a395d75",
+          "arn": "acl-0aefc1d1492a25a53:false:52:6:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_60a3e04b67",
+          "arn": "acl-0cc9eb5e31cc1d70f:false:52:6:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_28b9416268",
+          "arn": "acl-0d23e762ebdfb131c:false:52:6:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        }
+      ],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0d23e762ebdfb131c_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_networkacl_allow_ingress_tcp_port_3389",
+      "manual_required": false,
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0e8faca2c3368de06_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 58.5,
+      "resources": [
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_dd1aadce6c",
+          "arn": "acl-0e8faca2c3368de06:false:53:6:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_74ec64570a",
+          "arn": "acl-0572e1ab82993bb20:false:53:6:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_b4f3aa56d7",
+          "arn": "acl-0aefc1d1492a25a53:false:53:6:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_922233a335",
+          "arn": "acl-0cc9eb5e31cc1d70f:false:53:6:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_eddc151489",
+          "arn": "acl-0d23e762ebdfb131c:false:53:6:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        }
+      ],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0e8faca2c3368de06_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_networkacl_allow_ingress_tcp_port_3389",
+      "manual_required": false,
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0572e1ab82993bb20_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 58.5,
+      "resources": [
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_dd1aadce6c",
+          "arn": "acl-0e8faca2c3368de06:false:53:6:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_74ec64570a",
+          "arn": "acl-0572e1ab82993bb20:false:53:6:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_b4f3aa56d7",
+          "arn": "acl-0aefc1d1492a25a53:false:53:6:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_922233a335",
+          "arn": "acl-0cc9eb5e31cc1d70f:false:53:6:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_eddc151489",
+          "arn": "acl-0d23e762ebdfb131c:false:53:6:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        }
+      ],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0572e1ab82993bb20_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_networkacl_allow_ingress_tcp_port_3389",
+      "manual_required": false,
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0aefc1d1492a25a53_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 58.5,
+      "resources": [
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_dd1aadce6c",
+          "arn": "acl-0e8faca2c3368de06:false:53:6:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_74ec64570a",
+          "arn": "acl-0572e1ab82993bb20:false:53:6:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_b4f3aa56d7",
+          "arn": "acl-0aefc1d1492a25a53:false:53:6:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_922233a335",
+          "arn": "acl-0cc9eb5e31cc1d70f:false:53:6:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_eddc151489",
+          "arn": "acl-0d23e762ebdfb131c:false:53:6:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        }
+      ],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0aefc1d1492a25a53_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_networkacl_allow_ingress_tcp_port_3389",
+      "manual_required": false,
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0cc9eb5e31cc1d70f_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 58.5,
+      "resources": [
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_dd1aadce6c",
+          "arn": "acl-0e8faca2c3368de06:false:53:6:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_74ec64570a",
+          "arn": "acl-0572e1ab82993bb20:false:53:6:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_b4f3aa56d7",
+          "arn": "acl-0aefc1d1492a25a53:false:53:6:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_922233a335",
+          "arn": "acl-0cc9eb5e31cc1d70f:false:53:6:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_eddc151489",
+          "arn": "acl-0d23e762ebdfb131c:false:53:6:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        }
+      ],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0cc9eb5e31cc1d70f_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_networkacl_allow_ingress_tcp_port_3389",
+      "manual_required": false,
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0d23e762ebdfb131c_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 58.5,
+      "resources": [
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_dd1aadce6c",
+          "arn": "acl-0e8faca2c3368de06:false:53:6:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_74ec64570a",
+          "arn": "acl-0572e1ab82993bb20:false:53:6:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_b4f3aa56d7",
+          "arn": "acl-0aefc1d1492a25a53:false:53:6:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_922233a335",
+          "arn": "acl-0cc9eb5e31cc1d70f:false:53:6:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_eddc151489",
+          "arn": "acl-0d23e762ebdfb131c:false:53:6:0.0.0.0/0",
+          "resource_type": "aws_network_acl_rule",
+          "optional": true
+        }
+      ],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0d23e762ebdfb131c_ap_northeast_2.tf"
+    },
     {
       "check_id": "prowler-vpc_flow_logs_enabled",
       "manual_required": false,
@@ -103,142 +733,113 @@
       "score": 58.5,
       "reason": "unsupported_no_template",
       "resources": []
-    },
-    {
-      "check_id": "prowler-ec2_networkacl_allow_ingress_any_port",
-      "manual_required": true,
-      "files": [],
-      "priority": "P2",
-      "score": 58.5,
-      "reason": "unsupported_no_template",
-      "resources": []
-    },
-    {
-      "check_id": "prowler-ec2_networkacl_allow_ingress_any_port",
-      "manual_required": true,
-      "files": [],
-      "priority": "P2",
-      "score": 58.5,
-      "reason": "unsupported_no_template",
-      "resources": []
-    },
-    {
-      "check_id": "prowler-ec2_networkacl_allow_ingress_any_port",
-      "manual_required": true,
-      "files": [],
-      "priority": "P2",
-      "score": 58.5,
-      "reason": "unsupported_no_template",
-      "resources": []
-    },
-    {
-      "check_id": "prowler-ec2_networkacl_allow_ingress_any_port",
-      "manual_required": true,
-      "files": [],
-      "priority": "P2",
-      "score": 58.5,
-      "reason": "unsupported_no_template",
-      "resources": []
-    },
-    {
-      "check_id": "prowler-ec2_networkacl_allow_ingress_any_port",
-      "manual_required": true,
-      "files": [],
-      "priority": "P2",
-      "score": 58.5,
-      "reason": "unsupported_no_template",
-      "resources": []
-    },
-    {
-      "check_id": "prowler-ec2_networkacl_allow_ingress_tcp_port_22",
-      "manual_required": true,
-      "files": [],
-      "priority": "P2",
-      "score": 58.5,
-      "reason": "unsupported_no_template",
-      "resources": []
-    },
-    {
-      "check_id": "prowler-ec2_networkacl_allow_ingress_tcp_port_22",
-      "manual_required": true,
-      "files": [],
-      "priority": "P2",
-      "score": 58.5,
-      "reason": "unsupported_no_template",
-      "resources": []
-    },
-    {
-      "check_id": "prowler-ec2_networkacl_allow_ingress_tcp_port_22",
-      "manual_required": true,
-      "files": [],
-      "priority": "P2",
-      "score": 58.5,
-      "reason": "unsupported_no_template",
-      "resources": []
-    },
-    {
-      "check_id": "prowler-ec2_networkacl_allow_ingress_tcp_port_22",
-      "manual_required": true,
-      "files": [],
-      "priority": "P2",
-      "score": 58.5,
-      "reason": "unsupported_no_template",
-      "resources": []
-    },
-    {
-      "check_id": "prowler-ec2_networkacl_allow_ingress_tcp_port_22",
-      "manual_required": true,
-      "files": [],
-      "priority": "P2",
-      "score": 58.5,
-      "reason": "unsupported_no_template",
-      "resources": []
-    },
-    {
-      "check_id": "prowler-ec2_networkacl_allow_ingress_tcp_port_3389",
-      "manual_required": true,
-      "files": [],
-      "priority": "P2",
-      "score": 58.5,
-      "reason": "unsupported_no_template",
-      "resources": []
-    },
-    {
-      "check_id": "prowler-ec2_networkacl_allow_ingress_tcp_port_3389",
-      "manual_required": true,
-      "files": [],
-      "priority": "P2",
-      "score": 58.5,
-      "reason": "unsupported_no_template",
-      "resources": []
-    },
-    {
-      "check_id": "prowler-ec2_networkacl_allow_ingress_tcp_port_3389",
-      "manual_required": true,
-      "files": [],
-      "priority": "P2",
-      "score": 58.5,
-      "reason": "unsupported_no_template",
-      "resources": []
-    },
-    {
-      "check_id": "prowler-ec2_networkacl_allow_ingress_tcp_port_3389",
-      "manual_required": true,
-      "files": [],
-      "priority": "P2",
-      "score": 58.5,
-      "reason": "unsupported_no_template",
-      "resources": []
-    },
-    {
-      "check_id": "prowler-ec2_networkacl_allow_ingress_tcp_port_3389",
-      "manual_required": true,
-      "files": [],
-      "priority": "P2",
-      "score": 58.5,
-      "reason": "unsupported_no_template",
-      "resources": []
     }
   ],
-  "import_map": []
+  "import_map": [
+    {
+      "check_id": "prowler-ec2_networkacl_allow_ingress_any_port",
+      "address": "aws_network_acl_rule.fix_network_acl_ingress_deny_4f00e16e3d",
+      "import_id": "acl-0e8faca2c3368de06:false:51:-1:0.0.0.0/0",
+      "resource_type": "aws_network_acl_rule",
+      "optional": true
+    },
+    {
+      "check_id": "prowler-ec2_networkacl_allow_ingress_any_port",
+      "address": "aws_network_acl_rule.fix_network_acl_ingress_deny_7a55ca522b",
+      "import_id": "acl-0572e1ab82993bb20:false:51:-1:0.0.0.0/0",
+      "resource_type": "aws_network_acl_rule",
+      "optional": true
+    },
+    {
+      "check_id": "prowler-ec2_networkacl_allow_ingress_any_port",
+      "address": "aws_network_acl_rule.fix_network_acl_ingress_deny_ad31ee5796",
+      "import_id": "acl-0aefc1d1492a25a53:false:51:-1:0.0.0.0/0",
+      "resource_type": "aws_network_acl_rule",
+      "optional": true
+    },
+    {
+      "check_id": "prowler-ec2_networkacl_allow_ingress_any_port",
+      "address": "aws_network_acl_rule.fix_network_acl_ingress_deny_0b5d90591c",
+      "import_id": "acl-0cc9eb5e31cc1d70f:false:51:-1:0.0.0.0/0",
+      "resource_type": "aws_network_acl_rule",
+      "optional": true
+    },
+    {
+      "check_id": "prowler-ec2_networkacl_allow_ingress_any_port",
+      "address": "aws_network_acl_rule.fix_network_acl_ingress_deny_eb9320ba53",
+      "import_id": "acl-0d23e762ebdfb131c:false:51:-1:0.0.0.0/0",
+      "resource_type": "aws_network_acl_rule",
+      "optional": true
+    },
+    {
+      "check_id": "prowler-ec2_networkacl_allow_ingress_tcp_port_22",
+      "address": "aws_network_acl_rule.fix_network_acl_ingress_deny_99b74d2457",
+      "import_id": "acl-0e8faca2c3368de06:false:52:6:0.0.0.0/0",
+      "resource_type": "aws_network_acl_rule",
+      "optional": true
+    },
+    {
+      "check_id": "prowler-ec2_networkacl_allow_ingress_tcp_port_22",
+      "address": "aws_network_acl_rule.fix_network_acl_ingress_deny_ec1218ba4f",
+      "import_id": "acl-0572e1ab82993bb20:false:52:6:0.0.0.0/0",
+      "resource_type": "aws_network_acl_rule",
+      "optional": true
+    },
+    {
+      "check_id": "prowler-ec2_networkacl_allow_ingress_tcp_port_22",
+      "address": "aws_network_acl_rule.fix_network_acl_ingress_deny_3f5a395d75",
+      "import_id": "acl-0aefc1d1492a25a53:false:52:6:0.0.0.0/0",
+      "resource_type": "aws_network_acl_rule",
+      "optional": true
+    },
+    {
+      "check_id": "prowler-ec2_networkacl_allow_ingress_tcp_port_22",
+      "address": "aws_network_acl_rule.fix_network_acl_ingress_deny_60a3e04b67",
+      "import_id": "acl-0cc9eb5e31cc1d70f:false:52:6:0.0.0.0/0",
+      "resource_type": "aws_network_acl_rule",
+      "optional": true
+    },
+    {
+      "check_id": "prowler-ec2_networkacl_allow_ingress_tcp_port_22",
+      "address": "aws_network_acl_rule.fix_network_acl_ingress_deny_28b9416268",
+      "import_id": "acl-0d23e762ebdfb131c:false:52:6:0.0.0.0/0",
+      "resource_type": "aws_network_acl_rule",
+      "optional": true
+    },
+    {
+      "check_id": "prowler-ec2_networkacl_allow_ingress_tcp_port_3389",
+      "address": "aws_network_acl_rule.fix_network_acl_ingress_deny_dd1aadce6c",
+      "import_id": "acl-0e8faca2c3368de06:false:53:6:0.0.0.0/0",
+      "resource_type": "aws_network_acl_rule",
+      "optional": true
+    },
+    {
+      "check_id": "prowler-ec2_networkacl_allow_ingress_tcp_port_3389",
+      "address": "aws_network_acl_rule.fix_network_acl_ingress_deny_74ec64570a",
+      "import_id": "acl-0572e1ab82993bb20:false:53:6:0.0.0.0/0",
+      "resource_type": "aws_network_acl_rule",
+      "optional": true
+    },
+    {
+      "check_id": "prowler-ec2_networkacl_allow_ingress_tcp_port_3389",
+      "address": "aws_network_acl_rule.fix_network_acl_ingress_deny_b4f3aa56d7",
+      "import_id": "acl-0aefc1d1492a25a53:false:53:6:0.0.0.0/0",
+      "resource_type": "aws_network_acl_rule",
+      "optional": true
+    },
+    {
+      "check_id": "prowler-ec2_networkacl_allow_ingress_tcp_port_3389",
+      "address": "aws_network_acl_rule.fix_network_acl_ingress_deny_922233a335",
+      "import_id": "acl-0cc9eb5e31cc1d70f:false:53:6:0.0.0.0/0",
+      "resource_type": "aws_network_acl_rule",
+      "optional": true
+    },
+    {
+      "check_id": "prowler-ec2_networkacl_allow_ingress_tcp_port_3389",
+      "address": "aws_network_acl_rule.fix_network_acl_ingress_deny_eddc151489",
+      "import_id": "acl-0d23e762ebdfb131c:false:53:6:0.0.0.0/0",
+      "resource_type": "aws_network_acl_rule",
+      "optional": true
+    }
+  ]
 }

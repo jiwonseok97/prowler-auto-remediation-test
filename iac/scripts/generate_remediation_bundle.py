@@ -743,9 +743,9 @@ def build_config_recorder_tf(finding: Dict[str, Any], region: str, account_id: s
     if not isinstance(stmts, list):
         stmts = [stmts] if stmts else []
 
-    has_acl = False
-    has_put = False
-    has_list = False
+    has_acl_unconditional = False
+    has_put_unconditional = False
+    has_list_unconditional = False
     for s in stmts:
         if not isinstance(s, dict):
             continue
@@ -754,56 +754,43 @@ def build_config_recorder_tf(finding: Dict[str, Any], region: str, account_id: s
         action = s.get("Action", [])
         actions = [action] if isinstance(action, str) else (action if isinstance(action, list) else [])
         actions_l = [str(a).lower() for a in actions]
-        if str(service).lower() == "config.amazonaws.com" and "s3:getbucketacl" in actions_l:
-            has_acl = True
-        if str(service).lower() == "config.amazonaws.com" and "s3:putobject" in actions_l:
-            has_put = True
-        if str(service).lower() == "config.amazonaws.com" and "s3:listbucket" in actions_l:
-            has_list = True
+        cond = s.get("Condition")
+        unconditional = not bool(cond)
+        if str(service).lower() == "config.amazonaws.com" and "s3:getbucketacl" in actions_l and unconditional:
+            has_acl_unconditional = True
+        if str(service).lower() == "config.amazonaws.com" and "s3:putobject" in actions_l and unconditional:
+            has_put_unconditional = True
+        if str(service).lower() == "config.amazonaws.com" and "s3:listbucket" in actions_l and unconditional:
+            has_list_unconditional = True
 
-    if not has_acl:
+    if not has_acl_unconditional:
         stmts.append(
             {
-                "Sid": "AWSConfigBucketAclCheck",
+                "Sid": "AWSConfigBucketAclCheckAllow",
                 "Effect": "Allow",
                 "Principal": {"Service": "config.amazonaws.com"},
                 "Action": "s3:GetBucketAcl",
                 "Resource": f"arn:aws:s3:::{bucket_name}",
-                "Condition": {
-                    "StringEquals": {"aws:SourceAccount": account_id},
-                    "ArnLike": {"aws:SourceArn": f"arn:aws:config:{region}:{account_id}:*"},
-                },
             }
         )
-    if not has_list:
+    if not has_list_unconditional:
         stmts.append(
             {
-                "Sid": "AWSConfigBucketListCheck",
+                "Sid": "AWSConfigBucketListCheckAllow",
                 "Effect": "Allow",
                 "Principal": {"Service": "config.amazonaws.com"},
                 "Action": "s3:ListBucket",
                 "Resource": f"arn:aws:s3:::{bucket_name}",
-                "Condition": {
-                    "StringEquals": {"aws:SourceAccount": account_id},
-                    "ArnLike": {"aws:SourceArn": f"arn:aws:config:{region}:{account_id}:*"},
-                },
             }
         )
-    if not has_put:
+    if not has_put_unconditional:
         stmts.append(
             {
-                "Sid": "AWSConfigBucketDelivery",
+                "Sid": "AWSConfigBucketDeliveryAllow",
                 "Effect": "Allow",
                 "Principal": {"Service": "config.amazonaws.com"},
                 "Action": "s3:PutObject",
                 "Resource": f"arn:aws:s3:::{bucket_name}/AWSLogs/{account_id}/Config/*",
-                "Condition": {
-                    "StringEquals": {
-                        "s3:x-amz-acl": "bucket-owner-full-control",
-                        "aws:SourceAccount": account_id,
-                    },
-                    "ArnLike": {"aws:SourceArn": f"arn:aws:config:{region}:{account_id}:*"},
-                },
             }
         )
     policy_doc["Statement"] = stmts

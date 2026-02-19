@@ -78,6 +78,7 @@ jobs:
             SCOPE="artifacts/apply_scope"
             rm -rf "$SCOPE"
             mkdir -p "$SCOPE"
+            CHANGED_CATS=""
 
             while IFS= read -r f; do
               [ -z "$f" ] && continue
@@ -85,6 +86,10 @@ jobs:
               if ! echo " $VALID " | grep -q " $cat "; then
                 continue
               fi
+              case ",$CHANGED_CATS," in
+                *",$cat,"*) ;;
+                *) CHANGED_CATS="${CHANGED_CATS:+$CHANGED_CATS,}$cat" ;;
+              esac
               if [ ! -f "$f" ]; then
                 echo "skip missing file in diff: $f"
                 continue
@@ -93,14 +98,25 @@ jobs:
               cp "$f" "$SCOPE/$cat/$(basename "$f")"
             done <<< "$CHANGED_FILES"
 
-            for cat in $VALID; do
+            IFS=',' read -r -a cats_arr <<< "$CHANGED_CATS"
+            for cat in "${cats_arr[@]}"; do
+              [ -z "$cat" ] && continue
+              mkdir -p "$SCOPE/$cat"
+
+              # If only manifest changed, include current tf set so apply can run on that category.
+              if ! find "$SCOPE/$cat" -maxdepth 1 -name '*.tf' | grep -q .; then
+                if [ -d "remediation/$cat" ]; then
+                  cp remediation/"$cat"/*.tf "$SCOPE/$cat/" 2>/dev/null || true
+                fi
+              fi
+
               if [ -f "remediation/$cat/import-map.txt" ]; then
                 mkdir -p "$SCOPE/$cat"
                 cp "remediation/$cat/import-map.txt" "$SCOPE/$cat/import-map.txt"
               fi
             done
 
-            CATS="$(find "$SCOPE" -mindepth 1 -maxdepth 1 -type d -printf '%f\n' | sort -u | paste -sd, -)"
+            CATS="$CHANGED_CATS"
             APPLY_ROOT="$SCOPE"
           fi
 

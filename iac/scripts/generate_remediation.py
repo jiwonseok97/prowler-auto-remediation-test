@@ -7,7 +7,7 @@ import sys
 from pathlib import Path
 from typing import Any, Dict, List
 
-SUPPORTED_SERVICES = {"iam", "s3", "cloudtrail", "cloudwatch", "logs", "ec2", "vpc"}
+SUPPORTED_SERVICES = {"iam", "s3", "cloudtrail", "cloudwatch", "logs", "ec2", "vpc", "config", "kms", "accessanalyzer"}
 GLOBAL_CHECK_HINTS = (
     "iam_password_policy",
     "account_level_public_access",
@@ -19,8 +19,10 @@ CREATE_MISSING_HINTS = (
     "cloudwatch_log_metric_filter",
     "cloudwatch_changes_to_",
     "cloudtrail_s3_dataevents_",
+    "accessanalyzer_enabled",
+    "config_recorder_all_regions_enabled",
 )
-REGIONAL_SERVICES = {"ec2", "vpc", "cloudtrail", "cloudwatch", "logs"}
+REGIONAL_SERVICES = {"ec2", "vpc", "cloudtrail", "cloudwatch", "logs", "config", "kms", "accessanalyzer"}
 
 
 def is_supported_service(finding: Dict[str, Any]) -> bool:

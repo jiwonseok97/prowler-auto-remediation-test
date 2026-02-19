@@ -43,6 +43,12 @@ def category_of(service: str, check_id: str) -> str:
     # Prefer check-id prefix over service field because some findings have broad/mismatched service labels.
     if c.startswith("iam_"):
         return "iam"
+    if c.startswith("accessanalyzer_"):
+        return "iam"
+    if c.startswith("config_"):
+        return "iam"
+    if c.startswith("kms_"):
+        return "iam"
     if c.startswith("s3_"):
         return "s3"
     if c.startswith("ec2_") or c.startswith("vpc_"):
@@ -108,6 +114,12 @@ def extract_log_group(arn: str) -> str:
 def extract_vpc_id(arn: str) -> str:
     if ":vpc/" in arn:
         return arn.split(":vpc/", 1)[1]
+    return ""
+
+
+def extract_kms_key_id(arn: str) -> str:
+    if ":key/" in arn:
+        return arn.split(":key/", 1)[1]
     return ""
 
 
@@ -268,6 +280,14 @@ def import_id_for_type(resource_type: str, finding: Dict[str, Any]) -> str:
         return finding.get("account_id", "")
     if resource_type == "aws_default_security_group":
         return finding.get("_vpc_id", "")
+    if resource_type == "aws_kms_key":
+        return extract_kms_key_id(arn) or arn
+    if resource_type == "aws_accessanalyzer_analyzer":
+        return finding.get("_analyzer_name", "")
+    if resource_type in {"aws_config_configuration_recorder", "aws_config_configuration_recorder_status"}:
+        return finding.get("_config_recorder_name", "")
+    if resource_type == "aws_config_delivery_channel":
+        return finding.get("_config_delivery_channel_name", "")
     return ""
 
 
@@ -401,6 +421,93 @@ def build_vpc_flow_logs_tf(finding: Dict[str, Any], account_id: str) -> str:
         '  traffic_type         = "ALL"\n'
         '  log_destination_type = "s3"\n'
         f'  log_destination      = "arn:aws:s3:::{bucket}"\n'
+        "}\n"
+    )
+
+
+def build_access_analyzer_tf(finding: Dict[str, Any], region: str, account_id: str) -> str:
+    name = ""
+    try:
+        aa = boto3.client("accessanalyzer", region_name=region)
+        resp = aa.list_analyzers(type="ACCOUNT")
+        analyzers = resp.get("analyzers", []) or []
+        if analyzers:
+            name = str(analyzers[0].get("name", ""))
+    except Exception:
+        name = ""
+    if not name:
+        name = f"account-analyzer-{account_id}-{region}".lower()
+    finding["_analyzer_name"] = name
+    return (
+        'resource "aws_accessanalyzer_analyzer" "fix_accessanalyzer" {\n'
+        f'  analyzer_name = "{name}"\n'
+        '  type          = "ACCOUNT"\n'
+        "}\n"
+    )
+
+
+def build_config_recorder_tf(finding: Dict[str, Any], region: str, account_id: str) -> str:
+    recorder_name = ""
+    role_arn = ""
+    channel_name = ""
+    bucket_name = ""
+    try:
+        cfg = boto3.client("config", region_name=region)
+        rec = cfg.describe_configuration_recorders().get("ConfigurationRecorders", []) or []
+        if rec:
+            recorder_name = str(rec[0].get("name", ""))
+            role_arn = str(rec[0].get("roleARN", ""))
+        ch = cfg.describe_delivery_channels().get("DeliveryChannels", []) or []
+        if ch:
+            channel_name = str(ch[0].get("name", ""))
+            bucket_name = str(ch[0].get("s3BucketName", ""))
+    except Exception:
+        pass
+
+    if not recorder_name:
+        recorder_name = "default"
+    if not role_arn:
+        role_arn = f"arn:aws:iam::{account_id}:role/aws-service-role/config.amazonaws.com/AWSServiceRoleForConfig"
+    if not channel_name:
+        channel_name = "default"
+    if not bucket_name:
+        bucket_name = pick_default_log_bucket(account_id)
+    if not bucket_name:
+        return ""
+
+    finding["_config_recorder_name"] = recorder_name
+    finding["_config_delivery_channel_name"] = channel_name
+
+    return (
+        'resource "aws_config_configuration_recorder" "fix_config_recorder" {\n'
+        f'  name     = "{recorder_name}"\n'
+        f'  role_arn = "{role_arn}"\n'
+        "\n"
+        "  recording_group {\n"
+        "    all_supported                 = true\n"
+        "    include_global_resource_types = true\n"
+        "  }\n"
+        "}\n\n"
+        'resource "aws_config_delivery_channel" "fix_config_delivery_channel" {\n'
+        f'  name           = "{channel_name}"\n'
+        f'  s3_bucket_name = "{bucket_name}"\n'
+        '  depends_on     = [aws_config_configuration_recorder.fix_config_recorder]\n'
+        "}\n\n"
+        'resource "aws_config_configuration_recorder_status" "fix_config_recorder_status" {\n'
+        f'  name       = "{recorder_name}"\n'
+        "  is_enabled = true\n"
+        "  depends_on = [aws_config_delivery_channel.fix_config_delivery_channel]\n"
+        "}\n"
+    )
+
+
+def build_kms_rotation_tf(finding: Dict[str, Any]) -> str:
+    key_id = extract_kms_key_id(finding.get("resource_arn", ""))
+    if not key_id:
+        return ""
+    return (
+        'resource "aws_kms_key" "fix_kms_rotation" {\n'
+        "  enable_key_rotation = true\n"
         "}\n"
     )
 
@@ -643,6 +750,9 @@ CLOUDWATCH_PATTERNS: Dict[str, str] = {
     "cloudwatch_changes_to_network_acls_alarm_configured": '{ ($.eventName = "CreateNetworkAcl") || ($.eventName = "CreateNetworkAclEntry") || ($.eventName = "DeleteNetworkAcl") || ($.eventName = "DeleteNetworkAclEntry") || ($.eventName = "ReplaceNetworkAclEntry") || ($.eventName = "ReplaceNetworkAclAssociation") }',
     "cloudwatch_log_metric_filter_and_alarm_for_cloudtrail_configuration_changes_enabled": '{ ($.eventName = "CreateTrail") || ($.eventName = "UpdateTrail") || ($.eventName = "DeleteTrail") || ($.eventName = "StartLogging") || ($.eventName = "StopLogging") }',
     "cloudwatch_log_metric_filter_and_alarm_for_aws_config_configuration_changes_enabled": '{ ($.eventSource = "config.amazonaws.com") && (($.eventName = "StopConfigurationRecorder") || ($.eventName = "DeleteDeliveryChannel") || ($.eventName = "PutDeliveryChannel") || ($.eventName = "PutConfigurationRecorder")) }',
+    "cloudwatch_log_metric_filter_root_usage": '{ ($.userIdentity.type = "Root") && ($.userIdentity.invokedBy NOT EXISTS) && ($.eventType != "AwsServiceEvent") }',
+    "cloudwatch_log_metric_filter_sign_in_without_mfa": '{ ($.eventName = "ConsoleLogin") && ($.additionalEventData.MFAUsed != "Yes") }',
+    "cloudwatch_log_metric_filter_aws_organizations_changes": '{ ($.eventSource = "organizations.amazonaws.com") && (($.eventName = "AcceptHandshake") || ($.eventName = "AttachPolicy") || ($.eventName = "CreateAccount") || ($.eventName = "CreateOrganizationalUnit") || ($.eventName = "CreatePolicy") || ($.eventName = "DeclineHandshake") || ($.eventName = "DeleteOrganization") || ($.eventName = "DeleteOrganizationalUnit") || ($.eventName = "DeletePolicy") || ($.eventName = "DetachPolicy") || ($.eventName = "DisablePolicyType") || ($.eventName = "EnablePolicyType") || ($.eventName = "InviteAccountToOrganization") || ($.eventName = "LeaveOrganization") || ($.eventName = "MoveAccount") || ($.eventName = "RemoveAccountFromOrganization") || ($.eventName = "UpdatePolicy") || ($.eventName = "UpdateOrganizationalUnit")) }',
 }
 
 
@@ -811,6 +921,12 @@ def main() -> None:
             tf_code = build_secure_transport_policy_tf(f)
         elif "vpc_flow_logs_enabled" in cid_l:
             tf_code = build_vpc_flow_logs_tf(f, a.account_id)
+        elif "accessanalyzer_enabled" in cid_l:
+            tf_code = build_access_analyzer_tf(f, a.region, a.account_id)
+        elif "config_recorder_all_regions_enabled" in cid_l:
+            tf_code = build_config_recorder_tf(f, a.region, a.account_id)
+        elif "kms_cmk_rotation_enabled" in cid_l:
+            tf_code = build_kms_rotation_tf(f)
         elif cid_l.startswith("prowler-cloudtrail_") or cid_l.startswith("cloudtrail_"):
             tf_code = build_cloudtrail_tf(f, a.region, a.account_id)
         elif cid_l.startswith("prowler-cloudwatch_") or cid_l.startswith("cloudwatch_"):

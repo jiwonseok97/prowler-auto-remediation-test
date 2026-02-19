@@ -1,92 +1,164 @@
-﻿# Prowler Auto Remediation Test
+# Cloud Security Auto-Remediation Pipeline (GitHub Actions + Terraform + AWS Prowler)
 
-AWS 취약 인프라를 의도적으로 배포하고, Prowler 3.11 스캔 결과를 기반으로 Bedrock(Claude 3 Haiku) + Builder가 Remediation Terraform을 생성하여 카테고리별 PR, Merge 후 Apply, 재스캔 FAIL 감소까지 시연하는 E2E PoC.
+## A) Architecture / Flow
 
-## 디렉토리
 ```text
-prowler-auto-remediation-test/
-├─ terraform/
-│   ├─ test_infra/
-│   │   ├─ backend.tf
-│   │   ├─ main.tf
-│   │   ├─ variables.tf
-│   │   ├─ outputs.tf
-│   │   └─ terraform.tfvars
-│   └─ remediation/
-│       ├─ main.tf
-│       ├─ variables.tf
-│       ├─ outputs.tf
-│       ├─ manifest.json
-│       └─ <category>/main.tf
-├─ iac/
-│   ├─ scripts/
-│   │   ├─ convert_findings.py
-│   │   ├─ generate_remediation.py
-│   │   ├─ inject_lifecycle.py
-│   │   ├─ resilient_apply.sh
-│   │   ├─ auto_import.sh
-│   │   └─ builder_to_manifest.py
-│   ├─ builders/
-│   │   ├─ cloudwatch_builder.py
-│   │   └─ network_builder.py
-│   ├─ snippets/
-│   │   ├─ iam/
-│   │   ├─ s3/
-│   │   ├─ network-ec2-vpc/
-│   │   ├─ cloudtrail/
-│   │   └─ cloudwatch/
-│   └─ check_to_iac.yaml
-└─ .github/workflows/e2e-demo.yml
+[scan-cis.yml]
+  input: account_id, region, deploy_vulnerable
+  output artifacts: baseline.asff.json, normalized_findings.json, prioritized_findings.json, scan_manifest.json
+        |
+        v
+[remediate-pr.yml]
+  input: scan_run_id + account/region + model_id
+  process: OSFP-prioritized FAIL -> template/Bedrock tf generation -> fmt/validate -> category manifest
+  output artifacts/files: remediation/<category>/fix-<check_id>.tf, remediation/manifest.json
+        |
+        v
+[PR per category]
+  branch: remediation/<category>-<account>-<runid>
+  trigger: human merge only
+        |
+        v
+[apply-on-merge.yml]
+  trigger: push to main by merged PR
+  process: terraform init/plan/apply per category
+  output artifacts: artifacts/apply/apply.log
+        |
+        v
+[rescan-after-apply.yml]
+  trigger: apply workflow success
+  process: prowler rescan -> normalize -> baseline diff
+  output artifacts: rescan_summary.json + summary.md (FAIL 감소/잔여 FAIL)
 ```
 
-## 취약 환경 범위 (`terraform/test_infra`)
-- IAM: 약한 계정 패스워드 정책, wildcard policy
-- S3: public-read ACL, 암호화/로깅 미설정
-- CloudTrail: log file validation 비활성, KMS 암호화 미사용
-- CloudWatch: KMS 미설정 로그 그룹
-- Network/VPC: all-open SG, VPC flow logs 미설정
+## B) Directory Structure
 
-## Workflow (`.github/workflows/e2e-demo.yml`)
-- `deploy-vulnerable`: 취약 Terraform apply
-- `scan`: Prowler 3.11(CIS 1.4) 스캔
-- `generate-remediation`: findings 정규화 -> Bedrock/Builder 생성 -> manifest 생성
-- `create-category-pr`: iam/s3/network-ec2-vpc/cloudtrail/cloudwatch 카테고리별 PR
-- `wait-for-merge`: 수동 merge 또는 auto_merge=true 시 자동 merge 시도
-- `cleanup`: 입력 cleanup=true 시 취약 인프라 destroy
-
-## Merge 후 자동 적용 (`.github/workflows/apply-on-merge.yml`)
-- 트리거: `main` push (remediation 파일 변경 시)
-- `apply`: category별 auto import + resilient apply
-- `verify`: 150초 대기 후 재스캔, baseline 대비 FAIL 감소 기록
-
-## 필요 Secrets
-- `AWS_ACCESS_KEY_ID`
-- `AWS_SECRET_ACCESS_KEY`
-- `AWS_DEFAULT_REGION`
-- `AWS_ACCOUNT_ID`
-- `AI_MODEL` (예: `anthropic.claude-3-haiku-20240307-v1:0`)
-- `AI_API_KEY` (Bedrock 사용 시 식별값 용도로 `bedrock` 가능)
-
-## 입력값
-- `auto_merge` (bool, 기본 false)
-- `skip_deploy` (bool)
-- `cleanup` (bool)
-
-## 기대 결과
-1. 취약 인프라 배포 후 Prowler FAIL 다수 발생
-2. 카테고리별 Remediation PR 생성
-3. PR Merge 후 `apply` 실행
-4. `verify` 단계에서 `baseline_fail` 대비 `post_fail` 감소 확인
-5. 자동 불가 항목(`fms`, `organizations`, `root MFA`)은 로그만 기록
-
-## 예시 로그
 ```text
-baseline_fail=23
-post_fail=6
-reduced=17
+.
+├─ .github/workflows/
+│  ├─ scan-cis.yml
+│  ├─ remediate-pr.yml
+│  ├─ apply-on-merge.yml
+│  └─ rescan-after-apply.yml
+├─ iac/scripts/
+│  ├─ normalize_findings.py
+│  ├─ osfp_score.py
+│  ├─ write_scan_manifest.py
+│  ├─ generate_remediation_bundle.py
+│  ├─ validate_generated_tf.sh
+│  ├─ build_category_manifest.py
+│  ├─ create_category_prs.py
+│  ├─ apply_merged_remediation.sh
+│  └─ compare_failures.py
+├─ iac/snippets/
+│  ├─ check_map.yaml
+│  ├─ iam/fix-iam_password_policy_strong.tf
+│  ├─ s3/fix-s3_bucket_public_access_block.tf
+│  ├─ s3/fix-s3_bucket_default_encryption.tf
+│  ├─ cloudtrail/fix-cloudtrail_log_file_validation_enabled.tf
+│  └─ cloudwatch/fix-cloudwatch_log_group_encrypted.tf
+├─ remediation/
+│  └─ <category>/fix-<check_id>.tf
+├─ iam/bedrock-minimum-policy.json
+└─ README.md
 ```
 
-## 주의사항
-- 테스트용 AWS 계정/권한만 사용하세요.
-- 노출된 PAT/AWS Access Key는 즉시 폐기(rotate)하세요.
-- Root MFA는 자동 Remediation 대상이 아닙니다.
+## C) OSFP Rule
+
+Score (0-100):
+
+`0.35*severity + 0.25*exploitability + 0.20*blast_radius + 0.15*compliance_impact + 0.05*(100-remediation_complexity)`
+
+Priority Bucket:
+- P0: >= 85
+- P1: >= 70
+- P2: >= 50
+- P3: < 50
+
+Example 1 (S3 public bucket): severity=80 exploit=90 blast=85 compliance=80 complexity=20 -> 82.75 (P1)
+Example 2 (IAM weak password policy): severity=80 exploit=50 blast=85 compliance=80 complexity=60 -> 72.25 (P1)
+Example 3 (CloudWatch encryption missing): severity=60 exploit=40 blast=55 compliance=80 complexity=40 -> 58.75 (P2)
+
+## D) Environment / Secrets / Vars
+
+Required GitHub Secrets:
+- `AWS_OIDC_ROLE_ARN` (OIDC AssumeRole target)
+
+Required workflow inputs:
+- `account_id`
+- `region`
+- `scan_run_id` (for remediation workflow)
+- `model_id` (Bedrock model)
+
+Recommended Repository Variables:
+- `AWS_REGION`
+
+## E) Test / Validation Scenarios
+
+1. Scan only
+- Run `scan-cis.yml`
+- Expect: scan artifacts uploaded, baseline_fail_count > 0
+
+2. Remediation generation
+- Run `remediate-pr.yml` with valid scan run id
+- Expect: category tf files generated + terraform fmt/validate pass + category PRs created
+
+3. Stale PR close
+- Re-run remediation for same account/category
+- Expect: previous open PR branch `remediation/<category>-<account>-*` auto closed
+
+4. Apply on merge
+- Merge one category PR
+- Expect: `apply-on-merge.yml` runs, category terraform applied, apply log artifact uploaded
+
+5. Rescan compare
+- After apply workflow success
+- Expect: `rescan-after-apply.yml` runs, summary includes `baseline_fail`, `post_fail`, `reduced`
+
+## F) Top 10 Operational Failures + Fix
+
+1. OIDC role assumption denied
+- Fix: trust policy must include GitHub `sub`/`aud` claims
+
+2. Bedrock InvokeModel AccessDenied
+- Fix: attach `iam/bedrock-minimum-policy.json` actions/resource
+
+3. Prowler scan produces no json
+- Fix: keep fallback `[]` and validate AWS credentials + region
+
+4. Malformed HCL from model
+- Fix: strict prompt + `validate_generated_tf.sh` gate + fallback manual_required
+
+5. Terraform validate fails provider init
+- Fix: `_validate_provider.tf` temporary provider injection
+
+6. Duplicate resource conflicts
+- Fix: `fix-<check_id>.tf` naming + per-category isolation
+
+7. Plan shows destructive changes
+- Fix: enforce minimal-change snippets + lifecycle ignore where needed
+
+8. Apply blocked by missing IAM perms
+- Fix: extend role policy for exact service APIs only
+
+9. Rescan baseline mismatch
+- Fix: source baseline from `remediation/manifest.json` baseline_fail_count
+
+10. PR creation fails due token scope
+- Fix: workflow `permissions: contents:write, pull-requests:write`
+
+## Runbook
+
+1. Run `scan-cis.yml` with account_id/region.
+2. Capture scan run id.
+3. Run `remediate-pr.yml` with `scan_run_id`.
+4. Review category PRs and merge selected PRs manually.
+5. `apply-on-merge.yml` executes automatically on merged commits.
+6. `rescan-after-apply.yml` runs and publishes FAIL diff summary.
+
+## Assumptions
+
+- Vulnerable infra already modeled in `terraform/test_infra`.
+- Generated remediation is category-scoped (`iam`, `s3`, `cloudtrail`, `cloudwatch`).
+- Non-terraform and manual-required checks are tracked but not auto-applied.
+- Terraform backend is local for CI dry-run simplicity.

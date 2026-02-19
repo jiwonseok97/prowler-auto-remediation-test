@@ -1,0 +1,71 @@
+name: Rescan After Apply
+
+on:
+  workflow_run:
+    workflows: ["Apply On Merged Remediation"]
+    types: [completed]
+
+permissions:
+  id-token: write
+  contents: read
+  pull-requests: write
+
+jobs:
+  rescan:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_OIDC_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION || 'us-east-1' }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install "prowler>=3.11,<4.0"
+
+      - name: Run post-apply Prowler
+        run: |
+          mkdir -p artifacts/rescan
+          prowler aws --compliance cis_1.4_aws -M json-asff -o artifacts/rescan -F post || true
+          FOUND="$(find artifacts/rescan -maxdepth 1 -type f -name 'post*.json*' | head -n 1)"
+          if [ -z "$FOUND" ]; then
+            echo "[]" > artifacts/rescan/post.asff.json
+          else
+            cp "$FOUND" artifacts/rescan/post.asff.json
+          fi
+          python iac/scripts/normalize_findings.py \
+            --input artifacts/rescan/post.asff.json \
+            --output artifacts/rescan/post_normalized.json
+
+      - name: Compare baseline vs post
+        run: |
+          python iac/scripts/compare_failures.py \
+            --baseline remediation/manifest.json \
+            --post artifacts/rescan/post_normalized.json \
+            --output artifacts/rescan/rescan_summary.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          s = json.loads(Path('artifacts/rescan/rescan_summary.json').read_text(encoding='utf-8'))
+          rem = '\n'.join(f"- {x}" for x in s['remaining_fail_check_ids'][:30]) or '- none'
+          md = f"## Rescan Summary\n- baseline_fail: {s['baseline_fail']}\n- post_fail: {s['post_fail']}\n- reduced: {s['reduced']}\n\n### Remaining FAIL\n{rem}\n"
+          Path('artifacts/rescan/rescan_summary.md').write_text(md, encoding='utf-8')
+          print(md)
+          PY
+          cat artifacts/rescan/rescan_summary.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload rescan artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: rescan-${{ github.run_id }}
+          path: artifacts/rescan/

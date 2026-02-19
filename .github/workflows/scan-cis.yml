@@ -1,0 +1,110 @@
+name: Scan CIS 1.4
+
+on:
+  workflow_dispatch:
+    inputs:
+      deploy_vulnerable:
+        description: "Deploy vulnerable infra before scan"
+        required: true
+        type: boolean
+        default: true
+      account_id:
+        description: "Target AWS account id"
+        required: true
+        type: string
+      region:
+        description: "Target AWS region"
+        required: true
+        type: string
+        default: us-east-1
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    env:
+      AWS_REGION: ${{ inputs.region }}
+      AWS_ACCOUNT_ID: ${{ inputs.account_id }}
+      TF_VAR_region: ${{ inputs.region }}
+      TF_VAR_account_id: ${{ inputs.account_id }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_OIDC_ROLE_ARN }}
+          aws-region: ${{ inputs.region }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Deploy vulnerable infra
+        if: inputs.deploy_vulnerable == true
+        run: |
+          terraform -chdir=terraform/test_infra init -input=false
+          terraform -chdir=terraform/test_infra apply -auto-approve -input=false
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install tooling
+        run: |
+          python -m pip install --upgrade pip
+          pip install "prowler>=3.11,<4.0"
+
+      - name: Run Prowler CIS 1.4
+        run: |
+          mkdir -p artifacts/scan
+          prowler aws --compliance cis_1.4_aws -M json-asff -o artifacts/scan -F baseline || true
+          FOUND="$(find artifacts/scan -maxdepth 1 -type f -name 'baseline*.json*' | head -n 1)"
+          if [ -z "$FOUND" ]; then
+            echo "[]" > artifacts/scan/baseline.asff.json
+          else
+            cp "$FOUND" artifacts/scan/baseline.asff.json
+          fi
+
+      - name: Normalize and score findings
+        run: |
+          python iac/scripts/normalize_findings.py \
+            --input artifacts/scan/baseline.asff.json \
+            --output artifacts/scan/normalized_findings.json \
+            --account-id "${{ inputs.account_id }}" \
+            --region "${{ inputs.region }}"
+          python iac/scripts/osfp_score.py \
+            --input artifacts/scan/normalized_findings.json \
+            --output artifacts/scan/prioritized_findings.json
+
+      - name: Build scan manifest
+        run: |
+          python iac/scripts/write_scan_manifest.py \
+            --normalized artifacts/scan/normalized_findings.json \
+            --prioritized artifacts/scan/prioritized_findings.json \
+            --output artifacts/scan/scan_manifest.json \
+            --account-id "${{ inputs.account_id }}" \
+            --region "${{ inputs.region }}"
+
+      - name: Upload scan artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: scan-${{ github.run_id }}
+          path: artifacts/scan/
+
+      - name: Summary
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('artifacts/scan/prioritized_findings.json')
+          rows = json.loads(p.read_text(encoding='utf-8')) if p.exists() else []
+          fail = len([r for r in rows if r.get('status') == 'FAIL'])
+          print(f"baseline_fail={fail}")
+          with open(Path.cwd() / 'summary.md', 'w', encoding='utf-8') as f:
+              f.write(f"## Scan Result\n- baseline_fail: {fail}\n")
+          PY
+          cat summary.md >> "$GITHUB_STEP_SUMMARY"

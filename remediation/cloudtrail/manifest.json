@@ -1,0 +1,49 @@
+{
+  "category": "cloudtrail",
+  "account": "132410971304",
+  "region": "ap-northeast-2",
+  "created_at": "2026-02-19T09:41:12.157241+00:00",
+  "items": [
+    {
+      "check_id": "prowler-cloudtrail_kms_encryption_enabled",
+      "manual_required": true,
+      "files": [],
+      "priority": "P2",
+      "score": 58.5,
+      "reason": "generated_hcl_failed_validation"
+    },
+    {
+      "check_id": "prowler-cloudtrail_log_file_validation_enabled",
+      "manual_required": true,
+      "files": [],
+      "priority": "P2",
+      "score": 58.5,
+      "reason": "generated_hcl_failed_validation"
+    },
+    {
+      "check_id": "prowler-cloudwatch_log_metric_filter_and_alarm_for_cloudtrail_configuration_changes_enabled",
+      "manual_required": true,
+      "files": [],
+      "priority": "P2",
+      "score": 58.5,
+      "reason": "generated_hcl_failed_validation"
+    },
+    {
+      "check_id": "prowler-cloudtrail_cloudwatch_logging_enabled",
+      "manual_required": true,
+      "files": [],
+      "priority": "P3",
+      "score": 48.0,
+      "reason": "generated_hcl_failed_validation"
+    },
+    {
+      "check_id": "prowler-cloudtrail_cloudwatch_logging_enabled",
+      "manual_required": true,
+      "files": [],
+      "priority": "P3",
+      "score": 48.0,
+      "reason": "generated_hcl_failed_validation"
+    }
+  ],
+  "import_map": []
+}

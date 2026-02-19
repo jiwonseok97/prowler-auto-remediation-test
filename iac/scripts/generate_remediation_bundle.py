@@ -1293,8 +1293,18 @@ def main() -> None:
         trail_name = extract_trail_name(f.get("resource_arn", ""))
         if not trail_name and "cloudtrail_" in cid_l:
             trail_name = str(pick_default_trail(a.region).get("Name", ""))
-        if "cloudtrail_kms_encryption_enabled" in cid_l and trail_name:
-            cloudtrail_with_kms.add(trail_name)
+        if "cloudtrail_kms_encryption_enabled" in cid_l:
+            overall["categories"][cat].append(
+                {
+                    "check_id": cid,
+                    "manual_required": True,
+                    "files": [],
+                    "priority": f.get("osfp", {}).get("priority_bucket", "P3"),
+                    "score": f.get("osfp", {}).get("priority_score", 0),
+                    "reason": "cloudtrail_kms_auto_fix_skipped_unsafe",
+                }
+            )
+            continue
         if "cloudtrail_s3_dataevents_" in cid_l and trail_name:
             if trail_name in cloudtrail_with_dataevents:
                 overall["categories"][cat].append(

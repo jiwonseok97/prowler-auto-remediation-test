@@ -8,6 +8,7 @@ AWS_ACCOUNT_ID_FALLBACK="${AWS_ACCOUNT_ID:-}"
 
 IMPORT_MAP="$TARGET_DIR/import-map.txt"
 [ -f "$IMPORT_MAP" ] || exit 0
+declare -A SEEN_ADDRS=()
 
 if [ -z "$AWS_ACCOUNT_ID_FALLBACK" ]; then
   set +e
@@ -32,6 +33,11 @@ while IFS= read -r line || [ -n "$line" ]; do
 
   [ -z "$addr" ] && continue
   [ -z "$iid" ] && continue
+  if [ -n "${SEEN_ADDRS[$addr]+x}" ]; then
+    echo "skip duplicate import address $addr ($cid)" | tee -a "$LOG_FILE"
+    continue
+  fi
+  SEEN_ADDRS[$addr]=1
 
   set +e
   out="$(try_import "$addr" "$iid")"
@@ -63,6 +69,11 @@ while IFS= read -r line || [ -n "$line" ]; do
 
   if [ $rc -eq 0 ]; then
     echo "imported $addr ($cid) with id=$iid" | tee -a "$LOG_FILE"
+    continue
+  fi
+
+  if echo "$out" | grep -qi "Resource already managed by Terraform"; then
+    echo "already managed; skip import $addr ($cid)" | tee -a "$LOG_FILE"
     continue
   fi
 

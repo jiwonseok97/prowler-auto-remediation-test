@@ -21,6 +21,9 @@ OPTIONAL_IMPORT_TYPES = {
     "aws_s3_bucket_server_side_encryption_configuration",
     "aws_s3_account_public_access_block",
     "aws_s3_bucket_policy",
+    "aws_config_configuration_recorder",
+    "aws_config_delivery_channel",
+    "aws_config_configuration_recorder_status",
 }
 USE_BEDROCK_FALLBACK = os.getenv("BEDROCK_FALLBACK", "").strip().lower() in {"1", "true", "yes"}
 
@@ -269,7 +272,7 @@ def import_id_for_type(resource_type: str, finding: Dict[str, Any]) -> str:
         "aws_s3_bucket_server_side_encryption_configuration",
         "aws_s3_bucket_policy",
     }:
-        return finding.get("_trail_bucket", "") or extract_bucket(arn)
+        return finding.get("_trail_bucket", "") or finding.get("_config_bucket", "") or extract_bucket(arn)
     if resource_type == "aws_cloudtrail":
         return finding.get("_trail_name", "") or extract_trail_name(arn)
     if resource_type == "aws_cloudwatch_log_group":
@@ -474,11 +477,73 @@ def build_config_recorder_tf(finding: Dict[str, Any], region: str, account_id: s
         bucket_name = pick_default_log_bucket(account_id)
     if not bucket_name:
         return ""
+    finding["_config_bucket"] = bucket_name
 
     finding["_config_recorder_name"] = recorder_name
     finding["_config_delivery_channel_name"] = channel_name
 
+    policy_doc: Dict[str, Any] = {"Version": "2012-10-17", "Statement": []}
+    try:
+        s3 = boto3.client("s3")
+        resp = s3.get_bucket_policy(Bucket=bucket_name)
+        raw = resp.get("Policy", "")
+        if raw:
+            loaded = json.loads(raw)
+            if isinstance(loaded, dict):
+                policy_doc = loaded
+    except Exception:
+        pass
+
+    stmts = policy_doc.get("Statement", [])
+    if not isinstance(stmts, list):
+        stmts = [stmts] if stmts else []
+
+    has_acl = False
+    has_put = False
+    for s in stmts:
+        if not isinstance(s, dict):
+            continue
+        principal = s.get("Principal", {})
+        service = principal.get("Service", "") if isinstance(principal, dict) else ""
+        action = s.get("Action", [])
+        actions = [action] if isinstance(action, str) else (action if isinstance(action, list) else [])
+        actions_l = [str(a).lower() for a in actions]
+        if str(service).lower() == "config.amazonaws.com" and "s3:getbucketacl" in actions_l:
+            has_acl = True
+        if str(service).lower() == "config.amazonaws.com" and "s3:putobject" in actions_l:
+            has_put = True
+
+    if not has_acl:
+        stmts.append(
+            {
+                "Sid": "AWSConfigBucketAclCheck",
+                "Effect": "Allow",
+                "Principal": {"Service": "config.amazonaws.com"},
+                "Action": "s3:GetBucketAcl",
+                "Resource": f"arn:aws:s3:::{bucket_name}",
+            }
+        )
+    if not has_put:
+        stmts.append(
+            {
+                "Sid": "AWSConfigBucketDelivery",
+                "Effect": "Allow",
+                "Principal": {"Service": "config.amazonaws.com"},
+                "Action": "s3:PutObject",
+                "Resource": f"arn:aws:s3:::{bucket_name}/AWSLogs/{account_id}/Config/*",
+                "Condition": {"StringEquals": {"s3:x-amz-acl": "bucket-owner-full-control"}},
+            }
+        )
+    policy_doc["Statement"] = stmts
+    policy_json = json.dumps(policy_doc, indent=2)
+
     return (
+        'resource "aws_s3_bucket_policy" "fix_config_bucket_policy" {\n'
+        f'  bucket = "{bucket_name}"\n'
+        "  policy = <<POLICY\n"
+        f"{policy_json}\n"
+        "POLICY\n"
+        "}\n\n"
         'resource "aws_config_configuration_recorder" "fix_config_recorder" {\n'
         f'  name     = "{recorder_name}"\n'
         f'  role_arn = "{role_arn}"\n'
@@ -491,7 +556,7 @@ def build_config_recorder_tf(finding: Dict[str, Any], region: str, account_id: s
         'resource "aws_config_delivery_channel" "fix_config_delivery_channel" {\n'
         f'  name           = "{channel_name}"\n'
         f'  s3_bucket_name = "{bucket_name}"\n'
-        '  depends_on     = [aws_config_configuration_recorder.fix_config_recorder]\n'
+        '  depends_on     = [aws_s3_bucket_policy.fix_config_bucket_policy, aws_config_configuration_recorder.fix_config_recorder]\n'
         "}\n\n"
         'resource "aws_config_configuration_recorder_status" "fix_config_recorder_status" {\n'
         f'  name       = "{recorder_name}"\n'
@@ -842,6 +907,7 @@ def main() -> None:
             old_tf.unlink(missing_ok=True)
         overall["categories"][cat] = []
         overall["import_map"][cat] = []
+    import_seen: Dict[str, set[str]] = {cat: set() for cat in CATEGORIES}
 
     fail_rows = [x for x in rows if x.get("status") == "FAIL"]
     fail_rows.sort(key=lambda x: check_priority(x.get("check_id", "")), reverse=True)
@@ -1024,6 +1090,9 @@ def main() -> None:
         for addr, rtype in resource_addrs:
             iid = import_id_for_type(rtype, f)
             if iid:
+                if addr in import_seen.get(cat, set()):
+                    continue
+                import_seen[cat].add(addr)
                 overall["import_map"][cat].append(
                     {
                         "check_id": cid,

@@ -1,164 +1,147 @@
-# Cloud Security Auto-Remediation Pipeline (GitHub Actions + Terraform + AWS Prowler)
+﻿# Prowler Auto Remediation (AWS + Terraform + GitHub Actions)
 
-## A) Architecture / Flow
+This repository runs a 4-step security pipeline:
 
-```text
-[scan-cis.yml]
-  input: account_id, region, deploy_vulnerable
-  output artifacts: baseline.asff.json, normalized_findings.json, prioritized_findings.json, scan_manifest.json
-        |
-        v
-[remediate-pr.yml]
-  input: scan_run_id + account/region + model_id
-  process: OSFP-prioritized FAIL -> template/Bedrock tf generation -> fmt/validate -> category manifest
-  output artifacts/files: remediation/<category>/fix-<check_id>.tf, remediation/manifest.json
-        |
-        v
-[PR per category]
-  branch: remediation/<category>-<account>-<runid>
-  trigger: human merge only
-        |
-        v
-[apply-on-merge.yml]
-  trigger: push to main by merged PR
-  process: terraform init/plan/apply per category
-  output artifacts: artifacts/apply/apply.log
-        |
-        v
-[rescan-after-apply.yml]
-  trigger: apply workflow success
-  process: prowler rescan -> normalize -> baseline diff
-  output artifacts: rescan_summary.json + summary.md (FAIL 감소/잔여 FAIL)
-```
+1. Scan baseline with Prowler CIS 1.4
+2. Generate category remediation Terraform and category PRs
+3. Apply merged generated remediation
+4. Rescan and verify FAIL reduction
 
-## B) Directory Structure
+## Pipeline Workflows
+
+- `Security Pipeline - 01 Scan Baseline`
+- `Security Pipeline - 02 Generate Remediation PRs`
+- `Security Pipeline - 03 Apply Merged Generated Terraform Remediation`
+- `Security Pipeline - 04 Verify FAIL Reduction`
+
+Only these four workflows are required for the end-to-end demo.
+
+## End-to-End Flow
 
 ```text
-.
-├─ .github/workflows/
-│  ├─ scan-cis.yml
-│  ├─ remediate-pr.yml
-│  ├─ apply-on-merge.yml
-│  └─ rescan-after-apply.yml
-├─ iac/scripts/
-│  ├─ normalize_findings.py
-│  ├─ osfp_score.py
-│  ├─ write_scan_manifest.py
-│  ├─ generate_remediation_bundle.py
-│  ├─ validate_generated_tf.sh
-│  ├─ build_category_manifest.py
-│  ├─ create_category_prs.py
-│  ├─ apply_merged_remediation.sh
-│  └─ compare_failures.py
-├─ iac/snippets/
-│  ├─ check_map.yaml
-│  ├─ iam/fix-iam_password_policy_strong.tf
-│  ├─ s3/fix-s3_bucket_public_access_block.tf
-│  ├─ s3/fix-s3_bucket_default_encryption.tf
-│  ├─ cloudtrail/fix-cloudtrail_log_file_validation_enabled.tf
-│  └─ cloudwatch/fix-cloudwatch_log_group_encrypted.tf
-├─ remediation/
-│  └─ <category>/fix-<check_id>.tf
-├─ iam/bedrock-minimum-policy.json
-└─ README.md
+01 Scan Baseline
+  input: account/region
+  output artifact: scan-<run_id>
+    - baseline.asff.json
+    - baseline_cis_1.4_aws.csv
+    - normalized_findings.json
+    - prioritized_findings.json
+    - scan_manifest.json
+
+02 Generate Remediation PRs
+  input: scan_run_id (from step 01)
+  process:
+    - normalize + prioritize FAIL findings
+    - build remediation plan (PATCH_EXISTING / IMPORT_AND_PATCH / CREATE_MISSING / SKIP)
+    - generate Terraform by category
+    - terraform fmt/validate gate
+    - build manifest + import map
+    - create PR per category branch
+  output artifact: remediation-<run_id>
+
+PR Merge (manual)
+  branch strategy (fixed branches):
+    - remediation/iam
+    - remediation/s3
+    - remediation/network-ec2-vpc
+    - remediation/cloudtrail
+    - remediation/cloudwatch
+
+03 Apply Merged Generated Terraform Remediation
+  trigger: push to main after PR merge
+  process:
+    - copy merged remediation scope
+    - auto import existing resources by ARN/import id
+    - resilient apply per category (partial failure tolerant)
+  output artifact: apply logs and scope
+
+04 Verify FAIL Reduction
+  trigger: workflow_run success from step 03
+  process:
+    - wait
+    - rerun Prowler on same account/region
+    - compare baseline FAIL vs post FAIL
+  success condition:
+    - post_fail < baseline_fail
 ```
 
-## C) OSFP Rule
+## Current Code Layout
 
-Score (0-100):
+```text
+.github/workflows/
+  security-pipeline-01-scan-baseline.yml
+  security-pipeline-02-generate-remediation-prs.yml
+  security-pipeline-03-apply-merged-generated-terraform-remediation.yml
+  security-pipeline-04-verify-fail-reduction.yml
 
-`0.35*severity + 0.25*exploitability + 0.20*blast_radius + 0.15*compliance_impact + 0.05*(100-remediation_complexity)`
+iac/scripts/
+  convert_findings.py
+  osfp_score.py
+  normalize_findings.py
+  generate_remediation.py
+  generate_remediation_bundle.py
+  builder_to_manifest.py
+  create_category_prs.py
+  auto_import.sh
+  resilient_apply.sh
+  compare_failures.py
+  validate_generated_tf.sh
 
-Priority Bucket:
-- P0: >= 85
-- P1: >= 70
-- P2: >= 50
-- P3: < 50
+iac/snippets/
+  check_map.yaml
+  iam/
+  s3/
+  cloudtrail/
+  cloudwatch/
+  network-ec2-vpc/
 
-Example 1 (S3 public bucket): severity=80 exploit=90 blast=85 compliance=80 complexity=20 -> 82.75 (P1)
-Example 2 (IAM weak password policy): severity=80 exploit=50 blast=85 compliance=80 complexity=60 -> 72.25 (P1)
-Example 3 (CloudWatch encryption missing): severity=60 exploit=40 blast=55 compliance=80 complexity=40 -> 58.75 (P2)
+remediation/
+  iam/
+  s3/
+  network-ec2-vpc/
+  cloudtrail/
+  cloudwatch/
+```
 
-## D) Environment / Secrets / Vars
+## Supported Auto-Remediation Scope
 
-Required GitHub Secrets:
-- `AWS_OIDC_ROLE_ARN` (OIDC AssumeRole target)
+- IAM
+- S3
+- CloudTrail
+- CloudWatch Logs / Metric Filters / Alarms
+- EC2 Security Groups
+- VPC Flow Logs
 
-Required workflow inputs:
-- `account_id`
-- `region`
-- `scan_run_id` (for remediation workflow)
-- `model_id` (Bedrock model)
+Unsupported checks are logged as `SKIPPED` (not hard error).
 
-Recommended Repository Variables:
+## Required GitHub Configuration
+
+Repository Settings -> Actions -> General:
+
+- Workflow permissions: `Read and write permissions`
+- Enable `Allow GitHub Actions to create and approve pull requests`
+
+## Required Secrets / Variables
+
+Secrets:
+
+- `AWS_OIDC_ROLE_ARN` (recommended)
+- or static AWS credentials (legacy fallback)
+
+Variables:
+
 - `AWS_REGION`
-
-## E) Test / Validation Scenarios
-
-1. Scan only
-- Run `scan-cis.yml`
-- Expect: scan artifacts uploaded, baseline_fail_count > 0
-
-2. Remediation generation
-- Run `remediate-pr.yml` with valid scan run id
-- Expect: category tf files generated + terraform fmt/validate pass + category PRs created
-
-3. Stale PR close
-- Re-run remediation for same account/category
-- Expect: previous open PR branch `remediation/<category>-<account>-*` auto closed
-
-4. Apply on merge
-- Merge one category PR
-- Expect: `apply-on-merge.yml` runs, category terraform applied, apply log artifact uploaded
-
-5. Rescan compare
-- After apply workflow success
-- Expect: `rescan-after-apply.yml` runs, summary includes `baseline_fail`, `post_fail`, `reduced`
-
-## F) Top 10 Operational Failures + Fix
-
-1. OIDC role assumption denied
-- Fix: trust policy must include GitHub `sub`/`aud` claims
-
-2. Bedrock InvokeModel AccessDenied
-- Fix: attach `iam/bedrock-minimum-policy.json` actions/resource
-
-3. Prowler scan produces no json
-- Fix: keep fallback `[]` and validate AWS credentials + region
-
-4. Malformed HCL from model
-- Fix: strict prompt + `validate_generated_tf.sh` gate + fallback manual_required
-
-5. Terraform validate fails provider init
-- Fix: `_validate_provider.tf` temporary provider injection
-
-6. Duplicate resource conflicts
-- Fix: `fix-<check_id>.tf` naming + per-category isolation
-
-7. Plan shows destructive changes
-- Fix: enforce minimal-change snippets + lifecycle ignore where needed
-
-8. Apply blocked by missing IAM perms
-- Fix: extend role policy for exact service APIs only
-
-9. Rescan baseline mismatch
-- Fix: source baseline from `remediation/manifest.json` baseline_fail_count
-
-10. PR creation fails due token scope
-- Fix: workflow `permissions: contents:write, pull-requests:write`
 
 ## Runbook
 
-1. Run `scan-cis.yml` with account_id/region.
-2. Capture scan run id.
-3. Run `remediate-pr.yml` with `scan_run_id`.
-4. Review category PRs and merge selected PRs manually.
-5. `apply-on-merge.yml` executes automatically on merged commits.
-6. `rescan-after-apply.yml` runs and publishes FAIL diff summary.
+1. Run `Security Pipeline - 01 Scan Baseline`.
+2. Run `Security Pipeline - 02 Generate Remediation PRs` with `scan_run_id` from step 1.
+3. Review and merge category PRs (`remediation/<category>`).
+4. Confirm step 3 apply workflow completed.
+5. Confirm step 4 summary shows FAIL reduction.
 
-## Assumptions
+## Notes
 
-- Vulnerable infra already modeled in `terraform/test_infra`.
-- Generated remediation is category-scoped (`iam`, `s3`, `cloudtrail`, `cloudwatch`).
-- Non-terraform and manual-required checks are tracked but not auto-applied.
-- Terraform backend is local for CI dry-run simplicity.
+- Existing resources are imported and patched when possible.
+- Optional Terraform sub-config resources may be created when import returns non-existent object.
+- Apply is category-isolated; one category failure does not block others.

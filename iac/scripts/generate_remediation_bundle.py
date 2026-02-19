@@ -94,6 +94,12 @@ def extract_log_group(arn: str) -> str:
     return ""
 
 
+def extract_vpc_id(arn: str) -> str:
+    if ":vpc/" in arn:
+        return arn.split(":vpc/", 1)[1]
+    return ""
+
+
 def materialize_vars(tf_code: str, finding: Dict[str, Any], account_id: str, region: str) -> str:
     arn = finding.get("resource_arn", "")
     bucket = extract_bucket(arn)
@@ -113,6 +119,58 @@ def materialize_vars(tf_code: str, finding: Dict[str, Any], account_id: str, reg
     out = out.replace("var.region", f'"{region}"')
     out = re.sub(r'variable\s+"[^"]+"\s*\{[^{}]*\}\s*', "", out, flags=re.DOTALL)
     return out
+
+
+def get_cloudtrail_detail(region: str, trail_name: str) -> Dict[str, Any]:
+    if not trail_name:
+        return {}
+    try:
+        ct = boto3.client("cloudtrail", region_name=region)
+        resp = ct.describe_trails(trailNameList=[trail_name], includeShadowTrails=False)
+        trails = resp.get("trailList", []) or []
+        return trails[0] if trails else {}
+    except Exception:
+        return {}
+
+
+def pick_default_trail(region: str) -> Dict[str, Any]:
+    try:
+        ct = boto3.client("cloudtrail", region_name=region)
+        resp = ct.describe_trails(includeShadowTrails=False)
+        trails = resp.get("trailList", []) or []
+        if trails:
+            return trails[0]
+    except Exception:
+        return {}
+    return {}
+
+
+def pick_default_cloudtrail_log_group(region: str, account_id: str) -> str:
+    trail = pick_default_trail(region)
+    arn = str(trail.get("CloudWatchLogsLogGroupArn", "") or "")
+    lg = extract_log_group(arn)
+    if lg:
+        return lg
+    return f"/aws/cloudtrail/{account_id}"
+
+
+def pick_default_log_bucket(account_id: str) -> str:
+    try:
+        s3 = boto3.client("s3")
+        resp = s3.list_buckets()
+        buckets = [b.get("Name", "") for b in resp.get("Buckets", [])]
+        preferred_prefixes = [
+            f"aws-cloudtrail-logs-{account_id}",
+            f"prowler-terraform-state-{account_id}",
+            f"prowler-dashboard-{account_id}",
+        ]
+        for pfx in preferred_prefixes:
+            for b in buckets:
+                if b.startswith(pfx):
+                    return b
+        return buckets[0] if buckets else ""
+    except Exception:
+        return ""
 
 
 def extract_sg_id(arn: str) -> str:
@@ -250,6 +308,10 @@ def check_priority(check_id: str) -> int:
         return 80
     if c == "s3_bucket_secure_transport_policy":
         return 70
+    if c == "vpc_flow_logs_enabled":
+        return 85
+    if c.startswith("cloudwatch_log_metric_filter_") or c.startswith("cloudwatch_changes_to_"):
+        return 75
     return 10
 
 
@@ -307,6 +369,158 @@ def build_secure_transport_policy_tf(finding: Dict[str, Any]) -> str:
         "  policy = <<POLICY\n"
         f"{policy_json}\n"
         "POLICY\n"
+        "}\n"
+    )
+
+
+def build_vpc_flow_logs_tf(finding: Dict[str, Any], account_id: str) -> str:
+    vpc_id = extract_vpc_id(finding.get("resource_arn", ""))
+    if not vpc_id:
+        return ""
+    bucket = pick_default_log_bucket(account_id)
+    if not bucket:
+        return ""
+    return (
+        'resource "aws_flow_log" "fix_vpc_flow_logs" {\n'
+        f'  vpc_id               = "{vpc_id}"\n'
+        '  traffic_type         = "ALL"\n'
+        '  log_destination_type = "s3"\n'
+        f'  log_destination      = "arn:aws:s3:::{bucket}"\n'
+        "}\n"
+    )
+
+
+def build_cloudtrail_tf(finding: Dict[str, Any], region: str) -> str:
+    cid_l = str(finding.get("check_id", "")).lower()
+    trail_name = extract_trail_name(finding.get("resource_arn", ""))
+    detail = get_cloudtrail_detail(region, trail_name) if trail_name else {}
+    if not detail:
+        detail = pick_default_trail(region)
+    if not detail:
+        return ""
+    name = str(detail.get("Name", "") or trail_name)
+    s3_bucket = str(detail.get("S3BucketName", ""))
+    if not name or not s3_bucket:
+        return ""
+
+    include_global = "true" if bool(detail.get("IncludeGlobalServiceEvents", True)) else "false"
+    multi_region = "true" if bool(detail.get("IsMultiRegionTrail", True)) else "false"
+    enable_logging = "true" if bool(detail.get("LogFileValidationEnabled", True)) else "true"
+
+    lines = [
+        'resource "aws_cloudtrail" "fix_cloudtrail" {',
+        f'  name                          = "{name}"',
+        f'  s3_bucket_name                = "{s3_bucket}"',
+        f"  include_global_service_events = {include_global}",
+        f"  is_multi_region_trail         = {multi_region}",
+        f"  enable_logging                = {enable_logging}",
+    ]
+
+    if "log_file_validation_enabled" in cid_l:
+        lines.append("  enable_log_file_validation    = true")
+    elif "s3_dataevents_" in cid_l:
+        lines.append("  enable_log_file_validation    = true")
+        lines.extend(
+            [
+                "",
+                "  event_selector {",
+                "    read_write_type           = \"All\"",
+                "    include_management_events = true",
+                "",
+                "    data_resource {",
+                "      type   = \"AWS::S3::Object\"",
+                "      values = [\"arn:aws:s3:::\"]",
+                "    }",
+                "  }",
+            ]
+        )
+    elif "cloudtrail_cloudwatch_logging_enabled" in cid_l:
+        lg_arn = str(detail.get("CloudWatchLogsLogGroupArn", ""))
+        role_arn = str(detail.get("CloudWatchLogsRoleArn", ""))
+        if not lg_arn or not role_arn:
+            return ""
+        lines.append("  enable_log_file_validation    = true")
+        lines.append(f'  cloud_watch_logs_group_arn    = "{lg_arn}"')
+        lines.append(f'  cloud_watch_logs_role_arn     = "{role_arn}"')
+    elif "kms_encryption_enabled" in cid_l:
+        kms = str(detail.get("KmsKeyId", ""))
+        if not kms:
+            return ""
+        lines.append("  enable_log_file_validation    = true")
+        lines.append(f'  kms_key_id                    = "{kms}"')
+    else:
+        return ""
+
+    lines.extend(
+        [
+            "",
+            "  lifecycle {",
+            "    ignore_changes = [",
+            "      event_selector,",
+            "      insight_selector,",
+            "      sns_topic_name,",
+            "      tags,",
+            "      tags_all",
+            "    ]",
+            "  }",
+            "}",
+            "",
+        ]
+    )
+    return "\n".join(lines)
+
+
+CLOUDWATCH_PATTERNS: Dict[str, str] = {
+    "cloudwatch_log_metric_filter_unauthorized_api_calls": '{ ($.errorCode = "*UnauthorizedOperation") || ($.errorCode = "AccessDenied*") }',
+    "cloudwatch_log_metric_filter_authentication_failures": '{ ($.eventName = "ConsoleLogin") && ($.errorMessage = "Failed authentication") }',
+    "cloudwatch_log_metric_filter_policy_changes": '{ ($.eventName = "DeleteGroupPolicy") || ($.eventName = "DeleteRolePolicy") || ($.eventName = "DeleteUserPolicy") || ($.eventName = "PutGroupPolicy") || ($.eventName = "PutRolePolicy") || ($.eventName = "PutUserPolicy") || ($.eventName = "CreatePolicy") || ($.eventName = "DeletePolicy") || ($.eventName = "CreatePolicyVersion") || ($.eventName = "DeletePolicyVersion") || ($.eventName = "AttachRolePolicy") || ($.eventName = "DetachRolePolicy") || ($.eventName = "AttachUserPolicy") || ($.eventName = "DetachUserPolicy") || ($.eventName = "AttachGroupPolicy") || ($.eventName = "DetachGroupPolicy") }',
+    "cloudwatch_log_metric_filter_security_group_changes": '{ ($.eventName = "AuthorizeSecurityGroupIngress") || ($.eventName = "AuthorizeSecurityGroupEgress") || ($.eventName = "RevokeSecurityGroupIngress") || ($.eventName = "RevokeSecurityGroupEgress") || ($.eventName = "CreateSecurityGroup") || ($.eventName = "DeleteSecurityGroup") }',
+    "cloudwatch_log_metric_filter_for_s3_bucket_policy_changes": '{ ($.eventSource = "s3.amazonaws.com") && (($.eventName = "PutBucketAcl") || ($.eventName = "PutBucketPolicy") || ($.eventName = "PutBucketCors") || ($.eventName = "PutBucketLifecycle") || ($.eventName = "PutBucketReplication") || ($.eventName = "DeleteBucketPolicy") || ($.eventName = "DeleteBucketCors") || ($.eventName = "DeleteBucketLifecycle") || ($.eventName = "DeleteBucketReplication")) }',
+    "cloudwatch_log_metric_filter_disable_or_scheduled_deletion_of_kms_cmk": '{ ($.eventSource = "kms.amazonaws.com") && (($.eventName = "DisableKey") || ($.eventName = "ScheduleKeyDeletion")) }',
+    "cloudwatch_changes_to_vpcs_alarm_configured": '{ ($.eventName = "CreateVpc") || ($.eventName = "DeleteVpc") || ($.eventName = "ModifyVpcAttribute") || ($.eventName = "AcceptVpcPeeringConnection") || ($.eventName = "CreateVpcPeeringConnection") || ($.eventName = "DeleteVpcPeeringConnection") || ($.eventName = "RejectVpcPeeringConnection") || ($.eventName = "AttachClassicLinkVpc") || ($.eventName = "DetachClassicLinkVpc") || ($.eventName = "DisableVpcClassicLink") || ($.eventName = "EnableVpcClassicLink") }',
+    "cloudwatch_changes_to_network_route_tables_alarm_configured": '{ ($.eventName = "CreateRoute") || ($.eventName = "CreateRouteTable") || ($.eventName = "ReplaceRoute") || ($.eventName = "ReplaceRouteTableAssociation") || ($.eventName = "DeleteRouteTable") || ($.eventName = "DeleteRoute") || ($.eventName = "DisassociateRouteTable") }',
+    "cloudwatch_changes_to_network_gateways_alarm_configured": '{ ($.eventName = "CreateCustomerGateway") || ($.eventName = "DeleteCustomerGateway") || ($.eventName = "AttachInternetGateway") || ($.eventName = "CreateInternetGateway") || ($.eventName = "DeleteInternetGateway") || ($.eventName = "DetachInternetGateway") }',
+    "cloudwatch_changes_to_network_acls_alarm_configured": '{ ($.eventName = "CreateNetworkAcl") || ($.eventName = "CreateNetworkAclEntry") || ($.eventName = "DeleteNetworkAcl") || ($.eventName = "DeleteNetworkAclEntry") || ($.eventName = "ReplaceNetworkAclEntry") || ($.eventName = "ReplaceNetworkAclAssociation") }',
+    "cloudwatch_log_metric_filter_and_alarm_for_cloudtrail_configuration_changes_enabled": '{ ($.eventName = "CreateTrail") || ($.eventName = "UpdateTrail") || ($.eventName = "DeleteTrail") || ($.eventName = "StartLogging") || ($.eventName = "StopLogging") }',
+    "cloudwatch_log_metric_filter_and_alarm_for_aws_config_configuration_changes_enabled": '{ ($.eventSource = "config.amazonaws.com") && (($.eventName = "StopConfigurationRecorder") || ($.eventName = "DeleteDeliveryChannel") || ($.eventName = "PutDeliveryChannel") || ($.eventName = "PutConfigurationRecorder")) }',
+}
+
+
+def build_cloudwatch_metric_alarm_tf(finding: Dict[str, Any], account_id: str, region: str) -> str:
+    cid_l = str(finding.get("check_id", "")).lower()
+    cid_l = cid_l.split("prowler-", 1)[1] if cid_l.startswith("prowler-") else cid_l
+    pattern = CLOUDWATCH_PATTERNS.get(cid_l)
+    if not pattern:
+        return ""
+    log_group = extract_log_group(finding.get("resource_arn", ""))
+    if not log_group:
+        log_group = pick_default_cloudtrail_log_group(region, account_id)
+    metric_ns = "CISBenchmark"
+    metric_name = safe_id(cid_l)[:128]
+    alarm_name = f"alarm-{metric_name}"[:255]
+    filter_name = f"filter-{metric_name}"[:255]
+    return (
+        'resource "aws_cloudwatch_log_metric_filter" "fix_cloudwatch_metric_filter" {\n'
+        f'  name           = "{filter_name}"\n'
+        f'  log_group_name = "{log_group}"\n'
+        f'  pattern        = "{pattern.replace(chr(34), chr(92)+chr(34))}"\n'
+        "\n"
+        "  metric_transformation {\n"
+        f'    name      = "{metric_name}"\n'
+        f'    namespace = "{metric_ns}"\n'
+        '    value     = "1"\n'
+        "  }\n"
+        "}\n\n"
+        'resource "aws_cloudwatch_metric_alarm" "fix_cloudwatch_metric_alarm" {\n'
+        f'  alarm_name          = "{alarm_name}"\n'
+        '  comparison_operator = "GreaterThanOrEqualToThreshold"\n'
+        "  evaluation_periods  = 1\n"
+        f'  metric_name         = "{metric_name}"\n'
+        f'  namespace           = "{metric_ns}"\n'
+        '  period              = 300\n'
+        '  statistic           = "Sum"\n'
+        '  threshold           = 1\n'
+        '  alarm_description   = "Auto-generated remediation alarm"\n'
         "}\n"
     )
 
@@ -419,6 +633,12 @@ def main() -> None:
         tf_code = ""
         if "s3_bucket_secure_transport_policy" in cid_l:
             tf_code = build_secure_transport_policy_tf(f)
+        elif "vpc_flow_logs_enabled" in cid_l:
+            tf_code = build_vpc_flow_logs_tf(f, a.account_id)
+        elif cid_l.startswith("prowler-cloudtrail_") or cid_l.startswith("cloudtrail_"):
+            tf_code = build_cloudtrail_tf(f, a.region)
+        elif cid_l.startswith("prowler-cloudwatch_") or cid_l.startswith("cloudwatch_"):
+            tf_code = build_cloudwatch_metric_alarm_tf(f, a.account_id, a.region)
         elif template_path and Path(template_path).exists():
             tf_code = Path(template_path).read_text(encoding="utf-8")
         elif USE_BEDROCK_FALLBACK:

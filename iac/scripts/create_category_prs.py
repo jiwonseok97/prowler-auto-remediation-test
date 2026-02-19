@@ -39,6 +39,9 @@ def main() -> None:
         path = Path(cat["path"])
         if not path.exists():
             continue
+        if not any(path.glob("*.tf")):
+            print(f"skip {category}: no terraform files")
+            continue
 
         branch = f"remediation/{category}"
 

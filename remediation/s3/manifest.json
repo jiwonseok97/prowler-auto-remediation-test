@@ -2,7 +2,7 @@
   "category": "s3",
   "account": "132410971304",
   "region": "ap-northeast-2",
-  "created_at": "2026-02-19T10:53:32.002762+00:00",
+  "created_at": "2026-02-19T11:47:57.131562+00:00",
   "items": [
     {
       "check_id": "prowler-s3_account_level_public_access_blocks",
@@ -238,7 +238,7 @@
       "files": [],
       "priority": "P2",
       "score": 58.5,
-      "reason": "generated_hcl_failed_validation",
+      "reason": "unsupported_no_template",
       "resources": []
     },
     {
@@ -247,7 +247,7 @@
       "files": [],
       "priority": "P2",
       "score": 58.5,
-      "reason": "generated_hcl_failed_validation",
+      "reason": "unsupported_no_template",
       "resources": []
     },
     {
@@ -981,25 +981,21 @@
     },
     {
       "check_id": "prowler-cloudtrail_s3_dataevents_read_enabled",
-      "manual_required": false,
-      "files": [
-        "remediation/s3/fix-prowler_cloudtrail_s3_dataevents_read_enabled_arn_aws_cloudtrail_ap_northeast_2_132410971304_trail_ap_northeast_2.tf"
-      ],
+      "manual_required": true,
+      "files": [],
       "priority": "P3",
       "score": 48.0,
-      "resources": [],
-      "tf_file": "remediation/s3/fix-prowler_cloudtrail_s3_dataevents_read_enabled_arn_aws_cloudtrail_ap_northeast_2_132410971304_trail_ap_northeast_2.tf"
+      "reason": "unsupported_no_template",
+      "resources": []
     },
     {
       "check_id": "prowler-cloudtrail_s3_dataevents_write_enabled",
-      "manual_required": false,
-      "files": [
-        "remediation/s3/fix-prowler_cloudtrail_s3_dataevents_write_enabled_arn_aws_cloudtrail_ap_northeast_2_132410971304_trail_ap_northeast_2.tf"
-      ],
+      "manual_required": true,
+      "files": [],
       "priority": "P3",
       "score": 48.0,
-      "resources": [],
-      "tf_file": "remediation/s3/fix-prowler_cloudtrail_s3_dataevents_write_enabled_arn_aws_cloudtrail_ap_northeast_2_132410971304_trail_ap_northeast_2.tf"
+      "reason": "unsupported_no_template",
+      "resources": []
     }
   ],
   "import_map": [

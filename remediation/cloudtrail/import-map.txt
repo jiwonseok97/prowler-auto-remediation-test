@@ -1,1 +1,2 @@
-
+aws_s3_bucket_policy.fix_cloudtrail_bucket_policy_21ff33774c|aws-cloudtrail-logs-132410971304-0971c04b|true|prowler-cloudtrail_s3_dataevents_read_enabled
+aws_cloudtrail.fix_cloudtrail_21ff33774c|security-cloudtail|false|prowler-cloudtrail_s3_dataevents_read_enabled

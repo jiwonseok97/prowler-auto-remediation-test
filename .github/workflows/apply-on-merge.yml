@@ -24,6 +24,8 @@ permissions:
 jobs:
   apply:
     runs-on: ubuntu-latest
+    env:
+      BUDGET_LIMIT_USD: "50"
     steps:
       - uses: actions/checkout@v4
         with:
@@ -34,6 +36,11 @@ jobs:
         with:
           role-to-assume: ${{ secrets.AWS_OIDC_ROLE_ARN }}
           aws-region: ${{ vars.AWS_REGION || 'us-east-1' }}
+
+      - name: Enforce budget guard
+        run: |
+          chmod +x iac/scripts/cost_guard.sh
+          bash iac/scripts/cost_guard.sh "${BUDGET_LIMIT_USD}"
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3

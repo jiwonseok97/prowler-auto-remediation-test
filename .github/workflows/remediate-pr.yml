@@ -44,6 +44,8 @@ jobs:
   remediate:
     if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
+    env:
+      BUDGET_LIMIT_USD: "50"
     steps:
       - uses: actions/checkout@v4
 
@@ -95,6 +97,11 @@ jobs:
         with:
           role-to-assume: ${{ secrets.AWS_OIDC_ROLE_ARN }}
           aws-region: ${{ steps.target.outputs.region }}
+
+      - name: Enforce budget guard
+        run: |
+          chmod +x iac/scripts/cost_guard.sh
+          bash iac/scripts/cost_guard.sh "${BUDGET_LIMIT_USD}"
 
       - name: Setup Python
         uses: actions/setup-python@v5

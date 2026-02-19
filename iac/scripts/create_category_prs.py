@@ -10,6 +10,8 @@ def run(cmd: list[str], check: bool = True) -> str:
     p = subprocess.run(cmd, capture_output=True, text=True)
     if check and p.returncode != 0:
         raise RuntimeError(f"cmd failed: {' '.join(cmd)}\n{p.stderr}")
+    if not check and p.returncode != 0 and p.stderr:
+        print(p.stderr.strip())
     return p.stdout.strip()
 
 
@@ -74,6 +76,10 @@ def main() -> None:
             f"## Remaining Manual Required\n{manual}\n"
         )
 
+        existing = run(["gh", "pr", "list", "--state", "open", "--head", branch, "--json", "number"], check=False)
+        if existing and len(json.loads(existing)) > 0:
+            continue
+
         run(
             [
                 "gh",
@@ -88,7 +94,7 @@ def main() -> None:
                 "--body",
                 body,
             ],
-            check=False,
+            check=True,
         )
 
     run(["git", "checkout", "main"], check=False)

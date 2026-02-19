@@ -3,6 +3,7 @@
 import argparse
 import hashlib
 import json
+import os
 import re
 import shutil
 import subprocess
@@ -20,6 +21,7 @@ OPTIONAL_IMPORT_TYPES = {
     "aws_s3_bucket_server_side_encryption_configuration",
     "aws_s3_account_public_access_block",
 }
+USE_BEDROCK_FALLBACK = os.getenv("BEDROCK_FALLBACK", "").strip().lower() in {"1", "true", "yes"}
 
 
 def safe_id(x: str) -> str:
@@ -300,7 +302,7 @@ def main() -> None:
         tf_code = ""
         if template_path and Path(template_path).exists():
             tf_code = Path(template_path).read_text(encoding="utf-8")
-        else:
+        elif USE_BEDROCK_FALLBACK:
             prompt = (
                 "Output only valid Terraform HCL. No markdown, no preamble. "
                 "Generate minimal-change remediation for this finding: "
@@ -310,6 +312,18 @@ def main() -> None:
                 tf_code = strip_code_fence(render_with_bedrock(a.model_id, prompt))
             except Exception:
                 tf_code = ""
+        else:
+            overall["categories"][cat].append(
+                {
+                    "check_id": cid,
+                    "manual_required": True,
+                    "files": [],
+                    "priority": f.get("osfp", {}).get("priority_bucket", "P3"),
+                    "score": f.get("osfp", {}).get("priority_score", 0),
+                    "reason": "unsupported_no_template",
+                }
+            )
+            continue
 
         if "securitygroup_default_restrict_traffic" in cid.lower():
             vpc_id = lookup_vpc_for_sg(f.get("resource_arn", ""), f.get("region", a.region))

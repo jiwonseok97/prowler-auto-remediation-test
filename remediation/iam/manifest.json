@@ -2,39 +2,18 @@
   "category": "iam",
   "account": "132410971304",
   "region": "ap-northeast-2",
-  "created_at": "2026-02-19T10:12:35.967629+00:00",
+  "created_at": "2026-02-19T10:53:32.002425+00:00",
   "items": [
     {
-      "check_id": "prowler-iam_no_root_access_key",
-      "manual_required": true,
-      "files": [],
-      "priority": "P1",
-      "score": 80.5,
-      "reason": "manual_or_non_terraform"
-    },
-    {
-      "check_id": "prowler-iam_root_hardware_mfa_enabled",
-      "manual_required": true,
-      "files": [],
-      "priority": "P1",
-      "score": 74.5,
-      "reason": "manual_or_non_terraform"
-    },
-    {
-      "check_id": "prowler-iam_avoid_root_usage",
-      "manual_required": true,
-      "files": [],
-      "priority": "P1",
-      "score": 73.5,
-      "reason": "manual_or_non_terraform"
-    },
-    {
       "check_id": "prowler-iam_customer_attached_policy_no_administrative_privileges",
-      "manual_required": true,
-      "files": [],
+      "manual_required": false,
+      "files": [
+        "remediation/iam/fix-prowler_iam_customer_attached_policy_no_administrative_privileges_arn_aws_iam_132410971304_policy_vuln_wildcard_policy_ap_northeast_2.tf"
+      ],
       "priority": "P2",
       "score": 65.5,
-      "reason": "unsupported_no_template"
+      "resources": [],
+      "tf_file": "remediation/iam/fix-prowler_iam_customer_attached_policy_no_administrative_privileges_arn_aws_iam_132410971304_policy_vuln_wildcard_policy_ap_northeast_2.tf"
     },
     {
       "check_id": "prowler-iam_password_policy_minimum_length_14",
@@ -43,7 +22,16 @@
         "remediation/iam/fix-prowler_iam_password_policy_minimum_length_14_arn_aws_iam_ap_northeast_2_132410971304_password_policy_ap_northeast_2.tf"
       ],
       "priority": "P2",
-      "score": 58.5
+      "score": 58.5,
+      "resources": [
+        {
+          "resource_address": "aws_iam_account_password_policy.fix_iam_password_policy_4713846702",
+          "arn": "132410971304",
+          "resource_type": "aws_iam_account_password_policy",
+          "optional": false
+        }
+      ],
+      "tf_file": "remediation/iam/fix-prowler_iam_password_policy_minimum_length_14_arn_aws_iam_ap_northeast_2_132410971304_password_policy_ap_northeast_2.tf"
     },
     {
       "check_id": "prowler-iam_password_policy_reuse_24",
@@ -52,7 +40,38 @@
         "remediation/iam/fix-prowler_iam_password_policy_reuse_24_arn_aws_iam_ap_northeast_2_132410971304_password_policy_ap_northeast_2.tf"
       ],
       "priority": "P2",
-      "score": 58.5
+      "score": 58.5,
+      "resources": [
+        {
+          "resource_address": "aws_iam_account_password_policy.fix_iam_password_policy_cbffca3971",
+          "arn": "132410971304",
+          "resource_type": "aws_iam_account_password_policy",
+          "optional": false
+        }
+      ],
+      "tf_file": "remediation/iam/fix-prowler_iam_password_policy_reuse_24_arn_aws_iam_ap_northeast_2_132410971304_password_policy_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-iam_policy_attached_only_to_group_or_roles",
+      "manual_required": false,
+      "files": [
+        "remediation/iam/fix-prowler_iam_policy_attached_only_to_group_or_roles_arn_aws_iam_132410971304_user_aws_learner_ap_northeast_2.tf"
+      ],
+      "priority": "P3",
+      "score": 48.0,
+      "resources": [],
+      "tf_file": "remediation/iam/fix-prowler_iam_policy_attached_only_to_group_or_roles_arn_aws_iam_132410971304_user_aws_learner_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-iam_policy_attached_only_to_group_or_roles",
+      "manual_required": false,
+      "files": [
+        "remediation/iam/fix-prowler_iam_policy_attached_only_to_group_or_roles_arn_aws_iam_132410971304_user_github_actions_prowler_ap_northeast_2.tf"
+      ],
+      "priority": "P3",
+      "score": 48.0,
+      "resources": [],
+      "tf_file": "remediation/iam/fix-prowler_iam_policy_attached_only_to_group_or_roles_arn_aws_iam_132410971304_user_github_actions_prowler_ap_northeast_2.tf"
     },
     {
       "check_id": "prowler-iam_policy_attached_only_to_group_or_roles",
@@ -60,23 +79,8 @@
       "files": [],
       "priority": "P3",
       "score": 48.0,
-      "reason": "unsupported_no_template"
-    },
-    {
-      "check_id": "prowler-iam_policy_attached_only_to_group_or_roles",
-      "manual_required": true,
-      "files": [],
-      "priority": "P3",
-      "score": 48.0,
-      "reason": "unsupported_no_template"
-    },
-    {
-      "check_id": "prowler-iam_policy_attached_only_to_group_or_roles",
-      "manual_required": true,
-      "files": [],
-      "priority": "P3",
-      "score": 48.0,
-      "reason": "unsupported_no_template"
+      "reason": "generated_hcl_failed_validation",
+      "resources": []
     }
   ],
   "import_map": [

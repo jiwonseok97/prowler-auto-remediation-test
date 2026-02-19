@@ -1,11 +1,6 @@
-resource "aws_s3_bucket" "fix_config_delivery_bucket_7d3084496f" {
-  bucket = "aws-config-logs-132410971304-ap-northeast-2"
-}
-
 resource "aws_s3_bucket_policy" "fix_config_bucket_policy_7d3084496f" {
-  bucket     = "aws-config-logs-132410971304-ap-northeast-2"
-  depends_on = [aws_s3_bucket.fix_config_delivery_bucket_7d3084496f]
-  policy     = <<POLICY
+  bucket = "aws-config-logs-132410971304-ap-northeast-2"
+  policy = <<POLICY
 {
   "Version": "2012-10-17",
   "Statement": [

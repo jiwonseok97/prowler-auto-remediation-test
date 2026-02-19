@@ -258,7 +258,7 @@ def pick_available_nacl_rule_number(nacl_id: str, region: str, preferred: int) -
                     used.add(num)
         if preferred not in used:
             return preferred
-        for n in range(1, 32766):
+        for n in range(100, 32766):
             if n not in used:
                 return n
     except Exception:
@@ -276,25 +276,26 @@ def build_nacl_restrict_ingress_tf(finding: Dict[str, Any], region: str) -> str:
     proto = "-1"
     from_port = ""
     to_port = ""
-    preferred = 50
+    preferred = 250
     if "tcp_port_22" in cid:
         proto = "6"
         from_port = "22"
         to_port = "22"
-        preferred = 52
+        preferred = 251
     elif "tcp_port_3389" in cid:
         proto = "6"
         from_port = "3389"
         to_port = "3389"
-        preferred = 53
+        preferred = 252
     elif "any_port" in cid:
         proto = "-1"
-        preferred = 51
+        preferred = 253
     else:
         return ""
 
     rule_number = pick_available_nacl_rule_number(nacl_id, region, preferred)
-    finding["_nacl_rule_import_id"] = f"{nacl_id}:false:{rule_number}:{proto}:0.0.0.0/0"
+    # Provider import format: NETWORK_ACL_ID:RULE_NUMBER:PROTOCOL:EGRESS
+    finding["_nacl_rule_import_id"] = f"{nacl_id}:{rule_number}:{proto}:false"
 
     lines = [
         'resource "aws_network_acl_rule" "fix_network_acl_ingress_deny" {',

@@ -25,7 +25,7 @@ on:
         description: "Use Bedrock generation when snippet template is missing"
         required: true
         type: boolean
-        default: true
+        default: false
   workflow_run:
     workflows: ["Scan CIS 1.4"]
     types: [completed]
@@ -50,7 +50,7 @@ jobs:
           if [ "${{ github.event_name }}" = "workflow_run" ]; then
             echo "scan_run_id=${{ github.event.workflow_run.id }}" >> "$GITHUB_OUTPUT"
             echo "model_id=anthropic.claude-3-haiku-20240307-v1:0" >> "$GITHUB_OUTPUT"
-            echo "bedrock_fallback=true" >> "$GITHUB_OUTPUT"
+            echo "bedrock_fallback=false" >> "$GITHUB_OUTPUT"
           else
             echo "scan_run_id=${{ inputs.scan_run_id }}" >> "$GITHUB_OUTPUT"
             echo "model_id=${{ inputs.model_id }}" >> "$GITHUB_OUTPUT"

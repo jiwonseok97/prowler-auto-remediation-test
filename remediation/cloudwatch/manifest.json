@@ -1,0 +1,99 @@
+{
+  "category": "cloudwatch",
+  "account": "132410971304",
+  "region": "ap-northeast-2",
+  "created_at": "2026-02-19T10:53:32.006233+00:00",
+  "items": [
+    {
+      "check_id": "prowler-cloudwatch_changes_to_network_acls_alarm_configured",
+      "manual_required": true,
+      "files": [],
+      "priority": "P2",
+      "score": 58.5,
+      "reason": "generated_hcl_failed_validation",
+      "resources": []
+    },
+    {
+      "check_id": "prowler-cloudwatch_changes_to_network_gateways_alarm_configured",
+      "manual_required": true,
+      "files": [],
+      "priority": "P2",
+      "score": 58.5,
+      "reason": "generated_hcl_failed_validation",
+      "resources": []
+    },
+    {
+      "check_id": "prowler-cloudwatch_changes_to_network_route_tables_alarm_configured",
+      "manual_required": true,
+      "files": [],
+      "priority": "P2",
+      "score": 58.5,
+      "reason": "generated_hcl_failed_validation",
+      "resources": []
+    },
+    {
+      "check_id": "prowler-cloudwatch_changes_to_vpcs_alarm_configured",
+      "manual_required": true,
+      "files": [],
+      "priority": "P2",
+      "score": 58.5,
+      "reason": "generated_hcl_failed_validation",
+      "resources": []
+    },
+    {
+      "check_id": "prowler-cloudwatch_log_metric_filter_and_alarm_for_aws_config_configuration_changes_enabled",
+      "manual_required": true,
+      "files": [],
+      "priority": "P2",
+      "score": 58.5,
+      "reason": "generated_hcl_failed_validation",
+      "resources": []
+    },
+    {
+      "check_id": "prowler-cloudwatch_log_metric_filter_authentication_failures",
+      "manual_required": true,
+      "files": [],
+      "priority": "P2",
+      "score": 58.5,
+      "reason": "generated_hcl_failed_validation",
+      "resources": []
+    },
+    {
+      "check_id": "prowler-cloudwatch_log_metric_filter_disable_or_scheduled_deletion_of_kms_cmk",
+      "manual_required": true,
+      "files": [],
+      "priority": "P2",
+      "score": 58.5,
+      "reason": "unresolved_variables",
+      "resources": []
+    },
+    {
+      "check_id": "prowler-cloudwatch_log_metric_filter_policy_changes",
+      "manual_required": true,
+      "files": [],
+      "priority": "P2",
+      "score": 58.5,
+      "reason": "generated_hcl_failed_validation",
+      "resources": []
+    },
+    {
+      "check_id": "prowler-cloudwatch_log_metric_filter_security_group_changes",
+      "manual_required": true,
+      "files": [],
+      "priority": "P2",
+      "score": 58.5,
+      "reason": "generated_hcl_failed_validation",
+      "resources": []
+    },
+    {
+      "check_id": "prowler-cloudwatch_log_metric_filter_unauthorized_api_calls",
+      "manual_required": true,
+      "files": [],
+      "priority": "P2",
+      "score": 58.5,
+      "reason": "generated_hcl_failed_validation",
+      "resources": []
+    }
+  ],
+  "import_map": []
+}

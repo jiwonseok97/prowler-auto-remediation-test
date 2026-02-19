@@ -20,6 +20,7 @@ OPTIONAL_IMPORT_TYPES = {
     "aws_s3_bucket_public_access_block",
     "aws_s3_bucket_server_side_encryption_configuration",
     "aws_s3_account_public_access_block",
+    "aws_s3_bucket_policy",
 }
 USE_BEDROCK_FALLBACK = os.getenv("BEDROCK_FALLBACK", "").strip().lower() in {"1", "true", "yes"}
 
@@ -155,6 +156,8 @@ def infer_template_by_rule(check_id: str, category: str) -> Optional[str]:
     c = check_id.lower()
     if c.startswith("prowler-"):
         c = c.split("prowler-", 1)[1]
+    if category == "s3" and "secure_transport" in c:
+        return None
     if category == "iam" and "password" in c and "policy" in c:
         return "iac/snippets/iam/fix-iam_password_policy_strong.tf"
     if category == "s3" and ("public" in c or "acl" in c or "policy" in c):
@@ -176,7 +179,11 @@ def infer_template_by_rule(check_id: str, category: str) -> Optional[str]:
 
 def import_id_for_type(resource_type: str, finding: Dict[str, Any]) -> str:
     arn = finding.get("resource_arn", "")
-    if resource_type in {"aws_s3_bucket_public_access_block", "aws_s3_bucket_server_side_encryption_configuration"}:
+    if resource_type in {
+        "aws_s3_bucket_public_access_block",
+        "aws_s3_bucket_server_side_encryption_configuration",
+        "aws_s3_bucket_policy",
+    }:
         return extract_bucket(arn)
     if resource_type == "aws_cloudtrail":
         return extract_trail_name(arn)
@@ -231,6 +238,79 @@ provider "aws" {
         return validate.returncode == 0
 
 
+def check_priority(check_id: str) -> int:
+    c = (check_id or "").lower()
+    if c.startswith("prowler-"):
+        c = c.split("prowler-", 1)[1]
+    if c == "cloudtrail_kms_encryption_enabled":
+        return 100
+    if c == "cloudtrail_log_file_validation_enabled":
+        return 90
+    if c in {"cloudtrail_s3_dataevents_read_enabled", "cloudtrail_s3_dataevents_write_enabled"}:
+        return 80
+    if c == "s3_bucket_secure_transport_policy":
+        return 70
+    return 10
+
+
+def build_secure_transport_policy_tf(finding: Dict[str, Any]) -> str:
+    bucket = extract_bucket(finding.get("resource_arn", ""))
+    if not bucket:
+        return ""
+
+    policy_doc: Dict[str, Any] = {"Version": "2012-10-17", "Statement": []}
+    try:
+        s3 = boto3.client("s3")
+        resp = s3.get_bucket_policy(Bucket=bucket)
+        raw = resp.get("Policy", "")
+        if raw:
+            loaded = json.loads(raw)
+            if isinstance(loaded, dict):
+                policy_doc = loaded
+    except Exception:
+        pass
+
+    stmts = policy_doc.get("Statement", [])
+    if not isinstance(stmts, list):
+        stmts = [stmts] if stmts else []
+
+    wanted_sid = "DenyInsecureTransport"
+    already = False
+    for s in stmts:
+        if not isinstance(s, dict):
+            continue
+        if s.get("Sid") == wanted_sid:
+            already = True
+            break
+        cond = s.get("Condition", {})
+        bool_cond = cond.get("Bool", {}) if isinstance(cond, dict) else {}
+        if isinstance(bool_cond, dict) and str(bool_cond.get("aws:SecureTransport", "")).lower() == "false":
+            already = True
+            break
+
+    if not already:
+        stmts.append(
+            {
+                "Sid": wanted_sid,
+                "Effect": "Deny",
+                "Principal": "*",
+                "Action": "s3:*",
+                "Resource": [f"arn:aws:s3:::{bucket}", f"arn:aws:s3:::{bucket}/*"],
+                "Condition": {"Bool": {"aws:SecureTransport": "false"}},
+            }
+        )
+    policy_doc["Statement"] = stmts
+    policy_json = json.dumps(policy_doc, indent=2)
+    return (
+        'resource "aws_s3_bucket_policy" "fix_s3_secure_transport" {\n'
+        f'  bucket = "{bucket}"\n'
+        "  policy = <<POLICY\n"
+        f"{policy_json}\n"
+        "POLICY\n"
+        "}\n"
+    )
+
+
 def main() -> None:
     p = argparse.ArgumentParser()
     p.add_argument("--input", required=True)
@@ -265,14 +345,48 @@ def main() -> None:
         overall["categories"][cat] = []
         overall["import_map"][cat] = []
 
-    for f in rows:
-        if f.get("status") != "FAIL":
-            continue
+    fail_rows = [x for x in rows if x.get("status") == "FAIL"]
+    fail_rows.sort(key=lambda x: check_priority(x.get("check_id", "")), reverse=True)
 
+    cloudtrail_with_kms: set[str] = set()
+    cloudtrail_with_dataevents: set[str] = set()
+
+    for f in fail_rows:
         cid = f.get("check_id", "unknown")
         cat = category_of(f.get("service", ""), cid)
         if not cat:
             overall["skipped"].append({"check_id": cid, "reason": "unsupported_category"})
+            continue
+
+        cid_l = cid.lower()
+        trail_name = extract_trail_name(f.get("resource_arn", ""))
+        if "cloudtrail_kms_encryption_enabled" in cid_l and trail_name:
+            cloudtrail_with_kms.add(trail_name)
+        if "cloudtrail_s3_dataevents_" in cid_l and trail_name:
+            if trail_name in cloudtrail_with_dataevents:
+                overall["categories"][cat].append(
+                    {
+                        "check_id": cid,
+                        "manual_required": True,
+                        "files": [],
+                        "priority": f.get("osfp", {}).get("priority_bucket", "P3"),
+                        "score": f.get("osfp", {}).get("priority_score", 0),
+                        "reason": "consolidated_duplicate_dataevents",
+                    }
+                )
+                continue
+            cloudtrail_with_dataevents.add(trail_name)
+        if "cloudtrail_log_file_validation_enabled" in cid_l and trail_name and trail_name in cloudtrail_with_kms:
+            overall["categories"][cat].append(
+                {
+                    "check_id": cid,
+                    "manual_required": True,
+                    "files": [],
+                    "priority": f.get("osfp", {}).get("priority_bucket", "P3"),
+                    "score": f.get("osfp", {}).get("priority_score", 0),
+                    "reason": "consolidated_into_kms_cloudtrail_fix",
+                }
+            )
             continue
 
         key = safe_id(
@@ -303,7 +417,9 @@ def main() -> None:
             template_path = infer_template_by_rule(cid, cat) or ""
 
         tf_code = ""
-        if template_path and Path(template_path).exists():
+        if "s3_bucket_secure_transport_policy" in cid_l:
+            tf_code = build_secure_transport_policy_tf(f)
+        elif template_path and Path(template_path).exists():
             tf_code = Path(template_path).read_text(encoding="utf-8")
         elif USE_BEDROCK_FALLBACK:
             prompt = (

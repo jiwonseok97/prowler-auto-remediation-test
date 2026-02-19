@@ -16,8 +16,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Resolve AWS auth mode
+        id: aws_auth
+        shell: bash
+        run: |
+          if [ -n "${{ secrets.AWS_ACCESS_KEY_ID }}" ] && [ -n "${{ secrets.AWS_SECRET_ACCESS_KEY }}" ]; then
+            echo "mode=static" >> "$GITHUB_OUTPUT"
+          else
+            echo "mode=oidc" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Configure AWS credentials (Static Keys)
-        if: ${{ secrets.AWS_ACCESS_KEY_ID != '' && secrets.AWS_SECRET_ACCESS_KEY != '' }}
+        if: ${{ steps.aws_auth.outputs.mode == 'static' }}
         uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -25,7 +35,7 @@ jobs:
           aws-region: ${{ vars.AWS_REGION || 'us-east-1' }}
 
       - name: Configure AWS credentials (OIDC)
-        if: ${{ !(secrets.AWS_ACCESS_KEY_ID != '' && secrets.AWS_SECRET_ACCESS_KEY != '') }}
+        if: ${{ steps.aws_auth.outputs.mode == 'oidc' }}
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_OIDC_ROLE_ARN }}

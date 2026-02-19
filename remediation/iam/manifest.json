@@ -2,7 +2,7 @@
   "category": "iam",
   "account": "132410971304",
   "region": "ap-northeast-2",
-  "created_at": "2026-02-19T09:41:12.155387+00:00",
+  "created_at": "2026-02-19T10:12:35.967629+00:00",
   "items": [
     {
       "check_id": "prowler-iam_no_root_access_key",
@@ -30,12 +30,11 @@
     },
     {
       "check_id": "prowler-iam_customer_attached_policy_no_administrative_privileges",
-      "manual_required": false,
-      "files": [
-        "remediation/iam/fix-prowler_iam_customer_attached_policy_no_administrative_privileges_arn_aws_iam_132410971304_policy_vuln_wildcard_policy_ap_northeast_2.tf"
-      ],
+      "manual_required": true,
+      "files": [],
       "priority": "P2",
-      "score": 65.5
+      "score": 65.5,
+      "reason": "unsupported_no_template"
     },
     {
       "check_id": "prowler-iam_password_policy_minimum_length_14",
@@ -57,30 +56,27 @@
     },
     {
       "check_id": "prowler-iam_policy_attached_only_to_group_or_roles",
-      "manual_required": false,
-      "files": [
-        "remediation/iam/fix-prowler_iam_policy_attached_only_to_group_or_roles_arn_aws_iam_132410971304_user_aws_learner_ap_northeast_2.tf"
-      ],
+      "manual_required": true,
+      "files": [],
       "priority": "P3",
-      "score": 48.0
+      "score": 48.0,
+      "reason": "unsupported_no_template"
     },
     {
       "check_id": "prowler-iam_policy_attached_only_to_group_or_roles",
-      "manual_required": false,
-      "files": [
-        "remediation/iam/fix-prowler_iam_policy_attached_only_to_group_or_roles_arn_aws_iam_132410971304_user_github_actions_prowler_ap_northeast_2.tf"
-      ],
+      "manual_required": true,
+      "files": [],
       "priority": "P3",
-      "score": 48.0
+      "score": 48.0,
+      "reason": "unsupported_no_template"
     },
     {
       "check_id": "prowler-iam_policy_attached_only_to_group_or_roles",
-      "manual_required": false,
-      "files": [
-        "remediation/iam/fix-prowler_iam_policy_attached_only_to_group_or_roles_arn_aws_iam_132410971304_user_vuln_user_ap_northeast_2.tf"
-      ],
+      "manual_required": true,
+      "files": [],
       "priority": "P3",
-      "score": 48.0
+      "score": 48.0,
+      "reason": "unsupported_no_template"
     }
   ],
   "import_map": [

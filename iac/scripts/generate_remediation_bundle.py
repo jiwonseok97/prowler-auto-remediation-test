@@ -531,7 +531,11 @@ def build_access_analyzer_tf(finding: Dict[str, Any], region: str, account_id: s
         analyzers = resp.get("analyzers", []) or []
         if analyzers:
             name = str(analyzers[0].get("name", ""))
-    except Exception:
+    except Exception as exc:
+        msg = str(exc).lower()
+        # If runner role cannot read/create access analyzer, skip safely.
+        if "accessdenied" in msg or "not authorized" in msg:
+            return ""
         name = ""
     if not name:
         name = f"account-analyzer-{account_id}-{region}".lower()
@@ -595,6 +599,7 @@ def build_config_recorder_tf(finding: Dict[str, Any], region: str, account_id: s
 
     has_acl = False
     has_put = False
+    has_list = False
     for s in stmts:
         if not isinstance(s, dict):
             continue
@@ -607,6 +612,8 @@ def build_config_recorder_tf(finding: Dict[str, Any], region: str, account_id: s
             has_acl = True
         if str(service).lower() == "config.amazonaws.com" and "s3:putobject" in actions_l:
             has_put = True
+        if str(service).lower() == "config.amazonaws.com" and "s3:listbucket" in actions_l:
+            has_list = True
 
     if not has_acl:
         stmts.append(
@@ -616,6 +623,24 @@ def build_config_recorder_tf(finding: Dict[str, Any], region: str, account_id: s
                 "Principal": {"Service": "config.amazonaws.com"},
                 "Action": "s3:GetBucketAcl",
                 "Resource": f"arn:aws:s3:::{bucket_name}",
+                "Condition": {
+                    "StringEquals": {"aws:SourceAccount": account_id},
+                    "ArnLike": {"aws:SourceArn": f"arn:aws:config:{region}:{account_id}:*"},
+                },
+            }
+        )
+    if not has_list:
+        stmts.append(
+            {
+                "Sid": "AWSConfigBucketListCheck",
+                "Effect": "Allow",
+                "Principal": {"Service": "config.amazonaws.com"},
+                "Action": "s3:ListBucket",
+                "Resource": f"arn:aws:s3:::{bucket_name}",
+                "Condition": {
+                    "StringEquals": {"aws:SourceAccount": account_id},
+                    "ArnLike": {"aws:SourceArn": f"arn:aws:config:{region}:{account_id}:*"},
+                },
             }
         )
     if not has_put:
@@ -626,7 +651,13 @@ def build_config_recorder_tf(finding: Dict[str, Any], region: str, account_id: s
                 "Principal": {"Service": "config.amazonaws.com"},
                 "Action": "s3:PutObject",
                 "Resource": f"arn:aws:s3:::{bucket_name}/AWSLogs/{account_id}/Config/*",
-                "Condition": {"StringEquals": {"s3:x-amz-acl": "bucket-owner-full-control"}},
+                "Condition": {
+                    "StringEquals": {
+                        "s3:x-amz-acl": "bucket-owner-full-control",
+                        "aws:SourceAccount": account_id,
+                    },
+                    "ArnLike": {"aws:SourceArn": f"arn:aws:config:{region}:{account_id}:*"},
+                },
             }
         )
     policy_doc["Statement"] = stmts

@@ -1,8 +1,8 @@
-name: Security Pipeline - 04 Rescan and Compare
+name: Security Pipeline - 04 Verify FAIL Reduction
 
 on:
   workflow_run:
-    workflows: ["Security Pipeline - 03 Apply Merged Remediation"]
+    workflows: ["Security Pipeline - 03 Apply Merged Generated Terraform Remediation"]
     types: [completed]
 
 permissions:

@@ -1,4 +1,4 @@
-name: Security Pipeline - 03 Apply Merged Remediation
+name: Security Pipeline - 03 Apply Merged Generated Terraform Remediation
 
 on:
   workflow_dispatch:

@@ -934,53 +934,9 @@ def build_cloudtrail_tf(finding: Dict[str, Any], region: str, account_id: str) -
             ]
         )
     elif "cloudtrail_cloudwatch_logging_enabled" in cid_l:
-        lg_arn = str(detail.get("CloudWatchLogsLogGroupArn", ""))
-        role_arn = str(detail.get("CloudWatchLogsRoleArn", ""))
-        if not lg_arn:
-            log_group_name = pick_default_cloudtrail_log_group(region, account_id)
-            lg_arn = f"arn:aws:logs:{region}:{account_id}:log-group:{log_group_name}:*"
-            finding["_log_group_name"] = log_group_name
-            policy_prefix += (
-                'resource "aws_cloudwatch_log_group" "fix_cloudtrail_log_group" {\n'
-                f'  name = "{log_group_name}"\n'
-                "}\n\n"
-            )
-        if not role_arn:
-            role_name = f"CloudTrail_CloudWatchLogs_Role_{safe_id(name)}"[:64]
-            role_arn = f"arn:aws:iam::{account_id}:role/{role_name}"
-            policy_doc = {
-                "Version": "2012-10-17",
-                "Statement": [
-                    {
-                        "Effect": "Allow",
-                        "Action": [
-                            "logs:CreateLogStream",
-                            "logs:PutLogEvents",
-                        ],
-                        "Resource": [lg_arn.replace(":*", ":log-stream:*"), lg_arn],
-                    }
-                ],
-            }
-            assume_doc = {
-                "Version": "2012-10-17",
-                "Statement": [
-                    {"Effect": "Allow", "Principal": {"Service": "cloudtrail.amazonaws.com"}, "Action": "sts:AssumeRole"}
-                ],
-            }
-            policy_prefix += (
-                'resource "aws_iam_role" "fix_cloudtrail_cw_role" {\n'
-                f'  name               = "{role_name}"\n'
-                f"  assume_role_policy = <<POLICY\n{json.dumps(assume_doc, indent=2)}\nPOLICY\n"
-                "}\n\n"
-                'resource "aws_iam_role_policy" "fix_cloudtrail_cw_role_policy" {\n'
-                f'  name   = "{role_name}-policy"\n'
-                "  role   = aws_iam_role.fix_cloudtrail_cw_role.id\n"
-                f"  policy = <<POLICY\n{json.dumps(policy_doc, indent=2)}\nPOLICY\n"
-                "}\n\n"
-            )
-        lines.append("  enable_log_file_validation    = true")
-        lines.append(f'  cloud_watch_logs_group_arn    = "{lg_arn}"')
-        lines.append(f'  cloud_watch_logs_role_arn     = "{role_arn}"')
+        # Enabling CloudWatch logging for CloudTrail often requires iam:PassRole/iam:CreateRole.
+        # To keep apply resilient under least-privilege runner roles, skip auto-remediation here.
+        return ""
     elif "kms_encryption_enabled" in cid_l:
         kms = str(detail.get("KmsKeyId", ""))
         if not kms:

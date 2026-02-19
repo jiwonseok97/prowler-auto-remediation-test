@@ -84,7 +84,7 @@ def main() -> None:
                 "--head",
                 branch,
                 "--title",
-                f"[AutoRemediation] {category} {account}",
+                f"[AutoRemediation] {category}",
                 "--body",
                 body,
             ],

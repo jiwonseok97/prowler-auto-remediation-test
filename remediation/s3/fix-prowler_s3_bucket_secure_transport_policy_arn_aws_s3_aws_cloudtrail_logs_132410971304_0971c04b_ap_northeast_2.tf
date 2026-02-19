@@ -1,7 +1,36 @@
-resource "aws_s3_bucket_public_access_block" "fix_s3_public_access_60ec5612a4" {
-  bucket                  = "aws-cloudtrail-logs-132410971304-0971c04b"
-  block_public_acls       = true
-  block_public_policy     = true
-  ignore_public_acls      = true
-  restrict_public_buckets = true
+resource "aws_s3_bucket_policy" "fix_s3_secure_transport_60ec5612a4" {
+  bucket = "aws-cloudtrail-logs-132410971304-0971c04b"
+  policy = <<POLICY
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Deny",
+      "Principal": "*",
+      "Action": "s3:PutObject",
+      "Resource": "arn:aws:s3:::aws-cloudtrail-logs-132410971304-0971c04b/*",
+      "Condition": {
+        "StringNotEquals": {
+          "s3:x-amz-server-side-encryption": "aws:kms"
+        }
+      }
+    },
+    {
+      "Sid": "DenyInsecureTransport",
+      "Effect": "Deny",
+      "Principal": "*",
+      "Action": "s3:*",
+      "Resource": [
+        "arn:aws:s3:::aws-cloudtrail-logs-132410971304-0971c04b",
+        "arn:aws:s3:::aws-cloudtrail-logs-132410971304-0971c04b/*"
+      ],
+      "Condition": {
+        "Bool": {
+          "aws:SecureTransport": "false"
+        }
+      }
+    }
+  ]
+}
+POLICY
 }

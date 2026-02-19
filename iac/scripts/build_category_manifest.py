@@ -3,7 +3,7 @@ import argparse
 import json
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Dict
+from typing import Any, Dict, List
 
 
 def main() -> None:
@@ -30,6 +30,21 @@ def main() -> None:
         if not items:
             continue
 
+        import_rows: List[Dict[str, Any]] = generated.get("import_map", {}).get(category, [])
+        imports_by_check: Dict[str, List[Dict[str, Any]]] = {}
+        for imp in import_rows:
+            if not isinstance(imp, dict):
+                continue
+            cid = str(imp.get("check_id", ""))
+            imports_by_check.setdefault(cid, []).append(
+                {
+                    "resource_address": imp.get("address", ""),
+                    "arn": imp.get("import_id", ""),
+                    "resource_type": imp.get("resource_type", ""),
+                    "optional": bool(imp.get("optional", False)),
+                }
+            )
+
         top = sorted(items, key=lambda x: x.get("score", 0), reverse=True)[:5]
         result["categories"].append(
             {
@@ -42,27 +57,47 @@ def main() -> None:
             }
         )
 
+        enriched_items: List[Dict[str, Any]] = []
+        for it in items:
+            cid = it.get("check_id")
+            files = it.get("files", [])
+            enriched = dict(it)
+            enriched["resources"] = imports_by_check.get(str(cid), [])
+            if files:
+                enriched["tf_file"] = files[0]
+            enriched_items.append(enriched)
+
         cat_manifest = {
             "category": category,
             "account": a.account_id,
             "region": a.region,
             "created_at": datetime.now(timezone.utc).isoformat(),
-            "items": items,
-            "import_map": generated.get("import_map", {}).get(category, []),
+            "items": enriched_items,
+            "import_map": import_rows,
         }
         (root / category / "manifest.json").write_text(json.dumps(cat_manifest, indent=2), encoding="utf-8")
 
-        for it in items:
+        for it in enriched_items:
             cid = it.get("check_id")
-            result["check_map"][cid] = {
+            entry = {
                 "category": category,
                 "priority": it.get("priority", "P3"),
                 "osfp_score": it.get("score", 0),
                 "files": it.get("files", []),
+                "tf_file": it.get("tf_file", ""),
+                "resources": it.get("resources", []),
                 "account": a.account_id,
                 "region": a.region,
                 "created_at": datetime.now(timezone.utc).isoformat(),
             }
+            if cid in result["check_map"]:
+                prev = result["check_map"][cid]
+                if isinstance(prev, list):
+                    prev.append(entry)
+                else:
+                    result["check_map"][cid] = [prev, entry]
+            else:
+                result["check_map"][cid] = entry
 
     Path(a.output).write_text(json.dumps(result, indent=2), encoding="utf-8")
 

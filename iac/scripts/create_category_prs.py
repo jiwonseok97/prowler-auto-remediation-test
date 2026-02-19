@@ -53,7 +53,8 @@ def main() -> None:
             print(f"skip {category}: no file changes")
             run(["git", "checkout", "main"], check=False)
             continue
-        run(["git", "commit", "-m", f"remediation: {category} {a.run_id}"], check=False)
+        message = f"PR-merge / remediation: {category}"
+        run(["git", "commit", "-m", message], check=False)
         run(["git", "push", "-u", "origin", branch, "--force"])
 
         top5 = ", ".join(cat.get("top5", [])[:5])
@@ -87,7 +88,7 @@ def main() -> None:
                 "--head",
                 branch,
                 "--title",
-                f"[AutoRemediation] {category}",
+                message,
                 "--body",
                 body,
             ],

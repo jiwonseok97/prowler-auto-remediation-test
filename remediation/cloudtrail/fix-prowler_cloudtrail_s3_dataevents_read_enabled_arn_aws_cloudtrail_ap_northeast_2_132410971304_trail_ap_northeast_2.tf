@@ -82,6 +82,8 @@ resource "aws_cloudtrail" "fix_cloudtrail_21ff33774c" {
     }
   }
 
+  depends_on = [aws_s3_bucket_policy.fix_cloudtrail_bucket_policy_21ff33774c]
+
   lifecycle {
     ignore_changes = [
       event_selector,

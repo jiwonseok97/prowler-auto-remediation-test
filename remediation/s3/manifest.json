@@ -2,7 +2,7 @@
   "category": "s3",
   "account": "132410971304",
   "region": "ap-northeast-2",
-  "created_at": "2026-02-19T10:12:35.968106+00:00",
+  "created_at": "2026-02-19T10:53:32.002762+00:00",
   "items": [
     {
       "check_id": "prowler-s3_account_level_public_access_blocks",
@@ -11,7 +11,16 @@
         "remediation/s3/fix-prowler_s3_account_level_public_access_blocks_arn_aws_s3_ap_northeast_2_132410971304_account_ap_northeast_2.tf"
       ],
       "priority": "P1",
-      "score": 75.5
+      "score": 75.5,
+      "resources": [
+        {
+          "resource_address": "aws_s3_account_public_access_block.fix_s3_account_public_access_b5b0472ece",
+          "arn": "132410971304",
+          "resource_type": "aws_s3_account_public_access_block",
+          "optional": true
+        }
+      ],
+      "tf_file": "remediation/s3/fix-prowler_s3_account_level_public_access_blocks_arn_aws_s3_ap_northeast_2_132410971304_account_ap_northeast_2.tf"
     },
     {
       "check_id": "prowler-s3_bucket_level_public_access_block",
@@ -20,7 +29,40 @@
         "remediation/s3/fix-prowler_s3_bucket_level_public_access_block_arn_aws_s3_aws_cloudtrail_logs_132410971304_0971c04b_ap_northeast_2.tf"
       ],
       "priority": "P2",
-      "score": 68.5
+      "score": 68.5,
+      "resources": [
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_6a64cf1480",
+          "arn": "aws-cloudtrail-logs-132410971304-0971c04b",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_3f06a52d3c",
+          "arn": "aws-cloudtrail-logs-132410971304-0971c04b-logs",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_f187e51f9d",
+          "arn": "vuln-bucket-ap-northeast-2-9c753e89",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_e9d1dc9dae",
+          "arn": "vuln-bucket-ap-northeast-2-e67e7fba",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_d403de7ba9",
+          "arn": "vuln-bucket-ap-northeast-2-f9fd7730",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        }
+      ],
+      "tf_file": "remediation/s3/fix-prowler_s3_bucket_level_public_access_block_arn_aws_s3_aws_cloudtrail_logs_132410971304_0971c04b_ap_northeast_2.tf"
     },
     {
       "check_id": "prowler-s3_bucket_level_public_access_block",
@@ -29,7 +71,40 @@
         "remediation/s3/fix-prowler_s3_bucket_level_public_access_block_arn_aws_s3_aws_cloudtrail_logs_132410971304_0971c04b_logs_ap_northeast_2.tf"
       ],
       "priority": "P2",
-      "score": 68.5
+      "score": 68.5,
+      "resources": [
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_6a64cf1480",
+          "arn": "aws-cloudtrail-logs-132410971304-0971c04b",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_3f06a52d3c",
+          "arn": "aws-cloudtrail-logs-132410971304-0971c04b-logs",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_f187e51f9d",
+          "arn": "vuln-bucket-ap-northeast-2-9c753e89",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_e9d1dc9dae",
+          "arn": "vuln-bucket-ap-northeast-2-e67e7fba",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_d403de7ba9",
+          "arn": "vuln-bucket-ap-northeast-2-f9fd7730",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        }
+      ],
+      "tf_file": "remediation/s3/fix-prowler_s3_bucket_level_public_access_block_arn_aws_s3_aws_cloudtrail_logs_132410971304_0971c04b_logs_ap_northeast_2.tf"
     },
     {
       "check_id": "prowler-s3_bucket_level_public_access_block",
@@ -38,7 +113,40 @@
         "remediation/s3/fix-prowler_s3_bucket_level_public_access_block_arn_aws_s3_vuln_bucket_ap_northeast_2_9c753e89_ap_northeast_2.tf"
       ],
       "priority": "P2",
-      "score": 68.5
+      "score": 68.5,
+      "resources": [
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_6a64cf1480",
+          "arn": "aws-cloudtrail-logs-132410971304-0971c04b",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_3f06a52d3c",
+          "arn": "aws-cloudtrail-logs-132410971304-0971c04b-logs",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_f187e51f9d",
+          "arn": "vuln-bucket-ap-northeast-2-9c753e89",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_e9d1dc9dae",
+          "arn": "vuln-bucket-ap-northeast-2-e67e7fba",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_d403de7ba9",
+          "arn": "vuln-bucket-ap-northeast-2-f9fd7730",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        }
+      ],
+      "tf_file": "remediation/s3/fix-prowler_s3_bucket_level_public_access_block_arn_aws_s3_vuln_bucket_ap_northeast_2_9c753e89_ap_northeast_2.tf"
     },
     {
       "check_id": "prowler-s3_bucket_level_public_access_block",
@@ -47,7 +155,40 @@
         "remediation/s3/fix-prowler_s3_bucket_level_public_access_block_arn_aws_s3_vuln_bucket_ap_northeast_2_e67e7fba_ap_northeast_2.tf"
       ],
       "priority": "P2",
-      "score": 68.5
+      "score": 68.5,
+      "resources": [
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_6a64cf1480",
+          "arn": "aws-cloudtrail-logs-132410971304-0971c04b",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_3f06a52d3c",
+          "arn": "aws-cloudtrail-logs-132410971304-0971c04b-logs",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_f187e51f9d",
+          "arn": "vuln-bucket-ap-northeast-2-9c753e89",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_e9d1dc9dae",
+          "arn": "vuln-bucket-ap-northeast-2-e67e7fba",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_d403de7ba9",
+          "arn": "vuln-bucket-ap-northeast-2-f9fd7730",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        }
+      ],
+      "tf_file": "remediation/s3/fix-prowler_s3_bucket_level_public_access_block_arn_aws_s3_vuln_bucket_ap_northeast_2_e67e7fba_ap_northeast_2.tf"
     },
     {
       "check_id": "prowler-s3_bucket_level_public_access_block",
@@ -56,87 +197,40 @@
         "remediation/s3/fix-prowler_s3_bucket_level_public_access_block_arn_aws_s3_vuln_bucket_ap_northeast_2_f9fd7730_ap_northeast_2.tf"
       ],
       "priority": "P2",
-      "score": 68.5
-    },
-    {
-      "check_id": "prowler-s3_bucket_no_mfa_delete",
-      "manual_required": true,
-      "files": [],
-      "priority": "P2",
-      "score": 60.5,
-      "reason": "manual_or_non_terraform"
-    },
-    {
-      "check_id": "prowler-s3_bucket_no_mfa_delete",
-      "manual_required": true,
-      "files": [],
-      "priority": "P2",
-      "score": 60.5,
-      "reason": "manual_or_non_terraform"
-    },
-    {
-      "check_id": "prowler-s3_bucket_no_mfa_delete",
-      "manual_required": true,
-      "files": [],
-      "priority": "P2",
-      "score": 60.5,
-      "reason": "manual_or_non_terraform"
-    },
-    {
-      "check_id": "prowler-s3_bucket_no_mfa_delete",
-      "manual_required": true,
-      "files": [],
-      "priority": "P2",
-      "score": 60.5,
-      "reason": "manual_or_non_terraform"
-    },
-    {
-      "check_id": "prowler-s3_bucket_no_mfa_delete",
-      "manual_required": true,
-      "files": [],
-      "priority": "P2",
-      "score": 60.5,
-      "reason": "manual_or_non_terraform"
-    },
-    {
-      "check_id": "prowler-s3_bucket_no_mfa_delete",
-      "manual_required": true,
-      "files": [],
-      "priority": "P2",
-      "score": 60.5,
-      "reason": "manual_or_non_terraform"
-    },
-    {
-      "check_id": "prowler-s3_bucket_no_mfa_delete",
-      "manual_required": true,
-      "files": [],
-      "priority": "P2",
-      "score": 60.5,
-      "reason": "manual_or_non_terraform"
-    },
-    {
-      "check_id": "prowler-s3_bucket_no_mfa_delete",
-      "manual_required": true,
-      "files": [],
-      "priority": "P2",
-      "score": 60.5,
-      "reason": "manual_or_non_terraform"
-    },
-    {
-      "check_id": "prowler-s3_bucket_no_mfa_delete",
-      "manual_required": true,
-      "files": [],
-      "priority": "P2",
-      "score": 60.5,
-      "reason": "manual_or_non_terraform"
-    },
-    {
-      "check_id": "prowler-s3_bucket_no_mfa_delete",
-      "manual_required": true,
-      "files": [],
-      "priority": "P2",
-      "score": 60.5,
-      "reason": "manual_or_non_terraform"
+      "score": 68.5,
+      "resources": [
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_6a64cf1480",
+          "arn": "aws-cloudtrail-logs-132410971304-0971c04b",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_3f06a52d3c",
+          "arn": "aws-cloudtrail-logs-132410971304-0971c04b-logs",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_f187e51f9d",
+          "arn": "vuln-bucket-ap-northeast-2-9c753e89",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_e9d1dc9dae",
+          "arn": "vuln-bucket-ap-northeast-2-e67e7fba",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_d403de7ba9",
+          "arn": "vuln-bucket-ap-northeast-2-f9fd7730",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        }
+      ],
+      "tf_file": "remediation/s3/fix-prowler_s3_bucket_level_public_access_block_arn_aws_s3_vuln_bucket_ap_northeast_2_f9fd7730_ap_northeast_2.tf"
     },
     {
       "check_id": "prowler-cloudtrail_logs_s3_bucket_access_logging_enabled",
@@ -144,7 +238,8 @@
       "files": [],
       "priority": "P2",
       "score": 58.5,
-      "reason": "unsupported_no_template"
+      "reason": "generated_hcl_failed_validation",
+      "resources": []
     },
     {
       "check_id": "prowler-cloudtrail_logs_s3_bucket_access_logging_enabled",
@@ -152,7 +247,8 @@
       "files": [],
       "priority": "P2",
       "score": 58.5,
-      "reason": "unsupported_no_template"
+      "reason": "generated_hcl_failed_validation",
+      "resources": []
     },
     {
       "check_id": "prowler-cloudwatch_log_metric_filter_for_s3_bucket_policy_changes",
@@ -160,7 +256,8 @@
       "files": [],
       "priority": "P2",
       "score": 58.5,
-      "reason": "unresolved_variables"
+      "reason": "unresolved_variables",
+      "resources": []
     },
     {
       "check_id": "prowler-s3_bucket_secure_transport_policy",
@@ -169,7 +266,70 @@
         "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_aws_cloudtrail_logs_132410971304_0971c04b_ap_northeast_2.tf"
       ],
       "priority": "P2",
-      "score": 58.5
+      "score": 58.5,
+      "resources": [
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_60ec5612a4",
+          "arn": "aws-cloudtrail-logs-132410971304-0971c04b",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_26b0cb1663",
+          "arn": "aws-cloudtrail-logs-132410971304-0971c04b-logs",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_02a8c829a9",
+          "arn": "prowler-dashboard-132410971304",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_e947414e4a",
+          "arn": "prowler-terraform-state-132410971304",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_9509dc40ad",
+          "arn": "vuln-bucket-ap-northeast-2-9c753e89",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_b794119485",
+          "arn": "vuln-bucket-ap-northeast-2-e67e7fba",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_09d6b6ce70",
+          "arn": "vuln-bucket-ap-northeast-2-f9fd7730",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_83814215b4",
+          "arn": "vuln-cloudtrail-ap-northeast-2-9c753e89",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_6bacc141c7",
+          "arn": "vuln-cloudtrail-ap-northeast-2-e67e7fba",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_e6194aac3b",
+          "arn": "vuln-cloudtrail-ap-northeast-2-f9fd7730",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        }
+      ],
+      "tf_file": "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_aws_cloudtrail_logs_132410971304_0971c04b_ap_northeast_2.tf"
     },
     {
       "check_id": "prowler-s3_bucket_secure_transport_policy",
@@ -178,7 +338,70 @@
         "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_aws_cloudtrail_logs_132410971304_0971c04b_logs_ap_northeast_2.tf"
       ],
       "priority": "P2",
-      "score": 58.5
+      "score": 58.5,
+      "resources": [
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_60ec5612a4",
+          "arn": "aws-cloudtrail-logs-132410971304-0971c04b",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_26b0cb1663",
+          "arn": "aws-cloudtrail-logs-132410971304-0971c04b-logs",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_02a8c829a9",
+          "arn": "prowler-dashboard-132410971304",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_e947414e4a",
+          "arn": "prowler-terraform-state-132410971304",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_9509dc40ad",
+          "arn": "vuln-bucket-ap-northeast-2-9c753e89",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_b794119485",
+          "arn": "vuln-bucket-ap-northeast-2-e67e7fba",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_09d6b6ce70",
+          "arn": "vuln-bucket-ap-northeast-2-f9fd7730",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_83814215b4",
+          "arn": "vuln-cloudtrail-ap-northeast-2-9c753e89",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_6bacc141c7",
+          "arn": "vuln-cloudtrail-ap-northeast-2-e67e7fba",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_e6194aac3b",
+          "arn": "vuln-cloudtrail-ap-northeast-2-f9fd7730",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        }
+      ],
+      "tf_file": "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_aws_cloudtrail_logs_132410971304_0971c04b_logs_ap_northeast_2.tf"
     },
     {
       "check_id": "prowler-s3_bucket_secure_transport_policy",
@@ -187,7 +410,70 @@
         "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_prowler_dashboard_132410971304_ap_northeast_2.tf"
       ],
       "priority": "P2",
-      "score": 58.5
+      "score": 58.5,
+      "resources": [
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_60ec5612a4",
+          "arn": "aws-cloudtrail-logs-132410971304-0971c04b",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_26b0cb1663",
+          "arn": "aws-cloudtrail-logs-132410971304-0971c04b-logs",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_02a8c829a9",
+          "arn": "prowler-dashboard-132410971304",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_e947414e4a",
+          "arn": "prowler-terraform-state-132410971304",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_9509dc40ad",
+          "arn": "vuln-bucket-ap-northeast-2-9c753e89",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_b794119485",
+          "arn": "vuln-bucket-ap-northeast-2-e67e7fba",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_09d6b6ce70",
+          "arn": "vuln-bucket-ap-northeast-2-f9fd7730",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_83814215b4",
+          "arn": "vuln-cloudtrail-ap-northeast-2-9c753e89",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_6bacc141c7",
+          "arn": "vuln-cloudtrail-ap-northeast-2-e67e7fba",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_e6194aac3b",
+          "arn": "vuln-cloudtrail-ap-northeast-2-f9fd7730",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        }
+      ],
+      "tf_file": "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_prowler_dashboard_132410971304_ap_northeast_2.tf"
     },
     {
       "check_id": "prowler-s3_bucket_secure_transport_policy",
@@ -196,7 +482,70 @@
         "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_prowler_terraform_state_132410971304_ap_northeast_2.tf"
       ],
       "priority": "P2",
-      "score": 58.5
+      "score": 58.5,
+      "resources": [
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_60ec5612a4",
+          "arn": "aws-cloudtrail-logs-132410971304-0971c04b",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_26b0cb1663",
+          "arn": "aws-cloudtrail-logs-132410971304-0971c04b-logs",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_02a8c829a9",
+          "arn": "prowler-dashboard-132410971304",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_e947414e4a",
+          "arn": "prowler-terraform-state-132410971304",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_9509dc40ad",
+          "arn": "vuln-bucket-ap-northeast-2-9c753e89",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_b794119485",
+          "arn": "vuln-bucket-ap-northeast-2-e67e7fba",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_09d6b6ce70",
+          "arn": "vuln-bucket-ap-northeast-2-f9fd7730",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_83814215b4",
+          "arn": "vuln-cloudtrail-ap-northeast-2-9c753e89",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_6bacc141c7",
+          "arn": "vuln-cloudtrail-ap-northeast-2-e67e7fba",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_e6194aac3b",
+          "arn": "vuln-cloudtrail-ap-northeast-2-f9fd7730",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        }
+      ],
+      "tf_file": "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_prowler_terraform_state_132410971304_ap_northeast_2.tf"
     },
     {
       "check_id": "prowler-s3_bucket_secure_transport_policy",
@@ -205,7 +554,70 @@
         "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_bucket_ap_northeast_2_9c753e89_ap_northeast_2.tf"
       ],
       "priority": "P2",
-      "score": 58.5
+      "score": 58.5,
+      "resources": [
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_60ec5612a4",
+          "arn": "aws-cloudtrail-logs-132410971304-0971c04b",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_26b0cb1663",
+          "arn": "aws-cloudtrail-logs-132410971304-0971c04b-logs",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_02a8c829a9",
+          "arn": "prowler-dashboard-132410971304",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_e947414e4a",
+          "arn": "prowler-terraform-state-132410971304",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_9509dc40ad",
+          "arn": "vuln-bucket-ap-northeast-2-9c753e89",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_b794119485",
+          "arn": "vuln-bucket-ap-northeast-2-e67e7fba",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_09d6b6ce70",
+          "arn": "vuln-bucket-ap-northeast-2-f9fd7730",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_83814215b4",
+          "arn": "vuln-cloudtrail-ap-northeast-2-9c753e89",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_6bacc141c7",
+          "arn": "vuln-cloudtrail-ap-northeast-2-e67e7fba",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_e6194aac3b",
+          "arn": "vuln-cloudtrail-ap-northeast-2-f9fd7730",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        }
+      ],
+      "tf_file": "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_bucket_ap_northeast_2_9c753e89_ap_northeast_2.tf"
     },
     {
       "check_id": "prowler-s3_bucket_secure_transport_policy",
@@ -214,7 +626,70 @@
         "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_bucket_ap_northeast_2_e67e7fba_ap_northeast_2.tf"
       ],
       "priority": "P2",
-      "score": 58.5
+      "score": 58.5,
+      "resources": [
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_60ec5612a4",
+          "arn": "aws-cloudtrail-logs-132410971304-0971c04b",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_26b0cb1663",
+          "arn": "aws-cloudtrail-logs-132410971304-0971c04b-logs",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_02a8c829a9",
+          "arn": "prowler-dashboard-132410971304",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_e947414e4a",
+          "arn": "prowler-terraform-state-132410971304",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_9509dc40ad",
+          "arn": "vuln-bucket-ap-northeast-2-9c753e89",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_b794119485",
+          "arn": "vuln-bucket-ap-northeast-2-e67e7fba",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_09d6b6ce70",
+          "arn": "vuln-bucket-ap-northeast-2-f9fd7730",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_83814215b4",
+          "arn": "vuln-cloudtrail-ap-northeast-2-9c753e89",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_6bacc141c7",
+          "arn": "vuln-cloudtrail-ap-northeast-2-e67e7fba",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_e6194aac3b",
+          "arn": "vuln-cloudtrail-ap-northeast-2-f9fd7730",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        }
+      ],
+      "tf_file": "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_bucket_ap_northeast_2_e67e7fba_ap_northeast_2.tf"
     },
     {
       "check_id": "prowler-s3_bucket_secure_transport_policy",
@@ -223,7 +698,70 @@
         "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_bucket_ap_northeast_2_f9fd7730_ap_northeast_2.tf"
       ],
       "priority": "P2",
-      "score": 58.5
+      "score": 58.5,
+      "resources": [
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_60ec5612a4",
+          "arn": "aws-cloudtrail-logs-132410971304-0971c04b",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_26b0cb1663",
+          "arn": "aws-cloudtrail-logs-132410971304-0971c04b-logs",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_02a8c829a9",
+          "arn": "prowler-dashboard-132410971304",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_e947414e4a",
+          "arn": "prowler-terraform-state-132410971304",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_9509dc40ad",
+          "arn": "vuln-bucket-ap-northeast-2-9c753e89",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_b794119485",
+          "arn": "vuln-bucket-ap-northeast-2-e67e7fba",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_09d6b6ce70",
+          "arn": "vuln-bucket-ap-northeast-2-f9fd7730",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_83814215b4",
+          "arn": "vuln-cloudtrail-ap-northeast-2-9c753e89",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_6bacc141c7",
+          "arn": "vuln-cloudtrail-ap-northeast-2-e67e7fba",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_e6194aac3b",
+          "arn": "vuln-cloudtrail-ap-northeast-2-f9fd7730",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        }
+      ],
+      "tf_file": "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_bucket_ap_northeast_2_f9fd7730_ap_northeast_2.tf"
     },
     {
       "check_id": "prowler-s3_bucket_secure_transport_policy",
@@ -232,7 +770,70 @@
         "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_cloudtrail_ap_northeast_2_9c753e89_ap_northeast_2.tf"
       ],
       "priority": "P2",
-      "score": 58.5
+      "score": 58.5,
+      "resources": [
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_60ec5612a4",
+          "arn": "aws-cloudtrail-logs-132410971304-0971c04b",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_26b0cb1663",
+          "arn": "aws-cloudtrail-logs-132410971304-0971c04b-logs",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_02a8c829a9",
+          "arn": "prowler-dashboard-132410971304",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_e947414e4a",
+          "arn": "prowler-terraform-state-132410971304",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_9509dc40ad",
+          "arn": "vuln-bucket-ap-northeast-2-9c753e89",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_b794119485",
+          "arn": "vuln-bucket-ap-northeast-2-e67e7fba",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_09d6b6ce70",
+          "arn": "vuln-bucket-ap-northeast-2-f9fd7730",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_83814215b4",
+          "arn": "vuln-cloudtrail-ap-northeast-2-9c753e89",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_6bacc141c7",
+          "arn": "vuln-cloudtrail-ap-northeast-2-e67e7fba",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_e6194aac3b",
+          "arn": "vuln-cloudtrail-ap-northeast-2-f9fd7730",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        }
+      ],
+      "tf_file": "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_cloudtrail_ap_northeast_2_9c753e89_ap_northeast_2.tf"
     },
     {
       "check_id": "prowler-s3_bucket_secure_transport_policy",
@@ -241,7 +842,70 @@
         "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_cloudtrail_ap_northeast_2_e67e7fba_ap_northeast_2.tf"
       ],
       "priority": "P2",
-      "score": 58.5
+      "score": 58.5,
+      "resources": [
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_60ec5612a4",
+          "arn": "aws-cloudtrail-logs-132410971304-0971c04b",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_26b0cb1663",
+          "arn": "aws-cloudtrail-logs-132410971304-0971c04b-logs",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_02a8c829a9",
+          "arn": "prowler-dashboard-132410971304",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_e947414e4a",
+          "arn": "prowler-terraform-state-132410971304",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_9509dc40ad",
+          "arn": "vuln-bucket-ap-northeast-2-9c753e89",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_b794119485",
+          "arn": "vuln-bucket-ap-northeast-2-e67e7fba",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_09d6b6ce70",
+          "arn": "vuln-bucket-ap-northeast-2-f9fd7730",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_83814215b4",
+          "arn": "vuln-cloudtrail-ap-northeast-2-9c753e89",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_6bacc141c7",
+          "arn": "vuln-cloudtrail-ap-northeast-2-e67e7fba",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_e6194aac3b",
+          "arn": "vuln-cloudtrail-ap-northeast-2-f9fd7730",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        }
+      ],
+      "tf_file": "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_cloudtrail_ap_northeast_2_e67e7fba_ap_northeast_2.tf"
     },
     {
       "check_id": "prowler-s3_bucket_secure_transport_policy",
@@ -250,23 +914,92 @@
         "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_cloudtrail_ap_northeast_2_f9fd7730_ap_northeast_2.tf"
       ],
       "priority": "P2",
-      "score": 58.5
+      "score": 58.5,
+      "resources": [
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_60ec5612a4",
+          "arn": "aws-cloudtrail-logs-132410971304-0971c04b",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_26b0cb1663",
+          "arn": "aws-cloudtrail-logs-132410971304-0971c04b-logs",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_02a8c829a9",
+          "arn": "prowler-dashboard-132410971304",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_e947414e4a",
+          "arn": "prowler-terraform-state-132410971304",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_9509dc40ad",
+          "arn": "vuln-bucket-ap-northeast-2-9c753e89",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_b794119485",
+          "arn": "vuln-bucket-ap-northeast-2-e67e7fba",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_09d6b6ce70",
+          "arn": "vuln-bucket-ap-northeast-2-f9fd7730",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_83814215b4",
+          "arn": "vuln-cloudtrail-ap-northeast-2-9c753e89",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_6bacc141c7",
+          "arn": "vuln-cloudtrail-ap-northeast-2-e67e7fba",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_public_access_block.fix_s3_public_access_e6194aac3b",
+          "arn": "vuln-cloudtrail-ap-northeast-2-f9fd7730",
+          "resource_type": "aws_s3_bucket_public_access_block",
+          "optional": true
+        }
+      ],
+      "tf_file": "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_cloudtrail_ap_northeast_2_f9fd7730_ap_northeast_2.tf"
     },
     {
       "check_id": "prowler-cloudtrail_s3_dataevents_read_enabled",
-      "manual_required": true,
-      "files": [],
+      "manual_required": false,
+      "files": [
+        "remediation/s3/fix-prowler_cloudtrail_s3_dataevents_read_enabled_arn_aws_cloudtrail_ap_northeast_2_132410971304_trail_ap_northeast_2.tf"
+      ],
       "priority": "P3",
       "score": 48.0,
-      "reason": "unsupported_no_template"
+      "resources": [],
+      "tf_file": "remediation/s3/fix-prowler_cloudtrail_s3_dataevents_read_enabled_arn_aws_cloudtrail_ap_northeast_2_132410971304_trail_ap_northeast_2.tf"
     },
     {
       "check_id": "prowler-cloudtrail_s3_dataevents_write_enabled",
-      "manual_required": true,
-      "files": [],
+      "manual_required": false,
+      "files": [
+        "remediation/s3/fix-prowler_cloudtrail_s3_dataevents_write_enabled_arn_aws_cloudtrail_ap_northeast_2_132410971304_trail_ap_northeast_2.tf"
+      ],
       "priority": "P3",
       "score": 48.0,
-      "reason": "unsupported_no_template"
+      "resources": [],
+      "tf_file": "remediation/s3/fix-prowler_cloudtrail_s3_dataevents_write_enabled_arn_aws_cloudtrail_ap_northeast_2_132410971304_trail_ap_northeast_2.tf"
     }
   ],
   "import_map": [

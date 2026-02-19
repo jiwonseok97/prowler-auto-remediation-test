@@ -4,6 +4,9 @@ import argparse
 import hashlib
 import json
 import re
+import shutil
+import subprocess
+import tempfile
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
@@ -144,6 +147,46 @@ def import_id_for_type(resource_type: str, finding: Dict[str, Any]) -> str:
     return ""
 
 
+def validate_tf_snippet(tf_code: str) -> bool:
+    terraform_bin = shutil.which("terraform")
+    if not terraform_bin:
+        return True
+
+    provider_stub = """
+terraform {
+  required_providers {
+    aws = {
+      source = "hashicorp/aws"
+      version = ">= 5.0"
+    }
+  }
+}
+provider "aws" {
+  region = "us-east-1"
+}
+""".strip()
+
+    with tempfile.TemporaryDirectory() as td:
+        work = Path(td)
+        (work / "main.tf").write_text(tf_code.rstrip() + "\n", encoding="utf-8")
+        (work / "_provider.tf").write_text(provider_stub + "\n", encoding="utf-8")
+
+        init = subprocess.run(
+            [terraform_bin, f"-chdir={work}", "init", "-backend=false", "-input=false", "-no-color"],
+            capture_output=True,
+            text=True,
+        )
+        if init.returncode != 0:
+            return False
+
+        validate = subprocess.run(
+            [terraform_bin, f"-chdir={work}", "validate", "-no-color"],
+            capture_output=True,
+            text=True,
+        )
+        return validate.returncode == 0
+
+
 def main() -> None:
     p = argparse.ArgumentParser()
     p.add_argument("--input", required=True)
@@ -236,6 +279,19 @@ def main() -> None:
                     "priority": f.get("osfp", {}).get("priority_bucket", "P3"),
                     "score": f.get("osfp", {}).get("priority_score", 0),
                     "reason": "generation_failed_or_invalid_hcl",
+                }
+            )
+            continue
+
+        if not validate_tf_snippet(tf_code):
+            overall["categories"][cat].append(
+                {
+                    "check_id": cid,
+                    "manual_required": True,
+                    "files": [],
+                    "priority": f.get("osfp", {}).get("priority_bucket", "P3"),
+                    "score": f.get("osfp", {}).get("priority_score", 0),
+                    "reason": "generated_hcl_failed_validation",
                 }
             )
             continue

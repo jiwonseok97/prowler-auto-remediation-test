@@ -57,16 +57,6 @@ jobs:
             echo "bedrock_fallback=${{ inputs.bedrock_fallback }}" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Resolve AWS auth mode
-        id: aws_auth
-        shell: bash
-        run: |
-          if [ -n "${{ secrets.AWS_ACCESS_KEY_ID }}" ] && [ -n "${{ secrets.AWS_SECRET_ACCESS_KEY }}" ]; then
-            echo "mode=static" >> "$GITHUB_OUTPUT"
-          else
-            echo "mode=oidc" >> "$GITHUB_OUTPUT"
-          fi
-
       - name: Download scan artifact from run
         uses: dawidd6/action-download-artifact@v6
         with:
@@ -96,16 +86,7 @@ jobs:
           PY
           cat target.out >> "$GITHUB_OUTPUT"
 
-      - name: Configure AWS credentials (Static Keys)
-        if: ${{ steps.aws_auth.outputs.mode == 'static' }}
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ steps.target.outputs.region }}
-
       - name: Configure AWS credentials (OIDC)
-        if: ${{ steps.aws_auth.outputs.mode == 'oidc' }}
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_OIDC_ROLE_ARN }}

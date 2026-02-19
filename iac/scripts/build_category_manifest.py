@@ -3,7 +3,7 @@ import argparse
 import json
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Dict, List
+from typing import Dict
 
 
 def main() -> None:
@@ -38,6 +38,7 @@ def main() -> None:
                 "checks": len(items),
                 "top5": [x.get("check_id") for x in top],
                 "manual_required": [x.get("check_id") for x in items if x.get("manual_required")],
+                "import_map": f"remediation/{category}/import-map.txt",
             }
         )
 
@@ -47,6 +48,7 @@ def main() -> None:
             "region": a.region,
             "created_at": datetime.now(timezone.utc).isoformat(),
             "items": items,
+            "import_map": generated.get("import_map", {}).get(category, []),
         }
         (root / category / "manifest.json").write_text(json.dumps(cat_manifest, indent=2), encoding="utf-8")
 

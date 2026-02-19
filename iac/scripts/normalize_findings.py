@@ -2,10 +2,12 @@
 """Normalize Prowler ASFF/JSON findings for remediation workflows."""
 import argparse
 import json
+import re
 from pathlib import Path
 from typing import Any, Dict, List
 
 SKIP_SERVICES = {"account", "root", "organizations", "support"}
+SUPPORTED_SERVICES = {"iam", "s3", "cloudtrail", "cloudwatch", "logs"}
 NON_TERRAFORM_PREFIX = ("guardduty_", "securityhub_", "inspector_", "iam_root_")
 MANUAL_CHECK_KEYWORDS = ("mfa", "root", "access_key", "organizations")
 
@@ -20,18 +22,42 @@ def first(*vals: Any) -> str:
     return ""
 
 
-def parse_service(f: Dict[str, Any]) -> str:
-    service = first(f.get("Service"), f.get("service"), f.get("ProductFields", {}).get("Service")).lower()
-    if service:
-        return service
-    arn = first(f.get("ProductArn"))
-    parts = arn.split(":")
-    return parts[2].lower() if len(parts) > 2 else ""
+def normalize_token(s: str) -> str:
+    s = s.replace(" ", "_")
+    s = re.sub(r"[^a-zA-Z0-9_:/.-]+", "_", s)
+    return s
 
 
 def parse_check_id(f: Dict[str, Any]) -> str:
     raw = first(f.get("CheckID"), f.get("GeneratorId"), f.get("Id"), f.get("Title"))
-    return raw.replace(" ", "_")
+    raw = normalize_token(raw)
+    if "/" in raw:
+        raw = raw.split("/")[-1]
+    if raw.startswith("arn:"):
+        raw = raw.split(":")[-1]
+    return raw.lower()
+
+
+def parse_service(f: Dict[str, Any], check_id: str) -> str:
+    explicit = first(f.get("Service"), f.get("service"), f.get("ProductFields", {}).get("Service")).lower()
+    if explicit and explicit in SUPPORTED_SERVICES.union(SKIP_SERVICES):
+        return explicit
+
+    gid = first(f.get("GeneratorId"), "").lower()
+    for token in ["iam", "s3", "cloudtrail", "cloudwatch", "logs"]:
+        if f"/{token}/" in gid or gid.startswith(f"{token}_") or f"_{token}_" in gid:
+            return token
+
+    prefix = check_id.split("_", 1)[0] if "_" in check_id else check_id
+    if prefix in SUPPORTED_SERVICES.union(SKIP_SERVICES):
+        return prefix
+
+    arn = first(f.get("ProductArn"))
+    parts = arn.split(":")
+    if len(parts) > 2 and parts[2] in SUPPORTED_SERVICES.union(SKIP_SERVICES):
+        return parts[2]
+
+    return explicit or ""
 
 
 def parse_resource_arn(f: Dict[str, Any]) -> str:
@@ -56,11 +82,13 @@ def normalize(rows: List[Dict[str, Any]], default_account: str, default_region: 
     for r in rows:
         if not isinstance(r, dict) or not is_fail(r):
             continue
-        service = parse_service(r)
-        if service in SKIP_SERVICES:
-            continue
+
         check_id = parse_check_id(r)
         if not check_id:
+            continue
+
+        service = parse_service(r, check_id)
+        if service in SKIP_SERVICES:
             continue
 
         resource_arn = parse_resource_arn(r)
@@ -69,7 +97,7 @@ def normalize(rows: List[Dict[str, Any]], default_account: str, default_region: 
         severity = first(r.get("Severity", {}).get("Label"), r.get("Severity"), "MEDIUM").upper()
 
         non_tf = check_id.startswith(NON_TERRAFORM_PREFIX)
-        manual = non_tf or any(k in check_id.lower() for k in MANUAL_CHECK_KEYWORDS)
+        manual = non_tf or any(k in check_id for k in MANUAL_CHECK_KEYWORDS)
 
         out.append(
             {

@@ -24,6 +24,9 @@ def main() -> None:
     manifest = json.loads(Path(a.manifest).read_text(encoding="utf-8"))
     account = a.account_id
 
+    run(["git", "config", "user.name", "github-actions[bot]"], check=False)
+    run(["git", "config", "user.email", "41898282+github-actions[bot]@users.noreply.github.com"], check=False)
+
     for cat in manifest.get("categories", []):
         category = cat["category"]
         path = Path(cat["path"])
@@ -32,7 +35,6 @@ def main() -> None:
 
         branch = f"remediation/{category}-{account}-{a.run_id}"
 
-        # Close stale PRs for same category+account pattern.
         stale_prefix = f"remediation/{category}-{account}-"
         rows = run(["gh", "pr", "list", "--state", "open", "--json", "number,headRefName"], check=False)
         if rows:
@@ -41,8 +43,8 @@ def main() -> None:
                     run(["gh", "pr", "close", str(pr["number"]), "--delete-branch"], check=False)
 
         run(["git", "checkout", "-B", branch])
-        run(["git", "add", str(path)])
-        run(["git", "add", str(Path(a.manifest))])
+        run(["git", "add", str(path)], check=False)
+        run(["git", "add", str(Path(a.manifest))], check=False)
         run(["git", "commit", "-m", f"remediation: {category} {a.run_id}"], check=False)
         run(["git", "push", "-u", "origin", branch, "--force"])
 

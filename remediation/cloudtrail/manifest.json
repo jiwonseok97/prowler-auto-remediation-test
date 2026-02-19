@@ -2,7 +2,7 @@
   "category": "cloudtrail",
   "account": "132410971304",
   "region": "ap-northeast-2",
-  "created_at": "2026-02-19T10:53:32.005997+00:00",
+  "created_at": "2026-02-19T12:09:21.472421+00:00",
   "items": [
     {
       "check_id": "prowler-cloudtrail_kms_encryption_enabled",
@@ -28,7 +28,7 @@
       "files": [],
       "priority": "P2",
       "score": 58.5,
-      "reason": "generated_hcl_failed_validation",
+      "reason": "unsupported_no_template",
       "resources": []
     },
     {
@@ -37,7 +37,7 @@
       "files": [],
       "priority": "P3",
       "score": 48.0,
-      "reason": "generated_hcl_failed_validation",
+      "reason": "unsupported_no_template",
       "resources": []
     },
     {
@@ -46,7 +46,7 @@
       "files": [],
       "priority": "P3",
       "score": 48.0,
-      "reason": "generated_hcl_failed_validation",
+      "reason": "unsupported_no_template",
       "resources": []
     }
   ],

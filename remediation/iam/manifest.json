@@ -2,7 +2,7 @@
   "category": "iam",
   "account": "132410971304",
   "region": "ap-northeast-2",
-  "created_at": "2026-02-19T17:32:51.513600+00:00",
+  "created_at": "2026-02-19T17:49:06.233425+00:00",
   "items": [
     {
       "check_id": "prowler-iam_aws_attached_policy_no_administrative_privileges",
@@ -33,7 +33,7 @@
       "resources": [
         {
           "resource_address": "aws_s3_bucket_policy.fix_config_bucket_policy_7d3084496f",
-          "arn": "aws-cloudtrail-logs-132410971304-0971c04b",
+          "arn": "aws-config-logs-132410971304-ap-northeast-2",
           "resource_type": "aws_s3_bucket_policy",
           "optional": true
         },
@@ -471,7 +471,7 @@
     {
       "check_id": "prowler-config_recorder_all_regions_enabled",
       "address": "aws_s3_bucket_policy.fix_config_bucket_policy_7d3084496f",
-      "import_id": "aws-cloudtrail-logs-132410971304-0971c04b",
+      "import_id": "aws-config-logs-132410971304-ap-northeast-2",
       "resource_type": "aws_s3_bucket_policy",
       "optional": true
     },

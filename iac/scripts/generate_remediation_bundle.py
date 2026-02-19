@@ -208,6 +208,17 @@ def pick_default_log_bucket(account_id: str) -> str:
         return ""
 
 
+def bucket_exists(bucket_name: str) -> bool:
+    if not bucket_name:
+        return False
+    try:
+        s3 = boto3.client("s3")
+        s3.head_bucket(Bucket=bucket_name)
+        return True
+    except Exception:
+        return False
+
+
 def extract_sg_id(arn: str) -> str:
     if ":security-group/" in arn:
         return arn.split(":security-group/", 1)[1]
@@ -572,8 +583,19 @@ def build_config_recorder_tf(finding: Dict[str, Any], region: str, account_id: s
         role_arn = f"arn:aws:iam::{account_id}:role/aws-service-role/config.amazonaws.com/AWSServiceRoleForConfig"
     if not channel_name:
         channel_name = "default"
+    create_bucket_block = ""
+    policy_depends_on = ""
     if not bucket_name:
-        bucket_name = pick_default_log_bucket(account_id)
+        # Prefer a dedicated bucket for AWS Config delivery to avoid policy conflicts
+        # with CloudTrail/log-delivery managed buckets.
+        bucket_name = f"aws-config-logs-{account_id}-{region}".lower()
+        if not bucket_exists(bucket_name):
+            create_bucket_block = (
+                'resource "aws_s3_bucket" "fix_config_delivery_bucket" {\n'
+                f'  bucket = "{bucket_name}"\n'
+                "}\n\n"
+            )
+            policy_depends_on = "  depends_on = [aws_s3_bucket.fix_config_delivery_bucket]\n"
     if not bucket_name:
         return ""
     finding["_config_bucket"] = bucket_name
@@ -664,8 +686,11 @@ def build_config_recorder_tf(finding: Dict[str, Any], region: str, account_id: s
     policy_json = json.dumps(policy_doc, indent=2)
 
     return (
+        create_bucket_block
+        +
         'resource "aws_s3_bucket_policy" "fix_config_bucket_policy" {\n'
         f'  bucket = "{bucket_name}"\n'
+        f"{policy_depends_on}"
         "  policy = <<POLICY\n"
         f"{policy_json}\n"
         "POLICY\n"

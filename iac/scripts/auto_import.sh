@@ -22,6 +22,13 @@ try_import() {
   terraform -chdir="$TARGET_DIR" import -input=false -no-color "$addr" "$iid" 2>&1
 }
 
+address_in_tf() {
+  local addr="$1"
+  local rtype="${addr%%.*}"
+  local rname="${addr#*.}"
+  grep -Rqs "resource \"$rtype\" \"$rname\"" "$TARGET_DIR"/*.tf 2>/dev/null
+}
+
 while IFS= read -r line || [ -n "$line" ]; do
   [ -z "$line" ] && continue
   [[ "$line" == \#* ]] && continue
@@ -33,6 +40,10 @@ while IFS= read -r line || [ -n "$line" ]; do
 
   [ -z "$addr" ] && continue
   [ -z "$iid" ] && continue
+  if ! address_in_tf "$addr"; then
+    echo "skip import address not in current tf: $addr ($cid)" | tee -a "$LOG_FILE"
+    continue
+  fi
   if [ -n "${SEEN_ADDRS[$addr]+x}" ]; then
     echo "skip duplicate import address $addr ($cid)" | tee -a "$LOG_FILE"
     continue

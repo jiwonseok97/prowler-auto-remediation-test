@@ -57,21 +57,24 @@ def main() -> None:
         run(["git", "commit", "-m", message], check=False)
         run(["git", "push", "-u", "origin", branch, "--force"])
 
-        top5 = ", ".join(cat.get("top5", [])[:5])
+        top5 = "\n".join(f"- {x}" for x in cat.get("top5", [])[:5]) or "- none"
         manual = "\n".join(f"- {x}" for x in cat.get("manual_required", [])) or "- none"
         body = (
-            f"## Summary\n"
-            f"- category: {category}\n"
-            f"- checks: {cat.get('checks', 0)}\n"
-            f"- top5: {top5}\n\n"
-            f"## Impact\n"
-            f"- path: {path}\n"
-            f"- apply trigger: merge to main\n\n"
-            f"## Verification\n"
-            f"- merge PR\n"
-            f"- apply workflow runs automatically\n"
-            f"- rescan workflow reports FAIL delta\n\n"
-            f"## Remaining Manual Required\n{manual}\n"
+            "## What This PR Changes\n"
+            f"- Category: `{category}`\n"
+            f"- Generated Terraform files: `{cat.get('checks', 0)}` checks\n"
+            f"- Path: `{path}`\n\n"
+            "## Priority (Top 5)\n"
+            f"{top5}\n\n"
+            "## Merge Impact\n"
+            "- This will trigger `Security Pipeline - 03 Apply Merged Generated Terraform Remediation`.\n"
+            "- Applied changes are limited to security-remediation attributes for this category.\n\n"
+            "## How To Verify\n"
+            "1. Merge this PR.\n"
+            "2. Confirm apply workflow succeeds.\n"
+            "3. Confirm `Security Pipeline - 04 Verify FAIL Reduction` shows FAIL reduction.\n\n"
+            "## Remaining Manual Required\n"
+            f"{manual}\n"
         )
 
         existing = run(["gh", "pr", "list", "--state", "open", "--head", branch, "--json", "number"], check=False)

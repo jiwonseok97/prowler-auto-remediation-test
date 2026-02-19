@@ -1,4 +1,4 @@
-name: Remediate PR Generation
+name: Security Pipeline - 02 Generate Remediation PRs
 
 on:
   workflow_dispatch:
@@ -27,7 +27,7 @@ on:
         type: boolean
         default: false
   workflow_run:
-    workflows: ["Scan CIS 1.4"]
+    workflows: ["Security Pipeline - 01 Scan Baseline"]
     types: [completed]
 
 permissions:

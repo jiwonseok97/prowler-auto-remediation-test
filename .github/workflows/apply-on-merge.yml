@@ -1,4 +1,4 @@
-name: Apply On Merged Remediation
+name: Security Pipeline - 03 Apply Merged Remediation
 
 on:
   workflow_dispatch:

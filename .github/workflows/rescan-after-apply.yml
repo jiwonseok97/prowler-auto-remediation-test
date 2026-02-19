@@ -1,8 +1,8 @@
-name: Rescan After Apply
+name: Security Pipeline - 04 Rescan and Compare
 
 on:
   workflow_run:
-    workflows: ["Apply On Merged Remediation"]
+    workflows: ["Security Pipeline - 03 Apply Merged Remediation"]
     types: [completed]
 
 permissions:

@@ -1,4 +1,4 @@
-name: Scan CIS 1.4
+name: Security Pipeline - 01 Scan Baseline
 
 on:
   workflow_dispatch:

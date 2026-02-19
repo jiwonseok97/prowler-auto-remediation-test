@@ -209,15 +209,19 @@ def lookup_vpc_for_sg(arn: str, region: str) -> str:
 def uniquify_resource_names(tf_code: str, suffix: str) -> Tuple[str, List[Tuple[str, str]]]:
     mapping: List[Tuple[str, str]] = []
     tag = hashlib.sha1(suffix.encode("utf-8")).hexdigest()[:10]
+    rename_refs: List[Tuple[str, str]] = []
 
     def repl(m: re.Match) -> str:
         rtype = m.group(1)
         rname = m.group(2)
         new_name = f"{rname}_{tag}"
         mapping.append((f"{rtype}.{new_name}", rtype))
+        rename_refs.append((f"{rtype}.{rname}", f"{rtype}.{new_name}"))
         return f'resource "{rtype}" "{new_name}" {{'
 
     out = re.sub(r'resource\s+"([^"]+)"\s+"([^"]+)"\s*\{', repl, tf_code)
+    for old_ref, new_ref in rename_refs:
+        out = re.sub(rf"\b{re.escape(old_ref)}\b", new_ref, out)
     return out, mapping
 
 
@@ -544,6 +548,14 @@ def build_cloudtrail_tf(finding: Dict[str, Any], region: str, account_id: str) -
         lines.append(f'  kms_key_id                    = "{kms}"')
     else:
         return ""
+
+    if "s3_dataevents_" in cid_l:
+        lines.extend(
+            [
+                "",
+                "  depends_on = [aws_s3_bucket_policy.fix_cloudtrail_bucket_policy]",
+            ]
+        )
 
     lines.extend(
         [

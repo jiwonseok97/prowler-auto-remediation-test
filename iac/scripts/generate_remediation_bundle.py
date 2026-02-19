@@ -258,7 +258,10 @@ def main() -> None:
     }
 
     for cat in CATEGORIES:
-        (out_root / cat).mkdir(parents=True, exist_ok=True)
+        cat_dir = out_root / cat
+        cat_dir.mkdir(parents=True, exist_ok=True)
+        for old_tf in cat_dir.glob("*.tf"):
+            old_tf.unlink(missing_ok=True)
         overall["categories"][cat] = []
         overall["import_map"][cat] = []
 

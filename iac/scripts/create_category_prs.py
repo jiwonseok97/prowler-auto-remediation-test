@@ -80,7 +80,7 @@ def main() -> None:
         if existing and len(json.loads(existing)) > 0:
             continue
 
-        run(
+        p = subprocess.run(
             [
                 "gh",
                 "pr",
@@ -94,8 +94,15 @@ def main() -> None:
                 "--body",
                 body,
             ],
-            check=True,
+            capture_output=True,
+            text=True,
         )
+        if p.returncode != 0:
+            err = (p.stderr or "").strip()
+            if "not permitted to create or approve pull requests" in err.lower():
+                print(f"warn: PR create skipped by repo policy for {category}")
+                continue
+            raise RuntimeError(f"cmd failed: gh pr create\n{err}")
 
     run(["git", "checkout", "main"], check=False)
 

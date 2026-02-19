@@ -3,6 +3,7 @@ set -euo pipefail
 
 ROOT="${1:-remediation}"
 ART_DIR="${2:-artifacts}"
+ONLY_CATEGORIES="${3:-}"
 LOG_DIR="$ART_DIR/apply"
 mkdir -p "$LOG_DIR"
 
@@ -69,7 +70,14 @@ TF
   rm -f "$d/_apply_provider.tf"
 }
 
-for c in iam s3 network-ec2-vpc cloudtrail cloudwatch; do
+if [ -n "$ONLY_CATEGORIES" ]; then
+  IFS=',' read -r -a cats <<< "$ONLY_CATEGORIES"
+else
+  cats=("iam" "s3" "network-ec2-vpc" "cloudtrail" "cloudwatch")
+fi
+
+for c in "${cats[@]}"; do
+  [ -z "$c" ] && continue
   apply_category "$c"
 done
 

@@ -49,9 +49,19 @@ jobs:
           chmod +x iac/scripts/*.sh || true
           sed -i 's/\r$//' iac/scripts/*.sh || true
 
+      - name: Detect changed remediation categories
+        id: cats
+        shell: bash
+        run: |
+          BEFORE="${{ github.event.before }}"
+          AFTER="${{ github.sha }}"
+          CATS="$(git diff --name-only "$BEFORE" "$AFTER" | awk -F/ '/^remediation\// {print $2}' | sort -u | paste -sd, -)"
+          echo "categories=$CATS" >> "$GITHUB_OUTPUT"
+          echo "changed_categories=$CATS"
+
       - name: Apply category by category
         run: |
-          bash iac/scripts/resilient_apply.sh remediation artifacts
+          bash iac/scripts/resilient_apply.sh remediation artifacts "${{ steps.cats.outputs.categories }}"
 
       - name: Upload apply artifacts
         uses: actions/upload-artifact@v4

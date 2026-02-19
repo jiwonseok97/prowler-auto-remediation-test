@@ -1,0 +1,310 @@
+{
+  "category": "cloudwatch",
+  "account": "132410971304",
+  "region": "ap-northeast-2",
+  "created_at": "2026-02-19T18:34:38.371021+00:00",
+  "items": [
+    {
+      "check_id": "prowler-cloudwatch_changes_to_network_acls_alarm_configured",
+      "manual_required": false,
+      "files": [
+        "remediation/cloudwatch/fix-prowler_cloudwatch_changes_to_network_acls_alarm_configured_arn_aws_logs_ap_northeast_2_132410971304_log_group_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 58.5,
+      "resources": [
+        {
+          "resource_address": "aws_cloudwatch_log_group.fix_cloudwatch_log_group_db3516d94b",
+          "arn": "/aws/cloudtrail/132410971304",
+          "resource_type": "aws_cloudwatch_log_group",
+          "optional": true
+        }
+      ],
+      "tf_file": "remediation/cloudwatch/fix-prowler_cloudwatch_changes_to_network_acls_alarm_configured_arn_aws_logs_ap_northeast_2_132410971304_log_group_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-cloudwatch_changes_to_network_gateways_alarm_configured",
+      "manual_required": false,
+      "files": [
+        "remediation/cloudwatch/fix-prowler_cloudwatch_changes_to_network_gateways_alarm_configured_arn_aws_logs_ap_northeast_2_132410971304_log_group_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 58.5,
+      "resources": [
+        {
+          "resource_address": "aws_cloudwatch_log_group.fix_cloudwatch_log_group_0a857cfc28",
+          "arn": "/aws/cloudtrail/132410971304",
+          "resource_type": "aws_cloudwatch_log_group",
+          "optional": true
+        }
+      ],
+      "tf_file": "remediation/cloudwatch/fix-prowler_cloudwatch_changes_to_network_gateways_alarm_configured_arn_aws_logs_ap_northeast_2_132410971304_log_group_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-cloudwatch_changes_to_network_route_tables_alarm_configured",
+      "manual_required": false,
+      "files": [
+        "remediation/cloudwatch/fix-prowler_cloudwatch_changes_to_network_route_tables_alarm_configured_arn_aws_logs_ap_northeast_2_132410971304_log_group_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 58.5,
+      "resources": [
+        {
+          "resource_address": "aws_cloudwatch_log_group.fix_cloudwatch_log_group_ca5beb2e1a",
+          "arn": "/aws/cloudtrail/132410971304",
+          "resource_type": "aws_cloudwatch_log_group",
+          "optional": true
+        }
+      ],
+      "tf_file": "remediation/cloudwatch/fix-prowler_cloudwatch_changes_to_network_route_tables_alarm_configured_arn_aws_logs_ap_northeast_2_132410971304_log_group_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-cloudwatch_changes_to_vpcs_alarm_configured",
+      "manual_required": false,
+      "files": [
+        "remediation/cloudwatch/fix-prowler_cloudwatch_changes_to_vpcs_alarm_configured_arn_aws_logs_ap_northeast_2_132410971304_log_group_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 58.5,
+      "resources": [
+        {
+          "resource_address": "aws_cloudwatch_log_group.fix_cloudwatch_log_group_df9b961ffd",
+          "arn": "/aws/cloudtrail/132410971304",
+          "resource_type": "aws_cloudwatch_log_group",
+          "optional": true
+        }
+      ],
+      "tf_file": "remediation/cloudwatch/fix-prowler_cloudwatch_changes_to_vpcs_alarm_configured_arn_aws_logs_ap_northeast_2_132410971304_log_group_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-cloudwatch_log_metric_filter_and_alarm_for_aws_config_configuration_changes_enabled",
+      "manual_required": false,
+      "files": [
+        "remediation/cloudwatch/fix-prowler_cloudwatch_log_metric_filter_and_alarm_for_aws_config_configuration_changes_enabled_arn_aws_logs_ap_northeast_2_132410971304_log_group_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 58.5,
+      "resources": [
+        {
+          "resource_address": "aws_cloudwatch_log_group.fix_cloudwatch_log_group_9e89640bb9",
+          "arn": "/aws/cloudtrail/132410971304",
+          "resource_type": "aws_cloudwatch_log_group",
+          "optional": true
+        }
+      ],
+      "tf_file": "remediation/cloudwatch/fix-prowler_cloudwatch_log_metric_filter_and_alarm_for_aws_config_configuration_changes_enabled_arn_aws_logs_ap_northeast_2_132410971304_log_group_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-cloudwatch_log_metric_filter_and_alarm_for_cloudtrail_configuration_changes_enabled",
+      "manual_required": false,
+      "files": [
+        "remediation/cloudwatch/fix-prowler_cloudwatch_log_metric_filter_and_alarm_for_cloudtrail_configuration_changes_enabled_arn_aws_logs_ap_northeast_2_132410971304_log_group_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 58.5,
+      "resources": [
+        {
+          "resource_address": "aws_cloudwatch_log_group.fix_cloudwatch_log_group_e3a40ad51d",
+          "arn": "/aws/cloudtrail/132410971304",
+          "resource_type": "aws_cloudwatch_log_group",
+          "optional": true
+        }
+      ],
+      "tf_file": "remediation/cloudwatch/fix-prowler_cloudwatch_log_metric_filter_and_alarm_for_cloudtrail_configuration_changes_enabled_arn_aws_logs_ap_northeast_2_132410971304_log_group_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-cloudwatch_log_metric_filter_authentication_failures",
+      "manual_required": false,
+      "files": [
+        "remediation/cloudwatch/fix-prowler_cloudwatch_log_metric_filter_authentication_failures_arn_aws_logs_ap_northeast_2_132410971304_log_group_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 58.5,
+      "resources": [
+        {
+          "resource_address": "aws_cloudwatch_log_group.fix_cloudwatch_log_group_543ac38aa1",
+          "arn": "/aws/cloudtrail/132410971304",
+          "resource_type": "aws_cloudwatch_log_group",
+          "optional": true
+        }
+      ],
+      "tf_file": "remediation/cloudwatch/fix-prowler_cloudwatch_log_metric_filter_authentication_failures_arn_aws_logs_ap_northeast_2_132410971304_log_group_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-cloudwatch_log_metric_filter_disable_or_scheduled_deletion_of_kms_cmk",
+      "manual_required": false,
+      "files": [
+        "remediation/cloudwatch/fix-prowler_cloudwatch_log_metric_filter_disable_or_scheduled_deletion_of_kms_cmk_arn_aws_logs_ap_northeast_2_132410971304_log_group_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 58.5,
+      "resources": [
+        {
+          "resource_address": "aws_cloudwatch_log_group.fix_cloudwatch_log_group_db192a6de6",
+          "arn": "/aws/cloudtrail/132410971304",
+          "resource_type": "aws_cloudwatch_log_group",
+          "optional": true
+        }
+      ],
+      "tf_file": "remediation/cloudwatch/fix-prowler_cloudwatch_log_metric_filter_disable_or_scheduled_deletion_of_kms_cmk_arn_aws_logs_ap_northeast_2_132410971304_log_group_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-cloudwatch_log_metric_filter_for_s3_bucket_policy_changes",
+      "manual_required": false,
+      "files": [
+        "remediation/cloudwatch/fix-prowler_cloudwatch_log_metric_filter_for_s3_bucket_policy_changes_arn_aws_logs_ap_northeast_2_132410971304_log_group_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 58.5,
+      "resources": [
+        {
+          "resource_address": "aws_cloudwatch_log_group.fix_cloudwatch_log_group_f3b6ffaa1d",
+          "arn": "/aws/cloudtrail/132410971304",
+          "resource_type": "aws_cloudwatch_log_group",
+          "optional": true
+        }
+      ],
+      "tf_file": "remediation/cloudwatch/fix-prowler_cloudwatch_log_metric_filter_for_s3_bucket_policy_changes_arn_aws_logs_ap_northeast_2_132410971304_log_group_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-cloudwatch_log_metric_filter_policy_changes",
+      "manual_required": false,
+      "files": [
+        "remediation/cloudwatch/fix-prowler_cloudwatch_log_metric_filter_policy_changes_arn_aws_logs_ap_northeast_2_132410971304_log_group_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 58.5,
+      "resources": [
+        {
+          "resource_address": "aws_cloudwatch_log_group.fix_cloudwatch_log_group_e24a9da00e",
+          "arn": "/aws/cloudtrail/132410971304",
+          "resource_type": "aws_cloudwatch_log_group",
+          "optional": true
+        }
+      ],
+      "tf_file": "remediation/cloudwatch/fix-prowler_cloudwatch_log_metric_filter_policy_changes_arn_aws_logs_ap_northeast_2_132410971304_log_group_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-cloudwatch_log_metric_filter_security_group_changes",
+      "manual_required": false,
+      "files": [
+        "remediation/cloudwatch/fix-prowler_cloudwatch_log_metric_filter_security_group_changes_arn_aws_logs_ap_northeast_2_132410971304_log_group_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 58.5,
+      "resources": [
+        {
+          "resource_address": "aws_cloudwatch_log_group.fix_cloudwatch_log_group_42d1a23b38",
+          "arn": "/aws/cloudtrail/132410971304",
+          "resource_type": "aws_cloudwatch_log_group",
+          "optional": true
+        }
+      ],
+      "tf_file": "remediation/cloudwatch/fix-prowler_cloudwatch_log_metric_filter_security_group_changes_arn_aws_logs_ap_northeast_2_132410971304_log_group_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-cloudwatch_log_metric_filter_unauthorized_api_calls",
+      "manual_required": false,
+      "files": [
+        "remediation/cloudwatch/fix-prowler_cloudwatch_log_metric_filter_unauthorized_api_calls_arn_aws_logs_ap_northeast_2_132410971304_log_group_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 58.5,
+      "resources": [
+        {
+          "resource_address": "aws_cloudwatch_log_group.fix_cloudwatch_log_group_efe1ac2907",
+          "arn": "/aws/cloudtrail/132410971304",
+          "resource_type": "aws_cloudwatch_log_group",
+          "optional": true
+        }
+      ],
+      "tf_file": "remediation/cloudwatch/fix-prowler_cloudwatch_log_metric_filter_unauthorized_api_calls_arn_aws_logs_ap_northeast_2_132410971304_log_group_ap_northeast_2.tf"
+    }
+  ],
+  "import_map": [
+    {
+      "check_id": "prowler-cloudwatch_changes_to_network_acls_alarm_configured",
+      "address": "aws_cloudwatch_log_group.fix_cloudwatch_log_group_db3516d94b",
+      "import_id": "/aws/cloudtrail/132410971304",
+      "resource_type": "aws_cloudwatch_log_group",
+      "optional": true
+    },
+    {
+      "check_id": "prowler-cloudwatch_changes_to_network_gateways_alarm_configured",
+      "address": "aws_cloudwatch_log_group.fix_cloudwatch_log_group_0a857cfc28",
+      "import_id": "/aws/cloudtrail/132410971304",
+      "resource_type": "aws_cloudwatch_log_group",
+      "optional": true
+    },
+    {
+      "check_id": "prowler-cloudwatch_changes_to_network_route_tables_alarm_configured",
+      "address": "aws_cloudwatch_log_group.fix_cloudwatch_log_group_ca5beb2e1a",
+      "import_id": "/aws/cloudtrail/132410971304",
+      "resource_type": "aws_cloudwatch_log_group",
+      "optional": true
+    },
+    {
+      "check_id": "prowler-cloudwatch_changes_to_vpcs_alarm_configured",
+      "address": "aws_cloudwatch_log_group.fix_cloudwatch_log_group_df9b961ffd",
+      "import_id": "/aws/cloudtrail/132410971304",
+      "resource_type": "aws_cloudwatch_log_group",
+      "optional": true
+    },
+    {
+      "check_id": "prowler-cloudwatch_log_metric_filter_and_alarm_for_aws_config_configuration_changes_enabled",
+      "address": "aws_cloudwatch_log_group.fix_cloudwatch_log_group_9e89640bb9",
+      "import_id": "/aws/cloudtrail/132410971304",
+      "resource_type": "aws_cloudwatch_log_group",
+      "optional": true
+    },
+    {
+      "check_id": "prowler-cloudwatch_log_metric_filter_and_alarm_for_cloudtrail_configuration_changes_enabled",
+      "address": "aws_cloudwatch_log_group.fix_cloudwatch_log_group_e3a40ad51d",
+      "import_id": "/aws/cloudtrail/132410971304",
+      "resource_type": "aws_cloudwatch_log_group",
+      "optional": true
+    },
+    {
+      "check_id": "prowler-cloudwatch_log_metric_filter_authentication_failures",
+      "address": "aws_cloudwatch_log_group.fix_cloudwatch_log_group_543ac38aa1",
+      "import_id": "/aws/cloudtrail/132410971304",
+      "resource_type": "aws_cloudwatch_log_group",
+      "optional": true
+    },
+    {
+      "check_id": "prowler-cloudwatch_log_metric_filter_disable_or_scheduled_deletion_of_kms_cmk",
+      "address": "aws_cloudwatch_log_group.fix_cloudwatch_log_group_db192a6de6",
+      "import_id": "/aws/cloudtrail/132410971304",
+      "resource_type": "aws_cloudwatch_log_group",
+      "optional": true
+    },
+    {
+      "check_id": "prowler-cloudwatch_log_metric_filter_for_s3_bucket_policy_changes",
+      "address": "aws_cloudwatch_log_group.fix_cloudwatch_log_group_f3b6ffaa1d",
+      "import_id": "/aws/cloudtrail/132410971304",
+      "resource_type": "aws_cloudwatch_log_group",
+      "optional": true
+    },
+    {
+      "check_id": "prowler-cloudwatch_log_metric_filter_policy_changes",
+      "address": "aws_cloudwatch_log_group.fix_cloudwatch_log_group_e24a9da00e",
+      "import_id": "/aws/cloudtrail/132410971304",
+      "resource_type": "aws_cloudwatch_log_group",
+      "optional": true
+    },
+    {
+      "check_id": "prowler-cloudwatch_log_metric_filter_security_group_changes",
+      "address": "aws_cloudwatch_log_group.fix_cloudwatch_log_group_42d1a23b38",
+      "import_id": "/aws/cloudtrail/132410971304",
+      "resource_type": "aws_cloudwatch_log_group",
+      "optional": true
+    },
+    {
+      "check_id": "prowler-cloudwatch_log_metric_filter_unauthorized_api_calls",
+      "address": "aws_cloudwatch_log_group.fix_cloudwatch_log_group_efe1ac2907",
+      "import_id": "/aws/cloudtrail/132410971304",
+      "resource_type": "aws_cloudwatch_log_group",
+      "optional": true
+    }
+  ]
+}

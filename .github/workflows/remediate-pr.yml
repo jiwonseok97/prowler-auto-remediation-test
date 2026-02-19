@@ -77,7 +77,7 @@ jobs:
 
           manifest = Path("artifacts/scan/scan_manifest.json")
           m = json.loads(manifest.read_text(encoding="utf-8")) if manifest.exists() else {}
-          account = (m.get("account") or "${{ inputs.account_id }}" or "").strip()
+          account = (m.get("account") or m.get("account_id") or "${{ inputs.account_id }}" or "").strip()
           region = (m.get("region") or "${{ inputs.region }}" or "").strip()
           if not account:
               raise SystemExit("account_id is missing in scan artifact and manual input")

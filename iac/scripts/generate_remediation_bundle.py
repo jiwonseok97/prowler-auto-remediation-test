@@ -40,15 +40,26 @@ def category_of(service: str, check_id: str) -> str:
     c = (check_id or "").lower()
     if c.startswith("prowler-"):
         c = c.split("prowler-", 1)[1]
-    if s == "iam" or c.startswith("iam_"):
+    # Prefer check-id prefix over service field because some findings have broad/mismatched service labels.
+    if c.startswith("iam_"):
         return "iam"
-    if s == "s3" or c.startswith("s3_"):
+    if c.startswith("s3_"):
         return "s3"
-    if s in {"ec2", "vpc"} or c.startswith("ec2_") or c.startswith("vpc_"):
+    if c.startswith("ec2_") or c.startswith("vpc_"):
         return "network-ec2-vpc"
-    if s == "cloudtrail" or c.startswith("cloudtrail_"):
+    if c.startswith("cloudtrail_"):
         return "cloudtrail"
-    if s in {"cloudwatch", "logs"} or c.startswith("cloudwatch_") or c.startswith("logs_"):
+    if c.startswith("cloudwatch_") or c.startswith("logs_"):
+        return "cloudwatch"
+    if s == "iam":
+        return "iam"
+    if s == "s3":
+        return "s3"
+    if s in {"ec2", "vpc"}:
+        return "network-ec2-vpc"
+    if s == "cloudtrail":
+        return "cloudtrail"
+    if s in {"cloudwatch", "logs"}:
         return "cloudwatch"
     return ""
 
@@ -244,7 +255,7 @@ def import_id_for_type(resource_type: str, finding: Dict[str, Any]) -> str:
     }:
         return extract_bucket(arn)
     if resource_type == "aws_cloudtrail":
-        return extract_trail_name(arn)
+        return finding.get("_trail_name", "") or extract_trail_name(arn)
     if resource_type == "aws_cloudwatch_log_group":
         return extract_log_group(arn)
     if resource_type == "aws_iam_account_password_policy":
@@ -402,6 +413,7 @@ def build_cloudtrail_tf(finding: Dict[str, Any], region: str) -> str:
     s3_bucket = str(detail.get("S3BucketName", ""))
     if not name or not s3_bucket:
         return ""
+    finding["_trail_name"] = name
 
     include_global = "true" if bool(detail.get("IncludeGlobalServiceEvents", True)) else "false"
     multi_region = "true" if bool(detail.get("IsMultiRegionTrail", True)) else "false"
@@ -525,6 +537,20 @@ def build_cloudwatch_metric_alarm_tf(finding: Dict[str, Any], account_id: str, r
     )
 
 
+def cloudwatch_log_group_exists(name: str, region: str) -> bool:
+    if not name:
+        return False
+    try:
+        logs = boto3.client("logs", region_name=region)
+        resp = logs.describe_log_groups(logGroupNamePrefix=name, limit=1)
+        for g in resp.get("logGroups", []) or []:
+            if g.get("logGroupName") == name:
+                return True
+    except Exception:
+        return False
+    return False
+
+
 def main() -> None:
     p = argparse.ArgumentParser()
     p.add_argument("--input", required=True)
@@ -574,6 +600,8 @@ def main() -> None:
 
         cid_l = cid.lower()
         trail_name = extract_trail_name(f.get("resource_arn", ""))
+        if not trail_name and "cloudtrail_" in cid_l:
+            trail_name = str(pick_default_trail(a.region).get("Name", ""))
         if "cloudtrail_kms_encryption_enabled" in cid_l and trail_name:
             cloudtrail_with_kms.add(trail_name)
         if "cloudtrail_s3_dataevents_" in cid_l and trail_name:
@@ -685,6 +713,21 @@ def main() -> None:
                 }
             )
             continue
+
+        if "aws_cloudwatch_log_metric_filter" in tf_code:
+            lg = extract_log_group(f.get("resource_arn", "")) or pick_default_cloudtrail_log_group(a.region, a.account_id)
+            if not cloudwatch_log_group_exists(lg, a.region):
+                overall["categories"][cat].append(
+                    {
+                        "check_id": cid,
+                        "manual_required": True,
+                        "files": [],
+                        "priority": f.get("osfp", {}).get("priority_bucket", "P3"),
+                        "score": f.get("osfp", {}).get("priority_score", 0),
+                        "reason": "missing_cloudwatch_log_group",
+                    }
+                )
+                continue
 
         if "var." in tf_code:
             overall["categories"][cat].append(

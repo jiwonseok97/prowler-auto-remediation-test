@@ -41,7 +41,11 @@ jobs:
           if [ -z "$FOUND" ]; then
             echo "[]" > artifacts/rescan/post.asff.json
           else
-            cp "$FOUND" artifacts/rescan/post.asff.json
+            TARGET="$(realpath artifacts/rescan/post.asff.json)"
+            SRC="$(realpath "$FOUND")"
+            if [ "$SRC" != "$TARGET" ]; then
+              cp "$FOUND" artifacts/rescan/post.asff.json
+            fi
           fi
           python iac/scripts/normalize_findings.py \
             --input artifacts/rescan/post.asff.json \

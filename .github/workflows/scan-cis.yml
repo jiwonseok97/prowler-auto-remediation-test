@@ -66,7 +66,11 @@ jobs:
           if [ -z "$FOUND" ]; then
             echo "[]" > artifacts/scan/baseline.asff.json
           else
-            cp "$FOUND" artifacts/scan/baseline.asff.json
+            TARGET="$(realpath artifacts/scan/baseline.asff.json)"
+            SRC="$(realpath "$FOUND")"
+            if [ "$SRC" != "$TARGET" ]; then
+              cp "$FOUND" artifacts/scan/baseline.asff.json
+            fi
           fi
 
       - name: Normalize and score findings

@@ -2,7 +2,7 @@
   "category": "cloudtrail",
   "account": "132410971304",
   "region": "ap-northeast-2",
-  "created_at": "2026-02-19T16:12:23.728853+00:00",
+  "created_at": "2026-02-19T17:49:06.235136+00:00",
   "items": [
     {
       "check_id": "prowler-cloudtrail_kms_encryption_enabled",
@@ -10,7 +10,7 @@
       "files": [],
       "priority": "P2",
       "score": 58.5,
-      "reason": "generation_failed_or_invalid_hcl",
+      "reason": "generated_hcl_failed_validation",
       "resources": []
     },
     {
@@ -24,27 +24,12 @@
     },
     {
       "check_id": "prowler-cloudtrail_s3_dataevents_read_enabled",
-      "manual_required": false,
-      "files": [
-        "remediation/cloudtrail/fix-prowler_cloudtrail_s3_dataevents_read_enabled_arn_aws_cloudtrail_ap_northeast_2_132410971304_trail_ap_northeast_2.tf"
-      ],
+      "manual_required": true,
+      "files": [],
       "priority": "P3",
       "score": 48.0,
-      "resources": [
-        {
-          "resource_address": "aws_s3_bucket_policy.fix_cloudtrail_bucket_policy_21ff33774c",
-          "arn": "aws-cloudtrail-logs-132410971304-0971c04b",
-          "resource_type": "aws_s3_bucket_policy",
-          "optional": true
-        },
-        {
-          "resource_address": "aws_cloudtrail.fix_cloudtrail_21ff33774c",
-          "arn": "security-cloudtail",
-          "resource_type": "aws_cloudtrail",
-          "optional": false
-        }
-      ],
-      "tf_file": "remediation/cloudtrail/fix-prowler_cloudtrail_s3_dataevents_read_enabled_arn_aws_cloudtrail_ap_northeast_2_132410971304_trail_ap_northeast_2.tf"
+      "reason": "generation_failed_or_invalid_hcl",
+      "resources": []
     },
     {
       "check_id": "prowler-cloudtrail_s3_dataevents_write_enabled",
@@ -57,53 +42,203 @@
     },
     {
       "check_id": "prowler-cloudtrail_logs_s3_bucket_access_logging_enabled",
-      "manual_required": true,
-      "files": [],
+      "manual_required": false,
+      "files": [
+        "remediation/cloudtrail/fix-prowler_cloudtrail_logs_s3_bucket_access_logging_enabled_arn_aws_cloudtrail_ap_northeast_2_132410971304_trail_security_cloudtail_ap_northeast_2.tf"
+      ],
       "priority": "P2",
       "score": 58.5,
-      "reason": "generation_failed_or_invalid_hcl",
-      "resources": []
+      "resources": [
+        {
+          "resource_address": "aws_s3_bucket_policy.fix_cloudtrail_accesslog_target_policy_b05c6d342b",
+          "arn": "aws-cloudtrail-logs-132410971304-0971c04b",
+          "resource_type": "aws_s3_bucket_policy",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_logging.fix_cloudtrail_bucket_logging_b05c6d342b",
+          "arn": "aws-cloudtrail-logs-132410971304-0971c04b",
+          "resource_type": "aws_s3_bucket_logging",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_policy.fix_cloudtrail_accesslog_target_policy_87323435bd",
+          "arn": "vuln-cloudtrail-ap-northeast-2-f9fd7730",
+          "resource_type": "aws_s3_bucket_policy",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_logging.fix_cloudtrail_bucket_logging_87323435bd",
+          "arn": "vuln-cloudtrail-ap-northeast-2-f9fd7730",
+          "resource_type": "aws_s3_bucket_logging",
+          "optional": true
+        }
+      ],
+      "tf_file": "remediation/cloudtrail/fix-prowler_cloudtrail_logs_s3_bucket_access_logging_enabled_arn_aws_cloudtrail_ap_northeast_2_132410971304_trail_security_cloudtail_ap_northeast_2.tf"
     },
     {
       "check_id": "prowler-cloudtrail_logs_s3_bucket_access_logging_enabled",
-      "manual_required": true,
-      "files": [],
+      "manual_required": false,
+      "files": [
+        "remediation/cloudtrail/fix-prowler_cloudtrail_logs_s3_bucket_access_logging_enabled_arn_aws_cloudtrail_ap_northeast_2_132410971304_trail_vuln_trail_ap_northeast_2.tf"
+      ],
       "priority": "P2",
       "score": 58.5,
-      "reason": "generation_failed_or_invalid_hcl",
-      "resources": []
+      "resources": [
+        {
+          "resource_address": "aws_s3_bucket_policy.fix_cloudtrail_accesslog_target_policy_b05c6d342b",
+          "arn": "aws-cloudtrail-logs-132410971304-0971c04b",
+          "resource_type": "aws_s3_bucket_policy",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_logging.fix_cloudtrail_bucket_logging_b05c6d342b",
+          "arn": "aws-cloudtrail-logs-132410971304-0971c04b",
+          "resource_type": "aws_s3_bucket_logging",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_policy.fix_cloudtrail_accesslog_target_policy_87323435bd",
+          "arn": "vuln-cloudtrail-ap-northeast-2-f9fd7730",
+          "resource_type": "aws_s3_bucket_policy",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_logging.fix_cloudtrail_bucket_logging_87323435bd",
+          "arn": "vuln-cloudtrail-ap-northeast-2-f9fd7730",
+          "resource_type": "aws_s3_bucket_logging",
+          "optional": true
+        }
+      ],
+      "tf_file": "remediation/cloudtrail/fix-prowler_cloudtrail_logs_s3_bucket_access_logging_enabled_arn_aws_cloudtrail_ap_northeast_2_132410971304_trail_vuln_trail_ap_northeast_2.tf"
     },
     {
       "check_id": "prowler-cloudtrail_cloudwatch_logging_enabled",
-      "manual_required": true,
-      "files": [],
+      "manual_required": false,
+      "files": [
+        "remediation/cloudtrail/fix-prowler_cloudtrail_cloudwatch_logging_enabled_arn_aws_cloudtrail_ap_northeast_2_132410971304_trail_security_cloudtail_ap_northeast_2.tf"
+      ],
       "priority": "P3",
       "score": 48.0,
-      "reason": "generation_failed_or_invalid_hcl",
-      "resources": []
+      "resources": [
+        {
+          "resource_address": "aws_cloudwatch_log_group.fix_cloudtrail_log_group_41c4cc5c5c",
+          "arn": "/aws/cloudtrail/132410971304",
+          "resource_type": "aws_cloudwatch_log_group",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_cloudtrail.fix_cloudtrail_41c4cc5c5c",
+          "arn": "security-cloudtail",
+          "resource_type": "aws_cloudtrail",
+          "optional": false
+        },
+        {
+          "resource_address": "aws_cloudwatch_log_group.fix_cloudtrail_log_group_0a966160c4",
+          "arn": "/aws/cloudtrail/132410971304",
+          "resource_type": "aws_cloudwatch_log_group",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_cloudtrail.fix_cloudtrail_0a966160c4",
+          "arn": "vuln-trail",
+          "resource_type": "aws_cloudtrail",
+          "optional": false
+        }
+      ],
+      "tf_file": "remediation/cloudtrail/fix-prowler_cloudtrail_cloudwatch_logging_enabled_arn_aws_cloudtrail_ap_northeast_2_132410971304_trail_security_cloudtail_ap_northeast_2.tf"
     },
     {
       "check_id": "prowler-cloudtrail_cloudwatch_logging_enabled",
-      "manual_required": true,
-      "files": [],
+      "manual_required": false,
+      "files": [
+        "remediation/cloudtrail/fix-prowler_cloudtrail_cloudwatch_logging_enabled_arn_aws_cloudtrail_ap_northeast_2_132410971304_trail_vuln_trail_ap_northeast_2.tf"
+      ],
       "priority": "P3",
       "score": 48.0,
-      "reason": "generation_failed_or_invalid_hcl",
-      "resources": []
+      "resources": [
+        {
+          "resource_address": "aws_cloudwatch_log_group.fix_cloudtrail_log_group_41c4cc5c5c",
+          "arn": "/aws/cloudtrail/132410971304",
+          "resource_type": "aws_cloudwatch_log_group",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_cloudtrail.fix_cloudtrail_41c4cc5c5c",
+          "arn": "security-cloudtail",
+          "resource_type": "aws_cloudtrail",
+          "optional": false
+        },
+        {
+          "resource_address": "aws_cloudwatch_log_group.fix_cloudtrail_log_group_0a966160c4",
+          "arn": "/aws/cloudtrail/132410971304",
+          "resource_type": "aws_cloudwatch_log_group",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_cloudtrail.fix_cloudtrail_0a966160c4",
+          "arn": "vuln-trail",
+          "resource_type": "aws_cloudtrail",
+          "optional": false
+        }
+      ],
+      "tf_file": "remediation/cloudtrail/fix-prowler_cloudtrail_cloudwatch_logging_enabled_arn_aws_cloudtrail_ap_northeast_2_132410971304_trail_vuln_trail_ap_northeast_2.tf"
     }
   ],
   "import_map": [
     {
-      "check_id": "prowler-cloudtrail_s3_dataevents_read_enabled",
-      "address": "aws_s3_bucket_policy.fix_cloudtrail_bucket_policy_21ff33774c",
+      "check_id": "prowler-cloudtrail_logs_s3_bucket_access_logging_enabled",
+      "address": "aws_s3_bucket_policy.fix_cloudtrail_accesslog_target_policy_b05c6d342b",
       "import_id": "aws-cloudtrail-logs-132410971304-0971c04b",
       "resource_type": "aws_s3_bucket_policy",
       "optional": true
     },
     {
-      "check_id": "prowler-cloudtrail_s3_dataevents_read_enabled",
-      "address": "aws_cloudtrail.fix_cloudtrail_21ff33774c",
+      "check_id": "prowler-cloudtrail_logs_s3_bucket_access_logging_enabled",
+      "address": "aws_s3_bucket_logging.fix_cloudtrail_bucket_logging_b05c6d342b",
+      "import_id": "aws-cloudtrail-logs-132410971304-0971c04b",
+      "resource_type": "aws_s3_bucket_logging",
+      "optional": true
+    },
+    {
+      "check_id": "prowler-cloudtrail_logs_s3_bucket_access_logging_enabled",
+      "address": "aws_s3_bucket_policy.fix_cloudtrail_accesslog_target_policy_87323435bd",
+      "import_id": "vuln-cloudtrail-ap-northeast-2-f9fd7730",
+      "resource_type": "aws_s3_bucket_policy",
+      "optional": true
+    },
+    {
+      "check_id": "prowler-cloudtrail_logs_s3_bucket_access_logging_enabled",
+      "address": "aws_s3_bucket_logging.fix_cloudtrail_bucket_logging_87323435bd",
+      "import_id": "vuln-cloudtrail-ap-northeast-2-f9fd7730",
+      "resource_type": "aws_s3_bucket_logging",
+      "optional": true
+    },
+    {
+      "check_id": "prowler-cloudtrail_cloudwatch_logging_enabled",
+      "address": "aws_cloudwatch_log_group.fix_cloudtrail_log_group_41c4cc5c5c",
+      "import_id": "/aws/cloudtrail/132410971304",
+      "resource_type": "aws_cloudwatch_log_group",
+      "optional": true
+    },
+    {
+      "check_id": "prowler-cloudtrail_cloudwatch_logging_enabled",
+      "address": "aws_cloudtrail.fix_cloudtrail_41c4cc5c5c",
       "import_id": "security-cloudtail",
+      "resource_type": "aws_cloudtrail",
+      "optional": false
+    },
+    {
+      "check_id": "prowler-cloudtrail_cloudwatch_logging_enabled",
+      "address": "aws_cloudwatch_log_group.fix_cloudtrail_log_group_0a966160c4",
+      "import_id": "/aws/cloudtrail/132410971304",
+      "resource_type": "aws_cloudwatch_log_group",
+      "optional": true
+    },
+    {
+      "check_id": "prowler-cloudtrail_cloudwatch_logging_enabled",
+      "address": "aws_cloudtrail.fix_cloudtrail_0a966160c4",
+      "import_id": "vuln-trail",
       "resource_type": "aws_cloudtrail",
       "optional": false
     }

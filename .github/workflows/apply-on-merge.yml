@@ -85,6 +85,10 @@ jobs:
               if ! echo " $VALID " | grep -q " $cat "; then
                 continue
               fi
+              if [ ! -f "$f" ]; then
+                echo "skip missing file in diff: $f"
+                continue
+              fi
               mkdir -p "$SCOPE/$cat"
               cp "$f" "$SCOPE/$cat/$(basename "$f")"
             done <<< "$CHANGED_FILES"

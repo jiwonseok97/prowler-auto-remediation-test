@@ -21,9 +21,12 @@ OPTIONAL_IMPORT_TYPES = {
     "aws_s3_bucket_server_side_encryption_configuration",
     "aws_s3_account_public_access_block",
     "aws_s3_bucket_policy",
+    "aws_s3_bucket_logging",
     "aws_config_configuration_recorder",
     "aws_config_delivery_channel",
     "aws_config_configuration_recorder_status",
+    "aws_cloudwatch_log_group",
+    "aws_network_acl_rule",
 }
 USE_BEDROCK_FALLBACK = os.getenv("BEDROCK_FALLBACK", "").strip().lower() in {"1", "true", "yes"}
 
@@ -117,6 +120,12 @@ def extract_log_group(arn: str) -> str:
 def extract_vpc_id(arn: str) -> str:
     if ":vpc/" in arn:
         return arn.split(":vpc/", 1)[1]
+    return ""
+
+
+def extract_nacl_id(arn: str) -> str:
+    if ":network-acl/" in arn:
+        return arn.split(":network-acl/", 1)[1]
     return ""
 
 
@@ -221,6 +230,84 @@ def lookup_vpc_for_sg(arn: str, region: str) -> str:
     return ""
 
 
+def pick_available_nacl_rule_number(nacl_id: str, region: str, preferred: int) -> int:
+    if not nacl_id:
+        return preferred
+    try:
+        ec2 = boto3.client("ec2", region_name=region)
+        resp = ec2.describe_network_acls(NetworkAclIds=[nacl_id])
+        used = set()
+        for acl in resp.get("NetworkAcls", []) or []:
+            for entry in acl.get("Entries", []) or []:
+                if bool(entry.get("Egress", False)):
+                    continue
+                num = entry.get("RuleNumber")
+                if isinstance(num, int):
+                    used.add(num)
+        if preferred not in used:
+            return preferred
+        for n in range(1, 32766):
+            if n not in used:
+                return n
+    except Exception:
+        pass
+    return preferred
+
+
+def build_nacl_restrict_ingress_tf(finding: Dict[str, Any], region: str) -> str:
+    cid = str(finding.get("check_id", "")).lower()
+    cid = cid.split("prowler-", 1)[1] if cid.startswith("prowler-") else cid
+    nacl_id = extract_nacl_id(finding.get("resource_arn", ""))
+    if not nacl_id:
+        return ""
+
+    proto = "-1"
+    from_port = ""
+    to_port = ""
+    preferred = 50
+    if "tcp_port_22" in cid:
+        proto = "6"
+        from_port = "22"
+        to_port = "22"
+        preferred = 52
+    elif "tcp_port_3389" in cid:
+        proto = "6"
+        from_port = "3389"
+        to_port = "3389"
+        preferred = 53
+    elif "any_port" in cid:
+        proto = "-1"
+        preferred = 51
+    else:
+        return ""
+
+    rule_number = pick_available_nacl_rule_number(nacl_id, region, preferred)
+    finding["_nacl_rule_import_id"] = f"{nacl_id}:false:{rule_number}:{proto}:0.0.0.0/0"
+
+    lines = [
+        'resource "aws_network_acl_rule" "fix_network_acl_ingress_deny" {',
+        f'  network_acl_id = "{nacl_id}"',
+        "  egress         = false",
+        f"  rule_number    = {rule_number}",
+        f'  protocol       = "{proto}"',
+        '  rule_action    = "deny"',
+        '  cidr_block     = "0.0.0.0/0"',
+    ]
+    if from_port and to_port:
+        lines.append(f"  from_port      = {from_port}")
+        lines.append(f"  to_port        = {to_port}")
+    lines.extend(
+        [
+            "  lifecycle {",
+            "    ignore_changes = [icmp_type, icmp_code]",
+            "  }",
+            "}",
+            "",
+        ]
+    )
+    return "\n".join(lines)
+
+
 def uniquify_resource_names(tf_code: str, suffix: str) -> Tuple[str, List[Tuple[str, str]]]:
     mapping: List[Tuple[str, str]] = []
     tag = hashlib.sha1(suffix.encode("utf-8")).hexdigest()[:10]
@@ -276,7 +363,7 @@ def import_id_for_type(resource_type: str, finding: Dict[str, Any]) -> str:
     if resource_type == "aws_cloudtrail":
         return finding.get("_trail_name", "") or extract_trail_name(arn)
     if resource_type == "aws_cloudwatch_log_group":
-        return extract_log_group(arn)
+        return finding.get("_log_group_name", "") or extract_log_group(arn)
     if resource_type == "aws_iam_account_password_policy":
         return finding.get("account_id", "")
     if resource_type == "aws_s3_account_public_access_block":
@@ -287,10 +374,14 @@ def import_id_for_type(resource_type: str, finding: Dict[str, Any]) -> str:
         return extract_kms_key_id(arn) or arn
     if resource_type == "aws_accessanalyzer_analyzer":
         return finding.get("_analyzer_name", "")
+    if resource_type == "aws_s3_bucket_logging":
+        return finding.get("_trail_bucket", "") or finding.get("_source_bucket", "") or extract_bucket(arn)
     if resource_type in {"aws_config_configuration_recorder", "aws_config_configuration_recorder_status"}:
         return finding.get("_config_recorder_name", "")
     if resource_type == "aws_config_delivery_channel":
         return finding.get("_config_delivery_channel_name", "")
+    if resource_type == "aws_network_acl_rule":
+        return finding.get("_nacl_rule_import_id", "")
     return ""
 
 
@@ -348,6 +439,10 @@ def check_priority(check_id: str) -> int:
         return 70
     if c == "vpc_flow_logs_enabled":
         return 85
+    if "networkacl_allow_ingress_any_port" in c:
+        return 88
+    if "networkacl_allow_ingress_tcp_port_22" in c or "networkacl_allow_ingress_tcp_port_3389" in c:
+        return 87
     if c.startswith("cloudwatch_log_metric_filter_") or c.startswith("cloudwatch_changes_to_"):
         return 75
     return 10
@@ -686,10 +781,71 @@ def build_cloudtrail_tf(finding: Dict[str, Any], region: str, account_id: str) -
         return ""
     finding["_trail_name"] = name
     finding["_trail_bucket"] = s3_bucket
+    policy_prefix = ""
 
     include_global = "true" if bool(detail.get("IncludeGlobalServiceEvents", True)) else "false"
     multi_region = "true" if bool(detail.get("IsMultiRegionTrail", True)) else "false"
     enable_logging = "true" if bool(detail.get("LogFileValidationEnabled", True)) else "true"
+
+    if "cloudtrail_logs_s3_bucket_access_logging_enabled" in cid_l:
+        source_bucket = s3_bucket
+        target_bucket = pick_default_log_bucket(account_id) or source_bucket
+        finding["_source_bucket"] = source_bucket
+
+        policy_doc: Dict[str, Any] = {"Version": "2012-10-17", "Statement": []}
+        try:
+            s3 = boto3.client("s3")
+            resp = s3.get_bucket_policy(Bucket=target_bucket)
+            raw = resp.get("Policy", "")
+            if raw:
+                loaded = json.loads(raw)
+                if isinstance(loaded, dict):
+                    policy_doc = loaded
+        except Exception:
+            pass
+
+        stmts = policy_doc.get("Statement", [])
+        if not isinstance(stmts, list):
+            stmts = [stmts] if stmts else []
+        has_logging_put = False
+        for st in stmts:
+            if not isinstance(st, dict):
+                continue
+            principal = st.get("Principal", {})
+            service = str(principal.get("Service", "")).lower() if isinstance(principal, dict) else ""
+            action = st.get("Action", [])
+            actions = [action] if isinstance(action, str) else (action if isinstance(action, list) else [])
+            actions_l = [str(a).lower() for a in actions]
+            if "logging.s3.amazonaws.com" in service and "s3:putobject" in actions_l:
+                has_logging_put = True
+                break
+        if not has_logging_put:
+            stmts.append(
+                {
+                    "Sid": "S3ServerAccessLogsPolicy",
+                    "Effect": "Allow",
+                    "Principal": {"Service": "logging.s3.amazonaws.com"},
+                    "Action": "s3:PutObject",
+                    "Resource": f"arn:aws:s3:::{target_bucket}/s3-access-logs/*",
+                    "Condition": {"StringEquals": {"aws:SourceAccount": account_id}},
+                }
+            )
+        policy_doc["Statement"] = stmts
+        policy_json = json.dumps(policy_doc, indent=2)
+        return (
+            'resource "aws_s3_bucket_policy" "fix_cloudtrail_accesslog_target_policy" {\n'
+            f'  bucket = "{target_bucket}"\n'
+            "  policy = <<POLICY\n"
+            f"{policy_json}\n"
+            "POLICY\n"
+            "}\n\n"
+            'resource "aws_s3_bucket_logging" "fix_cloudtrail_bucket_logging" {\n'
+            f'  bucket        = "{source_bucket}"\n'
+            f'  target_bucket = "{target_bucket}"\n'
+            '  target_prefix = "s3-access-logs/"\n'
+            "  depends_on    = [aws_s3_bucket_policy.fix_cloudtrail_accesslog_target_policy]\n"
+            "}\n"
+        )
 
     lines = [
         'resource "aws_cloudtrail" "fix_cloudtrail" {',
@@ -724,17 +880,71 @@ def build_cloudtrail_tf(finding: Dict[str, Any], region: str, account_id: str) -
     elif "cloudtrail_cloudwatch_logging_enabled" in cid_l:
         lg_arn = str(detail.get("CloudWatchLogsLogGroupArn", ""))
         role_arn = str(detail.get("CloudWatchLogsRoleArn", ""))
-        if not lg_arn or not role_arn:
-            return ""
+        if not lg_arn:
+            log_group_name = pick_default_cloudtrail_log_group(region, account_id)
+            lg_arn = f"arn:aws:logs:{region}:{account_id}:log-group:{log_group_name}:*"
+            finding["_log_group_name"] = log_group_name
+            policy_prefix += (
+                'resource "aws_cloudwatch_log_group" "fix_cloudtrail_log_group" {\n'
+                f'  name = "{log_group_name}"\n'
+                "}\n\n"
+            )
+        if not role_arn:
+            role_name = f"CloudTrail_CloudWatchLogs_Role_{safe_id(name)}"[:64]
+            role_arn = f"arn:aws:iam::{account_id}:role/{role_name}"
+            policy_doc = {
+                "Version": "2012-10-17",
+                "Statement": [
+                    {
+                        "Effect": "Allow",
+                        "Action": [
+                            "logs:CreateLogStream",
+                            "logs:PutLogEvents",
+                        ],
+                        "Resource": [lg_arn.replace(":*", ":log-stream:*"), lg_arn],
+                    }
+                ],
+            }
+            assume_doc = {
+                "Version": "2012-10-17",
+                "Statement": [
+                    {"Effect": "Allow", "Principal": {"Service": "cloudtrail.amazonaws.com"}, "Action": "sts:AssumeRole"}
+                ],
+            }
+            policy_prefix += (
+                'resource "aws_iam_role" "fix_cloudtrail_cw_role" {\n'
+                f'  name               = "{role_name}"\n'
+                f"  assume_role_policy = <<POLICY\n{json.dumps(assume_doc, indent=2)}\nPOLICY\n"
+                "}\n\n"
+                'resource "aws_iam_role_policy" "fix_cloudtrail_cw_role_policy" {\n'
+                f'  name   = "{role_name}-policy"\n'
+                "  role   = aws_iam_role.fix_cloudtrail_cw_role.id\n"
+                f"  policy = <<POLICY\n{json.dumps(policy_doc, indent=2)}\nPOLICY\n"
+                "}\n\n"
+            )
         lines.append("  enable_log_file_validation    = true")
         lines.append(f'  cloud_watch_logs_group_arn    = "{lg_arn}"')
         lines.append(f'  cloud_watch_logs_role_arn     = "{role_arn}"')
     elif "kms_encryption_enabled" in cid_l:
         kms = str(detail.get("KmsKeyId", ""))
         if not kms:
-            return ""
+            kms_alias = f"cloudtrail-remediation-{safe_id(name)}"[:250]
+            policy_prefix += (
+                'resource "aws_kms_key" "fix_cloudtrail_kms_key" {\n'
+                '  description         = "CloudTrail encryption key created by remediation"\n'
+                "  enable_key_rotation = true\n"
+                "}\n\n"
+                'resource "aws_kms_alias" "fix_cloudtrail_kms_alias" {\n'
+                f'  name          = "alias/{kms_alias}"\n'
+                "  target_key_id = aws_kms_key.fix_cloudtrail_kms_key.key_id\n"
+                "}\n\n"
+            )
+            kms = "${aws_kms_key.fix_cloudtrail_kms_key.arn}"
         lines.append("  enable_log_file_validation    = true")
-        lines.append(f'  kms_key_id                    = "{kms}"')
+        if kms.startswith("${"):
+            lines.append(f"  kms_key_id                    = {kms}")
+        else:
+            lines.append(f'  kms_key_id                    = "{kms}"')
     else:
         return ""
 
@@ -763,7 +973,7 @@ def build_cloudtrail_tf(finding: Dict[str, Any], region: str, account_id: str) -
         ]
     )
     body = "\n".join(lines)
-    if "s3_dataevents_" in cid_l:
+    if "s3_dataevents_" in cid_l or policy_prefix:
         return policy_prefix + body
     return body
 
@@ -830,11 +1040,15 @@ def build_cloudwatch_metric_alarm_tf(finding: Dict[str, Any], account_id: str, r
     log_group = extract_log_group(finding.get("resource_arn", ""))
     if not log_group:
         log_group = pick_default_cloudtrail_log_group(region, account_id)
+    finding["_log_group_name"] = log_group
     metric_ns = "CISBenchmark"
     metric_name = safe_id(cid_l)[:128]
     alarm_name = f"alarm-{metric_name}"[:255]
     filter_name = f"filter-{metric_name}"[:255]
     return (
+        'resource "aws_cloudwatch_log_group" "fix_cloudwatch_log_group" {\n'
+        f'  name = "{log_group}"\n'
+        "}\n\n"
         'resource "aws_cloudwatch_log_metric_filter" "fix_cloudwatch_metric_filter" {\n'
         f'  name           = "{filter_name}"\n'
         f'  log_group_name = "{log_group}"\n'
@@ -845,6 +1059,7 @@ def build_cloudwatch_metric_alarm_tf(finding: Dict[str, Any], account_id: str, r
         f'    namespace = "{metric_ns}"\n'
         '    value     = "1"\n'
         "  }\n"
+        "  depends_on = [aws_cloudwatch_log_group.fix_cloudwatch_log_group]\n"
         "}\n\n"
         'resource "aws_cloudwatch_metric_alarm" "fix_cloudwatch_metric_alarm" {\n'
         f'  alarm_name          = "{alarm_name}"\n'
@@ -987,6 +1202,8 @@ def main() -> None:
             tf_code = build_secure_transport_policy_tf(f)
         elif "vpc_flow_logs_enabled" in cid_l:
             tf_code = build_vpc_flow_logs_tf(f, a.account_id)
+        elif "networkacl_allow_ingress_any_port" in cid_l or "networkacl_allow_ingress_tcp_port_22" in cid_l or "networkacl_allow_ingress_tcp_port_3389" in cid_l:
+            tf_code = build_nacl_restrict_ingress_tf(f, a.region)
         elif "accessanalyzer_enabled" in cid_l:
             tf_code = build_access_analyzer_tf(f, a.region, a.account_id)
         elif "config_recorder_all_regions_enabled" in cid_l:
@@ -1043,21 +1260,6 @@ def main() -> None:
                 }
             )
             continue
-
-        if "aws_cloudwatch_log_metric_filter" in tf_code:
-            lg = extract_log_group(f.get("resource_arn", "")) or pick_default_cloudtrail_log_group(a.region, a.account_id)
-            if not cloudwatch_log_group_exists(lg, a.region):
-                overall["categories"][cat].append(
-                    {
-                        "check_id": cid,
-                        "manual_required": True,
-                        "files": [],
-                        "priority": f.get("osfp", {}).get("priority_bucket", "P3"),
-                        "score": f.get("osfp", {}).get("priority_score", 0),
-                        "reason": "missing_cloudwatch_log_group",
-                    }
-                )
-                continue
 
         if "var." in tf_code:
             overall["categories"][cat].append(

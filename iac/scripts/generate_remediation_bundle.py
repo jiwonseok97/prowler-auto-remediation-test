@@ -370,8 +370,42 @@ def build_sg_restrict_all_ports_tf(finding: Dict[str, Any], region: str) -> str:
     if not sg_id:
         return ""
     rule = find_open_sg_rule(sg_id, region)
+    safe_cidr4 = lookup_vpc_cidr_for_sg_id(sg_id, region) or "10.0.0.0/8"
+    finding["_sg_id"] = sg_id
+
+    # Fallback: if we cannot resolve rule-id, still import SG and tighten ingress.
+    # This avoids dropping remediation when describe_security_group_rules is unavailable.
     if not rule:
-        return ""
+        vpc_id = lookup_vpc_for_sg(finding.get("resource_arn", ""), region)
+        if not vpc_id:
+            return ""
+        return (
+            'resource "aws_security_group" "fix_sg_restrict" {\n'
+            f'  name        = "sg-remediation-{safe_id(sg_id)}"\n'
+            '  description = "managed by remediation"\n'
+            f'  vpc_id      = "{vpc_id}"\n'
+            "  revoke_rules_on_delete = true\n"
+            "\n"
+            "  ingress {\n"
+            '    description = "restricted by remediation"\n'
+            "    from_port   = 0\n"
+            "    to_port     = 0\n"
+            '    protocol    = "-1"\n'
+            f'    cidr_blocks = ["{safe_cidr4}"]\n'
+            "  }\n"
+            "\n"
+            "  egress {\n"
+            "    from_port   = 0\n"
+            "    to_port     = 0\n"
+            '    protocol    = "-1"\n'
+            '    cidr_blocks = ["0.0.0.0/0"]\n'
+            "  }\n"
+            "\n"
+            "  lifecycle {\n"
+            "    ignore_changes = [name, description, tags, tags_all]\n"
+            "  }\n"
+            "}\n\n"
+        )
 
     rule_id = str(rule.get("SecurityGroupRuleId", "") or "")
     if not rule_id:
@@ -382,7 +416,6 @@ def build_sg_restrict_all_ports_tf(finding: Dict[str, Any], region: str) -> str:
     from_port = rule.get("FromPort")
     to_port = rule.get("ToPort")
 
-    safe_cidr4 = lookup_vpc_cidr_for_sg_id(sg_id, region) or "10.0.0.0/8"
     lines = [
         'resource "aws_vpc_security_group_ingress_rule" "fix_sg_ingress_restrict" {',
         f'  security_group_id = "{sg_id}"',
@@ -482,6 +515,8 @@ def import_id_for_type(resource_type: str, finding: Dict[str, Any]) -> str:
         return finding.get("_nacl_rule_import_id", "")
     if resource_type == "aws_vpc_security_group_ingress_rule":
         return finding.get("_sg_ingress_rule_import_id", "")
+    if resource_type == "aws_security_group":
+        return finding.get("_sg_id", "") or extract_sg_id(finding.get("resource_arn", ""))
     return ""
 
 

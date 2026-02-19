@@ -55,8 +55,8 @@ resource "aws_s3_bucket_policy" "fix_config_bucket_policy_7d3084496f" {
       "Resource": "arn:aws:s3:::aws-cloudtrail-logs-132410971304-0971c04b/AWSLogs/132410971304/*",
       "Condition": {
         "StringEquals": {
-          "s3:x-amz-acl": "bucket-owner-full-control",
-          "aws:SourceArn": "arn:aws:cloudtrail:ap-northeast-2:132410971304:trail/security-cloudtail"
+          "aws:SourceArn": "arn:aws:cloudtrail:ap-northeast-2:132410971304:trail/security-cloudtail",
+          "s3:x-amz-acl": "bucket-owner-full-control"
         }
       }
     },
@@ -70,8 +70,8 @@ resource "aws_s3_bucket_policy" "fix_config_bucket_policy_7d3084496f" {
       "Resource": "arn:aws:s3:::aws-cloudtrail-logs-132410971304-0971c04b/AWSLogs/132410971304/*",
       "Condition": {
         "StringEquals": {
-          "s3:x-amz-acl": "bucket-owner-full-control",
-          "aws:SourceAccount": "132410971304"
+          "aws:SourceAccount": "132410971304",
+          "s3:x-amz-acl": "bucket-owner-full-control"
         },
         "ArnLike": {
           "aws:SourceArn": "arn:aws:logs:ap-northeast-2:132410971304:*"
@@ -115,6 +115,23 @@ resource "aws_s3_bucket_policy" "fix_config_bucket_policy_7d3084496f" {
       "Condition": {
         "StringEquals": {
           "s3:x-amz-acl": "bucket-owner-full-control"
+        }
+      }
+    },
+    {
+      "Sid": "AWSConfigBucketListCheck",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "config.amazonaws.com"
+      },
+      "Action": "s3:ListBucket",
+      "Resource": "arn:aws:s3:::aws-cloudtrail-logs-132410971304-0971c04b",
+      "Condition": {
+        "StringEquals": {
+          "aws:SourceAccount": "132410971304"
+        },
+        "ArnLike": {
+          "aws:SourceArn": "arn:aws:config:ap-northeast-2:132410971304:*"
         }
       }
     }

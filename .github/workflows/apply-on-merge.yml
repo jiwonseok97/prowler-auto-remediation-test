@@ -56,9 +56,13 @@ jobs:
         id: cats
         shell: bash
         run: |
-          BEFORE="${{ github.event.before }}"
-          AFTER="${{ github.sha }}"
-          CATS="$(git diff --name-only "$BEFORE" "$AFTER" | awk -F/ '/^remediation\// {print $2}' | sort -u | paste -sd, -)"
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            CATS="iam,s3,network-ec2-vpc,cloudtrail,cloudwatch"
+          else
+            BEFORE="${{ github.event.before }}"
+            AFTER="${{ github.sha }}"
+            CATS="$(git diff --name-only "$BEFORE" "$AFTER" | awk -F/ '/^remediation\// {print $2}' | sort -u | paste -sd, -)"
+          fi
           echo "categories=$CATS" >> "$GITHUB_OUTPUT"
           echo "changed_categories=$CATS"
 

@@ -242,6 +242,49 @@ def lookup_vpc_for_sg(arn: str, region: str) -> str:
     return ""
 
 
+def lookup_vpc_cidr_for_sg_id(sg_id: str, region: str) -> str:
+    if not sg_id:
+        return ""
+    try:
+        ec2 = boto3.client("ec2", region_name=region)
+        resp = ec2.describe_security_groups(GroupIds=[sg_id])
+        vpc_id = ""
+        for sg in resp.get("SecurityGroups", []) or []:
+            vpc_id = str(sg.get("VpcId", "") or "")
+            if vpc_id:
+                break
+        if not vpc_id:
+            return ""
+        vpcs = ec2.describe_vpcs(VpcIds=[vpc_id]).get("Vpcs", []) or []
+        if not vpcs:
+            return ""
+        return str(vpcs[0].get("CidrBlock", "") or "")
+    except Exception:
+        return ""
+
+
+def find_open_sg_rule(sg_id: str, region: str) -> Dict[str, Any]:
+    if not sg_id:
+        return {}
+    try:
+        ec2 = boto3.client("ec2", region_name=region)
+        paginator = ec2.get_paginator("describe_security_group_rules")
+        for page in paginator.paginate(
+            Filters=[
+                {"Name": "group-id", "Values": [sg_id]},
+                {"Name": "is-egress", "Values": ["false"]},
+            ]
+        ):
+            for rule in page.get("SecurityGroupRules", []) or []:
+                cidr4 = str(rule.get("CidrIpv4", "") or "")
+                cidr6 = str(rule.get("CidrIpv6", "") or "")
+                if cidr4 == "0.0.0.0/0" or cidr6 == "::/0":
+                    return rule
+    except Exception:
+        return {}
+    return {}
+
+
 def pick_available_nacl_rule_number(nacl_id: str, region: str, preferred: int) -> int:
     if not nacl_id:
         return preferred
@@ -314,6 +357,47 @@ def build_nacl_restrict_ingress_tf(finding: Dict[str, Any], region: str) -> str:
             "  lifecycle {",
             "    ignore_changes = [icmp_type, icmp_code]",
             "  }",
+            "}",
+            "",
+        ]
+    )
+    return "\n".join(lines)
+
+
+def build_sg_restrict_all_ports_tf(finding: Dict[str, Any], region: str) -> str:
+    sg_id = extract_sg_id(finding.get("resource_arn", ""))
+    if not sg_id:
+        return ""
+    rule = find_open_sg_rule(sg_id, region)
+    if not rule:
+        return ""
+
+    rule_id = str(rule.get("SecurityGroupRuleId", "") or "")
+    if not rule_id:
+        return ""
+    finding["_sg_ingress_rule_import_id"] = rule_id
+
+    ip_protocol = str(rule.get("IpProtocol", "-1") or "-1")
+    from_port = rule.get("FromPort")
+    to_port = rule.get("ToPort")
+
+    safe_cidr4 = lookup_vpc_cidr_for_sg_id(sg_id, region) or "10.0.0.0/8"
+    lines = [
+        'resource "aws_vpc_security_group_ingress_rule" "fix_sg_ingress_restrict" {',
+        f'  security_group_id = "{sg_id}"',
+        f'  ip_protocol       = "{ip_protocol}"',
+        f'  cidr_ipv4         = "{safe_cidr4}"',
+    ]
+
+    if ip_protocol not in {"-1", "icmp", "58"}:
+        if from_port is not None:
+            lines.append(f"  from_port         = {int(from_port)}")
+        if to_port is not None:
+            lines.append(f"  to_port           = {int(to_port)}")
+
+    lines.extend(
+        [
+            '  description       = "restricted by remediation"',
             "}",
             "",
         ]
@@ -395,6 +479,8 @@ def import_id_for_type(resource_type: str, finding: Dict[str, Any]) -> str:
         return finding.get("_config_delivery_channel_name", "")
     if resource_type == "aws_network_acl_rule":
         return finding.get("_nacl_rule_import_id", "")
+    if resource_type == "aws_vpc_security_group_ingress_rule":
+        return finding.get("_sg_ingress_rule_import_id", "")
     return ""
 
 
@@ -730,6 +816,14 @@ def build_kms_rotation_tf(finding: Dict[str, Any]) -> str:
     )
 
 
+def build_ebs_encryption_by_default_tf() -> str:
+    return (
+        'resource "aws_ebs_encryption_by_default" "fix_ebs_default_encryption" {\n'
+        "  enabled = true\n"
+        "}\n"
+    )
+
+
 def build_cloudtrail_required_bucket_policy_tf(
     trail_name: str,
     bucket: str,
@@ -956,7 +1050,7 @@ def build_cloudtrail_tf(finding: Dict[str, Any], region: str, account_id: str) -
             kms = "${aws_kms_key.fix_cloudtrail_kms_key.arn}"
         lines.append("  enable_log_file_validation    = true")
         if kms.startswith("${"):
-            lines.append(f"  kms_key_id                    = {kms}")
+            lines.append(f"  kms_key_id                    = {kms[2:-1]}")
         else:
             lines.append(f'  kms_key_id                    = "{kms}"')
     else:
@@ -1238,6 +1332,10 @@ def main() -> None:
             tf_code = build_vpc_flow_logs_tf(f, a.account_id)
         elif "networkacl_allow_ingress_any_port" in cid_l or "networkacl_allow_ingress_tcp_port_22" in cid_l or "networkacl_allow_ingress_tcp_port_3389" in cid_l:
             tf_code = build_nacl_restrict_ingress_tf(f, a.region)
+        elif "ec2_securitygroup_allow_ingress_from_internet_to_all_ports" in cid_l:
+            tf_code = build_sg_restrict_all_ports_tf(f, a.region)
+        elif "ec2_ebs_volume_encryption" in cid_l:
+            tf_code = build_ebs_encryption_by_default_tf()
         elif "accessanalyzer_enabled" in cid_l:
             tf_code = build_access_analyzer_tf(f, a.region, a.account_id)
         elif "config_recorder_all_regions_enabled" in cid_l:

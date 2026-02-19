@@ -1,7 +1,25 @@
-resource "aws_s3_bucket_public_access_block" "fix_s3_public_access_e947414e4a" {
-  bucket                  = "prowler-terraform-state-132410971304"
-  block_public_acls       = true
-  block_public_policy     = true
-  ignore_public_acls      = true
-  restrict_public_buckets = true
+resource "aws_s3_bucket_policy" "fix_s3_secure_transport_e947414e4a" {
+  bucket = "prowler-terraform-state-132410971304"
+  policy = <<POLICY
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "DenyInsecureTransport",
+      "Effect": "Deny",
+      "Principal": "*",
+      "Action": "s3:*",
+      "Resource": [
+        "arn:aws:s3:::prowler-terraform-state-132410971304",
+        "arn:aws:s3:::prowler-terraform-state-132410971304/*"
+      ],
+      "Condition": {
+        "Bool": {
+          "aws:SecureTransport": "false"
+        }
+      }
+    }
+  ]
+}
+POLICY
 }

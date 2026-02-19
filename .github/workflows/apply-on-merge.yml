@@ -126,6 +126,10 @@ jobs:
             c="$(echo "$c" | tr -d '[:space:]')"
             [ -z "$c" ] && continue
             if echo " $VALID " | grep -q " $c "; then
+              if [ ! -d "$APPLY_ROOT/$c" ] || ! find "$APPLY_ROOT/$c" -maxdepth 1 -name '*.tf' | grep -q .; then
+                echo "skip category without tf files: $c"
+                continue
+              fi
               if [ -z "$FILTERED" ]; then
                 FILTERED="$c"
               else

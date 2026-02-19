@@ -1035,6 +1035,7 @@ def build_cloudtrail_tf(finding: Dict[str, Any], region: str, account_id: str) -
         # To keep apply resilient under least-privilege runner roles, skip auto-remediation here.
         return ""
     elif "kms_encryption_enabled" in cid_l:
+        policy_prefix = build_cloudtrail_required_bucket_policy_tf(name, s3_bucket, account_id, region)
         kms = str(detail.get("KmsKeyId", ""))
         if not kms:
             kms_alias = f"cloudtrail-remediation-{safe_id(name)}"[:250]
@@ -1057,7 +1058,7 @@ def build_cloudtrail_tf(finding: Dict[str, Any], region: str, account_id: str) -
     else:
         return ""
 
-    if "s3_dataevents_" in cid_l:
+    if policy_prefix:
         lines.extend(
             [
                 "",

@@ -52,6 +52,9 @@ jobs:
           python -m pip install --upgrade pip
           pip install "prowler>=3.11,<4.0"
 
+      - name: Wait for eventual consistency
+        run: sleep 150
+
       - name: Run post-apply Prowler
         run: |
           mkdir -p artifacts/rescan
@@ -86,6 +89,13 @@ jobs:
           print(md)
           PY
           cat artifacts/rescan/rescan_summary.md >> "$GITHUB_STEP_SUMMARY"
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          s = json.loads(Path('artifacts/rescan/rescan_summary.json').read_text(encoding='utf-8'))
+          if s.get("reduced", 0) <= 0:
+              raise SystemExit(f"FAIL not reduced: baseline={s.get('baseline_fail')} post={s.get('post_fail')}")
+          PY
 
       - name: Upload rescan artifacts
         uses: actions/upload-artifact@v4

@@ -8,19 +8,22 @@ on:
         required: true
         type: string
       account_id:
-        description: "Target AWS account id"
-        required: true
+        description: "Target AWS account id (optional, inferred from scan artifact)"
+        required: false
         type: string
       region:
-        description: "Target AWS region"
-        required: true
+        description: "Target AWS region (optional, inferred from scan artifact)"
+        required: false
         type: string
-        default: us-east-1
+        default: ""
       model_id:
         description: "Bedrock model id"
         required: true
         type: string
         default: anthropic.claude-3-haiku-20240307-v1:0
+  workflow_run:
+    workflows: ["Scan CIS 1.4"]
+    types: [completed]
 
 permissions:
   id-token: write
@@ -30,14 +33,22 @@ permissions:
 
 jobs:
   remediate:
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
-    env:
-      AWS_REGION: ${{ inputs.region }}
-      AWS_ACCOUNT_ID: ${{ inputs.account_id }}
-      MODEL_ID: ${{ inputs.model_id }}
-      RUN_ID: ${{ github.run_id }}
     steps:
       - uses: actions/checkout@v4
+
+      - name: Resolve trigger context
+        id: trigger
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_run" ]; then
+            echo "scan_run_id=${{ github.event.workflow_run.id }}" >> "$GITHUB_OUTPUT"
+            echo "model_id=anthropic.claude-3-haiku-20240307-v1:0" >> "$GITHUB_OUTPUT"
+          else
+            echo "scan_run_id=${{ inputs.scan_run_id }}" >> "$GITHUB_OUTPUT"
+            echo "model_id=${{ inputs.model_id }}" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Resolve AWS auth mode
         id: aws_auth
@@ -49,20 +60,49 @@ jobs:
             echo "mode=oidc" >> "$GITHUB_OUTPUT"
           fi
 
+      - name: Download scan artifact from run
+        uses: dawidd6/action-download-artifact@v6
+        with:
+          run_id: ${{ steps.trigger.outputs.scan_run_id }}
+          name: scan-${{ steps.trigger.outputs.scan_run_id }}
+          path: artifacts/scan
+
+      - name: Resolve account and region
+        id: target
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          manifest = Path("artifacts/scan/scan_manifest.json")
+          m = json.loads(manifest.read_text(encoding="utf-8")) if manifest.exists() else {}
+          account = (m.get("account") or "${{ inputs.account_id }}" or "").strip()
+          region = (m.get("region") or "${{ inputs.region }}" or "").strip()
+          if not account:
+              raise SystemExit("account_id is missing in scan artifact and manual input")
+          if not region:
+              raise SystemExit("region is missing in scan artifact and manual input")
+          with open(Path.cwd() / "target.out", "w", encoding="utf-8") as f:
+              f.write(f"account_id={account}\n")
+              f.write(f"region={region}\n")
+          PY
+          cat target.out >> "$GITHUB_OUTPUT"
+
       - name: Configure AWS credentials (Static Keys)
         if: ${{ steps.aws_auth.outputs.mode == 'static' }}
         uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ inputs.region }}
+          aws-region: ${{ steps.target.outputs.region }}
 
       - name: Configure AWS credentials (OIDC)
         if: ${{ steps.aws_auth.outputs.mode == 'oidc' }}
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_OIDC_ROLE_ARN }}
-          aws-region: ${{ inputs.region }}
+          aws-region: ${{ steps.target.outputs.region }}
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -77,22 +117,15 @@ jobs:
           python -m pip install --upgrade pip
           pip install boto3 pyyaml
 
-      - name: Download scan artifact from run
-        uses: dawidd6/action-download-artifact@v6
-        with:
-          run_id: ${{ inputs.scan_run_id }}
-          name: scan-${{ inputs.scan_run_id }}
-          path: artifacts/scan
-
       - name: Generate remediation tf files
         run: |
-          python iac/scripts/generate_remediation_bundle.py \
+          python iac/scripts/generate_remediation.py \
             --input artifacts/scan/prioritized_findings.json \
             --output-root remediation \
             --snippet-map iac/snippets/check_map.yaml \
-            --account-id "${{ inputs.account_id }}" \
-            --region "${{ inputs.region }}" \
-            --model-id "${{ inputs.model_id }}"
+            --account-id "${{ steps.target.outputs.account_id }}" \
+            --region "${{ steps.target.outputs.region }}" \
+            --model-id "${{ steps.trigger.outputs.model_id }}"
 
       - name: Validate generated terraform
         run: |
@@ -100,11 +133,11 @@ jobs:
 
       - name: Build category manifests
         run: |
-          python iac/scripts/build_category_manifest.py \
+          python iac/scripts/builder_to_manifest.py \
             --input remediation \
             --output remediation/manifest.json \
-            --account-id "${{ inputs.account_id }}" \
-            --region "${{ inputs.region }}"
+            --account-id "${{ steps.target.outputs.account_id }}" \
+            --region "${{ steps.target.outputs.region }}"
 
       - name: Create category PRs
         env:
@@ -113,5 +146,11 @@ jobs:
           python iac/scripts/create_category_prs.py \
             --root remediation \
             --manifest remediation/manifest.json \
-            --account-id "${{ inputs.account_id }}" \
+            --account-id "${{ steps.target.outputs.account_id }}" \
             --run-id "${{ github.run_id }}"
+
+      - name: Upload remediation artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: remediation-${{ github.run_id }}
+          path: remediation/

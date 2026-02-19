@@ -51,7 +51,7 @@ jobs:
 
       - name: Apply category by category
         run: |
-          bash iac/scripts/apply_merged_remediation.sh remediation
+          bash iac/scripts/resilient_apply.sh remediation artifacts
 
       - name: Upload apply artifacts
         uses: actions/upload-artifact@v4

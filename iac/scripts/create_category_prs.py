@@ -13,6 +13,11 @@ def run(cmd: list[str], check: bool = True) -> str:
     return p.stdout.strip()
 
 
+def has_staged_changes() -> bool:
+    p = subprocess.run(["git", "diff", "--cached", "--quiet"])
+    return p.returncode != 0
+
+
 def main() -> None:
     p = argparse.ArgumentParser()
     p.add_argument("--root", required=True)
@@ -45,6 +50,10 @@ def main() -> None:
         run(["git", "checkout", "-B", branch])
         run(["git", "add", str(path)], check=False)
         run(["git", "add", str(Path(a.manifest))], check=False)
+        if not has_staged_changes():
+            print(f"skip {category}: no file changes")
+            run(["git", "checkout", "main"], check=False)
+            continue
         run(["git", "commit", "-m", f"remediation: {category} {a.run_id}"], check=False)
         run(["git", "push", "-u", "origin", branch, "--force"])
 

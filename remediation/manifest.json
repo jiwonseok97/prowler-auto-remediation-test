@@ -1,5 +1,5 @@
 {
-  "created_at": "2026-02-19T10:53:32.002390+00:00",
+  "created_at": "2026-02-19T12:09:21.470153+00:00",
   "account": "132410971304",
   "region": "ap-northeast-2",
   "baseline_fail_count": 206,
@@ -16,6 +16,9 @@
         "prowler-iam_policy_attached_only_to_group_or_roles"
       ],
       "manual_required": [
+        "prowler-iam_customer_attached_policy_no_administrative_privileges",
+        "prowler-iam_policy_attached_only_to_group_or_roles",
+        "prowler-iam_policy_attached_only_to_group_or_roles",
         "prowler-iam_policy_attached_only_to_group_or_roles"
       ],
       "import_map": "remediation/iam/import-map.txt"
@@ -34,14 +37,16 @@
       "manual_required": [
         "prowler-cloudtrail_logs_s3_bucket_access_logging_enabled",
         "prowler-cloudtrail_logs_s3_bucket_access_logging_enabled",
-        "prowler-cloudwatch_log_metric_filter_for_s3_bucket_policy_changes"
+        "prowler-cloudwatch_log_metric_filter_for_s3_bucket_policy_changes",
+        "prowler-cloudtrail_s3_dataevents_read_enabled",
+        "prowler-cloudtrail_s3_dataevents_write_enabled"
       ],
       "import_map": "remediation/s3/import-map.txt"
     },
     {
       "category": "network-ec2-vpc",
       "path": "remediation/network-ec2-vpc",
-      "checks": 110,
+      "checks": 30,
       "top5": [
         "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
         "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
@@ -53,40 +58,23 @@
         "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
         "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
         "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
-        "prowler-ec2_securitygroup_default_restrict_traffic",
-        "prowler-ec2_securitygroup_default_restrict_traffic",
-        "prowler-ec2_securitygroup_default_restrict_traffic",
-        "prowler-ec2_securitygroup_default_restrict_traffic",
-        "prowler-ec2_securitygroup_default_restrict_traffic",
-        "prowler-ec2_securitygroup_default_restrict_traffic",
-        "prowler-ec2_securitygroup_default_restrict_traffic",
-        "prowler-ec2_securitygroup_default_restrict_traffic",
-        "prowler-ec2_securitygroup_default_restrict_traffic",
-        "prowler-ec2_securitygroup_default_restrict_traffic",
-        "prowler-ec2_securitygroup_default_restrict_traffic",
-        "prowler-ec2_securitygroup_default_restrict_traffic",
-        "prowler-ec2_securitygroup_default_restrict_traffic",
-        "prowler-ec2_securitygroup_default_restrict_traffic",
-        "prowler-ec2_securitygroup_default_restrict_traffic",
-        "prowler-ec2_securitygroup_default_restrict_traffic",
         "prowler-ec2_ebs_volume_encryption",
         "prowler-ec2_instance_profile_attached",
-        "prowler-vpc_flow_logs_enabled",
-        "prowler-vpc_flow_logs_enabled",
-        "prowler-vpc_flow_logs_enabled",
-        "prowler-vpc_flow_logs_enabled",
-        "prowler-vpc_flow_logs_enabled",
-        "prowler-vpc_flow_logs_enabled",
-        "prowler-vpc_flow_logs_enabled",
-        "prowler-vpc_flow_logs_enabled",
-        "prowler-vpc_flow_logs_enabled",
-        "prowler-vpc_flow_logs_enabled",
-        "prowler-vpc_flow_logs_enabled",
-        "prowler-vpc_flow_logs_enabled",
-        "prowler-vpc_flow_logs_enabled",
-        "prowler-vpc_flow_logs_enabled",
-        "prowler-vpc_flow_logs_enabled",
-        "prowler-vpc_flow_logs_enabled",
+        "prowler-ec2_networkacl_allow_ingress_any_port",
+        "prowler-ec2_networkacl_allow_ingress_any_port",
+        "prowler-ec2_networkacl_allow_ingress_any_port",
+        "prowler-ec2_networkacl_allow_ingress_any_port",
+        "prowler-ec2_networkacl_allow_ingress_any_port",
+        "prowler-ec2_networkacl_allow_ingress_tcp_port_22",
+        "prowler-ec2_networkacl_allow_ingress_tcp_port_22",
+        "prowler-ec2_networkacl_allow_ingress_tcp_port_22",
+        "prowler-ec2_networkacl_allow_ingress_tcp_port_22",
+        "prowler-ec2_networkacl_allow_ingress_tcp_port_22",
+        "prowler-ec2_networkacl_allow_ingress_tcp_port_3389",
+        "prowler-ec2_networkacl_allow_ingress_tcp_port_3389",
+        "prowler-ec2_networkacl_allow_ingress_tcp_port_3389",
+        "prowler-ec2_networkacl_allow_ingress_tcp_port_3389",
+        "prowler-ec2_networkacl_allow_ingress_tcp_port_3389",
         "prowler-vpc_flow_logs_enabled",
         "prowler-vpc_flow_logs_enabled",
         "prowler-vpc_flow_logs_enabled",
@@ -146,14 +134,12 @@
       "category": "iam",
       "priority": "P2",
       "osfp_score": 65.5,
-      "files": [
-        "remediation/iam/fix-prowler_iam_customer_attached_policy_no_administrative_privileges_arn_aws_iam_132410971304_policy_vuln_wildcard_policy_ap_northeast_2.tf"
-      ],
-      "tf_file": "remediation/iam/fix-prowler_iam_customer_attached_policy_no_administrative_privileges_arn_aws_iam_132410971304_policy_vuln_wildcard_policy_ap_northeast_2.tf",
+      "files": [],
+      "tf_file": "",
       "resources": [],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-19T10:53:32.002712+00:00"
+      "created_at": "2026-02-19T12:09:21.470469+00:00"
     },
     "prowler-iam_password_policy_minimum_length_14": {
       "category": "iam",
@@ -173,7 +159,7 @@
       ],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-19T10:53:32.002720+00:00"
+      "created_at": "2026-02-19T12:09:21.470477+00:00"
     },
     "prowler-iam_password_policy_reuse_24": {
       "category": "iam",
@@ -193,34 +179,19 @@
       ],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-19T10:53:32.002724+00:00"
+      "created_at": "2026-02-19T12:09:21.470480+00:00"
     },
     "prowler-iam_policy_attached_only_to_group_or_roles": [
       {
         "category": "iam",
         "priority": "P3",
         "osfp_score": 48.0,
-        "files": [
-          "remediation/iam/fix-prowler_iam_policy_attached_only_to_group_or_roles_arn_aws_iam_132410971304_user_aws_learner_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/iam/fix-prowler_iam_policy_attached_only_to_group_or_roles_arn_aws_iam_132410971304_user_aws_learner_ap_northeast_2.tf",
+        "files": [],
+        "tf_file": "",
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.002726+00:00"
-      },
-      {
-        "category": "iam",
-        "priority": "P3",
-        "osfp_score": 48.0,
-        "files": [
-          "remediation/iam/fix-prowler_iam_policy_attached_only_to_group_or_roles_arn_aws_iam_132410971304_user_github_actions_prowler_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/iam/fix-prowler_iam_policy_attached_only_to_group_or_roles_arn_aws_iam_132410971304_user_github_actions_prowler_ap_northeast_2.tf",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.002728+00:00"
+        "created_at": "2026-02-19T12:09:21.470482+00:00"
       },
       {
         "category": "iam",
@@ -231,7 +202,18 @@
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.002732+00:00"
+        "created_at": "2026-02-19T12:09:21.470484+00:00"
+      },
+      {
+        "category": "iam",
+        "priority": "P3",
+        "osfp_score": 48.0,
+        "files": [],
+        "tf_file": "",
+        "resources": [],
+        "account": "132410971304",
+        "region": "ap-northeast-2",
+        "created_at": "2026-02-19T12:09:21.470487+00:00"
       }
     ],
     "prowler-s3_account_level_public_access_blocks": {
@@ -252,7 +234,7 @@
       ],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-19T10:53:32.003915+00:00"
+      "created_at": "2026-02-19T12:09:21.471706+00:00"
     },
     "prowler-s3_bucket_level_public_access_block": [
       {
@@ -297,7 +279,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.003922+00:00"
+        "created_at": "2026-02-19T12:09:21.471714+00:00"
       },
       {
         "category": "s3",
@@ -341,7 +323,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.003925+00:00"
+        "created_at": "2026-02-19T12:09:21.471717+00:00"
       },
       {
         "category": "s3",
@@ -385,7 +367,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.003928+00:00"
+        "created_at": "2026-02-19T12:09:21.471721+00:00"
       },
       {
         "category": "s3",
@@ -429,7 +411,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.003930+00:00"
+        "created_at": "2026-02-19T12:09:21.471723+00:00"
       },
       {
         "category": "s3",
@@ -473,7 +455,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.003933+00:00"
+        "created_at": "2026-02-19T12:09:21.471725+00:00"
       }
     ],
     "prowler-cloudtrail_logs_s3_bucket_access_logging_enabled": [
@@ -486,7 +468,7 @@
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.003935+00:00"
+        "created_at": "2026-02-19T12:09:21.471727+00:00"
       },
       {
         "category": "s3",
@@ -497,7 +479,7 @@
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.003937+00:00"
+        "created_at": "2026-02-19T12:09:21.471729+00:00"
       }
     ],
     "prowler-cloudwatch_log_metric_filter_for_s3_bucket_policy_changes": {
@@ -509,7 +491,7 @@
       "resources": [],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-19T10:53:32.003939+00:00"
+      "created_at": "2026-02-19T12:09:21.471732+00:00"
     },
     "prowler-s3_bucket_secure_transport_policy": [
       {
@@ -584,7 +566,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.003941+00:00"
+        "created_at": "2026-02-19T12:09:21.471733+00:00"
       },
       {
         "category": "s3",
@@ -658,7 +640,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.003943+00:00"
+        "created_at": "2026-02-19T12:09:21.471735+00:00"
       },
       {
         "category": "s3",
@@ -732,7 +714,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.003945+00:00"
+        "created_at": "2026-02-19T12:09:21.471737+00:00"
       },
       {
         "category": "s3",
@@ -806,7 +788,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.003947+00:00"
+        "created_at": "2026-02-19T12:09:21.471739+00:00"
       },
       {
         "category": "s3",
@@ -880,7 +862,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.003949+00:00"
+        "created_at": "2026-02-19T12:09:21.471742+00:00"
       },
       {
         "category": "s3",
@@ -954,7 +936,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.003951+00:00"
+        "created_at": "2026-02-19T12:09:21.471743+00:00"
       },
       {
         "category": "s3",
@@ -1028,7 +1010,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.003953+00:00"
+        "created_at": "2026-02-19T12:09:21.471745+00:00"
       },
       {
         "category": "s3",
@@ -1102,7 +1084,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.003955+00:00"
+        "created_at": "2026-02-19T12:09:21.471747+00:00"
       },
       {
         "category": "s3",
@@ -1176,7 +1158,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.003957+00:00"
+        "created_at": "2026-02-19T12:09:21.471749+00:00"
       },
       {
         "category": "s3",
@@ -1250,34 +1232,30 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.003963+00:00"
+        "created_at": "2026-02-19T12:09:21.471751+00:00"
       }
     ],
     "prowler-cloudtrail_s3_dataevents_read_enabled": {
       "category": "s3",
       "priority": "P3",
       "osfp_score": 48.0,
-      "files": [
-        "remediation/s3/fix-prowler_cloudtrail_s3_dataevents_read_enabled_arn_aws_cloudtrail_ap_northeast_2_132410971304_trail_ap_northeast_2.tf"
-      ],
-      "tf_file": "remediation/s3/fix-prowler_cloudtrail_s3_dataevents_read_enabled_arn_aws_cloudtrail_ap_northeast_2_132410971304_trail_ap_northeast_2.tf",
+      "files": [],
+      "tf_file": "",
       "resources": [],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-19T10:53:32.003965+00:00"
+      "created_at": "2026-02-19T12:09:21.471753+00:00"
     },
     "prowler-cloudtrail_s3_dataevents_write_enabled": {
       "category": "s3",
       "priority": "P3",
       "osfp_score": 48.0,
-      "files": [
-        "remediation/s3/fix-prowler_cloudtrail_s3_dataevents_write_enabled_arn_aws_cloudtrail_ap_northeast_2_132410971304_trail_ap_northeast_2.tf"
-      ],
-      "tf_file": "remediation/s3/fix-prowler_cloudtrail_s3_dataevents_write_enabled_arn_aws_cloudtrail_ap_northeast_2_132410971304_trail_ap_northeast_2.tf",
+      "files": [],
+      "tf_file": "",
       "resources": [],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-19T10:53:32.003967+00:00"
+      "created_at": "2026-02-19T12:09:21.471755+00:00"
     },
     "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports": [
       {
@@ -1289,7 +1267,7 @@
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005714+00:00"
+        "created_at": "2026-02-19T12:09:21.472346+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -1300,7 +1278,7 @@
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005721+00:00"
+        "created_at": "2026-02-19T12:09:21.472353+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -1311,52 +1289,10 @@
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005725+00:00"
+        "created_at": "2026-02-19T12:09:21.472357+00:00"
       }
     ],
     "prowler-ec2_securitygroup_default_restrict_traffic": [
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 65.5,
-        "files": [],
-        "tf_file": "",
-        "resources": [
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_9c2d87be3c",
-            "arn": "vpc-0b6ca3673d548c906",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          },
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_4a13eaa168",
-            "arn": "vpc-0ad18cac76a0ab778",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          },
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_4b307bd4b8",
-            "arn": "vpc-0febd00ce0ff29158",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          },
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_e3067708ac",
-            "arn": "vpc-0565167ce4f7cc871",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          },
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_898caaf3d6",
-            "arn": "vpc-019d722df0308ef70",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          }
-        ],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005727+00:00"
-      },
       {
         "category": "network-ec2-vpc",
         "priority": "P2",
@@ -1399,7 +1335,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005729+00:00"
+        "created_at": "2026-02-19T12:09:21.472359+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -1443,7 +1379,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005731+00:00"
+        "created_at": "2026-02-19T12:09:21.472361+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -1487,7 +1423,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005733+00:00"
+        "created_at": "2026-02-19T12:09:21.472363+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -1531,7 +1467,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005735+00:00"
+        "created_at": "2026-02-19T12:09:21.472365+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -1575,637 +1511,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005737+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 65.5,
-        "files": [],
-        "tf_file": "",
-        "resources": [
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_9c2d87be3c",
-            "arn": "vpc-0b6ca3673d548c906",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          },
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_4a13eaa168",
-            "arn": "vpc-0ad18cac76a0ab778",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          },
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_4b307bd4b8",
-            "arn": "vpc-0febd00ce0ff29158",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          },
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_e3067708ac",
-            "arn": "vpc-0565167ce4f7cc871",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          },
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_898caaf3d6",
-            "arn": "vpc-019d722df0308ef70",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          }
-        ],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005739+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 65.5,
-        "files": [],
-        "tf_file": "",
-        "resources": [
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_9c2d87be3c",
-            "arn": "vpc-0b6ca3673d548c906",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          },
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_4a13eaa168",
-            "arn": "vpc-0ad18cac76a0ab778",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          },
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_4b307bd4b8",
-            "arn": "vpc-0febd00ce0ff29158",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          },
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_e3067708ac",
-            "arn": "vpc-0565167ce4f7cc871",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          },
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_898caaf3d6",
-            "arn": "vpc-019d722df0308ef70",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          }
-        ],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005741+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 65.5,
-        "files": [],
-        "tf_file": "",
-        "resources": [
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_9c2d87be3c",
-            "arn": "vpc-0b6ca3673d548c906",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          },
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_4a13eaa168",
-            "arn": "vpc-0ad18cac76a0ab778",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          },
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_4b307bd4b8",
-            "arn": "vpc-0febd00ce0ff29158",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          },
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_e3067708ac",
-            "arn": "vpc-0565167ce4f7cc871",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          },
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_898caaf3d6",
-            "arn": "vpc-019d722df0308ef70",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          }
-        ],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005743+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 65.5,
-        "files": [],
-        "tf_file": "",
-        "resources": [
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_9c2d87be3c",
-            "arn": "vpc-0b6ca3673d548c906",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          },
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_4a13eaa168",
-            "arn": "vpc-0ad18cac76a0ab778",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          },
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_4b307bd4b8",
-            "arn": "vpc-0febd00ce0ff29158",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          },
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_e3067708ac",
-            "arn": "vpc-0565167ce4f7cc871",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          },
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_898caaf3d6",
-            "arn": "vpc-019d722df0308ef70",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          }
-        ],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005745+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 65.5,
-        "files": [],
-        "tf_file": "",
-        "resources": [
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_9c2d87be3c",
-            "arn": "vpc-0b6ca3673d548c906",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          },
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_4a13eaa168",
-            "arn": "vpc-0ad18cac76a0ab778",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          },
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_4b307bd4b8",
-            "arn": "vpc-0febd00ce0ff29158",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          },
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_e3067708ac",
-            "arn": "vpc-0565167ce4f7cc871",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          },
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_898caaf3d6",
-            "arn": "vpc-019d722df0308ef70",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          }
-        ],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005747+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 65.5,
-        "files": [],
-        "tf_file": "",
-        "resources": [
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_9c2d87be3c",
-            "arn": "vpc-0b6ca3673d548c906",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          },
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_4a13eaa168",
-            "arn": "vpc-0ad18cac76a0ab778",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          },
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_4b307bd4b8",
-            "arn": "vpc-0febd00ce0ff29158",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          },
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_e3067708ac",
-            "arn": "vpc-0565167ce4f7cc871",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          },
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_898caaf3d6",
-            "arn": "vpc-019d722df0308ef70",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          }
-        ],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005749+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 65.5,
-        "files": [],
-        "tf_file": "",
-        "resources": [
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_9c2d87be3c",
-            "arn": "vpc-0b6ca3673d548c906",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          },
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_4a13eaa168",
-            "arn": "vpc-0ad18cac76a0ab778",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          },
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_4b307bd4b8",
-            "arn": "vpc-0febd00ce0ff29158",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          },
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_e3067708ac",
-            "arn": "vpc-0565167ce4f7cc871",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          },
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_898caaf3d6",
-            "arn": "vpc-019d722df0308ef70",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          }
-        ],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005751+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 65.5,
-        "files": [],
-        "tf_file": "",
-        "resources": [
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_9c2d87be3c",
-            "arn": "vpc-0b6ca3673d548c906",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          },
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_4a13eaa168",
-            "arn": "vpc-0ad18cac76a0ab778",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          },
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_4b307bd4b8",
-            "arn": "vpc-0febd00ce0ff29158",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          },
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_e3067708ac",
-            "arn": "vpc-0565167ce4f7cc871",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          },
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_898caaf3d6",
-            "arn": "vpc-019d722df0308ef70",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          }
-        ],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005753+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 65.5,
-        "files": [],
-        "tf_file": "",
-        "resources": [
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_9c2d87be3c",
-            "arn": "vpc-0b6ca3673d548c906",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          },
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_4a13eaa168",
-            "arn": "vpc-0ad18cac76a0ab778",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          },
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_4b307bd4b8",
-            "arn": "vpc-0febd00ce0ff29158",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          },
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_e3067708ac",
-            "arn": "vpc-0565167ce4f7cc871",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          },
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_898caaf3d6",
-            "arn": "vpc-019d722df0308ef70",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          }
-        ],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005755+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 65.5,
-        "files": [],
-        "tf_file": "",
-        "resources": [
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_9c2d87be3c",
-            "arn": "vpc-0b6ca3673d548c906",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          },
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_4a13eaa168",
-            "arn": "vpc-0ad18cac76a0ab778",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          },
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_4b307bd4b8",
-            "arn": "vpc-0febd00ce0ff29158",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          },
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_e3067708ac",
-            "arn": "vpc-0565167ce4f7cc871",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          },
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_898caaf3d6",
-            "arn": "vpc-019d722df0308ef70",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          }
-        ],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005757+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 65.5,
-        "files": [],
-        "tf_file": "",
-        "resources": [
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_9c2d87be3c",
-            "arn": "vpc-0b6ca3673d548c906",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          },
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_4a13eaa168",
-            "arn": "vpc-0ad18cac76a0ab778",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          },
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_4b307bd4b8",
-            "arn": "vpc-0febd00ce0ff29158",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          },
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_e3067708ac",
-            "arn": "vpc-0565167ce4f7cc871",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          },
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_898caaf3d6",
-            "arn": "vpc-019d722df0308ef70",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          }
-        ],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005759+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 65.5,
-        "files": [],
-        "tf_file": "",
-        "resources": [
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_9c2d87be3c",
-            "arn": "vpc-0b6ca3673d548c906",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          },
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_4a13eaa168",
-            "arn": "vpc-0ad18cac76a0ab778",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          },
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_4b307bd4b8",
-            "arn": "vpc-0febd00ce0ff29158",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          },
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_e3067708ac",
-            "arn": "vpc-0565167ce4f7cc871",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          },
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_898caaf3d6",
-            "arn": "vpc-019d722df0308ef70",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          }
-        ],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005761+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 65.5,
-        "files": [],
-        "tf_file": "",
-        "resources": [
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_9c2d87be3c",
-            "arn": "vpc-0b6ca3673d548c906",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          },
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_4a13eaa168",
-            "arn": "vpc-0ad18cac76a0ab778",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          },
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_4b307bd4b8",
-            "arn": "vpc-0febd00ce0ff29158",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          },
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_e3067708ac",
-            "arn": "vpc-0565167ce4f7cc871",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          },
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_898caaf3d6",
-            "arn": "vpc-019d722df0308ef70",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          }
-        ],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005763+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 65.5,
-        "files": [],
-        "tf_file": "",
-        "resources": [
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_9c2d87be3c",
-            "arn": "vpc-0b6ca3673d548c906",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          },
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_4a13eaa168",
-            "arn": "vpc-0ad18cac76a0ab778",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          },
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_4b307bd4b8",
-            "arn": "vpc-0febd00ce0ff29158",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          },
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_e3067708ac",
-            "arn": "vpc-0565167ce4f7cc871",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          },
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_898caaf3d6",
-            "arn": "vpc-019d722df0308ef70",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          }
-        ],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005765+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 65.5,
-        "files": [],
-        "tf_file": "",
-        "resources": [
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_9c2d87be3c",
-            "arn": "vpc-0b6ca3673d548c906",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          },
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_4a13eaa168",
-            "arn": "vpc-0ad18cac76a0ab778",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          },
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_4b307bd4b8",
-            "arn": "vpc-0febd00ce0ff29158",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          },
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_e3067708ac",
-            "arn": "vpc-0565167ce4f7cc871",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          },
-          {
-            "resource_address": "aws_default_security_group.fix_default_sg_898caaf3d6",
-            "arn": "vpc-019d722df0308ef70",
-            "resource_type": "aws_default_security_group",
-            "optional": false
-          }
-        ],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005767+00:00"
+        "created_at": "2026-02-19T12:09:21.472367+00:00"
       }
     ],
     "prowler-ec2_ebs_volume_encryption": {
@@ -2217,7 +1523,7 @@
       "resources": [],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-19T10:53:32.005769+00:00"
+      "created_at": "2026-02-19T12:09:21.472369+00:00"
     },
     "prowler-ec2_instance_profile_attached": {
       "category": "network-ec2-vpc",
@@ -2228,281 +1534,63 @@
       "resources": [],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-19T10:53:32.005771+00:00"
+      "created_at": "2026-02-19T12:09:21.472371+00:00"
     },
     "prowler-ec2_networkacl_allow_ingress_any_port": [
       {
         "category": "network-ec2-vpc",
         "priority": "P2",
         "osfp_score": 58.5,
-        "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_ap_northeast_1_132410971304_network_acl_acl_09ac9939e442a7223_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_ap_northeast_1_132410971304_network_acl_acl_09ac9939e442a7223_ap_northeast_2.tf",
+        "files": [],
+        "tf_file": "",
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005773+00:00"
+        "created_at": "2026-02-19T12:09:21.472373+00:00"
       },
       {
         "category": "network-ec2-vpc",
         "priority": "P2",
         "osfp_score": 58.5,
-        "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0e8faca2c3368de06_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0e8faca2c3368de06_ap_northeast_2.tf",
+        "files": [],
+        "tf_file": "",
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005775+00:00"
+        "created_at": "2026-02-19T12:09:21.472375+00:00"
       },
       {
         "category": "network-ec2-vpc",
         "priority": "P2",
         "osfp_score": 58.5,
-        "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0572e1ab82993bb20_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0572e1ab82993bb20_ap_northeast_2.tf",
+        "files": [],
+        "tf_file": "",
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005777+00:00"
+        "created_at": "2026-02-19T12:09:21.472377+00:00"
       },
       {
         "category": "network-ec2-vpc",
         "priority": "P2",
         "osfp_score": 58.5,
-        "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0aefc1d1492a25a53_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0aefc1d1492a25a53_ap_northeast_2.tf",
+        "files": [],
+        "tf_file": "",
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005779+00:00"
+        "created_at": "2026-02-19T12:09:21.472379+00:00"
       },
       {
         "category": "network-ec2-vpc",
         "priority": "P2",
         "osfp_score": 58.5,
-        "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0cc9eb5e31cc1d70f_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0cc9eb5e31cc1d70f_ap_northeast_2.tf",
+        "files": [],
+        "tf_file": "",
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005781+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0d23e762ebdfb131c_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0d23e762ebdfb131c_ap_northeast_2.tf",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005784+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_ap_northeast_3_132410971304_network_acl_acl_0f15dbfa32fbce83b_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_ap_northeast_3_132410971304_network_acl_acl_0f15dbfa32fbce83b_ap_northeast_2.tf",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005786+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_ap_south_1_132410971304_network_acl_acl_05b5345695d849863_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_ap_south_1_132410971304_network_acl_acl_05b5345695d849863_ap_northeast_2.tf",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005788+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_ap_southeast_1_132410971304_network_acl_acl_04f1a439902c4ba67_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_ap_southeast_1_132410971304_network_acl_acl_04f1a439902c4ba67_ap_northeast_2.tf",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005790+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_ap_southeast_2_132410971304_network_acl_acl_0717044c683de2f8a_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_ap_southeast_2_132410971304_network_acl_acl_0717044c683de2f8a_ap_northeast_2.tf",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005792+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_ca_central_1_132410971304_network_acl_acl_0b1884775017b2cc3_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_ca_central_1_132410971304_network_acl_acl_0b1884775017b2cc3_ap_northeast_2.tf",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005794+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_eu_central_1_132410971304_network_acl_acl_04909b92a28bc1c06_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_eu_central_1_132410971304_network_acl_acl_04909b92a28bc1c06_ap_northeast_2.tf",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005796+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_eu_north_1_132410971304_network_acl_acl_02dd63bed9d16b9e0_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_eu_north_1_132410971304_network_acl_acl_02dd63bed9d16b9e0_ap_northeast_2.tf",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005798+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_eu_west_1_132410971304_network_acl_acl_0bc682f441ce85c26_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_eu_west_1_132410971304_network_acl_acl_0bc682f441ce85c26_ap_northeast_2.tf",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005799+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_eu_west_2_132410971304_network_acl_acl_0253bcce458ec5984_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_eu_west_2_132410971304_network_acl_acl_0253bcce458ec5984_ap_northeast_2.tf",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005801+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_eu_west_3_132410971304_network_acl_acl_0ebd5da14e1dbdbc7_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_eu_west_3_132410971304_network_acl_acl_0ebd5da14e1dbdbc7_ap_northeast_2.tf",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005803+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_sa_east_1_132410971304_network_acl_acl_074c16100af0e8622_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_sa_east_1_132410971304_network_acl_acl_074c16100af0e8622_ap_northeast_2.tf",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005805+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_us_east_1_132410971304_network_acl_acl_0e50661d6d0d29136_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_us_east_1_132410971304_network_acl_acl_0e50661d6d0d29136_ap_northeast_2.tf",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005807+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_us_east_2_132410971304_network_acl_acl_0057dcde73056600a_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_us_east_2_132410971304_network_acl_acl_0057dcde73056600a_ap_northeast_2.tf",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005809+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_us_west_1_132410971304_network_acl_acl_010aa48232860e9d8_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_us_west_1_132410971304_network_acl_acl_010aa48232860e9d8_ap_northeast_2.tf",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005811+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_us_west_2_132410971304_network_acl_acl_01c3b6a34d02b0c30_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_us_west_2_132410971304_network_acl_acl_01c3b6a34d02b0c30_ap_northeast_2.tf",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005814+00:00"
+        "created_at": "2026-02-19T12:09:21.472381+00:00"
       }
     ],
     "prowler-ec2_networkacl_allow_ingress_tcp_port_22": [
@@ -2510,274 +1598,56 @@
         "category": "network-ec2-vpc",
         "priority": "P2",
         "osfp_score": 58.5,
-        "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_ap_northeast_1_132410971304_network_acl_acl_09ac9939e442a7223_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_ap_northeast_1_132410971304_network_acl_acl_09ac9939e442a7223_ap_northeast_2.tf",
+        "files": [],
+        "tf_file": "",
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005815+00:00"
+        "created_at": "2026-02-19T12:09:21.472382+00:00"
       },
       {
         "category": "network-ec2-vpc",
         "priority": "P2",
         "osfp_score": 58.5,
-        "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0e8faca2c3368de06_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0e8faca2c3368de06_ap_northeast_2.tf",
+        "files": [],
+        "tf_file": "",
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005817+00:00"
+        "created_at": "2026-02-19T12:09:21.472384+00:00"
       },
       {
         "category": "network-ec2-vpc",
         "priority": "P2",
         "osfp_score": 58.5,
-        "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0572e1ab82993bb20_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0572e1ab82993bb20_ap_northeast_2.tf",
+        "files": [],
+        "tf_file": "",
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005820+00:00"
+        "created_at": "2026-02-19T12:09:21.472386+00:00"
       },
       {
         "category": "network-ec2-vpc",
         "priority": "P2",
         "osfp_score": 58.5,
-        "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0aefc1d1492a25a53_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0aefc1d1492a25a53_ap_northeast_2.tf",
+        "files": [],
+        "tf_file": "",
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005822+00:00"
+        "created_at": "2026-02-19T12:09:21.472388+00:00"
       },
       {
         "category": "network-ec2-vpc",
         "priority": "P2",
         "osfp_score": 58.5,
-        "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0cc9eb5e31cc1d70f_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0cc9eb5e31cc1d70f_ap_northeast_2.tf",
+        "files": [],
+        "tf_file": "",
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005824+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0d23e762ebdfb131c_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0d23e762ebdfb131c_ap_northeast_2.tf",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005826+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_ap_northeast_3_132410971304_network_acl_acl_0f15dbfa32fbce83b_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_ap_northeast_3_132410971304_network_acl_acl_0f15dbfa32fbce83b_ap_northeast_2.tf",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005828+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_ap_south_1_132410971304_network_acl_acl_05b5345695d849863_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_ap_south_1_132410971304_network_acl_acl_05b5345695d849863_ap_northeast_2.tf",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005829+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_ap_southeast_1_132410971304_network_acl_acl_04f1a439902c4ba67_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_ap_southeast_1_132410971304_network_acl_acl_04f1a439902c4ba67_ap_northeast_2.tf",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005831+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_ap_southeast_2_132410971304_network_acl_acl_0717044c683de2f8a_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_ap_southeast_2_132410971304_network_acl_acl_0717044c683de2f8a_ap_northeast_2.tf",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005833+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_ca_central_1_132410971304_network_acl_acl_0b1884775017b2cc3_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_ca_central_1_132410971304_network_acl_acl_0b1884775017b2cc3_ap_northeast_2.tf",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005835+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_eu_central_1_132410971304_network_acl_acl_04909b92a28bc1c06_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_eu_central_1_132410971304_network_acl_acl_04909b92a28bc1c06_ap_northeast_2.tf",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005837+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_eu_north_1_132410971304_network_acl_acl_02dd63bed9d16b9e0_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_eu_north_1_132410971304_network_acl_acl_02dd63bed9d16b9e0_ap_northeast_2.tf",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005839+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_eu_west_1_132410971304_network_acl_acl_0bc682f441ce85c26_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_eu_west_1_132410971304_network_acl_acl_0bc682f441ce85c26_ap_northeast_2.tf",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005841+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_eu_west_2_132410971304_network_acl_acl_0253bcce458ec5984_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_eu_west_2_132410971304_network_acl_acl_0253bcce458ec5984_ap_northeast_2.tf",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005843+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_eu_west_3_132410971304_network_acl_acl_0ebd5da14e1dbdbc7_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_eu_west_3_132410971304_network_acl_acl_0ebd5da14e1dbdbc7_ap_northeast_2.tf",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005845+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_sa_east_1_132410971304_network_acl_acl_074c16100af0e8622_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_sa_east_1_132410971304_network_acl_acl_074c16100af0e8622_ap_northeast_2.tf",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005847+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_us_east_1_132410971304_network_acl_acl_0e50661d6d0d29136_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_us_east_1_132410971304_network_acl_acl_0e50661d6d0d29136_ap_northeast_2.tf",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005849+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_us_east_2_132410971304_network_acl_acl_0057dcde73056600a_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_us_east_2_132410971304_network_acl_acl_0057dcde73056600a_ap_northeast_2.tf",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005851+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_us_west_1_132410971304_network_acl_acl_010aa48232860e9d8_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_us_west_1_132410971304_network_acl_acl_010aa48232860e9d8_ap_northeast_2.tf",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005853+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_us_west_2_132410971304_network_acl_acl_01c3b6a34d02b0c30_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_us_west_2_132410971304_network_acl_acl_01c3b6a34d02b0c30_ap_northeast_2.tf",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005855+00:00"
+        "created_at": "2026-02-19T12:09:21.472390+00:00"
       }
     ],
     "prowler-ec2_networkacl_allow_ingress_tcp_port_3389": [
@@ -2785,274 +1655,56 @@
         "category": "network-ec2-vpc",
         "priority": "P2",
         "osfp_score": 58.5,
-        "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_ap_northeast_1_132410971304_network_acl_acl_09ac9939e442a7223_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_ap_northeast_1_132410971304_network_acl_acl_09ac9939e442a7223_ap_northeast_2.tf",
+        "files": [],
+        "tf_file": "",
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005857+00:00"
+        "created_at": "2026-02-19T12:09:21.472392+00:00"
       },
       {
         "category": "network-ec2-vpc",
         "priority": "P2",
         "osfp_score": 58.5,
-        "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0e8faca2c3368de06_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0e8faca2c3368de06_ap_northeast_2.tf",
+        "files": [],
+        "tf_file": "",
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005859+00:00"
+        "created_at": "2026-02-19T12:09:21.472394+00:00"
       },
       {
         "category": "network-ec2-vpc",
         "priority": "P2",
         "osfp_score": 58.5,
-        "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0572e1ab82993bb20_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0572e1ab82993bb20_ap_northeast_2.tf",
+        "files": [],
+        "tf_file": "",
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005861+00:00"
+        "created_at": "2026-02-19T12:09:21.472396+00:00"
       },
       {
         "category": "network-ec2-vpc",
         "priority": "P2",
         "osfp_score": 58.5,
-        "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0aefc1d1492a25a53_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0aefc1d1492a25a53_ap_northeast_2.tf",
+        "files": [],
+        "tf_file": "",
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005863+00:00"
+        "created_at": "2026-02-19T12:09:21.472398+00:00"
       },
       {
         "category": "network-ec2-vpc",
         "priority": "P2",
         "osfp_score": 58.5,
-        "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0cc9eb5e31cc1d70f_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0cc9eb5e31cc1d70f_ap_northeast_2.tf",
+        "files": [],
+        "tf_file": "",
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005865+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0d23e762ebdfb131c_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0d23e762ebdfb131c_ap_northeast_2.tf",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005867+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_ap_northeast_3_132410971304_network_acl_acl_0f15dbfa32fbce83b_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_ap_northeast_3_132410971304_network_acl_acl_0f15dbfa32fbce83b_ap_northeast_2.tf",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005869+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_ap_south_1_132410971304_network_acl_acl_05b5345695d849863_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_ap_south_1_132410971304_network_acl_acl_05b5345695d849863_ap_northeast_2.tf",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005871+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_ap_southeast_1_132410971304_network_acl_acl_04f1a439902c4ba67_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_ap_southeast_1_132410971304_network_acl_acl_04f1a439902c4ba67_ap_northeast_2.tf",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005873+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_ap_southeast_2_132410971304_network_acl_acl_0717044c683de2f8a_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_ap_southeast_2_132410971304_network_acl_acl_0717044c683de2f8a_ap_northeast_2.tf",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005875+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_ca_central_1_132410971304_network_acl_acl_0b1884775017b2cc3_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_ca_central_1_132410971304_network_acl_acl_0b1884775017b2cc3_ap_northeast_2.tf",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005877+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_eu_central_1_132410971304_network_acl_acl_04909b92a28bc1c06_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_eu_central_1_132410971304_network_acl_acl_04909b92a28bc1c06_ap_northeast_2.tf",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005925+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_eu_north_1_132410971304_network_acl_acl_02dd63bed9d16b9e0_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_eu_north_1_132410971304_network_acl_acl_02dd63bed9d16b9e0_ap_northeast_2.tf",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005927+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_eu_west_1_132410971304_network_acl_acl_0bc682f441ce85c26_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_eu_west_1_132410971304_network_acl_acl_0bc682f441ce85c26_ap_northeast_2.tf",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005929+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_eu_west_2_132410971304_network_acl_acl_0253bcce458ec5984_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_eu_west_2_132410971304_network_acl_acl_0253bcce458ec5984_ap_northeast_2.tf",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005931+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_eu_west_3_132410971304_network_acl_acl_0ebd5da14e1dbdbc7_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_eu_west_3_132410971304_network_acl_acl_0ebd5da14e1dbdbc7_ap_northeast_2.tf",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005935+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_sa_east_1_132410971304_network_acl_acl_074c16100af0e8622_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_sa_east_1_132410971304_network_acl_acl_074c16100af0e8622_ap_northeast_2.tf",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005937+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_us_east_1_132410971304_network_acl_acl_0e50661d6d0d29136_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_us_east_1_132410971304_network_acl_acl_0e50661d6d0d29136_ap_northeast_2.tf",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005939+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_us_east_2_132410971304_network_acl_acl_0057dcde73056600a_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_us_east_2_132410971304_network_acl_acl_0057dcde73056600a_ap_northeast_2.tf",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005941+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_us_west_1_132410971304_network_acl_acl_010aa48232860e9d8_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_us_west_1_132410971304_network_acl_acl_010aa48232860e9d8_ap_northeast_2.tf",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005942+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_us_west_2_132410971304_network_acl_acl_01c3b6a34d02b0c30_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_us_west_2_132410971304_network_acl_acl_01c3b6a34d02b0c30_ap_northeast_2.tf",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005945+00:00"
+        "created_at": "2026-02-19T12:09:21.472400+00:00"
       }
     ],
     "prowler-vpc_flow_logs_enabled": [
@@ -3065,7 +1717,7 @@
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005947+00:00"
+        "created_at": "2026-02-19T12:09:21.472401+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -3076,7 +1728,7 @@
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005949+00:00"
+        "created_at": "2026-02-19T12:09:21.472403+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -3087,7 +1739,7 @@
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005951+00:00"
+        "created_at": "2026-02-19T12:09:21.472406+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -3098,7 +1750,7 @@
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005953+00:00"
+        "created_at": "2026-02-19T12:09:21.472407+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -3109,183 +1761,7 @@
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005955+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [],
-        "tf_file": "",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005957+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [],
-        "tf_file": "",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005959+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [],
-        "tf_file": "",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005961+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [],
-        "tf_file": "",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005963+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [],
-        "tf_file": "",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005965+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [],
-        "tf_file": "",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005967+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [],
-        "tf_file": "",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005969+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [],
-        "tf_file": "",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005971+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [],
-        "tf_file": "",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005973+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [],
-        "tf_file": "",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005974+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [],
-        "tf_file": "",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005976+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [],
-        "tf_file": "",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005978+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [],
-        "tf_file": "",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005980+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [],
-        "tf_file": "",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005982+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [],
-        "tf_file": "",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005984+00:00"
-      },
-      {
-        "category": "network-ec2-vpc",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [],
-        "tf_file": "",
-        "resources": [],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.005986+00:00"
+        "created_at": "2026-02-19T12:09:21.472409+00:00"
       }
     ],
     "prowler-cloudtrail_kms_encryption_enabled": {
@@ -3297,7 +1773,7 @@
       "resources": [],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-19T10:53:32.006205+00:00"
+      "created_at": "2026-02-19T12:09:21.472618+00:00"
     },
     "prowler-cloudtrail_log_file_validation_enabled": {
       "category": "cloudtrail",
@@ -3308,7 +1784,7 @@
       "resources": [],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-19T10:53:32.006212+00:00"
+      "created_at": "2026-02-19T12:09:21.472625+00:00"
     },
     "prowler-cloudwatch_log_metric_filter_and_alarm_for_cloudtrail_configuration_changes_enabled": {
       "category": "cloudtrail",
@@ -3319,7 +1795,7 @@
       "resources": [],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-19T10:53:32.006214+00:00"
+      "created_at": "2026-02-19T12:09:21.472628+00:00"
     },
     "prowler-cloudtrail_cloudwatch_logging_enabled": [
       {
@@ -3331,7 +1807,7 @@
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.006217+00:00"
+        "created_at": "2026-02-19T12:09:21.472630+00:00"
       },
       {
         "category": "cloudtrail",
@@ -3342,7 +1818,7 @@
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-19T10:53:32.006219+00:00"
+        "created_at": "2026-02-19T12:09:21.472632+00:00"
       }
     ],
     "prowler-cloudwatch_changes_to_network_acls_alarm_configured": {
@@ -3354,7 +1830,7 @@
       "resources": [],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-19T10:53:32.006391+00:00"
+      "created_at": "2026-02-19T12:09:21.472862+00:00"
     },
     "prowler-cloudwatch_changes_to_network_gateways_alarm_configured": {
       "category": "cloudwatch",
@@ -3365,7 +1841,7 @@
       "resources": [],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-19T10:53:32.006396+00:00"
+      "created_at": "2026-02-19T12:09:21.472868+00:00"
     },
     "prowler-cloudwatch_changes_to_network_route_tables_alarm_configured": {
       "category": "cloudwatch",
@@ -3376,7 +1852,7 @@
       "resources": [],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-19T10:53:32.006399+00:00"
+      "created_at": "2026-02-19T12:09:21.472870+00:00"
     },
     "prowler-cloudwatch_changes_to_vpcs_alarm_configured": {
       "category": "cloudwatch",
@@ -3387,7 +1863,7 @@
       "resources": [],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-19T10:53:32.006401+00:00"
+      "created_at": "2026-02-19T12:09:21.472872+00:00"
     },
     "prowler-cloudwatch_log_metric_filter_and_alarm_for_aws_config_configuration_changes_enabled": {
       "category": "cloudwatch",
@@ -3398,7 +1874,7 @@
       "resources": [],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-19T10:53:32.006402+00:00"
+      "created_at": "2026-02-19T12:09:21.472874+00:00"
     },
     "prowler-cloudwatch_log_metric_filter_authentication_failures": {
       "category": "cloudwatch",
@@ -3409,7 +1885,7 @@
       "resources": [],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-19T10:53:32.006404+00:00"
+      "created_at": "2026-02-19T12:09:21.472876+00:00"
     },
     "prowler-cloudwatch_log_metric_filter_disable_or_scheduled_deletion_of_kms_cmk": {
       "category": "cloudwatch",
@@ -3420,7 +1896,7 @@
       "resources": [],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-19T10:53:32.006406+00:00"
+      "created_at": "2026-02-19T12:09:21.472878+00:00"
     },
     "prowler-cloudwatch_log_metric_filter_policy_changes": {
       "category": "cloudwatch",
@@ -3431,7 +1907,7 @@
       "resources": [],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-19T10:53:32.006408+00:00"
+      "created_at": "2026-02-19T12:09:21.472879+00:00"
     },
     "prowler-cloudwatch_log_metric_filter_security_group_changes": {
       "category": "cloudwatch",
@@ -3442,7 +1918,7 @@
       "resources": [],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-19T10:53:32.006410+00:00"
+      "created_at": "2026-02-19T12:09:21.472882+00:00"
     },
     "prowler-cloudwatch_log_metric_filter_unauthorized_api_calls": {
       "category": "cloudwatch",
@@ -3453,7 +1929,7 @@
       "resources": [],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-19T10:53:32.006412+00:00"
+      "created_at": "2026-02-19T12:09:21.472883+00:00"
     }
   }
 }

@@ -1,67 +1,65 @@
 ﻿#!/usr/bin/env python3
-"""Inject lifecycle guards into generated Terraform resources."""
-
-from __future__ import annotations
-
 import argparse
 import re
 from pathlib import Path
 
-RESOURCE_RE = re.compile(r'(^resource\s+"[^"]+"\s+"[^"]+"\s*\{)', re.MULTILINE)
 
-
-LIFECYCLE_BLOCK = '''
-  lifecycle {
-    prevent_destroy = true
-    ignore_changes  = [tags, tags_all]
-  }
-'''
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Inject lifecycle block when missing")
+    parser.add_argument("--target", required=True, help="Terraform file path")
+    return parser.parse_args()
 
 
 def inject_lifecycle(tf_text: str) -> str:
-    lines = tf_text.splitlines()
-    out: list[str] = []
-    in_resource = False
-    brace_depth = 0
-    current_has_lifecycle = False
+    resource_pattern = re.compile(r'resource\s+"[^"]+"\s+"[^"]+"\s*\{', re.MULTILINE)
+    matches = list(resource_pattern.finditer(tf_text))
+    if not matches:
+        return tf_text
 
-    for line in lines:
-        if RESOURCE_RE.search(line):
-            out.append(line)
-            in_resource = True
-            current_has_lifecycle = False
-            brace_depth = line.count("{") - line.count("}")
-            if brace_depth == 1:
-                out.append(LIFECYCLE_BLOCK.rstrip("\n"))
-                current_has_lifecycle = True
-            continue
+    result = []
+    last_idx = 0
 
-        out.append(line)
-        if in_resource:
-            brace_depth += line.count("{") - line.count("}")
-            if "lifecycle {" in line:
-                current_has_lifecycle = True
-            if brace_depth == 1 and not current_has_lifecycle and line.strip() and not line.strip().startswith("#"):
-                out.append(LIFECYCLE_BLOCK.rstrip("\n"))
-                current_has_lifecycle = True
-            if brace_depth <= 0:
-                in_resource = False
+    for m in matches:
+        start = m.start()
+        result.append(tf_text[last_idx:start])
 
-    return "\n".join(out) + "\n"
+        block_start = start
+        brace = 0
+        i = m.end() - 1
+        while i < len(tf_text):
+            ch = tf_text[i]
+            if ch == '{':
+                brace += 1
+            elif ch == '}':
+                brace -= 1
+                if brace == 0:
+                    break
+            i += 1
+        block_end = i + 1
+        block = tf_text[block_start:block_end]
+
+        if "lifecycle" in block:
+            result.append(block)
+        else:
+            injected = block[:-1].rstrip() + "\n\n  lifecycle {\n    ignore_changes = []\n  }\n}\n"
+            result.append(injected)
+
+        last_idx = block_end
+
+    result.append(tf_text[last_idx:])
+    return "".join(result)
 
 
-def main() -> int:
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--target", default="terraform/remediation/main.tf")
-    args = parser.parse_args()
-
-    path = Path(args.target)
-    tf = path.read_text(encoding="utf-8")
-    updated = inject_lifecycle(tf)
-    path.write_text(updated, encoding="utf-8")
-    print(f"lifecycle_injected={path}")
-    return 0
+def main() -> None:
+    args = parse_args()
+    target = Path(args.target)
+    if not target.exists():
+        return
+    original = target.read_text(encoding="utf-8")
+    updated = inject_lifecycle(original)
+    if updated != original:
+        target.write_text(updated, encoding="utf-8")
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    main()

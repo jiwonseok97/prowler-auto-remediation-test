@@ -1,127 +1,180 @@
 ﻿#!/usr/bin/env python3
-"""Convert Prowler JSON/ASFF output into normalized findings for builders."""
-
-from __future__ import annotations
-
 import argparse
 import json
-import re
 from pathlib import Path
-from typing import Any
+from typing import Any, Dict, List
 
-CATEGORY_HINTS = {
-    "iam": ["iam", "mfa", "password policy", "access key", "policy"],
-    "s3": ["s3", "bucket", "public", "encryption", "logging"],
-    "network-ec2-vpc": ["vpc", "security group", "ec2", "network", "flow log"],
-    "cloudtrail": ["cloudtrail", "trail", "log file validation"],
-    "cloudwatch": ["cloudwatch", "log group", "metric filter", "alarm"],
-}
-
-SUPPORTED = set(CATEGORY_HINTS.keys())
+SKIP_SERVICES = {"account", "root", "organizations", "support"}
 
 
-def normalize(text: str) -> str:
-    return re.sub(r"\s+", " ", text.lower()).strip()
-
-
-def detect_category(finding: dict[str, Any]) -> str | None:
-    joined = " ".join(
-        [
-            str(finding.get("CheckID", finding.get("GeneratorId", ""))),
-            str(finding.get("CheckTitle", finding.get("Title", ""))),
-            str(finding.get("Description", "")),
-            str(finding.get("StatusExtended", "")),
-            str(finding.get("ResourceType", finding.get("Types", ""))),
-            str(finding.get("ServiceName", "")),
-        ]
-    )
-    haystack = normalize(joined)
-    for category, hints in CATEGORY_HINTS.items():
-        if any(h in haystack for h in hints):
-            return category
-    return None
-
-
-def status_of(f: dict[str, Any]) -> str:
-    direct = str(f.get("Status", "")).strip().lower()
-    if direct:
-        return direct
-    compliance = f.get("Compliance", {})
-    if isinstance(compliance, dict):
-        return str(compliance.get("Status", "")).strip().lower()
+def _first_non_empty(*values: Any) -> str:
+    for value in values:
+        if value is None:
+            continue
+        text = str(value).strip()
+        if text:
+            return text
     return ""
 
 
-def load_input(path: Path) -> list[dict[str, Any]]:
-    raw = path.read_text(encoding="utf-8").lstrip("\ufeff").strip()
-    if not raw:
-        return []
-    if raw.startswith("["):
-        data = json.loads(raw)
-        return [x for x in data if isinstance(x, dict)]
-    if raw.startswith("{"):
-        data = json.loads(raw)
-        if isinstance(data, dict) and isinstance(data.get("Findings"), list):
-            return [x for x in data["Findings"] if isinstance(x, dict)]
-        if isinstance(data, dict):
-            return [data]
-    rows: list[dict[str, Any]] = []
-    for line in raw.splitlines():
-        line = line.strip()
-        if not line:
+def _extract_service(item: Dict[str, Any]) -> str:
+    service = _first_non_empty(
+        item.get("Service"),
+        item.get("service"),
+        item.get("ProductFields", {}).get("Service"),
+    ).lower()
+
+    if not service:
+        product_arn = _first_non_empty(item.get("ProductArn"))
+        parts = product_arn.split(":")
+        if len(parts) > 2:
+            service = parts[2].lower()
+
+    generator = _first_non_empty(item.get("GeneratorId"), item.get("Types", [""])[0]).lower()
+    if not service:
+        prefixes = ["aws.", "aws/", "aws-"]
+        for prefix in prefixes:
+            if generator.startswith(prefix):
+                service = generator.split(prefix, 1)[1].split("/")[0].split(".")[0].split("_")[0]
+                break
+
+    if not service and "/" in generator:
+        service = generator.split("/")[0].split(".")[0].split("_")[0]
+
+    return service
+
+
+def _extract_check_id(item: Dict[str, Any]) -> str:
+    check_id = _first_non_empty(
+        item.get("CheckID"),
+        item.get("check_id"),
+        item.get("GeneratorId"),
+        item.get("Id"),
+        item.get("Title"),
+    )
+    return check_id.replace(" ", "_")
+
+
+def _extract_account(item: Dict[str, Any]) -> str:
+    account = _first_non_empty(item.get("AccountId"), item.get("AwsAccountId"), item.get("account_id"))
+    if not account:
+        for arn_candidate in [item.get("Id"), item.get("ProductArn")]:
+            if not arn_candidate:
+                continue
+            parts = str(arn_candidate).split(":")
+            if len(parts) > 4 and parts[4].isdigit():
+                account = parts[4]
+                break
+    return account
+
+
+def _extract_region(item: Dict[str, Any]) -> str:
+    region = _first_non_empty(item.get("Region"), item.get("region"), item.get("Resources", [{}])[0].get("Region"))
+    if not region:
+        for arn_candidate in [item.get("ProductArn"), item.get("Id")]:
+            if not arn_candidate:
+                continue
+            parts = str(arn_candidate).split(":")
+            if len(parts) > 3 and parts[3]:
+                region = parts[3]
+                break
+    return region
+
+
+def _extract_resource_arn(item: Dict[str, Any]) -> str:
+    direct = _first_non_empty(
+        item.get("ResourceARN"),
+        item.get("ResourceArn"),
+        item.get("resource_arn"),
+        item.get("ResourceId"),
+        item.get("resource_id"),
+    )
+    if direct:
+        return direct
+
+    resources = item.get("Resources")
+    if isinstance(resources, list):
+        for resource in resources:
+            if not isinstance(resource, dict):
+                continue
+            resource_arn = _first_non_empty(resource.get("Id"), resource.get("Arn"), resource.get("ResourceArn"))
+            if resource_arn:
+                return resource_arn
+
+    return ""
+
+
+def _is_fail(item: Dict[str, Any]) -> bool:
+    result = _first_non_empty(item.get("Result"), item.get("result"), item.get("Compliance", {}).get("Status"), item.get("RecordState"))
+    return result.upper() in {"FAIL", "FAILED", "NON_COMPLIANT", "ACTIVE"}
+
+
+def normalize_findings(raw_findings: List[Dict[str, Any]]) -> List[Dict[str, str]]:
+    normalized: List[Dict[str, str]] = []
+
+    for item in raw_findings:
+        if not isinstance(item, dict):
             continue
-        try:
-            item = json.loads(line)
-            if isinstance(item, dict):
-                rows.append(item)
-        except json.JSONDecodeError:
+        if not _is_fail(item):
             continue
-    return rows
 
-
-def main() -> int:
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--input", required=True)
-    parser.add_argument("--output", required=True)
-    args = parser.parse_args()
-
-    src = Path(args.input)
-    dst = Path(args.output)
-
-    findings = load_input(src)
-    normalized: list[dict[str, Any]] = []
-    unsupported = 0
-
-    for f in findings:
-        status = status_of(f)
-        if status and status not in {"fail", "failed"}:
+        service = _extract_service(item)
+        if service in SKIP_SERVICES:
             continue
-        category = detect_category(f)
-        if category not in SUPPORTED:
-            unsupported += 1
+
+        check_id = _extract_check_id(item)
+        if not check_id:
             continue
+
         normalized.append(
             {
-                "category": category,
-                "status": status or "fail",
-                "check_id": str(f.get("CheckID", f.get("GeneratorId", "unknown"))),
-                "title": str(f.get("CheckTitle", f.get("Title", "unknown"))),
-                "resource_id": str(f.get("ResourceId", f.get("ResourceType", "unknown"))),
-                "detail": str(f.get("StatusExtended", f.get("Description", "")))[:500],
+                "check_id": check_id,
+                "service": service,
+                "resource_arn": _extract_resource_arn(item),
+                "region": _extract_region(item),
+                "account_id": _extract_account(item),
             }
         )
 
-    dst.parent.mkdir(parents=True, exist_ok=True)
-    dst.write_text(json.dumps(normalized, indent=2), encoding="utf-8")
+    return normalized
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Convert raw Prowler findings to normalized remediation input")
+    parser.add_argument("--input", required=True, help="Input Prowler JSON file path")
+    parser.add_argument("--output", required=True, help="Output normalized findings JSON path")
+    return parser.parse_args()
+
+
+def main() -> None:
+    args = parse_args()
+    input_path = Path(args.input)
+    output_path = Path(args.output)
+
+    if not input_path.exists():
+        raise FileNotFoundError(f"input file not found: {input_path}")
+
+    raw = json.loads(input_path.read_text(encoding="utf-8-sig"))
+    if isinstance(raw, dict):
+        findings = raw.get("Findings") or raw.get("findings") or []
+    elif isinstance(raw, list):
+        findings = raw
+    else:
+        findings = []
+
+    normalized = normalize_findings(findings)
+
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text(json.dumps(normalized, indent=2), encoding="utf-8")
 
     summary = {
-        "total_input": len(findings),
+        "input": str(input_path),
+        "output": str(output_path),
+        "total_raw": len(findings),
         "normalized_fail": len(normalized),
-        "unsupported": unsupported,
     }
-    print(json.dumps(summary))
-    return 0
+    print(json.dumps(summary, indent=2))
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    main()

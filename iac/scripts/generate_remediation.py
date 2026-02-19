@@ -1,196 +1,502 @@
 ﻿#!/usr/bin/env python3
-"""Generate remediation Terraform per category using snippets + Bedrock + builders."""
-
-from __future__ import annotations
-
 import argparse
 import json
-import os
 import re
-from collections import defaultdict
 from pathlib import Path
-from typing import Any
+from typing import Any, Dict, List, Optional, Tuple
 
-from iac.builders.cloudwatch_builder import build_cloudwatch
-from iac.builders.network_builder import build_network
-
-try:
-    import boto3
-except Exception:  # pragma: no cover
-    boto3 = None
-
-SUPPORTED = ["iam", "s3", "network-ec2-vpc", "cloudtrail", "cloudwatch"]
-
-
-def extract_tf(text: str) -> str:
-    blocks = re.findall(r"```(?:hcl|terraform)?\s*(.*?)```", text, flags=re.S | re.I)
-    if blocks:
-        return "\n\n".join(x.strip() for x in blocks if x.strip()) + "\n"
-    return text.strip() + "\n"
+SUPPORTED_SERVICES = {"iam", "s3", "cloudtrail", "cloudwatch", "ec2", "vpc", "logs"}
+CATEGORIES = ["iam", "s3", "network-ec2-vpc", "cloudtrail", "cloudwatch"]
+OPTIONAL_IMPORT_NONFATAL_TYPES = {
+    "aws_s3_bucket_policy",
+    "aws_s3_bucket_public_access_block",
+    "aws_s3_bucket_ownership_controls",
+    "aws_s3_bucket_logging",
+    "aws_s3_bucket_server_side_encryption_configuration",
+}
 
 
-def call_bedrock(model_id: str, region: str, category: str, findings: list[dict[str, Any]], snippet: str) -> str:
-    if boto3 is None:
-        raise RuntimeError("boto3 unavailable")
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Generate remediation Terraform from normalized findings")
+    parser.add_argument("--normalized-findings", required=True)
+    parser.add_argument("--snippet-root", required=False, default="iac/snippets")
+    parser.add_argument("--output-root", required=True)
+    parser.add_argument("--run-id", required=False, default="")
+    parser.add_argument("--log", required=False, default="")
+    return parser.parse_args()
 
-    client = boto3.client("bedrock-runtime", region_name=region)
-    prompt = {
-        "task": "Generate safe Terraform remediation resources",
+
+def safe_name(value: str) -> str:
+    cleaned = re.sub(r"[^a-zA-Z0-9_]+", "_", value or "unknown")
+    cleaned = re.sub(r"_+", "_", cleaned).strip("_")
+    if not cleaned:
+        cleaned = "unknown"
+    return cleaned.lower()
+
+
+def arn_is_global(arn: str) -> bool:
+    if not arn.startswith("arn:"):
+        return False
+    parts = arn.split(":")
+    if len(parts) < 6:
+        return False
+    return parts[3] == ""
+
+
+def parse_bucket_from_arn(arn: str) -> str:
+    if not arn:
+        return ""
+    if arn.startswith("arn:aws:s3:::"):
+        return arn.split("arn:aws:s3:::", 1)[1].split("/")[0]
+    return arn
+
+
+def parse_cloudtrail_name(arn: str) -> str:
+    if ":trail/" in arn:
+        return arn.split(":trail/", 1)[1]
+    return arn
+
+
+def parse_log_group_name(arn: str) -> str:
+    if ":log-group:" in arn:
+        return arn.split(":log-group:", 1)[1].split(":", 1)[0]
+    return arn
+
+
+def parse_sg_id(arn: str) -> str:
+    if arn.startswith("sg-"):
+        return arn
+    if ":security-group/" in arn:
+        return arn.split(":security-group/", 1)[1]
+    return arn
+
+
+def infer_category(service: str, check_id: str) -> Optional[str]:
+    c = (check_id or "").lower()
+    s = (service or "").lower()
+    if s == "iam" or c.startswith("iam_"):
+        return "iam"
+    if s == "s3" or c.startswith("s3_"):
+        return "s3"
+    if s == "cloudtrail" or c.startswith("cloudtrail_"):
+        return "cloudtrail"
+    if s in {"cloudwatch", "logs"} or c.startswith("cloudwatch_") or c.startswith("logs_"):
+        return "cloudwatch"
+    if s in {"ec2", "vpc"} or c.startswith("ec2_") or c.startswith("vpc_"):
+        return "network-ec2-vpc"
+    return None
+
+
+def remediation_mode(resource_arn: str, service: str) -> str:
+    if resource_arn:
+        return "IMPORT_AND_PATCH"
+    if service in {"iam", "account", "cloudtrail"}:
+        return "PATCH_EXISTING"
+    return "CREATE_MISSING"
+
+
+def build_iam_password_policy(item: Dict[str, Any], tf_name: str) -> Dict[str, Any]:
+    content = f'''resource "aws_iam_account_password_policy" "{tf_name}" {{
+  minimum_password_length        = 14
+  require_lowercase_characters   = true
+  require_uppercase_characters   = true
+  require_numbers                = true
+  require_symbols                = true
+  allow_users_to_change_password = true
+  max_password_age               = 90
+  password_reuse_prevention      = 24
+  hard_expiry                    = false
+
+  lifecycle {{
+    ignore_changes = []
+  }}
+}}
+'''
+    return {
+        "action": "PATCH_EXISTING",
+        "resource_address": f"aws_iam_account_password_policy.{tf_name}",
+        "import_id": "",
+        "optional_create_if_missing": False,
+        "tf": content,
+        "status": "PLANNED",
+    }
+
+
+def build_s3_public_access(item: Dict[str, Any], tf_name: str) -> Dict[str, Any]:
+    bucket = parse_bucket_from_arn(item.get("resource_arn", ""))
+    if not bucket:
+        return {"status": "SKIPPED", "reason": "missing_bucket_arn"}
+
+    content = f'''resource "aws_s3_bucket_public_access_block" "{tf_name}" {{
+  bucket                  = "{bucket}"
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+
+  lifecycle {{
+    ignore_changes = []
+  }}
+}}
+'''
+    return {
+        "action": "IMPORT_AND_PATCH",
+        "resource_address": f"aws_s3_bucket_public_access_block.{tf_name}",
+        "import_id": bucket,
+        "optional_create_if_missing": True,
+        "tf": content,
+        "status": "PLANNED",
+    }
+
+
+def build_s3_encryption(item: Dict[str, Any], tf_name: str) -> Dict[str, Any]:
+    bucket = parse_bucket_from_arn(item.get("resource_arn", ""))
+    if not bucket:
+        return {"status": "SKIPPED", "reason": "missing_bucket_arn"}
+
+    content = f'''resource "aws_s3_bucket_server_side_encryption_configuration" "{tf_name}" {{
+  bucket = "{bucket}"
+
+  rule {{
+    apply_server_side_encryption_by_default {{
+      sse_algorithm = "AES256"
+    }}
+  }}
+
+  lifecycle {{
+    ignore_changes = []
+  }}
+}}
+'''
+    return {
+        "action": "IMPORT_AND_PATCH",
+        "resource_address": f"aws_s3_bucket_server_side_encryption_configuration.{tf_name}",
+        "import_id": bucket,
+        "optional_create_if_missing": True,
+        "tf": content,
+        "status": "PLANNED",
+    }
+
+
+def build_s3_ownership(item: Dict[str, Any], tf_name: str) -> Dict[str, Any]:
+    bucket = parse_bucket_from_arn(item.get("resource_arn", ""))
+    if not bucket:
+        return {"status": "SKIPPED", "reason": "missing_bucket_arn"}
+
+    content = f'''resource "aws_s3_bucket_ownership_controls" "{tf_name}" {{
+  bucket = "{bucket}"
+
+  rule {{
+    object_ownership = "BucketOwnerEnforced"
+  }}
+
+  lifecycle {{
+    ignore_changes = []
+  }}
+}}
+'''
+    return {
+        "action": "IMPORT_AND_PATCH",
+        "resource_address": f"aws_s3_bucket_ownership_controls.{tf_name}",
+        "import_id": bucket,
+        "optional_create_if_missing": True,
+        "tf": content,
+        "status": "PLANNED",
+    }
+
+
+def build_cloudtrail_validation(item: Dict[str, Any], tf_name: str) -> Dict[str, Any]:
+    trail_name = parse_cloudtrail_name(item.get("resource_arn", ""))
+    if not trail_name:
+        return {"status": "SKIPPED", "reason": "missing_cloudtrail_arn"}
+
+    content = f'''resource "aws_cloudtrail" "{tf_name}" {{
+  name                          = "{trail_name}"
+  enable_logging                = true
+  include_global_service_events = true
+  is_multi_region_trail         = true
+  enable_log_file_validation    = true
+
+  lifecycle {{
+    ignore_changes = [
+      event_selector,
+      insight_selector,
+      kms_key_id,
+      s3_bucket_name,
+      s3_key_prefix,
+      sns_topic_name,
+      tags,
+      tags_all
+    ]
+  }}
+}}
+'''
+    return {
+        "action": "IMPORT_AND_PATCH",
+        "resource_address": f"aws_cloudtrail.{tf_name}",
+        "import_id": trail_name,
+        "optional_create_if_missing": False,
+        "tf": content,
+        "status": "PLANNED",
+    }
+
+
+def build_cloudwatch_encryption(item: Dict[str, Any], tf_name: str) -> Dict[str, Any]:
+    log_group = parse_log_group_name(item.get("resource_arn", ""))
+    region = item.get("region", "")
+    account_id = item.get("account_id", "")
+    if not log_group or not region or not account_id:
+        return {"status": "SKIPPED", "reason": "missing_log_group_or_context"}
+
+    key_arn = f"arn:aws:kms:{region}:{account_id}:alias/aws/logs"
+    content = f'''resource "aws_cloudwatch_log_group" "{tf_name}" {{
+  name       = "{log_group}"
+  kms_key_id = "{key_arn}"
+
+  lifecycle {{
+    ignore_changes = [
+      retention_in_days,
+      skip_destroy,
+      tags,
+      tags_all
+    ]
+  }}
+}}
+'''
+    return {
+        "action": "IMPORT_AND_PATCH",
+        "resource_address": f"aws_cloudwatch_log_group.{tf_name}",
+        "import_id": log_group,
+        "optional_create_if_missing": False,
+        "tf": content,
+        "status": "PLANNED",
+    }
+
+
+def build_sg_restrict(item: Dict[str, Any], tf_name: str) -> Dict[str, Any]:
+    sg_id = parse_sg_id(item.get("resource_arn", ""))
+    if not sg_id:
+        return {"status": "SKIPPED", "reason": "missing_sg_arn"}
+
+    content = f'''resource "aws_security_group" "{tf_name}" {{
+  name = "{sg_id}"
+
+  ingress = []
+
+  egress = [
+    {{
+      from_port   = 443
+      to_port     = 443
+      protocol    = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+    }}
+  ]
+
+  lifecycle {{
+    ignore_changes = [
+      description,
+      name,
+      name_prefix,
+      revoke_rules_on_delete,
+      tags,
+      tags_all,
+      vpc_id
+    ]
+  }}
+}}
+'''
+    return {
+        "action": "IMPORT_AND_PATCH",
+        "resource_address": f"aws_security_group.{tf_name}",
+        "import_id": sg_id,
+        "optional_create_if_missing": False,
+        "tf": content,
+        "status": "PLANNED",
+    }
+
+
+def build_vpc_flow_logs(item: Dict[str, Any], tf_name: str) -> Dict[str, Any]:
+    return {"status": "SKIPPED", "reason": "unsupported_safe_autoremediation_vpc_flow_logs"}
+
+
+def plan_for_finding(item: Dict[str, Any]) -> Dict[str, Any]:
+    service = (item.get("service") or "").lower()
+    check_id = item.get("check_id") or "unknown"
+    check_lower = check_id.lower()
+    category = infer_category(service, check_lower)
+
+    base = {
+        "check_id": check_id,
+        "service": service,
+        "resource_arn": item.get("resource_arn", ""),
+        "region": item.get("region", ""),
+        "account_id": item.get("account_id", ""),
         "category": category,
-        "constraints": [
-            "Output only Terraform/HCL.",
-            "No provider/terraform/variable/output blocks.",
-            "Use non-destructive resource config.",
-            "Use resource names with ai_remed_ prefix.",
-        ],
-        "findings": findings[:20],
-        "snippet": snippet,
+        "mode": remediation_mode(item.get("resource_arn", ""), service),
     }
 
-    payload = {
-        "anthropic_version": "bedrock-2023-05-31",
-        "max_tokens": 1400,
-        "temperature": 0,
-        "messages": [
-            {
-                "role": "user",
-                "content": [{"type": "text", "text": json.dumps(prompt, ensure_ascii=False)}],
-            }
-        ],
-    }
+    if service not in SUPPORTED_SERVICES and not category:
+        base.update({"action": "SKIP", "status": "SKIPPED", "reason": "unsupported_service"})
+        return base
 
-    resp = client.invoke_model(modelId=model_id, contentType="application/json", body=json.dumps(payload))
-    body = json.loads(resp["body"].read())
-    parts = body.get("content", [])
-    text = "\n".join(p.get("text", "") for p in parts if isinstance(p, dict)).strip()
-    if not text:
-        raise RuntimeError("empty model output")
-    return extract_tf(text)
+    tf_name = safe_name(check_id)
 
+    if "password" in check_lower and "policy" in check_lower and category == "iam":
+        result = build_iam_password_policy(item, tf_name)
+    elif category == "s3" and ("public" in check_lower or "acl" in check_lower or "policy" in check_lower):
+        result = build_s3_public_access(item, tf_name)
+    elif category == "s3" and ("encrypt" in check_lower or "encryption" in check_lower):
+        result = build_s3_encryption(item, tf_name)
+    elif category == "s3" and "ownership" in check_lower:
+        result = build_s3_ownership(item, tf_name)
+    elif category == "cloudtrail" and ("validation" in check_lower or "log_file" in check_lower or "multi_region" in check_lower):
+        result = build_cloudtrail_validation(item, tf_name)
+    elif category == "cloudwatch" and ("kms" in check_lower or "encrypt" in check_lower or "encryption" in check_lower):
+        result = build_cloudwatch_encryption(item, tf_name)
+    elif category == "network-ec2-vpc" and "securitygroup" in check_lower:
+        result = build_sg_restrict(item, tf_name)
+    elif category == "network-ec2-vpc" and "flow_log" in check_lower:
+        result = build_vpc_flow_logs(item, tf_name)
+    else:
+        result = {"status": "SKIPPED", "reason": "unsupported_check"}
 
-def builder_tf(category: str, findings: list[dict[str, Any]]) -> str:
-    if category == "cloudwatch":
-        return build_cloudwatch(findings)
-    if category == "network-ec2-vpc":
-        return build_network(findings)
-    return ""
-
-
-def render_category_file(category: str, run_id: str, snippet: str, ai_tf: str, built_tf: str) -> str:
-    # Comment out snippet so placeholder values (REPLACE_*) don't break terraform apply
-    snippet_commented = "\n".join(f"# {line}" for line in snippet.strip().splitlines()) if snippet.strip() else ""
-    return (
-        'terraform {\n'
-        '  required_version = ">= 1.5.0"\n'
-        '  required_providers {\n'
-        '    aws = {\n'
-        '      source  = "hashicorp/aws"\n'
-        '      version = ">= 5.0"\n'
-        '    }\n'
-        '  }\n'
-        '}\n\n'
-        'variable "region" {\n'
-        '  type    = string\n'
-        '  default = ""\n'
-        '}\n\n'
-        'provider "aws" {\n'
-        '  region = var.region != "" ? var.region : null\n'
-        '}\n\n'
-        f"# category: {category}\n"
-        f"# run_id: {run_id}\n\n"
-        f"# === snippet reference (not applied) ===\n"
-        f"{snippet_commented}\n\n"
-        f"# === ai_generated ===\n{ai_tf.strip()}\n\n"
-        f"# === builder_generated ===\n{built_tf.strip()}\n"
-    )
+    base.update(result)
+    if base.get("status") == "PLANNED":
+        base["action"] = base.get("action", base.get("mode", "IMPORT_AND_PATCH"))
+    else:
+        base["action"] = "SKIP"
+    return base
 
 
-def main() -> int:
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--normalized-findings", default="artifacts/normalized-findings.json")
-    parser.add_argument("--snippet-root", default="iac/snippets")
-    parser.add_argument("--output-root", default="terraform/remediation")
-    parser.add_argument("--run-id", default="manual")
-    parser.add_argument("--log", default="artifacts/remediation/summary.log")
-    args = parser.parse_args()
+def write_tf_files(output_root: Path, plan: List[Dict[str, Any]]) -> Dict[str, List[Dict[str, Any]]]:
+    categories: Dict[str, List[Dict[str, Any]]] = {c: [] for c in CATEGORIES}
 
-    findings = json.loads(Path(args.normalized_findings).read_text(encoding="utf-8"))
-    by_cat: dict[str, list[dict[str, Any]]] = defaultdict(list)
-    for f in findings:
-        c = f.get("category")
-        if c in SUPPORTED:
-            by_cat[c].append(f)
+    for item in plan:
+        if item.get("status") != "PLANNED":
+            continue
+        category = item.get("category")
+        if category not in categories:
+            continue
+        categories[category].append(item)
 
-    model_id = os.getenv("AI_MODEL", "")
-    region = os.getenv("AWS_DEFAULT_REGION", "")
+    for category, items in categories.items():
+        category_dir = output_root / category
+        category_dir.mkdir(parents=True, exist_ok=True)
 
-    output_root = Path(args.output_root)
-    output_root.mkdir(parents=True, exist_ok=True)
+        main_parts: List[str] = []
+        import_lines: List[str] = []
 
-    generated = []
-    for category in SUPPORTED:
-        cat_findings = by_cat.get(category, [])
-        if not cat_findings:
+        for item in items:
+            check_id = item["check_id"]
+            tf_path = category_dir / f"{check_id}.tf"
+            tf_content = item.get("tf", "")
+            tf_path.write_text(tf_content, encoding="utf-8")
+            main_parts.append(f"# check_id={check_id}\n{tf_content.strip()}\n")
+
+            import_id = item.get("import_id", "")
+            resource_address = item.get("resource_address", "")
+            resource_arn = item.get("resource_arn", "")
+            optional = str(bool(item.get("optional_create_if_missing", False))).lower()
+            if import_id and resource_address:
+                import_lines.append(f"{resource_address}|{import_id}|{resource_arn}|{check_id}|{optional}")
+
+        main_tf = category_dir / "main.tf"
+        if main_parts:
+            main_tf.write_text("\n\n".join(main_parts) + "\n", encoding="utf-8")
+        else:
+            main_tf.write_text("", encoding="utf-8")
+
+        import_map = category_dir / "import-map.txt"
+        import_map.write_text("\n".join(import_lines) + ("\n" if import_lines else ""), encoding="utf-8")
+
+    return categories
+
+
+def build_manifest(output_root: Path, plan: List[Dict[str, Any]], categories: Dict[str, List[Dict[str, Any]]], baseline_fail_count: int) -> Dict[str, Any]:
+    checks: Dict[str, Dict[str, str]] = {}
+
+    for item in plan:
+        check_id = item.get("check_id", "")
+        category = item.get("category")
+        if not check_id:
             continue
 
-        snippet_path = Path(args.snippet_root) / category / "main.tf"
-        snippet = snippet_path.read_text(encoding="utf-8") if snippet_path.exists() else ""
+        tf_file = f"terraform/remediation/{category}/{check_id}.tf" if category else ""
+        checks[check_id] = {
+            "tf_file": tf_file,
+            "resource_address": item.get("resource_address", ""),
+            "arn": item.get("resource_arn", ""),
+            "status": item.get("status", ""),
+            "action": item.get("action", "SKIP"),
+        }
 
-        ai_tf = "# no_ai_output"
-        bedrock_ok = False
-        error = ""
-
-        if model_id and region:
-            try:
-                ai_tf = call_bedrock(model_id, region, category, cat_findings, snippet)
-                bedrock_ok = True
-            except Exception as e:
-                error = str(e)
-
-        built_tf = builder_tf(category, cat_findings)
-
-        cat_dir = output_root / category
-        cat_dir.mkdir(parents=True, exist_ok=True)
-        (cat_dir / "main.tf").write_text(
-            render_category_file(category, args.run_id, snippet, ai_tf, built_tf),
-            encoding="utf-8",
-        )
-        (cat_dir / "imports.sh").write_text("#!/usr/bin/env bash\nset -euo pipefail\n", encoding="utf-8")
-
-        generated.append(
-            {
-                "category": category,
-                "path": str((cat_dir / "main.tf")).replace('\\', '/'),
-                "findings": len(cat_findings),
-                "bedrock_ok": bedrock_ok,
-                "error": error,
-            }
-        )
+    category_list: List[Dict[str, str]] = []
+    for category in CATEGORIES:
+        if categories.get(category):
+            category_list.append(
+                {
+                    "category": category,
+                    "path": f"terraform/remediation/{category}",
+                    "import_map": f"terraform/remediation/{category}/import-map.txt",
+                }
+            )
 
     manifest = {
-        "run_id": args.run_id,
-        "baseline_fail_count": len(findings),
-        "categories": generated,
-        "unsupported_examples": ["fms", "organizations", "root MFA"],
+        "baseline_fail_count": baseline_fail_count,
+        "categories": category_list,
+        "checks": checks,
     }
-    (output_root / "manifest.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")
+    return manifest
 
-    log_path = Path(args.log)
-    log_path.parent.mkdir(parents=True, exist_ok=True)
-    log_path.write_text(
-        "\n".join(
-            [
-                f"baseline_fail_count={len(findings)}",
-                f"generated_categories={','.join(x['category'] for x in generated) if generated else 'none'}",
-                f"model={model_id or 'none'}",
-            ]
-        ) + "\n",
-        encoding="utf-8",
-    )
 
-    print(json.dumps(manifest))
-    return 0
+def main() -> None:
+    args = parse_args()
+    normalized_path = Path(args.normalized_findings)
+    output_root = Path(args.output_root)
+    log_path = Path(args.log) if args.log else None
+
+    findings = json.loads(normalized_path.read_text(encoding="utf-8-sig")) if normalized_path.exists() else []
+    if not isinstance(findings, list):
+        findings = []
+
+    output_root.mkdir(parents=True, exist_ok=True)
+
+    plan = [plan_for_finding(item) for item in findings if isinstance(item, dict)]
+    categories = write_tf_files(output_root, plan)
+
+    manifest = build_manifest(output_root, plan, categories, baseline_fail_count=len(findings))
+
+    remediation_plan_path = output_root / "remediation_plan.json"
+    remediation_plan_path.write_text(json.dumps(plan, indent=2), encoding="utf-8")
+
+    manifest_path = output_root / "manifest.json"
+    manifest_path.write_text(json.dumps(manifest, indent=2), encoding="utf-8")
+
+    summary = {
+        "run_id": args.run_id,
+        "normalized_fail": len(findings),
+        "planned": len([x for x in plan if x.get("status") == "PLANNED"]),
+        "skipped": len([x for x in plan if x.get("status") != "PLANNED"]),
+        "manifest": str(manifest_path),
+    }
+
+    if log_path:
+        log_path.parent.mkdir(parents=True, exist_ok=True)
+        lines = [
+            f"run_id={summary['run_id']}",
+            f"normalized_fail={summary['normalized_fail']}",
+            f"planned={summary['planned']}",
+            f"skipped={summary['skipped']}",
+        ]
+        for item in plan:
+            if item.get("status") != "PLANNED":
+                lines.append(
+                    f"SKIPPED check_id={item.get('check_id')} reason={item.get('reason', 'n/a')} service={item.get('service')}"
+                )
+        log_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+    print(json.dumps(summary, indent=2))
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    main()

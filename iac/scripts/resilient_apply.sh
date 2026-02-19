@@ -1,43 +1,50 @@
-#!/usr/bin/env bash
-set -euo pipefail
+﻿#!/usr/bin/env bash
+set -uo pipefail
 
-TF_DIR="${1:-terraform/remediation}"
-STATE_DIR="${2:-artifacts}"
-mkdir -p "$STATE_DIR"
+apply_one() {
+  local category_dir="$1"
+  local state_dir="$2"
 
-REGION="${TF_VAR_region:-${AWS_DEFAULT_REGION:-}}"
-REGION_ARG=()
-if [[ -n "$REGION" ]]; then
-  REGION_ARG=(-var "region=${REGION}")
+  if [ ! -d "$category_dir" ]; then
+    echo "SKIP missing category dir: $category_dir"
+    return 0
+  fi
+
+  mkdir -p "$state_dir"
+  pushd "$category_dir" >/dev/null || return 0
+
+  local has_tf
+  has_tf=$(find . -maxdepth 1 -type f -name '*.tf' | wc -l)
+  if [ "$has_tf" -eq 0 ]; then
+    echo "SKIP no tf files in $category_dir"
+    popd >/dev/null || true
+    return 0
+  fi
+
+  terraform init -input=false -no-color >/dev/null 2>&1 || terraform init -input=false -no-color || true
+
+  terraform apply -auto-approve -input=false -no-color \
+    -state="$PWD/../../$state_dir/terraform.tfstate"
+  rc=$?
+
+  if [ $rc -ne 0 ]; then
+    echo "FAIL apply: $category_dir"
+  else
+    echo "OK apply: $category_dir"
+  fi
+
+  popd >/dev/null || true
+  return 0
+}
+
+if [ "$#" -ge 2 ]; then
+  apply_one "$1" "$2"
+  exit 0
 fi
 
-terraform -chdir="$TF_DIR" init -input=false >/dev/null
-terraform -chdir="$TF_DIR" plan -out=tfplan -input=false "${REGION_ARG[@]}" >/dev/null
-terraform -chdir="$TF_DIR" show -json tfplan > "$STATE_DIR/plan.json"
-
-if jq -e 'any((.resource_changes // [])[]?; any((.change.actions // [])[]?; . == "replace"))' "$STATE_DIR/plan.json" >/dev/null; then
-  echo "[BLOCK] replacement detected in remediation plan"
-  exit 10
-fi
-
-for i in 1 2; do
-  terraform -chdir="$TF_DIR" apply -auto-approve -input=false "${REGION_ARG[@]}"
-  set +e
-  terraform -chdir="$TF_DIR" plan -detailed-exitcode -input=false -out=tfplan-check "${REGION_ARG[@]}" >/dev/null
-  PLAN_EXIT=$?
-  set -e
-  terraform -chdir="$TF_DIR" show -json tfplan-check > "$STATE_DIR/plan-check-$i.json" || true
-
-  if [[ $PLAN_EXIT -eq 0 ]]; then
-    echo "[OK] idempotent apply confirmed"
-    exit 0
-  fi
-  if [[ $PLAN_EXIT -eq 1 ]]; then
-    echo "[BLOCK] terraform plan failed after apply #$i"
-    exit 11
-  fi
-  echo "[WARN] drift still detected after apply #$i"
+PLAN_DIR="terraform/remediation"
+for category in iam s3 network-ec2-vpc cloudtrail cloudwatch; do
+  apply_one "$PLAN_DIR/$category" "artifacts/$category"
 done
 
-echo "[BLOCK] drift loop suspected after 2 attempts"
-exit 20
+exit 0

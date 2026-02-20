@@ -1,1 +1,2 @@
-aws_cloudtrail.fix_cloudtrail_2b497faa04|vuln-trail|false|prowler-cloudtrail_log_file_validation_enabled
+aws_cloudtrail.fix_cloudtrail_41c4cc5c5c|security-cloudtail|false|prowler-cloudtrail_cloudwatch_logging_enabled
+aws_cloudtrail.fix_cloudtrail_0a966160c4|vuln-trail|false|prowler-cloudtrail_cloudwatch_logging_enabled

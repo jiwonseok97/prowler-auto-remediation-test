@@ -69,6 +69,18 @@ jobs:
             gh run download "$RID" --repo "${{ github.repository }}" --name "scan-$RID" --dir artifacts/baseline_scan || true
           fi
 
+      - name: Download previous successful rescan artifact (for incremental delta)
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p artifacts/previous_rescan
+          PREV_RID="$(gh run list --workflow "Security Pipeline - 04 Verify FAIL Reduction" --repo "${{ github.repository }}" --limit 30 --json databaseId,conclusion --jq '[.[] | select(.conclusion=="success" and (.databaseId|tostring)!="${{ github.run_id }}")][0].databaseId')"
+          if [ -n "$PREV_RID" ] && [ "$PREV_RID" != "null" ]; then
+            echo "previous_rescan_run_id=$PREV_RID" >> "$GITHUB_ENV"
+            gh run download "$PREV_RID" --repo "${{ github.repository }}" --name "rescan-$PREV_RID" --dir artifacts/previous_rescan || true
+          fi
+
       - name: Compare baseline vs post
         run: |
           BASELINE_DOC="remediation/manifest.json"
@@ -82,9 +94,55 @@ jobs:
           python - <<'PY'
           import json
           from pathlib import Path
-          s = json.loads(Path('artifacts/rescan/rescan_summary.json').read_text(encoding='utf-8'))
+          summary_path = Path('artifacts/rescan/rescan_summary.json')
+          s = json.loads(summary_path.read_text(encoding='utf-8'))
+          current_post = json.loads(Path('artifacts/rescan/post_normalized.json').read_text(encoding='utf-8'))
+          current_fail_ids = sorted({x.get('check_id', 'unknown') for x in current_post if x.get('status') == 'FAIL'})
+
+          prev_summary_path = Path('artifacts/previous_rescan/rescan_summary.json')
+          prev_post_path = Path('artifacts/previous_rescan/post_normalized.json')
+          previous_post_fail = None
+          incremental_reduced = None
+          resolved_since_previous = []
+          new_fail_since_previous = []
+
+          if prev_summary_path.exists():
+            prev_summary = json.loads(prev_summary_path.read_text(encoding='utf-8'))
+            previous_post_fail = int(prev_summary.get('post_fail', 0))
+            incremental_reduced = previous_post_fail - int(s.get('post_fail', 0))
+            s['previous_post_fail'] = previous_post_fail
+            s['incremental_reduced'] = incremental_reduced
+
+          if prev_post_path.exists():
+            prev_post = json.loads(prev_post_path.read_text(encoding='utf-8'))
+            prev_fail_ids = sorted({x.get('check_id', 'unknown') for x in prev_post if x.get('status') == 'FAIL'})
+            resolved_since_previous = sorted(set(prev_fail_ids) - set(current_fail_ids))
+            new_fail_since_previous = sorted(set(current_fail_ids) - set(prev_fail_ids))
+            s['resolved_since_previous_check_ids'] = resolved_since_previous
+            s['new_fail_since_previous_check_ids'] = new_fail_since_previous
+
           rem = '\n'.join(f"- {x}" for x in s['remaining_fail_check_ids'][:30]) or '- none'
-          md = f"## Rescan Summary\n- baseline_fail: {s['baseline_fail']}\n- post_fail: {s['post_fail']}\n- reduced: {s['reduced']}\n\n### Remaining FAIL\n{rem}\n"
+          resolved = '\n'.join(f"- {x}" for x in resolved_since_previous[:30]) or '- none'
+          introduced = '\n'.join(f"- {x}" for x in new_fail_since_previous[:30]) or '- none'
+
+          inc_line = ""
+          if incremental_reduced is not None:
+            inc_line = f"- incremental_reduced: {incremental_reduced} (previous_post_fail={previous_post_fail} -> current_post_fail={s['post_fail']})\n"
+
+          md = (
+            "## Rescan Summary\n"
+            f"- baseline_fail: {s['baseline_fail']}\n"
+            f"- post_fail: {s['post_fail']}\n"
+            f"- reduced: {s['reduced']} (baseline -> current)\n"
+            f"{inc_line}\n"
+            "### Remaining FAIL\n"
+            f"{rem}\n\n"
+            "### Resolved Since Previous Rescan\n"
+            f"{resolved}\n\n"
+            "### New FAIL Since Previous Rescan\n"
+            f"{introduced}\n"
+          )
+          summary_path.write_text(json.dumps(s, indent=2), encoding='utf-8')
           Path('artifacts/rescan/rescan_summary.md').write_text(md, encoding='utf-8')
           print(md)
           PY
@@ -93,8 +151,14 @@ jobs:
           import json
           from pathlib import Path
           s = json.loads(Path('artifacts/rescan/rescan_summary.json').read_text(encoding='utf-8'))
-          if s.get("reduced", 0) <= 0:
-              raise SystemExit(f"FAIL not reduced: baseline={s.get('baseline_fail')} post={s.get('post_fail')}")
+          incremental = s.get("incremental_reduced")
+          if incremental is not None:
+              if incremental <= 0:
+                  raise SystemExit(
+                      f"FAIL not reduced vs previous post: previous_post={s.get('previous_post_fail')} current_post={s.get('post_fail')}"
+                  )
+          elif s.get("reduced", 0) <= 0:
+              raise SystemExit(f"FAIL not reduced vs baseline: baseline={s.get('baseline_fail')} post={s.get('post_fail')}")
           PY
 
       - name: Optional publish rescan result to external API

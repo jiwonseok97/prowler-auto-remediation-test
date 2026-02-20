@@ -1,11 +1,6 @@
-resource "aws_s3_bucket" "fix_config_delivery_bucket_b6aa1fff7e" {
-  bucket = "aws-config-logs-132410971304-eu-north-1"
-}
-
 resource "aws_s3_bucket_policy" "fix_config_bucket_policy_b6aa1fff7e" {
-  bucket     = "aws-config-logs-132410971304-eu-north-1"
-  depends_on = [aws_s3_bucket.fix_config_delivery_bucket_b6aa1fff7e]
-  policy     = <<POLICY
+  bucket = "aws-config-logs-132410971304-eu-north-1"
+  policy = <<POLICY
 {
   "Version": "2012-10-17",
   "Statement": [
@@ -53,13 +48,40 @@ resource "aws_s3_bucket_policy" "fix_config_bucket_policy_b6aa1fff7e" {
       "Resource": "arn:aws:s3:::aws-config-logs-132410971304-eu-north-1/AWSLogs/132410971304/Config/*",
       "Condition": {
         "StringEquals": {
-          "s3:x-amz-acl": "bucket-owner-full-control",
-          "aws:SourceAccount": "132410971304"
+          "aws:SourceAccount": "132410971304",
+          "s3:x-amz-acl": "bucket-owner-full-control"
         },
         "ArnLike": {
           "aws:SourceArn": "arn:aws:config:eu-north-1:132410971304:*"
         }
       }
+    },
+    {
+      "Sid": "AWSConfigBucketAclCheckAllow",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "config.amazonaws.com"
+      },
+      "Action": "s3:GetBucketAcl",
+      "Resource": "arn:aws:s3:::aws-config-logs-132410971304-eu-north-1"
+    },
+    {
+      "Sid": "AWSConfigBucketListCheckAllow",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "config.amazonaws.com"
+      },
+      "Action": "s3:ListBucket",
+      "Resource": "arn:aws:s3:::aws-config-logs-132410971304-eu-north-1"
+    },
+    {
+      "Sid": "AWSConfigBucketDeliveryAllow",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "config.amazonaws.com"
+      },
+      "Action": "s3:PutObject",
+      "Resource": "arn:aws:s3:::aws-config-logs-132410971304-eu-north-1/AWSLogs/132410971304/Config/*"
     }
   ]
 }

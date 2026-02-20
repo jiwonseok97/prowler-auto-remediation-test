@@ -60,6 +60,8 @@ jobs:
 
       - name: Download latest successful baseline scan artifact
         shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           mkdir -p artifacts/baseline_scan
           RID="$(gh run list --workflow "Security Pipeline - 01 Scan Baseline" --repo "${{ github.repository }}" --limit 30 --json databaseId,conclusion --jq '[.[] | select(.conclusion=="success")][0].databaseId')"
@@ -94,6 +96,23 @@ jobs:
           if s.get("reduced", 0) <= 0:
               raise SystemExit(f"FAIL not reduced: baseline={s.get('baseline_fail')} post={s.get('post_fail')}")
           PY
+
+      - name: Optional publish rescan result to external API
+        if: ${{ secrets.PROWLER_APP_API_URL != '' && secrets.PROWLER_APP_API_TOKEN != '' }}
+        continue-on-error: true
+        env:
+          PROWLER_APP_API_URL: ${{ secrets.PROWLER_APP_API_URL }}
+          PROWLER_APP_API_TOKEN: ${{ secrets.PROWLER_APP_API_TOKEN }}
+        run: |
+          python iac/scripts/publish_scan_to_api.py \
+            --input artifacts/rescan/rescan_summary.json \
+            --event rescan_verify \
+            --api-url "$PROWLER_APP_API_URL" \
+            --api-token "$PROWLER_APP_API_TOKEN" \
+            --repo "${{ github.repository }}" \
+            --run-id "${{ github.run_id }}" \
+            --region "ap-northeast-2" \
+            --framework "cis_1.4_plus_isms_p"
 
       - name: Upload rescan artifacts
         uses: actions/upload-artifact@v4

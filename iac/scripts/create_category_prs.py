@@ -44,19 +44,17 @@ def main() -> None:
             print(f"skip {category}: no terraform files")
             continue
 
-        branch = f"remediation/{category}-{a.run_id}"
-        branch_prefix = f"remediation/{category}"
+        branch = f"remediation/{category}"
+        branch_prefix = branch
         message = f"PR-merge / remediation: {category}"
 
-        # Close stale PRs for the same category before creating a new run-scoped PR.
+        # Close stale PRs for old run-scoped branches (legacy naming).
         for pr in open_prs:
             head = str(pr.get("headRefName", ""))
             number = pr.get("number")
             if not number:
                 continue
-            if head == branch:
-                continue
-            if head == branch_prefix or head.startswith(f"{branch_prefix}-"):
+            if head.startswith(f"{branch_prefix}-"):
                 run(
                     [
                         "gh",
@@ -64,7 +62,7 @@ def main() -> None:
                         "close",
                         str(number),
                         "--comment",
-                        f"Superseded by newer remediation run branch `{branch}`.",
+                        f"Superseded by fixed category branch `{branch}`.",
                     ],
                     check=False,
                 )
@@ -119,6 +117,10 @@ def main() -> None:
         )
         if p.returncode != 0:
             err = (p.stderr or "").strip()
+            if "a pull request already exists for" in err.lower():
+                # Fixed branch flow: PR already exists; keep branch updated and move on.
+                print(f"info: PR already exists for {branch}, branch updated")
+                continue
             if "not permitted to create or approve pull requests" in err.lower():
                 print(f"warn: PR create skipped by repo policy for {category}")
                 continue

@@ -1157,12 +1157,13 @@ def build_cloudtrail_tf(finding: Dict[str, Any], region: str, account_id: str) -
                 }
             ],
         }
+        role_policy_depends = "  depends_on = [aws_iam_role.fix_cloudtrail_cw_role]\n" if create_role else ""
         extra_prefix += (
             'resource "aws_iam_role_policy" "fix_cloudtrail_cw_role_policy" {\n'
             '  name   = "cloudtrail-to-cloudwatch-logs"\n'
             f'  role   = "{role_name}"\n'
             f"  policy = {json.dumps(json.dumps(inline_policy))}\n"
-            + ("  depends_on = [aws_iam_role.fix_cloudtrail_cw_role]\n" if create_role else "")
+            f"{role_policy_depends}"
             "}\n\n"
         )
         depends_on_resources.append("aws_iam_role_policy.fix_cloudtrail_cw_role_policy")

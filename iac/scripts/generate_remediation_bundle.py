@@ -243,6 +243,39 @@ def lookup_vpc_for_sg(arn: str, region: str) -> str:
     return ""
 
 
+def sg_exists(sg_id: str, region: str) -> bool:
+    if not sg_id:
+        return False
+    try:
+        ec2 = boto3.client("ec2", region_name=region)
+        resp = ec2.describe_security_groups(GroupIds=[sg_id])
+        return bool(resp.get("SecurityGroups", []))
+    except Exception:
+        return False
+
+
+def vpc_exists(vpc_id: str, region: str) -> bool:
+    if not vpc_id:
+        return False
+    try:
+        ec2 = boto3.client("ec2", region_name=region)
+        resp = ec2.describe_vpcs(VpcIds=[vpc_id])
+        return bool(resp.get("Vpcs", []))
+    except Exception:
+        return False
+
+
+def nacl_exists(nacl_id: str, region: str) -> bool:
+    if not nacl_id:
+        return False
+    try:
+        ec2 = boto3.client("ec2", region_name=region)
+        resp = ec2.describe_network_acls(NetworkAclIds=[nacl_id])
+        return bool(resp.get("NetworkAcls", []))
+    except Exception:
+        return False
+
+
 def lookup_vpc_cidr_for_sg_id(sg_id: str, region: str) -> str:
     if not sg_id:
         return ""
@@ -316,6 +349,8 @@ def build_nacl_restrict_ingress_tf(finding: Dict[str, Any], region: str) -> str:
     nacl_id = extract_nacl_id(finding.get("resource_arn", ""))
     if not nacl_id:
         return ""
+    if not nacl_exists(nacl_id, region):
+        return ""
 
     proto = "-1"
     from_port = ""
@@ -368,6 +403,8 @@ def build_nacl_restrict_ingress_tf(finding: Dict[str, Any], region: str) -> str:
 def build_sg_restrict_all_ports_tf(finding: Dict[str, Any], region: str) -> str:
     sg_id = extract_sg_id(finding.get("resource_arn", ""))
     if not sg_id:
+        return ""
+    if not sg_exists(sg_id, region):
         return ""
     rule = find_open_sg_rule(sg_id, region)
     safe_cidr4 = lookup_vpc_cidr_for_sg_id(sg_id, region) or "10.0.0.0/8"
@@ -641,9 +678,11 @@ def build_secure_transport_policy_tf(finding: Dict[str, Any]) -> str:
     )
 
 
-def build_vpc_flow_logs_tf(finding: Dict[str, Any], account_id: str) -> str:
+def build_vpc_flow_logs_tf(finding: Dict[str, Any], account_id: str, region: str) -> str:
     vpc_id = extract_vpc_id(finding.get("resource_arn", ""))
     if not vpc_id:
+        return ""
+    if not vpc_exists(vpc_id, region):
         return ""
     bucket = pick_default_log_bucket(account_id)
     if not bucket:
@@ -1388,7 +1427,7 @@ def main() -> None:
         if "s3_bucket_secure_transport_policy" in cid_l:
             tf_code = build_secure_transport_policy_tf(f)
         elif "vpc_flow_logs_enabled" in cid_l:
-            tf_code = build_vpc_flow_logs_tf(f, a.account_id)
+            tf_code = build_vpc_flow_logs_tf(f, a.account_id, finding_region)
         elif "networkacl_allow_ingress_any_port" in cid_l or "networkacl_allow_ingress_tcp_port_22" in cid_l or "networkacl_allow_ingress_tcp_port_3389" in cid_l:
             tf_code = build_nacl_restrict_ingress_tf(f, finding_region)
         elif "ec2_securitygroup_allow_ingress_from_internet_to_all_ports" in cid_l:

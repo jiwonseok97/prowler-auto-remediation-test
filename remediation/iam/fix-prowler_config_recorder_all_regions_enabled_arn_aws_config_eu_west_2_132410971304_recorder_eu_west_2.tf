@@ -1,11 +1,6 @@
-resource "aws_s3_bucket" "fix_config_delivery_bucket_cdcfa4867c" {
-  bucket = "aws-config-logs-132410971304-eu-west-2"
-}
-
 resource "aws_s3_bucket_policy" "fix_config_bucket_policy_cdcfa4867c" {
-  bucket     = "aws-config-logs-132410971304-eu-west-2"
-  depends_on = [aws_s3_bucket.fix_config_delivery_bucket_cdcfa4867c]
-  policy     = <<POLICY
+  bucket = "aws-config-logs-132410971304-eu-west-2"
+  policy = <<POLICY
 {
   "Version": "2012-10-17",
   "Statement": [
@@ -60,6 +55,33 @@ resource "aws_s3_bucket_policy" "fix_config_bucket_policy_cdcfa4867c" {
           "aws:SourceArn": "arn:aws:config:eu-west-2:132410971304:*"
         }
       }
+    },
+    {
+      "Sid": "AWSConfigBucketAclCheckAllow",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "config.amazonaws.com"
+      },
+      "Action": "s3:GetBucketAcl",
+      "Resource": "arn:aws:s3:::aws-config-logs-132410971304-eu-west-2"
+    },
+    {
+      "Sid": "AWSConfigBucketListCheckAllow",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "config.amazonaws.com"
+      },
+      "Action": "s3:ListBucket",
+      "Resource": "arn:aws:s3:::aws-config-logs-132410971304-eu-west-2"
+    },
+    {
+      "Sid": "AWSConfigBucketDeliveryAllow",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "config.amazonaws.com"
+      },
+      "Action": "s3:PutObject",
+      "Resource": "arn:aws:s3:::aws-config-logs-132410971304-eu-west-2/AWSLogs/132410971304/Config/*"
     }
   ]
 }

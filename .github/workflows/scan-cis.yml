@@ -68,11 +68,11 @@ jobs:
       - name: Run Prowler (Seoul + CIS/ISMS-P)
         run: |
           mkdir -p artifacts/scan
-          prowler aws --compliance cis_1.4_aws -M json-asff -o artifacts/scan -F baseline_cis || true
+          prowler aws --region ap-northeast-2 --compliance cis_1.4_aws -M json-asff -o artifacts/scan -F baseline_cis || true
           if [ "${{ inputs.compliance_mode }}" = "cis_1.4_plus_isms_p" ]; then
             CHECKS="$(tr '\n' ' ' < iac/compliance/isms_p_checks.txt | xargs)"
             if [ -n "$CHECKS" ]; then
-              prowler aws -c $CHECKS -M json-asff -o artifacts/scan -F baseline_isms_p || true
+              prowler aws --region ap-northeast-2 -c $CHECKS -M json-asff -o artifacts/scan -F baseline_isms_p || true
             fi
           fi
           python iac/scripts/merge_prowler_outputs.py \

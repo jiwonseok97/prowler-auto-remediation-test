@@ -43,10 +43,10 @@ jobs:
       - name: Run post-apply Prowler (Seoul + CIS/ISMS-P)
         run: |
           mkdir -p artifacts/rescan
-          prowler aws --compliance cis_1.4_aws -M json-asff -o artifacts/rescan -F post_cis || true
+          prowler aws --region ap-northeast-2 --compliance cis_1.4_aws -M json-asff -o artifacts/rescan -F post_cis || true
           CHECKS="$(tr '\n' ' ' < iac/compliance/isms_p_checks.txt | xargs)"
           if [ -n "$CHECKS" ]; then
-            prowler aws -c $CHECKS -M json-asff -o artifacts/rescan -F post_isms_p || true
+            prowler aws --region ap-northeast-2 -c $CHECKS -M json-asff -o artifacts/rescan -F post_isms_p || true
           fi
           python iac/scripts/merge_prowler_outputs.py \
             --dir artifacts/rescan \

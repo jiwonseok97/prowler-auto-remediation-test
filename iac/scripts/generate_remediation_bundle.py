@@ -1107,6 +1107,9 @@ def build_cloudtrail_tf(finding: Dict[str, Any], region: str, account_id: str) -
             ]
         )
     elif "cloudtrail_cloudwatch_logging_enabled" in cid_l:
+        policy_prefix = build_cloudtrail_required_bucket_policy_tf(name, s3_bucket, account_id, region)
+        if policy_prefix:
+            depends_on_resources.append("aws_s3_bucket_policy.fix_cloudtrail_bucket_policy")
         cw_group_arn = str(detail.get("CloudWatchLogsLogGroupArn", "") or "")
         cw_group_name = extract_log_group(cw_group_arn)
         if not cw_group_name:
@@ -1211,7 +1214,9 @@ def build_cloudtrail_tf(finding: Dict[str, Any], region: str, account_id: str) -
             "  lifecycle {",
             "    ignore_changes = [",
             "      event_selector,",
+            "      advanced_event_selector,",
             "      insight_selector,",
+            "      kms_key_id,",
             "      sns_topic_name,",
             "      tags,",
             "      tags_all",

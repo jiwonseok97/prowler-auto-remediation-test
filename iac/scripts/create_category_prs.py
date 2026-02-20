@@ -44,17 +44,19 @@ def main() -> None:
             print(f"skip {category}: no terraform files")
             continue
 
-        branch = f"remediation/{category}"
-        branch_prefix = branch
+        branch_prefix = f"remediation/{category}"
+        branch = f"{branch_prefix}-{a.run_id}"
         message = f"PR-merge / remediation: {category}"
 
-        # Close stale PRs for old run-scoped branches (legacy naming).
+        # Close stale PRs for the same category before creating a new run-scoped branch PR.
         for pr in open_prs:
             head = str(pr.get("headRefName", ""))
             number = pr.get("number")
             if not number:
                 continue
-            if head.startswith(f"{branch_prefix}-"):
+            if head == branch:
+                continue
+            if head == branch_prefix or head.startswith(f"{branch_prefix}-"):
                 run(
                     [
                         "gh",
@@ -62,7 +64,7 @@ def main() -> None:
                         "close",
                         str(number),
                         "--comment",
-                        f"Superseded by fixed category branch `{branch}`.",
+                        f"Superseded by newer remediation run branch `{branch}`.",
                     ],
                     check=False,
                 )
@@ -76,8 +78,7 @@ def main() -> None:
             run(["git", "checkout", "main"], check=False)
             continue
         run(["git", "commit", "-m", message], check=False)
-        # Fixed branch model: update category branch to latest generated result.
-        run(["git", "push", "--force-with-lease", "-u", "origin", branch])
+        run(["git", "push", "-u", "origin", branch])
 
         top5 = "\n".join(f"- {x}" for x in cat.get("top5", [])[:5]) or "- none"
         manual = "\n".join(f"- {x}" for x in cat.get("manual_required", [])) or "- none"
@@ -118,10 +119,6 @@ def main() -> None:
         )
         if p.returncode != 0:
             err = (p.stderr or "").strip()
-            if "a pull request already exists for" in err.lower():
-                # Fixed branch flow: PR already exists; keep branch updated and move on.
-                print(f"info: PR already exists for {branch}, branch updated")
-                continue
             if "not permitted to create or approve pull requests" in err.lower():
                 print(f"warn: PR create skipped by repo policy for {category}")
                 continue

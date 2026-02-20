@@ -1,8 +1,8 @@
 {
-  "created_at": "2026-02-20T07:15:27.659383+00:00",
+  "created_at": "2026-02-20T09:06:38.643866+00:00",
   "account": "132410971304",
   "region": "ap-northeast-2",
-  "baseline_fail_count": 79,
+  "baseline_fail_count": 63,
   "categories": [
     {
       "category": "iam",
@@ -26,20 +26,6 @@
         "prowler-iam_policy_attached_only_to_group_or_roles"
       ],
       "import_map": "remediation/iam/import-map.txt"
-    },
-    {
-      "category": "s3",
-      "path": "remediation/s3",
-      "checks": 16,
-      "top5": [
-        "prowler-s3_bucket_secure_transport_policy",
-        "prowler-s3_bucket_secure_transport_policy",
-        "prowler-s3_bucket_secure_transport_policy",
-        "prowler-s3_bucket_secure_transport_policy",
-        "prowler-s3_bucket_secure_transport_policy"
-      ],
-      "manual_required": [],
-      "import_map": "remediation/s3/import-map.txt"
     },
     {
       "category": "network-ec2-vpc",
@@ -105,7 +91,7 @@
       "resources": [],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-20T07:15:27.659705+00:00"
+      "created_at": "2026-02-20T09:06:38.644310+00:00"
     },
     "prowler-iam_customer_attached_policy_no_administrative_privileges": {
       "category": "iam",
@@ -116,7 +102,7 @@
       "resources": [],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-20T07:15:27.659712+00:00"
+      "created_at": "2026-02-20T09:06:38.644317+00:00"
     },
     "prowler-iam_policy_attached_only_to_group_or_roles": [
       {
@@ -128,7 +114,7 @@
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T07:15:27.659716+00:00"
+        "created_at": "2026-02-20T09:06:38.644320+00:00"
       },
       {
         "category": "iam",
@@ -139,7 +125,7 @@
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T07:15:27.659718+00:00"
+        "created_at": "2026-02-20T09:06:38.644323+00:00"
       },
       {
         "category": "iam",
@@ -150,7 +136,7 @@
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T07:15:27.659721+00:00"
+        "created_at": "2026-02-20T09:06:38.644326+00:00"
       },
       {
         "category": "iam",
@@ -161,7 +147,7 @@
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T07:15:27.659724+00:00"
+        "created_at": "2026-02-20T09:06:38.644329+00:00"
       },
       {
         "category": "iam",
@@ -172,7 +158,7 @@
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T07:15:27.659726+00:00"
+        "created_at": "2026-02-20T09:06:38.644331+00:00"
       },
       {
         "category": "iam",
@@ -183,1769 +169,7 @@
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T07:15:27.659728+00:00"
-      }
-    ],
-    "prowler-s3_bucket_secure_transport_policy": [
-      {
-        "category": "s3",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [
-          "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_aws_config_logs_132410971304_ap_northeast_1_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_aws_config_logs_132410971304_ap_northeast_1_ap_northeast_2.tf",
-        "resources": [
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_dd5c3a18a0",
-            "arn": "aws-config-logs-132410971304-ap-northeast-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_ad520ccc66",
-            "arn": "aws-config-logs-132410971304-ap-northeast-3",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_a39c145ae7",
-            "arn": "aws-config-logs-132410971304-ap-south-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_cdcf799e2c",
-            "arn": "aws-config-logs-132410971304-ap-southeast-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_7188fffd85",
-            "arn": "aws-config-logs-132410971304-ap-southeast-2",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_ff7a6a25bf",
-            "arn": "aws-config-logs-132410971304-ca-central-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_5f0f5ae790",
-            "arn": "aws-config-logs-132410971304-eu-central-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_85796163c8",
-            "arn": "aws-config-logs-132410971304-eu-north-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_5c38502de8",
-            "arn": "aws-config-logs-132410971304-eu-west-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_aadbdbdffa",
-            "arn": "aws-config-logs-132410971304-eu-west-2",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_4ddbc84925",
-            "arn": "aws-config-logs-132410971304-eu-west-3",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_26d95fb6df",
-            "arn": "aws-config-logs-132410971304-sa-east-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_137a0684c8",
-            "arn": "aws-config-logs-132410971304-us-east-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_11db1156d2",
-            "arn": "aws-config-logs-132410971304-us-east-2",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_45186770ad",
-            "arn": "aws-config-logs-132410971304-us-west-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_e344868063",
-            "arn": "aws-config-logs-132410971304-us-west-2",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          }
-        ],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-20T07:15:27.661535+00:00"
-      },
-      {
-        "category": "s3",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [
-          "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_aws_config_logs_132410971304_ap_northeast_3_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_aws_config_logs_132410971304_ap_northeast_3_ap_northeast_2.tf",
-        "resources": [
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_dd5c3a18a0",
-            "arn": "aws-config-logs-132410971304-ap-northeast-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_ad520ccc66",
-            "arn": "aws-config-logs-132410971304-ap-northeast-3",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_a39c145ae7",
-            "arn": "aws-config-logs-132410971304-ap-south-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_cdcf799e2c",
-            "arn": "aws-config-logs-132410971304-ap-southeast-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_7188fffd85",
-            "arn": "aws-config-logs-132410971304-ap-southeast-2",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_ff7a6a25bf",
-            "arn": "aws-config-logs-132410971304-ca-central-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_5f0f5ae790",
-            "arn": "aws-config-logs-132410971304-eu-central-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_85796163c8",
-            "arn": "aws-config-logs-132410971304-eu-north-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_5c38502de8",
-            "arn": "aws-config-logs-132410971304-eu-west-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_aadbdbdffa",
-            "arn": "aws-config-logs-132410971304-eu-west-2",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_4ddbc84925",
-            "arn": "aws-config-logs-132410971304-eu-west-3",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_26d95fb6df",
-            "arn": "aws-config-logs-132410971304-sa-east-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_137a0684c8",
-            "arn": "aws-config-logs-132410971304-us-east-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_11db1156d2",
-            "arn": "aws-config-logs-132410971304-us-east-2",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_45186770ad",
-            "arn": "aws-config-logs-132410971304-us-west-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_e344868063",
-            "arn": "aws-config-logs-132410971304-us-west-2",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          }
-        ],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-20T07:15:27.661543+00:00"
-      },
-      {
-        "category": "s3",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [
-          "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_aws_config_logs_132410971304_ap_south_1_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_aws_config_logs_132410971304_ap_south_1_ap_northeast_2.tf",
-        "resources": [
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_dd5c3a18a0",
-            "arn": "aws-config-logs-132410971304-ap-northeast-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_ad520ccc66",
-            "arn": "aws-config-logs-132410971304-ap-northeast-3",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_a39c145ae7",
-            "arn": "aws-config-logs-132410971304-ap-south-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_cdcf799e2c",
-            "arn": "aws-config-logs-132410971304-ap-southeast-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_7188fffd85",
-            "arn": "aws-config-logs-132410971304-ap-southeast-2",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_ff7a6a25bf",
-            "arn": "aws-config-logs-132410971304-ca-central-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_5f0f5ae790",
-            "arn": "aws-config-logs-132410971304-eu-central-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_85796163c8",
-            "arn": "aws-config-logs-132410971304-eu-north-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_5c38502de8",
-            "arn": "aws-config-logs-132410971304-eu-west-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_aadbdbdffa",
-            "arn": "aws-config-logs-132410971304-eu-west-2",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_4ddbc84925",
-            "arn": "aws-config-logs-132410971304-eu-west-3",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_26d95fb6df",
-            "arn": "aws-config-logs-132410971304-sa-east-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_137a0684c8",
-            "arn": "aws-config-logs-132410971304-us-east-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_11db1156d2",
-            "arn": "aws-config-logs-132410971304-us-east-2",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_45186770ad",
-            "arn": "aws-config-logs-132410971304-us-west-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_e344868063",
-            "arn": "aws-config-logs-132410971304-us-west-2",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          }
-        ],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-20T07:15:27.661547+00:00"
-      },
-      {
-        "category": "s3",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [
-          "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_aws_config_logs_132410971304_ap_southeast_1_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_aws_config_logs_132410971304_ap_southeast_1_ap_northeast_2.tf",
-        "resources": [
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_dd5c3a18a0",
-            "arn": "aws-config-logs-132410971304-ap-northeast-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_ad520ccc66",
-            "arn": "aws-config-logs-132410971304-ap-northeast-3",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_a39c145ae7",
-            "arn": "aws-config-logs-132410971304-ap-south-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_cdcf799e2c",
-            "arn": "aws-config-logs-132410971304-ap-southeast-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_7188fffd85",
-            "arn": "aws-config-logs-132410971304-ap-southeast-2",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_ff7a6a25bf",
-            "arn": "aws-config-logs-132410971304-ca-central-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_5f0f5ae790",
-            "arn": "aws-config-logs-132410971304-eu-central-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_85796163c8",
-            "arn": "aws-config-logs-132410971304-eu-north-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_5c38502de8",
-            "arn": "aws-config-logs-132410971304-eu-west-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_aadbdbdffa",
-            "arn": "aws-config-logs-132410971304-eu-west-2",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_4ddbc84925",
-            "arn": "aws-config-logs-132410971304-eu-west-3",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_26d95fb6df",
-            "arn": "aws-config-logs-132410971304-sa-east-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_137a0684c8",
-            "arn": "aws-config-logs-132410971304-us-east-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_11db1156d2",
-            "arn": "aws-config-logs-132410971304-us-east-2",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_45186770ad",
-            "arn": "aws-config-logs-132410971304-us-west-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_e344868063",
-            "arn": "aws-config-logs-132410971304-us-west-2",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          }
-        ],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-20T07:15:27.661549+00:00"
-      },
-      {
-        "category": "s3",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [
-          "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_aws_config_logs_132410971304_ap_southeast_2_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_aws_config_logs_132410971304_ap_southeast_2_ap_northeast_2.tf",
-        "resources": [
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_dd5c3a18a0",
-            "arn": "aws-config-logs-132410971304-ap-northeast-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_ad520ccc66",
-            "arn": "aws-config-logs-132410971304-ap-northeast-3",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_a39c145ae7",
-            "arn": "aws-config-logs-132410971304-ap-south-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_cdcf799e2c",
-            "arn": "aws-config-logs-132410971304-ap-southeast-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_7188fffd85",
-            "arn": "aws-config-logs-132410971304-ap-southeast-2",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_ff7a6a25bf",
-            "arn": "aws-config-logs-132410971304-ca-central-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_5f0f5ae790",
-            "arn": "aws-config-logs-132410971304-eu-central-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_85796163c8",
-            "arn": "aws-config-logs-132410971304-eu-north-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_5c38502de8",
-            "arn": "aws-config-logs-132410971304-eu-west-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_aadbdbdffa",
-            "arn": "aws-config-logs-132410971304-eu-west-2",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_4ddbc84925",
-            "arn": "aws-config-logs-132410971304-eu-west-3",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_26d95fb6df",
-            "arn": "aws-config-logs-132410971304-sa-east-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_137a0684c8",
-            "arn": "aws-config-logs-132410971304-us-east-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_11db1156d2",
-            "arn": "aws-config-logs-132410971304-us-east-2",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_45186770ad",
-            "arn": "aws-config-logs-132410971304-us-west-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_e344868063",
-            "arn": "aws-config-logs-132410971304-us-west-2",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          }
-        ],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-20T07:15:27.661552+00:00"
-      },
-      {
-        "category": "s3",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [
-          "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_aws_config_logs_132410971304_ca_central_1_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_aws_config_logs_132410971304_ca_central_1_ap_northeast_2.tf",
-        "resources": [
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_dd5c3a18a0",
-            "arn": "aws-config-logs-132410971304-ap-northeast-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_ad520ccc66",
-            "arn": "aws-config-logs-132410971304-ap-northeast-3",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_a39c145ae7",
-            "arn": "aws-config-logs-132410971304-ap-south-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_cdcf799e2c",
-            "arn": "aws-config-logs-132410971304-ap-southeast-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_7188fffd85",
-            "arn": "aws-config-logs-132410971304-ap-southeast-2",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_ff7a6a25bf",
-            "arn": "aws-config-logs-132410971304-ca-central-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_5f0f5ae790",
-            "arn": "aws-config-logs-132410971304-eu-central-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_85796163c8",
-            "arn": "aws-config-logs-132410971304-eu-north-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_5c38502de8",
-            "arn": "aws-config-logs-132410971304-eu-west-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_aadbdbdffa",
-            "arn": "aws-config-logs-132410971304-eu-west-2",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_4ddbc84925",
-            "arn": "aws-config-logs-132410971304-eu-west-3",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_26d95fb6df",
-            "arn": "aws-config-logs-132410971304-sa-east-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_137a0684c8",
-            "arn": "aws-config-logs-132410971304-us-east-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_11db1156d2",
-            "arn": "aws-config-logs-132410971304-us-east-2",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_45186770ad",
-            "arn": "aws-config-logs-132410971304-us-west-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_e344868063",
-            "arn": "aws-config-logs-132410971304-us-west-2",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          }
-        ],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-20T07:15:27.661554+00:00"
-      },
-      {
-        "category": "s3",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [
-          "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_aws_config_logs_132410971304_eu_central_1_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_aws_config_logs_132410971304_eu_central_1_ap_northeast_2.tf",
-        "resources": [
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_dd5c3a18a0",
-            "arn": "aws-config-logs-132410971304-ap-northeast-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_ad520ccc66",
-            "arn": "aws-config-logs-132410971304-ap-northeast-3",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_a39c145ae7",
-            "arn": "aws-config-logs-132410971304-ap-south-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_cdcf799e2c",
-            "arn": "aws-config-logs-132410971304-ap-southeast-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_7188fffd85",
-            "arn": "aws-config-logs-132410971304-ap-southeast-2",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_ff7a6a25bf",
-            "arn": "aws-config-logs-132410971304-ca-central-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_5f0f5ae790",
-            "arn": "aws-config-logs-132410971304-eu-central-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_85796163c8",
-            "arn": "aws-config-logs-132410971304-eu-north-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_5c38502de8",
-            "arn": "aws-config-logs-132410971304-eu-west-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_aadbdbdffa",
-            "arn": "aws-config-logs-132410971304-eu-west-2",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_4ddbc84925",
-            "arn": "aws-config-logs-132410971304-eu-west-3",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_26d95fb6df",
-            "arn": "aws-config-logs-132410971304-sa-east-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_137a0684c8",
-            "arn": "aws-config-logs-132410971304-us-east-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_11db1156d2",
-            "arn": "aws-config-logs-132410971304-us-east-2",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_45186770ad",
-            "arn": "aws-config-logs-132410971304-us-west-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_e344868063",
-            "arn": "aws-config-logs-132410971304-us-west-2",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          }
-        ],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-20T07:15:27.661556+00:00"
-      },
-      {
-        "category": "s3",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [
-          "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_aws_config_logs_132410971304_eu_north_1_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_aws_config_logs_132410971304_eu_north_1_ap_northeast_2.tf",
-        "resources": [
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_dd5c3a18a0",
-            "arn": "aws-config-logs-132410971304-ap-northeast-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_ad520ccc66",
-            "arn": "aws-config-logs-132410971304-ap-northeast-3",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_a39c145ae7",
-            "arn": "aws-config-logs-132410971304-ap-south-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_cdcf799e2c",
-            "arn": "aws-config-logs-132410971304-ap-southeast-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_7188fffd85",
-            "arn": "aws-config-logs-132410971304-ap-southeast-2",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_ff7a6a25bf",
-            "arn": "aws-config-logs-132410971304-ca-central-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_5f0f5ae790",
-            "arn": "aws-config-logs-132410971304-eu-central-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_85796163c8",
-            "arn": "aws-config-logs-132410971304-eu-north-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_5c38502de8",
-            "arn": "aws-config-logs-132410971304-eu-west-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_aadbdbdffa",
-            "arn": "aws-config-logs-132410971304-eu-west-2",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_4ddbc84925",
-            "arn": "aws-config-logs-132410971304-eu-west-3",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_26d95fb6df",
-            "arn": "aws-config-logs-132410971304-sa-east-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_137a0684c8",
-            "arn": "aws-config-logs-132410971304-us-east-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_11db1156d2",
-            "arn": "aws-config-logs-132410971304-us-east-2",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_45186770ad",
-            "arn": "aws-config-logs-132410971304-us-west-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_e344868063",
-            "arn": "aws-config-logs-132410971304-us-west-2",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          }
-        ],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-20T07:15:27.661557+00:00"
-      },
-      {
-        "category": "s3",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [
-          "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_aws_config_logs_132410971304_eu_west_1_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_aws_config_logs_132410971304_eu_west_1_ap_northeast_2.tf",
-        "resources": [
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_dd5c3a18a0",
-            "arn": "aws-config-logs-132410971304-ap-northeast-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_ad520ccc66",
-            "arn": "aws-config-logs-132410971304-ap-northeast-3",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_a39c145ae7",
-            "arn": "aws-config-logs-132410971304-ap-south-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_cdcf799e2c",
-            "arn": "aws-config-logs-132410971304-ap-southeast-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_7188fffd85",
-            "arn": "aws-config-logs-132410971304-ap-southeast-2",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_ff7a6a25bf",
-            "arn": "aws-config-logs-132410971304-ca-central-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_5f0f5ae790",
-            "arn": "aws-config-logs-132410971304-eu-central-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_85796163c8",
-            "arn": "aws-config-logs-132410971304-eu-north-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_5c38502de8",
-            "arn": "aws-config-logs-132410971304-eu-west-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_aadbdbdffa",
-            "arn": "aws-config-logs-132410971304-eu-west-2",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_4ddbc84925",
-            "arn": "aws-config-logs-132410971304-eu-west-3",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_26d95fb6df",
-            "arn": "aws-config-logs-132410971304-sa-east-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_137a0684c8",
-            "arn": "aws-config-logs-132410971304-us-east-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_11db1156d2",
-            "arn": "aws-config-logs-132410971304-us-east-2",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_45186770ad",
-            "arn": "aws-config-logs-132410971304-us-west-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_e344868063",
-            "arn": "aws-config-logs-132410971304-us-west-2",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          }
-        ],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-20T07:15:27.661559+00:00"
-      },
-      {
-        "category": "s3",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [
-          "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_aws_config_logs_132410971304_eu_west_2_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_aws_config_logs_132410971304_eu_west_2_ap_northeast_2.tf",
-        "resources": [
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_dd5c3a18a0",
-            "arn": "aws-config-logs-132410971304-ap-northeast-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_ad520ccc66",
-            "arn": "aws-config-logs-132410971304-ap-northeast-3",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_a39c145ae7",
-            "arn": "aws-config-logs-132410971304-ap-south-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_cdcf799e2c",
-            "arn": "aws-config-logs-132410971304-ap-southeast-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_7188fffd85",
-            "arn": "aws-config-logs-132410971304-ap-southeast-2",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_ff7a6a25bf",
-            "arn": "aws-config-logs-132410971304-ca-central-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_5f0f5ae790",
-            "arn": "aws-config-logs-132410971304-eu-central-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_85796163c8",
-            "arn": "aws-config-logs-132410971304-eu-north-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_5c38502de8",
-            "arn": "aws-config-logs-132410971304-eu-west-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_aadbdbdffa",
-            "arn": "aws-config-logs-132410971304-eu-west-2",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_4ddbc84925",
-            "arn": "aws-config-logs-132410971304-eu-west-3",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_26d95fb6df",
-            "arn": "aws-config-logs-132410971304-sa-east-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_137a0684c8",
-            "arn": "aws-config-logs-132410971304-us-east-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_11db1156d2",
-            "arn": "aws-config-logs-132410971304-us-east-2",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_45186770ad",
-            "arn": "aws-config-logs-132410971304-us-west-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_e344868063",
-            "arn": "aws-config-logs-132410971304-us-west-2",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          }
-        ],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-20T07:15:27.661561+00:00"
-      },
-      {
-        "category": "s3",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [
-          "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_aws_config_logs_132410971304_eu_west_3_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_aws_config_logs_132410971304_eu_west_3_ap_northeast_2.tf",
-        "resources": [
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_dd5c3a18a0",
-            "arn": "aws-config-logs-132410971304-ap-northeast-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_ad520ccc66",
-            "arn": "aws-config-logs-132410971304-ap-northeast-3",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_a39c145ae7",
-            "arn": "aws-config-logs-132410971304-ap-south-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_cdcf799e2c",
-            "arn": "aws-config-logs-132410971304-ap-southeast-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_7188fffd85",
-            "arn": "aws-config-logs-132410971304-ap-southeast-2",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_ff7a6a25bf",
-            "arn": "aws-config-logs-132410971304-ca-central-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_5f0f5ae790",
-            "arn": "aws-config-logs-132410971304-eu-central-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_85796163c8",
-            "arn": "aws-config-logs-132410971304-eu-north-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_5c38502de8",
-            "arn": "aws-config-logs-132410971304-eu-west-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_aadbdbdffa",
-            "arn": "aws-config-logs-132410971304-eu-west-2",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_4ddbc84925",
-            "arn": "aws-config-logs-132410971304-eu-west-3",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_26d95fb6df",
-            "arn": "aws-config-logs-132410971304-sa-east-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_137a0684c8",
-            "arn": "aws-config-logs-132410971304-us-east-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_11db1156d2",
-            "arn": "aws-config-logs-132410971304-us-east-2",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_45186770ad",
-            "arn": "aws-config-logs-132410971304-us-west-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_e344868063",
-            "arn": "aws-config-logs-132410971304-us-west-2",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          }
-        ],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-20T07:15:27.661563+00:00"
-      },
-      {
-        "category": "s3",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [
-          "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_aws_config_logs_132410971304_sa_east_1_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_aws_config_logs_132410971304_sa_east_1_ap_northeast_2.tf",
-        "resources": [
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_dd5c3a18a0",
-            "arn": "aws-config-logs-132410971304-ap-northeast-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_ad520ccc66",
-            "arn": "aws-config-logs-132410971304-ap-northeast-3",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_a39c145ae7",
-            "arn": "aws-config-logs-132410971304-ap-south-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_cdcf799e2c",
-            "arn": "aws-config-logs-132410971304-ap-southeast-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_7188fffd85",
-            "arn": "aws-config-logs-132410971304-ap-southeast-2",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_ff7a6a25bf",
-            "arn": "aws-config-logs-132410971304-ca-central-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_5f0f5ae790",
-            "arn": "aws-config-logs-132410971304-eu-central-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_85796163c8",
-            "arn": "aws-config-logs-132410971304-eu-north-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_5c38502de8",
-            "arn": "aws-config-logs-132410971304-eu-west-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_aadbdbdffa",
-            "arn": "aws-config-logs-132410971304-eu-west-2",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_4ddbc84925",
-            "arn": "aws-config-logs-132410971304-eu-west-3",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_26d95fb6df",
-            "arn": "aws-config-logs-132410971304-sa-east-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_137a0684c8",
-            "arn": "aws-config-logs-132410971304-us-east-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_11db1156d2",
-            "arn": "aws-config-logs-132410971304-us-east-2",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_45186770ad",
-            "arn": "aws-config-logs-132410971304-us-west-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_e344868063",
-            "arn": "aws-config-logs-132410971304-us-west-2",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          }
-        ],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-20T07:15:27.661565+00:00"
-      },
-      {
-        "category": "s3",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [
-          "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_aws_config_logs_132410971304_us_east_1_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_aws_config_logs_132410971304_us_east_1_ap_northeast_2.tf",
-        "resources": [
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_dd5c3a18a0",
-            "arn": "aws-config-logs-132410971304-ap-northeast-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_ad520ccc66",
-            "arn": "aws-config-logs-132410971304-ap-northeast-3",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_a39c145ae7",
-            "arn": "aws-config-logs-132410971304-ap-south-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_cdcf799e2c",
-            "arn": "aws-config-logs-132410971304-ap-southeast-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_7188fffd85",
-            "arn": "aws-config-logs-132410971304-ap-southeast-2",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_ff7a6a25bf",
-            "arn": "aws-config-logs-132410971304-ca-central-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_5f0f5ae790",
-            "arn": "aws-config-logs-132410971304-eu-central-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_85796163c8",
-            "arn": "aws-config-logs-132410971304-eu-north-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_5c38502de8",
-            "arn": "aws-config-logs-132410971304-eu-west-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_aadbdbdffa",
-            "arn": "aws-config-logs-132410971304-eu-west-2",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_4ddbc84925",
-            "arn": "aws-config-logs-132410971304-eu-west-3",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_26d95fb6df",
-            "arn": "aws-config-logs-132410971304-sa-east-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_137a0684c8",
-            "arn": "aws-config-logs-132410971304-us-east-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_11db1156d2",
-            "arn": "aws-config-logs-132410971304-us-east-2",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_45186770ad",
-            "arn": "aws-config-logs-132410971304-us-west-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_e344868063",
-            "arn": "aws-config-logs-132410971304-us-west-2",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          }
-        ],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-20T07:15:27.661567+00:00"
-      },
-      {
-        "category": "s3",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [
-          "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_aws_config_logs_132410971304_us_east_2_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_aws_config_logs_132410971304_us_east_2_ap_northeast_2.tf",
-        "resources": [
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_dd5c3a18a0",
-            "arn": "aws-config-logs-132410971304-ap-northeast-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_ad520ccc66",
-            "arn": "aws-config-logs-132410971304-ap-northeast-3",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_a39c145ae7",
-            "arn": "aws-config-logs-132410971304-ap-south-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_cdcf799e2c",
-            "arn": "aws-config-logs-132410971304-ap-southeast-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_7188fffd85",
-            "arn": "aws-config-logs-132410971304-ap-southeast-2",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_ff7a6a25bf",
-            "arn": "aws-config-logs-132410971304-ca-central-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_5f0f5ae790",
-            "arn": "aws-config-logs-132410971304-eu-central-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_85796163c8",
-            "arn": "aws-config-logs-132410971304-eu-north-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_5c38502de8",
-            "arn": "aws-config-logs-132410971304-eu-west-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_aadbdbdffa",
-            "arn": "aws-config-logs-132410971304-eu-west-2",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_4ddbc84925",
-            "arn": "aws-config-logs-132410971304-eu-west-3",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_26d95fb6df",
-            "arn": "aws-config-logs-132410971304-sa-east-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_137a0684c8",
-            "arn": "aws-config-logs-132410971304-us-east-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_11db1156d2",
-            "arn": "aws-config-logs-132410971304-us-east-2",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_45186770ad",
-            "arn": "aws-config-logs-132410971304-us-west-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_e344868063",
-            "arn": "aws-config-logs-132410971304-us-west-2",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          }
-        ],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-20T07:15:27.661568+00:00"
-      },
-      {
-        "category": "s3",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [
-          "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_aws_config_logs_132410971304_us_west_1_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_aws_config_logs_132410971304_us_west_1_ap_northeast_2.tf",
-        "resources": [
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_dd5c3a18a0",
-            "arn": "aws-config-logs-132410971304-ap-northeast-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_ad520ccc66",
-            "arn": "aws-config-logs-132410971304-ap-northeast-3",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_a39c145ae7",
-            "arn": "aws-config-logs-132410971304-ap-south-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_cdcf799e2c",
-            "arn": "aws-config-logs-132410971304-ap-southeast-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_7188fffd85",
-            "arn": "aws-config-logs-132410971304-ap-southeast-2",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_ff7a6a25bf",
-            "arn": "aws-config-logs-132410971304-ca-central-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_5f0f5ae790",
-            "arn": "aws-config-logs-132410971304-eu-central-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_85796163c8",
-            "arn": "aws-config-logs-132410971304-eu-north-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_5c38502de8",
-            "arn": "aws-config-logs-132410971304-eu-west-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_aadbdbdffa",
-            "arn": "aws-config-logs-132410971304-eu-west-2",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_4ddbc84925",
-            "arn": "aws-config-logs-132410971304-eu-west-3",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_26d95fb6df",
-            "arn": "aws-config-logs-132410971304-sa-east-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_137a0684c8",
-            "arn": "aws-config-logs-132410971304-us-east-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_11db1156d2",
-            "arn": "aws-config-logs-132410971304-us-east-2",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_45186770ad",
-            "arn": "aws-config-logs-132410971304-us-west-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_e344868063",
-            "arn": "aws-config-logs-132410971304-us-west-2",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          }
-        ],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-20T07:15:27.661570+00:00"
-      },
-      {
-        "category": "s3",
-        "priority": "P2",
-        "osfp_score": 58.5,
-        "files": [
-          "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_aws_config_logs_132410971304_us_west_2_ap_northeast_2.tf"
-        ],
-        "tf_file": "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_aws_config_logs_132410971304_us_west_2_ap_northeast_2.tf",
-        "resources": [
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_dd5c3a18a0",
-            "arn": "aws-config-logs-132410971304-ap-northeast-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_ad520ccc66",
-            "arn": "aws-config-logs-132410971304-ap-northeast-3",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_a39c145ae7",
-            "arn": "aws-config-logs-132410971304-ap-south-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_cdcf799e2c",
-            "arn": "aws-config-logs-132410971304-ap-southeast-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_7188fffd85",
-            "arn": "aws-config-logs-132410971304-ap-southeast-2",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_ff7a6a25bf",
-            "arn": "aws-config-logs-132410971304-ca-central-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_5f0f5ae790",
-            "arn": "aws-config-logs-132410971304-eu-central-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_85796163c8",
-            "arn": "aws-config-logs-132410971304-eu-north-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_5c38502de8",
-            "arn": "aws-config-logs-132410971304-eu-west-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_aadbdbdffa",
-            "arn": "aws-config-logs-132410971304-eu-west-2",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_4ddbc84925",
-            "arn": "aws-config-logs-132410971304-eu-west-3",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_26d95fb6df",
-            "arn": "aws-config-logs-132410971304-sa-east-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_137a0684c8",
-            "arn": "aws-config-logs-132410971304-us-east-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_11db1156d2",
-            "arn": "aws-config-logs-132410971304-us-east-2",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_45186770ad",
-            "arn": "aws-config-logs-132410971304-us-west-1",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          },
-          {
-            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_e344868063",
-            "arn": "aws-config-logs-132410971304-us-west-2",
-            "resource_type": "aws_s3_bucket_policy",
-            "optional": true
-          }
-        ],
-        "account": "132410971304",
-        "region": "ap-northeast-2",
-        "created_at": "2026-02-20T07:15:27.661572+00:00"
+        "created_at": "2026-02-20T09:06:38.644349+00:00"
       }
     ],
     "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports": [
@@ -1958,7 +182,7 @@
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T07:15:27.661745+00:00"
+        "created_at": "2026-02-20T09:06:38.644525+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -1969,7 +193,7 @@
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T07:15:27.661752+00:00"
+        "created_at": "2026-02-20T09:06:38.644531+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -1980,7 +204,7 @@
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T07:15:27.661756+00:00"
+        "created_at": "2026-02-20T09:06:38.644535+00:00"
       }
     ],
     "prowler-ec2_ebs_volume_encryption": {
@@ -1994,7 +218,7 @@
       "resources": [],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-20T07:15:27.661758+00:00"
+      "created_at": "2026-02-20T09:06:38.644538+00:00"
     },
     "prowler-ec2_instance_profile_attached": {
       "category": "network-ec2-vpc",
@@ -2005,7 +229,7 @@
       "resources": [],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-20T07:15:27.661760+00:00"
+      "created_at": "2026-02-20T09:06:38.644540+00:00"
     },
     "prowler-cloudtrail_kms_encryption_enabled": {
       "category": "cloudtrail",
@@ -2016,7 +240,7 @@
       "resources": [],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-20T07:15:27.661917+00:00"
+      "created_at": "2026-02-20T09:06:38.644703+00:00"
     },
     "prowler-cloudtrail_s3_dataevents_read_enabled": {
       "category": "cloudtrail",
@@ -2027,7 +251,7 @@
       "resources": [],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-20T07:15:27.661923+00:00"
+      "created_at": "2026-02-20T09:06:38.644709+00:00"
     },
     "prowler-cloudtrail_s3_dataevents_write_enabled": {
       "category": "cloudtrail",
@@ -2038,7 +262,7 @@
       "resources": [],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-20T07:15:27.661925+00:00"
+      "created_at": "2026-02-20T09:06:38.644712+00:00"
     },
     "prowler-cloudtrail_cloudwatch_logging_enabled": [
       {
@@ -2050,7 +274,7 @@
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T07:15:27.661927+00:00"
+        "created_at": "2026-02-20T09:06:38.644714+00:00"
       },
       {
         "category": "cloudtrail",
@@ -2061,7 +285,7 @@
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T07:15:27.661929+00:00"
+        "created_at": "2026-02-20T09:06:38.644716+00:00"
       }
     ],
     "prowler-cloudwatch_changes_to_network_acls_alarm_configured": {
@@ -2082,7 +306,7 @@
       ],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-20T07:15:27.662326+00:00"
+      "created_at": "2026-02-20T09:06:38.645110+00:00"
     },
     "prowler-cloudwatch_changes_to_network_gateways_alarm_configured": {
       "category": "cloudwatch",
@@ -2102,7 +326,7 @@
       ],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-20T07:15:27.662333+00:00"
+      "created_at": "2026-02-20T09:06:38.645117+00:00"
     },
     "prowler-cloudwatch_changes_to_network_route_tables_alarm_configured": {
       "category": "cloudwatch",
@@ -2122,7 +346,7 @@
       ],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-20T07:15:27.662336+00:00"
+      "created_at": "2026-02-20T09:06:38.645119+00:00"
     },
     "prowler-cloudwatch_changes_to_vpcs_alarm_configured": {
       "category": "cloudwatch",
@@ -2142,7 +366,7 @@
       ],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-20T07:15:27.662338+00:00"
+      "created_at": "2026-02-20T09:06:38.645121+00:00"
     },
     "prowler-cloudwatch_log_metric_filter_and_alarm_for_aws_config_configuration_changes_enabled": {
       "category": "cloudwatch",
@@ -2162,7 +386,7 @@
       ],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-20T07:15:27.662340+00:00"
+      "created_at": "2026-02-20T09:06:38.645123+00:00"
     },
     "prowler-cloudwatch_log_metric_filter_and_alarm_for_cloudtrail_configuration_changes_enabled": {
       "category": "cloudwatch",
@@ -2182,7 +406,7 @@
       ],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-20T07:15:27.662342+00:00"
+      "created_at": "2026-02-20T09:06:38.645125+00:00"
     },
     "prowler-cloudwatch_log_metric_filter_authentication_failures": {
       "category": "cloudwatch",
@@ -2202,7 +426,7 @@
       ],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-20T07:15:27.662344+00:00"
+      "created_at": "2026-02-20T09:06:38.645127+00:00"
     },
     "prowler-cloudwatch_log_metric_filter_disable_or_scheduled_deletion_of_kms_cmk": {
       "category": "cloudwatch",
@@ -2222,7 +446,7 @@
       ],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-20T07:15:27.662346+00:00"
+      "created_at": "2026-02-20T09:06:38.645129+00:00"
     },
     "prowler-cloudwatch_log_metric_filter_for_s3_bucket_policy_changes": {
       "category": "cloudwatch",
@@ -2242,7 +466,7 @@
       ],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-20T07:15:27.662347+00:00"
+      "created_at": "2026-02-20T09:06:38.645131+00:00"
     },
     "prowler-cloudwatch_log_metric_filter_policy_changes": {
       "category": "cloudwatch",
@@ -2262,7 +486,7 @@
       ],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-20T07:15:27.662349+00:00"
+      "created_at": "2026-02-20T09:06:38.645133+00:00"
     },
     "prowler-cloudwatch_log_metric_filter_security_group_changes": {
       "category": "cloudwatch",
@@ -2282,7 +506,7 @@
       ],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-20T07:15:27.662351+00:00"
+      "created_at": "2026-02-20T09:06:38.645138+00:00"
     },
     "prowler-cloudwatch_log_metric_filter_unauthorized_api_calls": {
       "category": "cloudwatch",
@@ -2302,7 +526,7 @@
       ],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-20T07:15:27.662353+00:00"
+      "created_at": "2026-02-20T09:06:38.645140+00:00"
     }
   }
 }

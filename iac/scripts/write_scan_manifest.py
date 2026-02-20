@@ -12,6 +12,7 @@ def main() -> None:
     p.add_argument("--output", required=True)
     p.add_argument("--account-id", required=True)
     p.add_argument("--region", required=True)
+    p.add_argument("--framework", default="cis_1.4_only")
     a = p.parse_args()
 
     normalized = json.loads(Path(a.normalized).read_text(encoding="utf-8"))
@@ -22,6 +23,7 @@ def main() -> None:
         "created_at": datetime.now(timezone.utc).isoformat(),
         "account_id": a.account_id,
         "region": a.region,
+        "framework": a.framework,
         "baseline_fail_count": fail,
         "findings": len(prioritized),
     }

@@ -12,11 +12,14 @@ on:
         description: "Target AWS account id"
         required: true
         type: string
-      region:
-        description: "Target AWS region"
+      compliance_mode:
+        description: "Scan mode"
         required: true
-        type: string
-        default: us-east-1
+        type: choice
+        options:
+          - cis_1.4_plus_isms_p
+          - cis_1.4_only
+        default: cis_1.4_plus_isms_p
 
 concurrency:
   group: security-pipeline-01-scan-${{ github.ref }}
@@ -30,9 +33,9 @@ jobs:
   scan:
     runs-on: ubuntu-latest
     env:
-      AWS_REGION: ${{ inputs.region }}
+      AWS_REGION: ap-northeast-2
       AWS_ACCOUNT_ID: ${{ inputs.account_id }}
-      TF_VAR_region: ${{ inputs.region }}
+      TF_VAR_region: ap-northeast-2
       TF_VAR_account_id: ${{ inputs.account_id }}
     steps:
       - uses: actions/checkout@v4
@@ -41,7 +44,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_OIDC_ROLE_ARN }}
-          aws-region: ${{ inputs.region }}
+          aws-region: ap-northeast-2
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
@@ -62,20 +65,20 @@ jobs:
           python -m pip install --upgrade pip
           pip install "prowler>=3.11,<4.0"
 
-      - name: Run Prowler CIS 1.4
+      - name: Run Prowler (Seoul + CIS/ISMS-P)
         run: |
           mkdir -p artifacts/scan
-          prowler aws --compliance cis_1.4_aws -M json-asff -o artifacts/scan -F baseline || true
-          FOUND="$(find artifacts/scan -maxdepth 1 -type f -name 'baseline*.json*' | head -n 1)"
-          if [ -z "$FOUND" ]; then
-            echo "[]" > artifacts/scan/baseline.asff.json
-          else
-            TARGET="$(realpath artifacts/scan/baseline.asff.json)"
-            SRC="$(realpath "$FOUND")"
-            if [ "$SRC" != "$TARGET" ]; then
-              cp "$FOUND" artifacts/scan/baseline.asff.json
+          prowler aws --compliance cis_1.4_aws -M json-asff -o artifacts/scan -F baseline_cis || true
+          if [ "${{ inputs.compliance_mode }}" = "cis_1.4_plus_isms_p" ]; then
+            CHECKS="$(tr '\n' ' ' < iac/compliance/isms_p_checks.txt | xargs)"
+            if [ -n "$CHECKS" ]; then
+              prowler aws -c $CHECKS -M json-asff -o artifacts/scan -F baseline_isms_p || true
             fi
           fi
+          python iac/scripts/merge_prowler_outputs.py \
+            --dir artifacts/scan \
+            --prefix baseline \
+            --output artifacts/scan/baseline.asff.json
 
       - name: Normalize and score findings
         run: |
@@ -83,7 +86,7 @@ jobs:
             --input artifacts/scan/baseline.asff.json \
             --output artifacts/scan/normalized_findings.json \
             --account-id "${{ inputs.account_id }}" \
-            --region "${{ inputs.region }}"
+            --region "ap-northeast-2"
           python iac/scripts/osfp_score.py \
             --input artifacts/scan/normalized_findings.json \
             --output artifacts/scan/prioritized_findings.json
@@ -95,7 +98,8 @@ jobs:
             --prioritized artifacts/scan/prioritized_findings.json \
             --output artifacts/scan/scan_manifest.json \
             --account-id "${{ inputs.account_id }}" \
-            --region "${{ inputs.region }}"
+            --region "ap-northeast-2" \
+            --framework "${{ inputs.compliance_mode }}"
 
       - name: Upload scan artifact
         uses: actions/upload-artifact@v4

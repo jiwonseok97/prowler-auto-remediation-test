@@ -2,7 +2,7 @@
 
 This repository runs a 4-step security pipeline:
 
-1. Scan baseline with Prowler CIS 1.4
+1. Scan baseline with Prowler (CIS 1.4 + ISMS-P check bundle)
 2. Generate category remediation Terraform and category PRs
 3. Apply merged generated remediation
 4. Rescan and verify FAIL reduction
@@ -20,10 +20,11 @@ Only these four workflows are required for the end-to-end demo.
 
 ```text
 01 Scan Baseline
-  input: account/region
+  input: account (region is fixed to ap-northeast-2/Seoul)
   output artifact: scan-<run_id>
     - baseline.asff.json
-    - baseline_cis_1.4_aws.csv
+    - baseline_cis*.json (raw)
+    - baseline_isms_p*.json (raw)
     - normalized_findings.json
     - prioritized_findings.json
     - scan_manifest.json
@@ -59,7 +60,7 @@ PR Merge (manual)
   trigger: workflow_run success from step 03
   process:
     - wait
-    - rerun Prowler on same account/region
+    - rerun Prowler on same account/region (Seoul, CIS + ISMS-P)
     - compare baseline FAIL vs post FAIL
   success condition:
     - post_fail < baseline_fail
@@ -130,7 +131,12 @@ Secrets:
 
 Variables:
 
-- `AWS_REGION`
+- `AWS_REGION` (optional for other tooling; pipeline is fixed to `ap-northeast-2`)
+
+## ISMS-P Mapping
+
+- ISMS-P additional scan target checks are defined in `iac/compliance/isms_p_checks.txt`.
+- The pipeline runs `cis_1.4_aws` plus this check bundle and merges findings before normalization/remediation.
 
 ## Runbook
 

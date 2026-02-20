@@ -1,10 +1,10 @@
 resource "aws_cloudwatch_log_group" "fix_cloudwatch_log_group_42d1a23b38" {
-  name = "/aws/cloudtrail/132410971304"
+  name = "ap-northeast-2"
 }
 
 resource "aws_cloudwatch_log_metric_filter" "fix_cloudwatch_metric_filter_42d1a23b38" {
   name           = "filter-cloudwatch_log_metric_filter_security_group_changes"
-  log_group_name = "/aws/cloudtrail/132410971304"
+  log_group_name = "ap-northeast-2"
   pattern        = "{ ($.eventName = \"AuthorizeSecurityGroupIngress\") || ($.eventName = \"AuthorizeSecurityGroupEgress\") || ($.eventName = \"RevokeSecurityGroupIngress\") || ($.eventName = \"RevokeSecurityGroupEgress\") || ($.eventName = \"CreateSecurityGroup\") || ($.eventName = \"DeleteSecurityGroup\") }"
 
   metric_transformation {

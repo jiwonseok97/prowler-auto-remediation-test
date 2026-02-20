@@ -1,10 +1,10 @@
 resource "aws_cloudwatch_log_group" "fix_cloudwatch_log_group_0a857cfc28" {
-  name = "/aws/cloudtrail/132410971304"
+  name = "ap-northeast-2"
 }
 
 resource "aws_cloudwatch_log_metric_filter" "fix_cloudwatch_metric_filter_0a857cfc28" {
   name           = "filter-cloudwatch_changes_to_network_gateways_alarm_configured"
-  log_group_name = "/aws/cloudtrail/132410971304"
+  log_group_name = "ap-northeast-2"
   pattern        = "{ ($.eventName = \"CreateCustomerGateway\") || ($.eventName = \"DeleteCustomerGateway\") || ($.eventName = \"AttachInternetGateway\") || ($.eventName = \"CreateInternetGateway\") || ($.eventName = \"DeleteInternetGateway\") || ($.eventName = \"DetachInternetGateway\") }"
 
   metric_transformation {

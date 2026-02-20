@@ -2,18 +2,48 @@ checks:
   prowler-iam_password_policy_minimum_length_14:
     category: iam
     template: iac/snippets/iam/fix-iam_password_policy_strong.tf
+  prowler-iam_password_policy_reuse_24:
+    category: iam
+    template: iac/snippets/iam/fix-iam_password_policy_strong.tf
+  prowler-iam_password_policy_require_uppercase:
+    category: iam
+    template: iac/snippets/iam/fix-iam_password_policy_strong.tf
+  prowler-iam_password_policy_require_lowercase:
+    category: iam
+    template: iac/snippets/iam/fix-iam_password_policy_strong.tf
+  prowler-iam_password_policy_require_numbers:
+    category: iam
+    template: iac/snippets/iam/fix-iam_password_policy_strong.tf
+  prowler-iam_password_policy_require_symbols:
+    category: iam
+    template: iac/snippets/iam/fix-iam_password_policy_strong.tf
   prowler-s3_bucket_level_public_access_block:
     category: s3
     template: iac/snippets/s3/fix-s3_bucket_public_access_block.tf
   prowler-s3_account_level_public_access_blocks:
     category: s3
     template: iac/snippets/s3/fix-s3_account_public_access_block.tf
+  prowler-s3_bucket_default_encryption:
+    category: s3
+    template: iac/snippets/s3/fix-s3_bucket_default_encryption.tf
+  prowler-s3_bucket_encryption_enabled:
+    category: s3
+    template: iac/snippets/s3/fix-s3_bucket_default_encryption.tf
   prowler-cloudtrail_log_file_validation_enabled:
     category: cloudtrail
     template: iac/snippets/cloudtrail/fix-cloudtrail_log_file_validation_enabled.tf
   prowler-cloudtrail_kms_encryption_enabled:
     category: cloudtrail
     template: iac/snippets/cloudtrail/fix-cloudtrail_kms_encryption_enabled.tf
+  prowler-cloudtrail_cloudwatch_logging_enabled:
+    category: cloudtrail
+    template: iac/snippets/cloudtrail/fix-cloudtrail_log_file_validation_enabled.tf
+  prowler-cloudtrail_s3_dataevents_read_enabled:
+    category: cloudtrail
+    template: iac/snippets/cloudtrail/fix-cloudtrail_log_file_validation_enabled.tf
+  prowler-cloudtrail_s3_dataevents_write_enabled:
+    category: cloudtrail
+    template: iac/snippets/cloudtrail/fix-cloudtrail_log_file_validation_enabled.tf
   prowler-ec2_securitygroup_default_restrict_traffic:
     category: network-ec2-vpc
     template: iac/snippets/network-ec2-vpc/fix-ec2_securitygroup_default_restrict_traffic.tf

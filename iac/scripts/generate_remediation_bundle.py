@@ -981,6 +981,17 @@ def cloudtrail_supports_dataevents_patch(region: str, trail_name: str) -> bool:
         return False
 
 
+def iam_role_exists(role_name: str) -> bool:
+    if not role_name:
+        return False
+    try:
+        iam = boto3.client("iam")
+        iam.get_role(RoleName=role_name)
+        return True
+    except Exception:
+        return False
+
+
 def build_cloudtrail_tf(finding: Dict[str, Any], region: str, account_id: str) -> str:
     cid_l = str(finding.get("check_id", "")).lower()
     trail_name = extract_trail_name(finding.get("resource_arn", ""))
@@ -996,6 +1007,8 @@ def build_cloudtrail_tf(finding: Dict[str, Any], region: str, account_id: str) -
     finding["_trail_name"] = name
     finding["_trail_bucket"] = s3_bucket
     policy_prefix = ""
+    extra_prefix = ""
+    depends_on_resources: List[str] = []
 
     include_global = "true" if bool(detail.get("IncludeGlobalServiceEvents", True)) else "false"
     multi_region = "true" if bool(detail.get("IsMultiRegionTrail", True)) else "false"
@@ -1076,6 +1089,8 @@ def build_cloudtrail_tf(finding: Dict[str, Any], region: str, account_id: str) -
         if not cloudtrail_supports_dataevents_patch(region, name):
             return ""
         policy_prefix = build_cloudtrail_required_bucket_policy_tf(name, s3_bucket, account_id, region)
+        if policy_prefix:
+            depends_on_resources.append("aws_s3_bucket_policy.fix_cloudtrail_bucket_policy")
         lines.append("  enable_log_file_validation    = true")
         lines.extend(
             [
@@ -1092,11 +1107,71 @@ def build_cloudtrail_tf(finding: Dict[str, Any], region: str, account_id: str) -
             ]
         )
     elif "cloudtrail_cloudwatch_logging_enabled" in cid_l:
-        # Enabling CloudWatch logging for CloudTrail often requires iam:PassRole/iam:CreateRole.
-        # To keep apply resilient under least-privilege runner roles, skip auto-remediation here.
-        return ""
+        cw_group_arn = str(detail.get("CloudWatchLogsLogGroupArn", "") or "")
+        cw_group_name = extract_log_group(cw_group_arn)
+        if not cw_group_name:
+            cw_group_name = pick_default_cloudtrail_log_group(region, account_id)
+            cw_group_arn = f"arn:aws:logs:{region}:{account_id}:log-group:{cw_group_name}:*"
+        elif not cw_group_arn.endswith(":*"):
+            cw_group_arn = f"{cw_group_arn}:*"
+
+        role_arn_existing = str(detail.get("CloudWatchLogsRoleArn", "") or "")
+        role_name_existing = ""
+        if ":role/" in role_arn_existing:
+            role_name_existing = role_arn_existing.split(":role/", 1)[1]
+
+        role_name = role_name_existing if role_name_existing else f"cloudtrail-to-cw-{safe_id(name)}"
+        role_name = role_name[:64]
+        create_role = not iam_role_exists(role_name)
+        role_arn_expr = f'"arn:aws:iam::{account_id}:role/{role_name}"'
+
+        if create_role:
+            role_arn_expr = "aws_iam_role.fix_cloudtrail_cw_role.arn"
+            assume_doc = json.dumps(
+                {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Principal": {"Service": "cloudtrail.amazonaws.com"},
+                            "Action": "sts:AssumeRole",
+                        }
+                    ],
+                }
+            )
+            extra_prefix += (
+                'resource "aws_iam_role" "fix_cloudtrail_cw_role" {\n'
+                f'  name               = "{role_name}"\n'
+                f"  assume_role_policy = {json.dumps(assume_doc)}\n"
+                "}\n\n"
+            )
+
+        lg_arn_base = cw_group_arn[:-2] if cw_group_arn.endswith(":*") else cw_group_arn
+        inline_policy = {
+            "Version": "2012-10-17",
+            "Statement": [
+                {
+                    "Effect": "Allow",
+                    "Action": ["logs:CreateLogStream", "logs:PutLogEvents"],
+                    "Resource": [f"{lg_arn_base}:*", lg_arn_base],
+                }
+            ],
+        }
+        extra_prefix += (
+            'resource "aws_iam_role_policy" "fix_cloudtrail_cw_role_policy" {\n'
+            '  name   = "cloudtrail-to-cloudwatch-logs"\n'
+            f'  role   = "{role_name}"\n'
+            f"  policy = {json.dumps(json.dumps(inline_policy))}\n"
+            "}\n\n"
+        )
+        depends_on_resources.append("aws_iam_role_policy.fix_cloudtrail_cw_role_policy")
+        lines.append(f'  cloud_watch_logs_group_arn    = "{cw_group_arn}"')
+        lines.append(f"  cloud_watch_logs_role_arn     = {role_arn_expr}")
+        lines.append("  enable_log_file_validation    = true")
     elif "kms_encryption_enabled" in cid_l:
         policy_prefix = build_cloudtrail_required_bucket_policy_tf(name, s3_bucket, account_id, region)
+        if policy_prefix:
+            depends_on_resources.append("aws_s3_bucket_policy.fix_cloudtrail_bucket_policy")
         kms = str(detail.get("KmsKeyId", ""))
         if not kms:
             kms_alias = f"cloudtrail-remediation-{safe_id(name)}"[:250]
@@ -1119,11 +1194,12 @@ def build_cloudtrail_tf(finding: Dict[str, Any], region: str, account_id: str) -
     else:
         return ""
 
-    if policy_prefix:
+    if depends_on_resources:
+        deps = ", ".join(depends_on_resources)
         lines.extend(
             [
                 "",
-                "  depends_on = [aws_s3_bucket_policy.fix_cloudtrail_bucket_policy]",
+                f"  depends_on = [{deps}]",
             ]
         )
 
@@ -1144,8 +1220,8 @@ def build_cloudtrail_tf(finding: Dict[str, Any], region: str, account_id: str) -
         ]
     )
     body = "\n".join(lines)
-    if "s3_dataevents_" in cid_l or policy_prefix:
-        return policy_prefix + body
+    if policy_prefix or extra_prefix:
+        return policy_prefix + extra_prefix + body
     return body
 
 

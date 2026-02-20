@@ -1,5 +1,5 @@
 {
-  "created_at": "2026-02-20T00:01:30.969512+00:00",
+  "created_at": "2026-02-20T00:23:49.695614+00:00",
   "account": "132410971304",
   "region": "ap-northeast-2",
   "baseline_fail_count": 141,
@@ -105,7 +105,7 @@
       "resources": [],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-20T00:01:30.975928+00:00"
+      "created_at": "2026-02-20T00:23:49.702327+00:00"
     },
     "prowler-iam_customer_attached_policy_no_administrative_privileges": {
       "category": "iam",
@@ -116,7 +116,7 @@
       "resources": [],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-20T00:01:30.975938+00:00"
+      "created_at": "2026-02-20T00:23:49.702339+00:00"
     },
     "prowler-config_recorder_all_regions_enabled": [
       {
@@ -515,7 +515,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.975941+00:00"
+        "created_at": "2026-02-20T00:23:49.702343+00:00"
       },
       {
         "category": "iam",
@@ -913,7 +913,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.975943+00:00"
+        "created_at": "2026-02-20T00:23:49.702346+00:00"
       },
       {
         "category": "iam",
@@ -1311,7 +1311,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.975947+00:00"
+        "created_at": "2026-02-20T00:23:49.702350+00:00"
       },
       {
         "category": "iam",
@@ -1709,7 +1709,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.975953+00:00"
+        "created_at": "2026-02-20T00:23:49.702356+00:00"
       },
       {
         "category": "iam",
@@ -2107,7 +2107,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.975955+00:00"
+        "created_at": "2026-02-20T00:23:49.702358+00:00"
       },
       {
         "category": "iam",
@@ -2505,7 +2505,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.975957+00:00"
+        "created_at": "2026-02-20T00:23:49.702360+00:00"
       },
       {
         "category": "iam",
@@ -2903,7 +2903,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.975959+00:00"
+        "created_at": "2026-02-20T00:23:49.702362+00:00"
       },
       {
         "category": "iam",
@@ -3301,7 +3301,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.975961+00:00"
+        "created_at": "2026-02-20T00:23:49.702363+00:00"
       },
       {
         "category": "iam",
@@ -3699,7 +3699,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.975962+00:00"
+        "created_at": "2026-02-20T00:23:49.702365+00:00"
       },
       {
         "category": "iam",
@@ -4097,7 +4097,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.975965+00:00"
+        "created_at": "2026-02-20T00:23:49.702367+00:00"
       },
       {
         "category": "iam",
@@ -4495,7 +4495,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.975966+00:00"
+        "created_at": "2026-02-20T00:23:49.702369+00:00"
       },
       {
         "category": "iam",
@@ -4893,7 +4893,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.975968+00:00"
+        "created_at": "2026-02-20T00:23:49.702371+00:00"
       },
       {
         "category": "iam",
@@ -5291,7 +5291,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.975970+00:00"
+        "created_at": "2026-02-20T00:23:49.702373+00:00"
       },
       {
         "category": "iam",
@@ -5689,7 +5689,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.975972+00:00"
+        "created_at": "2026-02-20T00:23:49.702375+00:00"
       },
       {
         "category": "iam",
@@ -6087,7 +6087,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.975974+00:00"
+        "created_at": "2026-02-20T00:23:49.702377+00:00"
       },
       {
         "category": "iam",
@@ -6485,7 +6485,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.975976+00:00"
+        "created_at": "2026-02-20T00:23:49.702378+00:00"
       }
     ],
     "prowler-iam_policy_attached_only_to_group_or_roles": [
@@ -6498,7 +6498,7 @@
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.975978+00:00"
+        "created_at": "2026-02-20T00:23:49.702380+00:00"
       },
       {
         "category": "iam",
@@ -6509,7 +6509,7 @@
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.975980+00:00"
+        "created_at": "2026-02-20T00:23:49.702382+00:00"
       },
       {
         "category": "iam",
@@ -6520,7 +6520,7 @@
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.975982+00:00"
+        "created_at": "2026-02-20T00:23:49.702384+00:00"
       },
       {
         "category": "iam",
@@ -6531,7 +6531,7 @@
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.975984+00:00"
+        "created_at": "2026-02-20T00:23:49.702386+00:00"
       },
       {
         "category": "iam",
@@ -6542,7 +6542,7 @@
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.975986+00:00"
+        "created_at": "2026-02-20T00:23:49.702388+00:00"
       },
       {
         "category": "iam",
@@ -6553,7 +6553,7 @@
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.975988+00:00"
+        "created_at": "2026-02-20T00:23:49.702390+00:00"
       }
     ],
     "prowler-ec2_networkacl_allow_ingress_any_port": [
@@ -6665,7 +6665,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982248+00:00"
+        "created_at": "2026-02-20T00:23:49.708888+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -6775,7 +6775,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982256+00:00"
+        "created_at": "2026-02-20T00:23:49.708897+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -6885,7 +6885,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982260+00:00"
+        "created_at": "2026-02-20T00:23:49.708901+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -6995,7 +6995,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982263+00:00"
+        "created_at": "2026-02-20T00:23:49.708904+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -7105,7 +7105,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982265+00:00"
+        "created_at": "2026-02-20T00:23:49.708907+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -7215,7 +7215,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982283+00:00"
+        "created_at": "2026-02-20T00:23:49.708909+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -7325,7 +7325,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982285+00:00"
+        "created_at": "2026-02-20T00:23:49.708911+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -7435,7 +7435,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982287+00:00"
+        "created_at": "2026-02-20T00:23:49.708913+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -7545,7 +7545,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982289+00:00"
+        "created_at": "2026-02-20T00:23:49.708915+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -7655,7 +7655,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982291+00:00"
+        "created_at": "2026-02-20T00:23:49.708917+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -7765,7 +7765,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982293+00:00"
+        "created_at": "2026-02-20T00:23:49.708918+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -7875,7 +7875,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982295+00:00"
+        "created_at": "2026-02-20T00:23:49.708920+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -7985,7 +7985,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982296+00:00"
+        "created_at": "2026-02-20T00:23:49.708922+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -8095,7 +8095,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982298+00:00"
+        "created_at": "2026-02-20T00:23:49.708924+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -8205,7 +8205,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982300+00:00"
+        "created_at": "2026-02-20T00:23:49.708926+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -8315,7 +8315,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982302+00:00"
+        "created_at": "2026-02-20T00:23:49.708928+00:00"
       }
     ],
     "prowler-ec2_networkacl_allow_ingress_tcp_port_22": [
@@ -8427,7 +8427,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982304+00:00"
+        "created_at": "2026-02-20T00:23:49.708930+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -8537,7 +8537,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982306+00:00"
+        "created_at": "2026-02-20T00:23:49.708932+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -8647,7 +8647,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982308+00:00"
+        "created_at": "2026-02-20T00:23:49.708934+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -8757,7 +8757,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982310+00:00"
+        "created_at": "2026-02-20T00:23:49.708936+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -8867,7 +8867,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982312+00:00"
+        "created_at": "2026-02-20T00:23:49.708938+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -8977,7 +8977,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982314+00:00"
+        "created_at": "2026-02-20T00:23:49.708940+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -9087,7 +9087,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982316+00:00"
+        "created_at": "2026-02-20T00:23:49.708941+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -9197,7 +9197,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982318+00:00"
+        "created_at": "2026-02-20T00:23:49.708943+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -9307,7 +9307,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982320+00:00"
+        "created_at": "2026-02-20T00:23:49.708959+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -9417,7 +9417,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982322+00:00"
+        "created_at": "2026-02-20T00:23:49.708961+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -9527,7 +9527,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982324+00:00"
+        "created_at": "2026-02-20T00:23:49.708963+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -9637,7 +9637,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982326+00:00"
+        "created_at": "2026-02-20T00:23:49.708965+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -9747,7 +9747,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982328+00:00"
+        "created_at": "2026-02-20T00:23:49.708967+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -9857,7 +9857,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982329+00:00"
+        "created_at": "2026-02-20T00:23:49.708969+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -9967,7 +9967,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982331+00:00"
+        "created_at": "2026-02-20T00:23:49.708970+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -10077,7 +10077,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982333+00:00"
+        "created_at": "2026-02-20T00:23:49.708972+00:00"
       }
     ],
     "prowler-ec2_networkacl_allow_ingress_tcp_port_3389": [
@@ -10189,7 +10189,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982335+00:00"
+        "created_at": "2026-02-20T00:23:49.708974+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -10299,7 +10299,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982337+00:00"
+        "created_at": "2026-02-20T00:23:49.708976+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -10409,7 +10409,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982339+00:00"
+        "created_at": "2026-02-20T00:23:49.708979+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -10519,7 +10519,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982341+00:00"
+        "created_at": "2026-02-20T00:23:49.708981+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -10629,7 +10629,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982343+00:00"
+        "created_at": "2026-02-20T00:23:49.708982+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -10739,7 +10739,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982345+00:00"
+        "created_at": "2026-02-20T00:23:49.708984+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -10849,7 +10849,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982347+00:00"
+        "created_at": "2026-02-20T00:23:49.708986+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -10959,7 +10959,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982349+00:00"
+        "created_at": "2026-02-20T00:23:49.708988+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -11069,7 +11069,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982350+00:00"
+        "created_at": "2026-02-20T00:23:49.708990+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -11179,7 +11179,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982352+00:00"
+        "created_at": "2026-02-20T00:23:49.708992+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -11289,7 +11289,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982354+00:00"
+        "created_at": "2026-02-20T00:23:49.708994+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -11399,7 +11399,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982356+00:00"
+        "created_at": "2026-02-20T00:23:49.708995+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -11509,7 +11509,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982358+00:00"
+        "created_at": "2026-02-20T00:23:49.708997+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -11619,7 +11619,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982360+00:00"
+        "created_at": "2026-02-20T00:23:49.708999+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -11729,7 +11729,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982362+00:00"
+        "created_at": "2026-02-20T00:23:49.709001+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -11839,7 +11839,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982363+00:00"
+        "created_at": "2026-02-20T00:23:49.709003+00:00"
       }
     ],
     "prowler-vpc_flow_logs_enabled": [
@@ -11854,7 +11854,7 @@
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982365+00:00"
+        "created_at": "2026-02-20T00:23:49.709005+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -11867,7 +11867,7 @@
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982367+00:00"
+        "created_at": "2026-02-20T00:23:49.709006+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -11880,7 +11880,7 @@
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982370+00:00"
+        "created_at": "2026-02-20T00:23:49.709009+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -11893,7 +11893,7 @@
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982372+00:00"
+        "created_at": "2026-02-20T00:23:49.709011+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -11906,7 +11906,7 @@
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982373+00:00"
+        "created_at": "2026-02-20T00:23:49.709013+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -11919,7 +11919,7 @@
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982375+00:00"
+        "created_at": "2026-02-20T00:23:49.709015+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -11932,7 +11932,7 @@
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982377+00:00"
+        "created_at": "2026-02-20T00:23:49.709016+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -11945,7 +11945,7 @@
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982379+00:00"
+        "created_at": "2026-02-20T00:23:49.709018+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -11958,7 +11958,7 @@
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982381+00:00"
+        "created_at": "2026-02-20T00:23:49.709020+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -11971,7 +11971,7 @@
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982414+00:00"
+        "created_at": "2026-02-20T00:23:49.709061+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -11984,7 +11984,7 @@
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982416+00:00"
+        "created_at": "2026-02-20T00:23:49.709063+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -11997,7 +11997,7 @@
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982418+00:00"
+        "created_at": "2026-02-20T00:23:49.709065+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -12010,7 +12010,7 @@
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982420+00:00"
+        "created_at": "2026-02-20T00:23:49.709067+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -12023,7 +12023,7 @@
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982422+00:00"
+        "created_at": "2026-02-20T00:23:49.709069+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -12036,7 +12036,7 @@
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982424+00:00"
+        "created_at": "2026-02-20T00:23:49.709071+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -12049,7 +12049,7 @@
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982426+00:00"
+        "created_at": "2026-02-20T00:23:49.709073+00:00"
       }
     ],
     "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports": [
@@ -12062,7 +12062,7 @@
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982428+00:00"
+        "created_at": "2026-02-20T00:23:49.709074+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -12073,7 +12073,7 @@
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982430+00:00"
+        "created_at": "2026-02-20T00:23:49.709077+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -12084,7 +12084,7 @@
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982432+00:00"
+        "created_at": "2026-02-20T00:23:49.709079+00:00"
       }
     ],
     "prowler-ec2_securitygroup_default_restrict_traffic": [
@@ -12196,7 +12196,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982434+00:00"
+        "created_at": "2026-02-20T00:23:49.709081+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -12306,7 +12306,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982436+00:00"
+        "created_at": "2026-02-20T00:23:49.709083+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -12416,7 +12416,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982438+00:00"
+        "created_at": "2026-02-20T00:23:49.709085+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -12526,7 +12526,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982440+00:00"
+        "created_at": "2026-02-20T00:23:49.709087+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -12636,7 +12636,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982442+00:00"
+        "created_at": "2026-02-20T00:23:49.709089+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -12746,7 +12746,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982444+00:00"
+        "created_at": "2026-02-20T00:23:49.709091+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -12856,7 +12856,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982446+00:00"
+        "created_at": "2026-02-20T00:23:49.709093+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -12966,7 +12966,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982448+00:00"
+        "created_at": "2026-02-20T00:23:49.709094+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -13076,7 +13076,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982449+00:00"
+        "created_at": "2026-02-20T00:23:49.709096+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -13186,7 +13186,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982451+00:00"
+        "created_at": "2026-02-20T00:23:49.709098+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -13296,7 +13296,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982453+00:00"
+        "created_at": "2026-02-20T00:23:49.709100+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -13406,7 +13406,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982455+00:00"
+        "created_at": "2026-02-20T00:23:49.709102+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -13516,7 +13516,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982457+00:00"
+        "created_at": "2026-02-20T00:23:49.709104+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -13626,7 +13626,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982459+00:00"
+        "created_at": "2026-02-20T00:23:49.709105+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -13736,7 +13736,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982461+00:00"
+        "created_at": "2026-02-20T00:23:49.709107+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -13846,7 +13846,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982463+00:00"
+        "created_at": "2026-02-20T00:23:49.709109+00:00"
       }
     ],
     "prowler-ec2_ebs_volume_encryption": {
@@ -13858,7 +13858,7 @@
       "resources": [],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-20T00:01:30.982464+00:00"
+      "created_at": "2026-02-20T00:23:49.709111+00:00"
     },
     "prowler-ec2_instance_profile_attached": {
       "category": "network-ec2-vpc",
@@ -13869,7 +13869,7 @@
       "resources": [],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-20T00:01:30.982467+00:00"
+      "created_at": "2026-02-20T00:23:49.709113+00:00"
     },
     "prowler-cloudtrail_kms_encryption_enabled": {
       "category": "cloudtrail",
@@ -13880,7 +13880,7 @@
       "resources": [],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-20T00:01:30.982680+00:00"
+      "created_at": "2026-02-20T00:23:49.709300+00:00"
     },
     "prowler-cloudtrail_s3_dataevents_read_enabled": {
       "category": "cloudtrail",
@@ -13891,7 +13891,7 @@
       "resources": [],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-20T00:01:30.982687+00:00"
+      "created_at": "2026-02-20T00:23:49.709305+00:00"
     },
     "prowler-cloudtrail_s3_dataevents_write_enabled": {
       "category": "cloudtrail",
@@ -13902,7 +13902,7 @@
       "resources": [],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-20T00:01:30.982689+00:00"
+      "created_at": "2026-02-20T00:23:49.709308+00:00"
     },
     "prowler-cloudtrail_cloudwatch_logging_enabled": [
       {
@@ -13914,7 +13914,7 @@
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982691+00:00"
+        "created_at": "2026-02-20T00:23:49.709310+00:00"
       },
       {
         "category": "cloudtrail",
@@ -13925,7 +13925,7 @@
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-20T00:01:30.982693+00:00"
+        "created_at": "2026-02-20T00:23:49.709312+00:00"
       }
     ],
     "prowler-cloudwatch_changes_to_network_acls_alarm_configured": {
@@ -13937,7 +13937,7 @@
       "resources": [],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-20T00:01:30.982948+00:00"
+      "created_at": "2026-02-20T00:23:49.709521+00:00"
     },
     "prowler-cloudwatch_changes_to_network_gateways_alarm_configured": {
       "category": "cloudwatch",
@@ -13948,7 +13948,7 @@
       "resources": [],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-20T00:01:30.982955+00:00"
+      "created_at": "2026-02-20T00:23:49.709527+00:00"
     },
     "prowler-cloudwatch_changes_to_network_route_tables_alarm_configured": {
       "category": "cloudwatch",
@@ -13959,7 +13959,7 @@
       "resources": [],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-20T00:01:30.982957+00:00"
+      "created_at": "2026-02-20T00:23:49.709529+00:00"
     },
     "prowler-cloudwatch_changes_to_vpcs_alarm_configured": {
       "category": "cloudwatch",
@@ -13970,7 +13970,7 @@
       "resources": [],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-20T00:01:30.982959+00:00"
+      "created_at": "2026-02-20T00:23:49.709531+00:00"
     },
     "prowler-cloudwatch_log_metric_filter_and_alarm_for_aws_config_configuration_changes_enabled": {
       "category": "cloudwatch",
@@ -13981,7 +13981,7 @@
       "resources": [],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-20T00:01:30.982961+00:00"
+      "created_at": "2026-02-20T00:23:49.709533+00:00"
     },
     "prowler-cloudwatch_log_metric_filter_and_alarm_for_cloudtrail_configuration_changes_enabled": {
       "category": "cloudwatch",
@@ -13992,7 +13992,7 @@
       "resources": [],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-20T00:01:30.982963+00:00"
+      "created_at": "2026-02-20T00:23:49.709535+00:00"
     },
     "prowler-cloudwatch_log_metric_filter_authentication_failures": {
       "category": "cloudwatch",
@@ -14003,7 +14003,7 @@
       "resources": [],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-20T00:01:30.982966+00:00"
+      "created_at": "2026-02-20T00:23:49.709537+00:00"
     },
     "prowler-cloudwatch_log_metric_filter_disable_or_scheduled_deletion_of_kms_cmk": {
       "category": "cloudwatch",
@@ -14014,7 +14014,7 @@
       "resources": [],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-20T00:01:30.982968+00:00"
+      "created_at": "2026-02-20T00:23:49.709539+00:00"
     },
     "prowler-cloudwatch_log_metric_filter_for_s3_bucket_policy_changes": {
       "category": "cloudwatch",
@@ -14025,7 +14025,7 @@
       "resources": [],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-20T00:01:30.982970+00:00"
+      "created_at": "2026-02-20T00:23:49.709541+00:00"
     },
     "prowler-cloudwatch_log_metric_filter_policy_changes": {
       "category": "cloudwatch",
@@ -14036,7 +14036,7 @@
       "resources": [],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-20T00:01:30.982971+00:00"
+      "created_at": "2026-02-20T00:23:49.709543+00:00"
     },
     "prowler-cloudwatch_log_metric_filter_security_group_changes": {
       "category": "cloudwatch",
@@ -14047,7 +14047,7 @@
       "resources": [],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-20T00:01:30.982973+00:00"
+      "created_at": "2026-02-20T00:23:49.709545+00:00"
     },
     "prowler-cloudwatch_log_metric_filter_unauthorized_api_calls": {
       "category": "cloudwatch",
@@ -14058,7 +14058,7 @@
       "resources": [],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-20T00:01:30.982975+00:00"
+      "created_at": "2026-02-20T00:23:49.709547+00:00"
     }
   }
 }

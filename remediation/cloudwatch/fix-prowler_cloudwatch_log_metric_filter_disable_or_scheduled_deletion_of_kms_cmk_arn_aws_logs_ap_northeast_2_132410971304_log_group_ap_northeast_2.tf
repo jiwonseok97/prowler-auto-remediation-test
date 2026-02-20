@@ -1,10 +1,10 @@
 resource "aws_cloudwatch_log_group" "fix_cloudwatch_log_group_db192a6de6" {
-  name = "ap-northeast-2"
+  name = "/aws/cloudtrail/132410971304"
 }
 
 resource "aws_cloudwatch_log_metric_filter" "fix_cloudwatch_metric_filter_db192a6de6" {
   name           = "filter-cloudwatch_log_metric_filter_disable_or_scheduled_deletion_of_kms_cmk"
-  log_group_name = "ap-northeast-2"
+  log_group_name = "/aws/cloudtrail/132410971304"
   pattern        = "{ ($.eventSource = \"kms.amazonaws.com\") && (($.eventName = \"DisableKey\") || ($.eventName = \"ScheduleKeyDeletion\")) }"
 
   metric_transformation {

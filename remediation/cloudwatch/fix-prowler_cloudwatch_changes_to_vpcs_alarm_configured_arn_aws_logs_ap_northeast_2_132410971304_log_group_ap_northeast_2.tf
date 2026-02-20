@@ -1,10 +1,10 @@
 resource "aws_cloudwatch_log_group" "fix_cloudwatch_log_group_df9b961ffd" {
-  name = "ap-northeast-2"
+  name = "/aws/cloudtrail/132410971304"
 }
 
 resource "aws_cloudwatch_log_metric_filter" "fix_cloudwatch_metric_filter_df9b961ffd" {
   name           = "filter-cloudwatch_changes_to_vpcs_alarm_configured"
-  log_group_name = "ap-northeast-2"
+  log_group_name = "/aws/cloudtrail/132410971304"
   pattern        = "{ ($.eventName = \"CreateVpc\") || ($.eventName = \"DeleteVpc\") || ($.eventName = \"ModifyVpcAttribute\") || ($.eventName = \"AcceptVpcPeeringConnection\") || ($.eventName = \"CreateVpcPeeringConnection\") || ($.eventName = \"DeleteVpcPeeringConnection\") || ($.eventName = \"RejectVpcPeeringConnection\") || ($.eventName = \"AttachClassicLinkVpc\") || ($.eventName = \"DetachClassicLinkVpc\") || ($.eventName = \"DisableVpcClassicLink\") || ($.eventName = \"EnableVpcClassicLink\") }"
 
   metric_transformation {

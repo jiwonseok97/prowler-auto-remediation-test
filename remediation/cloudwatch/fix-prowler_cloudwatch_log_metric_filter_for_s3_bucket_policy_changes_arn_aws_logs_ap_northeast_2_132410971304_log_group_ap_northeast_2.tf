@@ -1,10 +1,10 @@
 resource "aws_cloudwatch_log_group" "fix_cloudwatch_log_group_f3b6ffaa1d" {
-  name = "ap-northeast-2"
+  name = "/aws/cloudtrail/132410971304"
 }
 
 resource "aws_cloudwatch_log_metric_filter" "fix_cloudwatch_metric_filter_f3b6ffaa1d" {
   name           = "filter-cloudwatch_log_metric_filter_for_s3_bucket_policy_changes"
-  log_group_name = "ap-northeast-2"
+  log_group_name = "/aws/cloudtrail/132410971304"
   pattern        = "{ ($.eventSource = \"s3.amazonaws.com\") && (($.eventName = \"PutBucketAcl\") || ($.eventName = \"PutBucketPolicy\") || ($.eventName = \"PutBucketCors\") || ($.eventName = \"PutBucketLifecycle\") || ($.eventName = \"PutBucketReplication\") || ($.eventName = \"DeleteBucketPolicy\") || ($.eventName = \"DeleteBucketCors\") || ($.eventName = \"DeleteBucketLifecycle\") || ($.eventName = \"DeleteBucketReplication\")) }"
 
   metric_transformation {

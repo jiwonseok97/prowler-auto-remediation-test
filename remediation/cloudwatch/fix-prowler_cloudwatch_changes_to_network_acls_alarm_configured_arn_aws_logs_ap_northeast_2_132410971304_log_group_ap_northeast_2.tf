@@ -1,10 +1,10 @@
 resource "aws_cloudwatch_log_group" "fix_cloudwatch_log_group_db3516d94b" {
-  name = "ap-northeast-2"
+  name = "/aws/cloudtrail/132410971304"
 }
 
 resource "aws_cloudwatch_log_metric_filter" "fix_cloudwatch_metric_filter_db3516d94b" {
   name           = "filter-cloudwatch_changes_to_network_acls_alarm_configured"
-  log_group_name = "ap-northeast-2"
+  log_group_name = "/aws/cloudtrail/132410971304"
   pattern        = "{ ($.eventName = \"CreateNetworkAcl\") || ($.eventName = \"CreateNetworkAclEntry\") || ($.eventName = \"DeleteNetworkAcl\") || ($.eventName = \"DeleteNetworkAclEntry\") || ($.eventName = \"ReplaceNetworkAclEntry\") || ($.eventName = \"ReplaceNetworkAclAssociation\") }"
 
   metric_transformation {

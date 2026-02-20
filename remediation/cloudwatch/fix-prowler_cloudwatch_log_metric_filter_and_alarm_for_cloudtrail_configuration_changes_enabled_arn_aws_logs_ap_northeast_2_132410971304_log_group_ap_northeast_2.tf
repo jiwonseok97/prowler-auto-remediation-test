@@ -1,10 +1,10 @@
 resource "aws_cloudwatch_log_group" "fix_cloudwatch_log_group_e3a40ad51d" {
-  name = "ap-northeast-2"
+  name = "/aws/cloudtrail/132410971304"
 }
 
 resource "aws_cloudwatch_log_metric_filter" "fix_cloudwatch_metric_filter_e3a40ad51d" {
   name           = "filter-cloudwatch_log_metric_filter_and_alarm_for_cloudtrail_configuration_changes_enabled"
-  log_group_name = "ap-northeast-2"
+  log_group_name = "/aws/cloudtrail/132410971304"
   pattern        = "{ ($.eventName = \"CreateTrail\") || ($.eventName = \"UpdateTrail\") || ($.eventName = \"DeleteTrail\") || ($.eventName = \"StartLogging\") || ($.eventName = \"StopLogging\") }"
 
   metric_transformation {

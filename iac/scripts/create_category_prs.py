@@ -76,7 +76,8 @@ def main() -> None:
             run(["git", "checkout", "main"], check=False)
             continue
         run(["git", "commit", "-m", message], check=False)
-        run(["git", "push", "-u", "origin", branch])
+        # Fixed branch model: update category branch to latest generated result.
+        run(["git", "push", "--force-with-lease", "-u", "origin", branch])
 
         top5 = "\n".join(f"- {x}" for x in cat.get("top5", [])[:5]) or "- none"
         manual = "\n".join(f"- {x}" for x in cat.get("manual_required", [])) or "- none"

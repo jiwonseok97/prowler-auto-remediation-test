@@ -48,8 +48,8 @@ resource "aws_s3_bucket_policy" "fix_config_bucket_policy_b6aa1fff7e" {
       "Resource": "arn:aws:s3:::aws-config-logs-132410971304-eu-north-1/AWSLogs/132410971304/Config/*",
       "Condition": {
         "StringEquals": {
-          "aws:SourceAccount": "132410971304",
-          "s3:x-amz-acl": "bucket-owner-full-control"
+          "s3:x-amz-acl": "bucket-owner-full-control",
+          "aws:SourceAccount": "132410971304"
         },
         "ArnLike": {
           "aws:SourceArn": "arn:aws:config:eu-north-1:132410971304:*"

@@ -101,6 +101,27 @@ jobs:
             --region "ap-northeast-2" \
             --framework "${{ inputs.compliance_mode }}"
 
+      - name: Optional publish baseline scan to external API
+        continue-on-error: true
+        env:
+          PROWLER_APP_API_URL: ${{ secrets.PROWLER_APP_API_URL }}
+          PROWLER_APP_API_TOKEN: ${{ secrets.PROWLER_APP_API_TOKEN }}
+        run: |
+          if [ -z "$PROWLER_APP_API_URL" ] || [ -z "$PROWLER_APP_API_TOKEN" ]; then
+            echo "skip publish: PROWLER_APP_API_URL or PROWLER_APP_API_TOKEN is empty"
+            exit 0
+          fi
+          python iac/scripts/publish_scan_to_api.py \
+            --input artifacts/scan/scan_manifest.json \
+            --event baseline_scan \
+            --api-url "$PROWLER_APP_API_URL" \
+            --api-token "$PROWLER_APP_API_TOKEN" \
+            --repo "${{ github.repository }}" \
+            --run-id "${{ github.run_id }}" \
+            --account-id "${{ inputs.account_id }}" \
+            --region "ap-northeast-2" \
+            --framework "${{ inputs.compliance_mode }}"
+
       - name: Upload scan artifact
         uses: actions/upload-artifact@v4
         with:

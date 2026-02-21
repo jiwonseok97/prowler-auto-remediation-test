@@ -2,7 +2,7 @@
   "category": "network-ec2-vpc",
   "account": "132410971304",
   "region": "ap-northeast-2",
-  "created_at": "2026-02-21T10:56:25.855271+00:00",
+  "created_at": "2026-02-21T11:11:59.810882+00:00",
   "items": [
     {
       "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",

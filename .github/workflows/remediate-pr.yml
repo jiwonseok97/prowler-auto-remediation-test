@@ -26,6 +26,11 @@ on:
         required: true
         type: boolean
         default: false
+      single_pr_mode:
+        description: "Create one remediation PR across all categories (demo mode)"
+        required: true
+        type: boolean
+        default: false
   workflow_run:
     workflows: ["Security Pipeline - 01 Scan Baseline"]
     types: [completed]
@@ -55,10 +60,12 @@ jobs:
             echo "scan_run_id=${{ github.event.workflow_run.id }}" >> "$GITHUB_OUTPUT"
             echo "model_id=anthropic.claude-3-haiku-20240307-v1:0" >> "$GITHUB_OUTPUT"
             echo "bedrock_fallback=false" >> "$GITHUB_OUTPUT"
+            echo "single_pr_mode=false" >> "$GITHUB_OUTPUT"
           else
             echo "scan_run_id=${{ inputs.scan_run_id }}" >> "$GITHUB_OUTPUT"
             echo "model_id=${{ inputs.model_id }}" >> "$GITHUB_OUTPUT"
             echo "bedrock_fallback=${{ inputs.bedrock_fallback }}" >> "$GITHUB_OUTPUT"
+            echo "single_pr_mode=${{ inputs.single_pr_mode }}" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Download scan artifact from run
@@ -136,12 +143,18 @@ jobs:
       - name: Create category PRs
         env:
           GH_TOKEN: ${{ secrets.AUTO_PR_TOKEN != '' && secrets.AUTO_PR_TOKEN || secrets.GITHUB_TOKEN }}
+        shell: bash
         run: |
+          SINGLE_PR_FLAG=""
+          if [ "${{ steps.trigger.outputs.single_pr_mode }}" = "true" ]; then
+            SINGLE_PR_FLAG="--single-pr"
+          fi
           python iac/scripts/create_category_prs.py \
             --root remediation \
             --manifest remediation/manifest.json \
             --account-id "${{ steps.target.outputs.account_id }}" \
-            --run-id "${{ github.run_id }}"
+            --run-id "${{ github.run_id }}" \
+            $SINGLE_PR_FLAG
 
       - name: Upload remediation artifact
         uses: actions/upload-artifact@v4

@@ -52,8 +52,8 @@ jobs:
       - name: Deploy vulnerable infra
         if: inputs.deploy_vulnerable == true
         run: |
-          terraform -chdir=terraform/test_infra init -input=false
-          terraform -chdir=terraform/test_infra apply -auto-approve -input=false
+          terraform -chdir=terraform/vulnerable_infra_test init -input=false
+          terraform -chdir=terraform/vulnerable_infra_test apply -auto-approve -input=false
 
       - name: Setup Python
         uses: actions/setup-python@v5

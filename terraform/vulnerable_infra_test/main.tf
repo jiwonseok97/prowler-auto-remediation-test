@@ -48,24 +48,6 @@ resource "aws_s3_bucket_public_access_block" "vuln_bucket_pab" {
   restrict_public_buckets = false
 }
 
-resource "aws_s3_bucket_ownership_controls" "vuln_bucket_oc" {
-  count  = var.vuln_bucket_count
-  bucket = aws_s3_bucket.vuln_bucket[count.index].id
-  rule {
-    object_ownership = "BucketOwnerPreferred"
-  }
-}
-
-resource "aws_s3_bucket_acl" "vuln_bucket_acl" {
-  count = var.vuln_bucket_count
-  depends_on = [
-    aws_s3_bucket_ownership_controls.vuln_bucket_oc,
-    aws_s3_bucket_public_access_block.vuln_bucket_pab
-  ]
-  bucket = aws_s3_bucket.vuln_bucket[count.index].id
-  acl    = "public-read"
-}
-
 # =================================
 # CloudWatch vulnerable setup
 # =================================

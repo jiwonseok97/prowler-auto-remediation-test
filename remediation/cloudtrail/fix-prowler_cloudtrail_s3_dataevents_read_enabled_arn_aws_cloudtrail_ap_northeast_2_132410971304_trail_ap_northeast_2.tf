@@ -55,8 +55,8 @@ resource "aws_s3_bucket_policy" "fix_cloudtrail_bucket_policy_21ff33774c" {
       "Resource": "arn:aws:s3:::aws-cloudtrail-logs-132410971304-0971c04b/AWSLogs/132410971304/*",
       "Condition": {
         "StringEquals": {
-          "s3:x-amz-acl": "bucket-owner-full-control",
-          "aws:SourceArn": "arn:aws:cloudtrail:ap-northeast-2:132410971304:trail/security-cloudtail"
+          "aws:SourceArn": "arn:aws:cloudtrail:ap-northeast-2:132410971304:trail/security-cloudtail",
+          "s3:x-amz-acl": "bucket-owner-full-control"
         }
       }
     },

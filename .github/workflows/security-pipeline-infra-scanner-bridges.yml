@@ -1,0 +1,80 @@
+name: Security Pipeline - Infra Scanner Bridges (Nessus/Qualys/InsightVM/OpenVAS)
+
+on:
+  workflow_dispatch:
+    inputs:
+      target_host:
+        description: "Target host/IP for infra scan tools (optional)"
+        required: false
+        type: string
+        default: ""
+
+permissions:
+  contents: read
+
+jobs:
+  infra-bridge:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Prepare output
+        run: mkdir -p artifacts/infra-scanners
+
+      - name: Build bridge readiness report
+        env:
+          NESSUS_URL: ${{ secrets.NESSUS_URL }}
+          NESSUS_API_KEY: ${{ secrets.NESSUS_API_KEY }}
+          QUALYS_API_URL: ${{ secrets.QUALYS_API_URL }}
+          QUALYS_USERNAME: ${{ secrets.QUALYS_USERNAME }}
+          QUALYS_PASSWORD: ${{ secrets.QUALYS_PASSWORD }}
+          INSIGHTVM_URL: ${{ secrets.INSIGHTVM_URL }}
+          INSIGHTVM_API_KEY: ${{ secrets.INSIGHTVM_API_KEY }}
+          OPENVAS_URL: ${{ secrets.OPENVAS_URL }}
+          OPENVAS_USERNAME: ${{ secrets.OPENVAS_USERNAME }}
+          OPENVAS_PASSWORD: ${{ secrets.OPENVAS_PASSWORD }}
+          TARGET_HOST: ${{ inputs.target_host }}
+        run: |
+          python - <<'PY'
+          import json, os
+          tools = [
+            ("Nessus", ["NESSUS_URL", "NESSUS_API_KEY"]),
+            ("Qualys", ["QUALYS_API_URL", "QUALYS_USERNAME", "QUALYS_PASSWORD"]),
+            ("InsightVM", ["INSIGHTVM_URL", "INSIGHTVM_API_KEY"]),
+            ("OpenVAS", ["OPENVAS_URL", "OPENVAS_USERNAME", "OPENVAS_PASSWORD"]),
+          ]
+          rows = []
+          for tool, keys in tools:
+            missing = [k for k in keys if not os.getenv(k)]
+            if missing:
+              rows.append({"tool": tool, "status": "later", "detail": f"missing secrets: {', '.join(missing)}"})
+            else:
+              rows.append({"tool": tool, "status": "ready", "detail": "API bridge prerequisites satisfied"})
+
+          out = {
+            "target_host": os.getenv("TARGET_HOST", ""),
+            "tools": rows,
+          }
+          with open("artifacts/infra-scanners/bridge-readiness.json", "w", encoding="utf-8") as f:
+            json.dump(out, f, indent=2)
+
+          lines = [
+            "## Infra Scanner Bridge Readiness",
+            "",
+            f"- target_host: `{out['target_host'] or 'not provided'}`",
+            "",
+            "| Tool | Status | Detail |",
+            "|---|---|---|",
+          ]
+          for r in rows:
+            lines.append(f"| `{r['tool']}` | `{r['status']}` | {r['detail']} |")
+          with open("artifacts/infra-scanners/summary.md", "w", encoding="utf-8") as f:
+            f.write("\n".join(lines) + "\n")
+          PY
+          cat artifacts/infra-scanners/summary.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload infra scanner artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: infra-scanner-bridges-${{ github.run_id }}
+          path: artifacts/infra-scanners/

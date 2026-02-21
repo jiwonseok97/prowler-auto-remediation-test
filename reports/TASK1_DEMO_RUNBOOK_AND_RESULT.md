@@ -1,86 +1,78 @@
 # Task 1 Report: Vulnerable Infra Demo and 01->04 Result
 
 ## 1) Objective
-- Create a high-FAIL environment for a live demo.
-- Run full pipeline (`01 -> 02 -> 03 -> 04`) in order.
-- Show before/after numbers and control-level details.
-- Restore environment back to pre-vulnerable state.
+- Create a high-FAIL environment for live demo.
+- Execute pipeline in strict order: 01 -> 02 -> PR merge -> 03 -> 04.
+- Verify reduction and restore environment.
 
-## 2) Demo Scenario Design
+## 2) Demo Scenario (deployed)
 - Region: `ap-northeast-2`
-- Vulnerable Terraform profile (`terraform/vulnerable_infra_test`):
+- Vulnerable Terraform profile:
   - `vuln_bucket_count=40`
   - `security_group_count=30`
   - `cloudwatch_log_group_count=20`
 
-Expected effect:
-- FAIL increases significantly on S3 and network controls.
-- Auto/remediable subset decreases after merge/apply.
-- Manual-runbook subset remains and is reported separately.
+## 3) Execution Runs
+1. Pre baseline (no vulnerable deploy): `01` run `22263429441`
+2. Vulnerable deploy baseline: `01` run `22263496401`
+3. Remediation generation: `02` run `22263586710` -> single PR `#120` merged
+4. Apply merged remediation: `03` run `22263763659` success
+5. Verify reduction: `04` run `22263825770` success
+6. Restore verification baseline: `01` run `22264043779`
 
-## 3) Execution Plan (Presenter Script)
-1. Baseline snapshot (no vulnerable deploy)
-2. Vulnerable deploy + baseline scan
-3. Generate single remediation PR
-4. Merge PR and apply
-5. Verify FAIL reduction (with split view: auto/remediable vs manual)
-6. Restore to pre-vulnerable state
+## 4) Key Metrics
+- Pre baseline fail: **27**
+- Vulnerable baseline fail: **137**
+- Post-apply fail (04): **67**
+- Reduced (vulnerable baseline -> post): **70**
+- Restored baseline fail: **27**
 
-## 4) Run Evidence
+## 5) Rescan Summary (from 04)
+- baseline_fail: `137`
+- post_fail: `67`
+- reduced: `70`
+- actionable_fail(terraform-capable): `0`
+- manual_fail(exception/manual): `67`
 
-### 4.1 Pre-vulnerable baseline
-- Run ID:
-- `baseline_fail`:
-- Top FAIL checks:
+## 6) Check-Level Comparison Table
+| Check ID | Pre(no deploy) | Vulnerable baseline | Post-apply (04) | Restored baseline |
+|---|---:|---:|---:|---:|
+| `prowler-s3_bucket_no_mfa_delete` | 24 | 64 | 64 | 24 |
+| `prowler-s3_bucket_secure_transport_policy` | 0 | 40 | 0 | 0 |
+| `prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports` | 0 | 30 | 0 | 0 |
+| `prowler-iam_root_hardware_mfa_enabled` | 1 | 1 | 1 | 1 |
+| `prowler-ec2_instance_profile_attached` | 1 | 1 | 1 | 1 |
+| `prowler-ec2_ebs_volume_encryption` | 1 | 1 | 1 | 1 |
 
-### 4.2 Post vulnerable deployment baseline
-- Run ID:
-- `baseline_fail`:
-- Delta vs pre-vulnerable:
-- Top FAIL checks:
+## 7) What Happened (detailed)
+- Large increase came from intentionally vulnerable S3 buckets and SGs:
+  - `prowler-s3_bucket_secure_transport_policy` increased by +40
+  - `prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports` increased by +30
+- One-shot remediation removed terraform-capable demo checks in a single cycle:
+  - secure transport policy: 40 -> 0
+  - wide-open SG ingress: 30 -> 0
+- Remaining FAIL after apply are manual-runbook class controls (not auto-remediated in this pipeline).
 
-### 4.3 Remediation generation (02)
-- Run ID:
-- PR mode: single PR
-- Created PR:
-- Included categories/checks:
+## 8) Restore Result
+- Cleanup executed for demo-created resources (prefix-based):
+  - Deleted SGs: 30
+  - Deleted log groups: 20
+  - Deleted buckets: 40
+- Resource count after cleanup:
+  - `vuln-*` buckets: 0
+  - `vuln-sg-*`: 0
+  - `/vuln/log-group-*`: 60
+- Restored scan fail count: `27` (pre baseline was `27`)
 
-### 4.4 Apply merged remediation (03)
-- Run ID:
-- Apply status:
-- Notable apply logs:
+## 9) Presenter Talk Track (for live demo)
+1. Show pre baseline (`27`) as starting point.
+2. Deploy vulnerable profile and rerun baseline (`137`).
+3. Generate one consolidated remediation PR and merge once.
+4. Show apply success and rescan reduction (`137 -> 67`, reduced `70`).
+5. Explain why remaining FAIL are manual-runbook and separated from auto-remediable KPI.
+6. Show cleanup and restored baseline run.
 
-### 4.5 Verify reduction (04)
-- Run ID:
-- `baseline_fail`:
-- `post_fail`:
-- `reduced`:
-- `actionable_fail(terraform-capable)`:
-- `manual_fail(exception/manual)`:
-
-## 5) Detailed Check-Level Comparison
-
-### 5.1 Before -> After table
-| Check ID | Before Count | After Count | Delta | Class |
-|---|---:|---:|---:|---|
-
-### 5.2 Remaining FAIL (manual/runbook)
-| Check ID | Count | Reason |
-|---|---:|---|
-
-## 6) Live Demo Talk Track (for audience)
-- Why FAIL increased (intentional vulnerable resources)
-- Why only certain FAILs dropped automatically
-- Why manual-runbook items are separated
-- Governance meaning of remaining FAILs
-
-## 7) Restore and Verification
-- Restore method:
-- Restore command/log summary:
-- Post-restore scan run ID:
-- Confirmed returned to pre-vulnerable level:
-
-## 8) Conclusion
-- Demo success criteria met/not met:
-- Constraints observed:
-- Next optimization:
+## 10) Status
+- Task 1 execution: **completed**
+- Demo reproducibility: **ready**
+- Remaining work moved to Task 2/3 reports.

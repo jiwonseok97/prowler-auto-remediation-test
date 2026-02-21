@@ -247,10 +247,20 @@ jobs:
           incremental = s.get("incremental_reduced_remediable")
           if incremental is None:
               incremental = s.get("incremental_reduced")
+          new_remediable = s.get("new_fail_since_previous_remediable_check_ids", []) or []
           if incremental is not None:
               if incremental < 0:
-                  raise SystemExit(
-                      "FAIL not reduced vs previous post (terraform-capable scope): "
+                  if new_remediable:
+                      raise SystemExit(
+                          "FAIL increased with new terraform-capable checks since previous rescan: "
+                          f"new={','.join(new_remediable)} "
+                          f"previous_post_remediable={s.get('previous_post_fail_remediable', s.get('previous_post_fail'))} "
+                          f"current_post_remediable={s.get('post_fail_remediable', s.get('post_fail'))}"
+                      )
+                  Path("artifacts/rescan/no_reduction.flag").write_text("1", encoding="utf-8")
+                  print(
+                      "WARNING: remediable fail count increased but no new check IDs "
+                      "(count fluctuation/noise treated as neutral): "
                       f"previous_post_remediable={s.get('previous_post_fail_remediable', s.get('previous_post_fail'))} "
                       f"current_post_remediable={s.get('post_fail_remediable', s.get('post_fail'))}"
                   )

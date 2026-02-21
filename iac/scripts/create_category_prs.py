@@ -20,6 +20,11 @@ def has_staged_changes() -> bool:
     return p.returncode != 0
 
 
+def staged_files(prefix: Path) -> list[str]:
+    out = run(["git", "diff", "--cached", "--name-only", "--", str(prefix)], check=False)
+    return [line.strip() for line in out.splitlines() if line.strip()]
+
+
 def main() -> None:
     p = argparse.ArgumentParser()
     p.add_argument("--root", required=True)
@@ -72,7 +77,13 @@ def main() -> None:
         run(["git", "checkout", "main"], check=False)
         run(["git", "checkout", "-B", branch, "main"])
         run(["git", "add", str(path)], check=False)
-        run(["git", "add", str(Path(a.manifest))], check=False)
+        changed_in_category = staged_files(path)
+        tf_changed = any(x.endswith(".tf") for x in changed_in_category)
+        if not tf_changed:
+            print(f"skip {category}: no terraform changes in category path")
+            run(["git", "reset", "--", str(path)], check=False)
+            run(["git", "checkout", "main"], check=False)
+            continue
         if not has_staged_changes():
             print(f"skip {category}: no file changes")
             run(["git", "checkout", "main"], check=False)

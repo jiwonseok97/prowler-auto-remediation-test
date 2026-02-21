@@ -464,6 +464,36 @@ def _extract_profile_name_from_arn(profile_arn: str) -> str:
     return ""
 
 
+def pick_reusable_role_name_for_instance_profile() -> str:
+    try:
+        iam = boto3.client("iam")
+        marker: Optional[str] = None
+        while True:
+            kwargs: Dict[str, Any] = {"MaxItems": 100}
+            if marker:
+                kwargs["Marker"] = marker
+            resp = iam.list_roles(**kwargs)
+            for role in resp.get("Roles", []) or []:
+                name = str(role.get("RoleName", "") or "")
+                if not name:
+                    continue
+                # Skip service-linked roles and AWS reserved names.
+                if name.startswith("AWSServiceRoleFor"):
+                    continue
+                path = str(role.get("Path", "") or "")
+                if path.startswith("/aws-service-role/"):
+                    continue
+                return name
+            if not resp.get("IsTruncated"):
+                break
+            marker = str(resp.get("Marker", "") or "")
+            if not marker:
+                break
+    except Exception:
+        return ""
+    return ""
+
+
 def pick_reusable_instance_profile_name(region: str) -> str:
     # First try IAM inventory when permission exists.
     try:
@@ -512,32 +542,64 @@ def build_ec2_instance_profile_attach_tf(finding: Dict[str, Any]) -> str:
     instance_id = extract_instance_id(finding.get("resource_arn", ""))
     if not instance_id:
         return ""
-    profile_name = pick_reusable_instance_profile_name(str(finding.get("region", "") or os.getenv("AWS_REGION", "")))
+    finding_region = str(finding.get("region", "") or os.getenv("AWS_REGION", ""))
+    profile_name = pick_reusable_instance_profile_name(finding_region)
+    role_name = ""
+    if not profile_name:
+        role_name = pick_reusable_role_name_for_instance_profile()
+        if role_name:
+            suffix = hashlib.sha1(instance_id.encode("utf-8")).hexdigest()[:10]
+            profile_name = f"prowler-ec2-profile-{suffix}"
     if not profile_name:
         return ""
+    script_lines = [
+        "set -uo pipefail",
+        f'INSTANCE_ID="{instance_id}"',
+        f'PROFILE_NAME="{profile_name}"',
+    ]
+    if role_name:
+        script_lines.extend(
+            [
+                f'ROLE_NAME="{role_name}"',
+                'aws iam get-instance-profile --instance-profile-name "$PROFILE_NAME" >/dev/null 2>&1 || aws iam create-instance-profile --instance-profile-name "$PROFILE_NAME" || true',
+                'if [ -n "$ROLE_NAME" ]; then',
+                '  HAS_ROLE=$(aws iam get-instance-profile --instance-profile-name "$PROFILE_NAME" --query "InstanceProfile.Roles[?RoleName==\'$ROLE_NAME\'] | length(@)" --output text || true)',
+                '  if [ "$HAS_ROLE" = "0" ] || [ -z "$HAS_ROLE" ] || [ "$HAS_ROLE" = "None" ]; then',
+                '    aws iam add-role-to-instance-profile --instance-profile-name "$PROFILE_NAME" --role-name "$ROLE_NAME" || true',
+                "    sleep 10",
+                "  fi",
+                "fi",
+            ]
+        )
+    script_lines.extend(
+        [
+            'TARGET_ARN=$(aws iam get-instance-profile --instance-profile-name "$PROFILE_NAME" --query \'InstanceProfile.Arn\' --output text)',
+            'ASSOC_ID=$(aws ec2 describe-iam-instance-profile-associations --region "$AWS_REGION" --filters Name=instance-id,Values="$INSTANCE_ID" --query \'IamInstanceProfileAssociations[0].AssociationId\' --output text || true)',
+            'CURRENT_ARN=$(aws ec2 describe-iam-instance-profile-associations --region "$AWS_REGION" --filters Name=instance-id,Values="$INSTANCE_ID" --query \'IamInstanceProfileAssociations[0].IamInstanceProfile.Arn\' --output text || true)',
+            'if [ "$ASSOC_ID" = "None" ] || [ -z "$ASSOC_ID" ]; then',
+            '  aws ec2 associate-iam-instance-profile --region "$AWS_REGION" --instance-id "$INSTANCE_ID" --iam-instance-profile Name="$PROFILE_NAME" || true',
+            "else",
+            '  if [ "$CURRENT_ARN" != "$TARGET_ARN" ]; then',
+            '    aws ec2 replace-iam-instance-profile-association --region "$AWS_REGION" --association-id "$ASSOC_ID" --iam-instance-profile Name="$PROFILE_NAME" || true',
+            "  fi",
+            "fi",
+            "exit 0",
+        ]
+    )
+    script = "\n".join(script_lines)
+
+    triggers_extra = f'    role_name    = "{role_name}"\n' if role_name else ""
     return (
         'resource "null_resource" "fix_ec2_instance_profile_association" {\n'
         "  triggers = {\n"
         f'    instance_id  = "{instance_id}"\n'
         f'    profile_name = "{profile_name}"\n'
+        f"{triggers_extra}"
         "  }\n\n"
         '  provisioner "local-exec" {\n'
         '    interpreter = ["/bin/bash", "-lc"]\n'
-        '    command = <<-EOT\n'
-        "set -uo pipefail\n"
-        f'INSTANCE_ID="{instance_id}"\n'
-        f'PROFILE_NAME="{profile_name}"\n'
-        "TARGET_ARN=$(aws iam get-instance-profile --instance-profile-name \"$PROFILE_NAME\" --query 'InstanceProfile.Arn' --output text)\n"
-        "ASSOC_ID=$(aws ec2 describe-iam-instance-profile-associations --region \"$AWS_REGION\" --filters Name=instance-id,Values=\"$INSTANCE_ID\" --query 'IamInstanceProfileAssociations[0].AssociationId' --output text || true)\n"
-        "CURRENT_ARN=$(aws ec2 describe-iam-instance-profile-associations --region \"$AWS_REGION\" --filters Name=instance-id,Values=\"$INSTANCE_ID\" --query 'IamInstanceProfileAssociations[0].IamInstanceProfile.Arn' --output text || true)\n"
-        "if [ \"$ASSOC_ID\" = \"None\" ] || [ -z \"$ASSOC_ID\" ]; then\n"
-        "  aws ec2 associate-iam-instance-profile --region \"$AWS_REGION\" --instance-id \"$INSTANCE_ID\" --iam-instance-profile Name=\"$PROFILE_NAME\" || true\n"
-        "else\n"
-        "  if [ \"$CURRENT_ARN\" != \"$TARGET_ARN\" ]; then\n"
-        "    aws ec2 replace-iam-instance-profile-association --region \"$AWS_REGION\" --association-id \"$ASSOC_ID\" --iam-instance-profile Name=\"$PROFILE_NAME\" || true\n"
-        "  fi\n"
-        "fi\n"
-        "exit 0\n"
+        "    command = <<-EOT\n"
+        f"{script}\n"
         "EOT\n"
         "  }\n"
         "}\n"

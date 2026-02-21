@@ -494,6 +494,28 @@ def pick_reusable_role_name_for_instance_profile() -> str:
     return ""
 
 
+def resolve_profile_name_for_role(role_name: str) -> str:
+    name = str(role_name or "").strip()
+    if not name:
+        return ""
+    try:
+        iam = boto3.client("iam")
+        iam.get_instance_profile(InstanceProfileName=name)
+        return name
+    except Exception:
+        pass
+    try:
+        iam = boto3.client("iam")
+        resp = iam.list_instance_profiles_for_role(RoleName=name)
+        for p in resp.get("InstanceProfiles", []) or []:
+            pname = str(p.get("InstanceProfileName", "") or "").strip()
+            if pname:
+                return pname
+    except Exception:
+        return ""
+    return ""
+
+
 def pick_reusable_instance_profile_name(region: str) -> str:
     # First try IAM inventory when permission exists.
     try:
@@ -548,9 +570,7 @@ def build_ec2_instance_profile_attach_tf(finding: Dict[str, Any]) -> str:
     if not profile_name:
         role_name = pick_reusable_role_name_for_instance_profile()
         if role_name:
-            # Prefer conventional profile name (= role name) first.
-            # If it already exists, we can attach without create permissions.
-            profile_name = role_name
+            profile_name = resolve_profile_name_for_role(role_name)
     if not profile_name:
         return ""
     script_lines = [
@@ -562,18 +582,20 @@ def build_ec2_instance_profile_attach_tf(finding: Dict[str, Any]) -> str:
         script_lines.extend(
             [
                 f'ROLE_NAME="{role_name}"',
-                'aws iam get-instance-profile --instance-profile-name "$PROFILE_NAME" >/dev/null 2>&1 || aws iam create-instance-profile --instance-profile-name "$PROFILE_NAME" || true',
-                'if [ -n "$ROLE_NAME" ]; then',
-                '  HAS_ROLE=$(aws iam get-instance-profile --instance-profile-name "$PROFILE_NAME" --query "InstanceProfile.Roles[?RoleName==\'$ROLE_NAME\'] | length(@)" --output text || true)',
-                '  if [ "$HAS_ROLE" = "0" ] || [ -z "$HAS_ROLE" ] || [ "$HAS_ROLE" = "None" ]; then',
-                '    aws iam add-role-to-instance-profile --instance-profile-name "$PROFILE_NAME" --role-name "$ROLE_NAME" || true',
-                "    sleep 10",
+                'if ! aws iam get-instance-profile --instance-profile-name "$PROFILE_NAME" >/dev/null 2>&1; then',
+                '  ROLE_PROFILE=$(aws iam list-instance-profiles-for-role --role-name "$ROLE_NAME" --query "InstanceProfiles[0].InstanceProfileName" --output text 2>/dev/null || true)',
+                '  if [ -n "$ROLE_PROFILE" ] && [ "$ROLE_PROFILE" != "None" ]; then',
+                '    PROFILE_NAME="$ROLE_PROFILE"',
                 "  fi",
                 "fi",
             ]
         )
     script_lines.extend(
         [
+            'if ! aws iam get-instance-profile --instance-profile-name "$PROFILE_NAME" >/dev/null 2>&1; then',
+            '  echo "skip: no reusable instance profile available for attach"',
+            "  exit 0",
+            "fi",
             'TARGET_ARN=$(aws iam get-instance-profile --instance-profile-name "$PROFILE_NAME" --query \'InstanceProfile.Arn\' --output text)',
             'ASSOC_ID=$(aws ec2 describe-iam-instance-profile-associations --region "$AWS_REGION" --filters Name=instance-id,Values="$INSTANCE_ID" --query \'IamInstanceProfileAssociations[0].AssociationId\' --output text || true)',
             'CURRENT_ARN=$(aws ec2 describe-iam-instance-profile-associations --region "$AWS_REGION" --filters Name=instance-id,Values="$INSTANCE_ID" --query \'IamInstanceProfileAssociations[0].IamInstanceProfile.Arn\' --output text || true)',

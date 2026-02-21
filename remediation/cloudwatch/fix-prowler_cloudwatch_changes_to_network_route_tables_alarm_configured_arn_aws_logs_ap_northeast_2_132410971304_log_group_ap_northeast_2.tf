@@ -5,7 +5,7 @@ resource "aws_cloudwatch_log_group" "fix_cloudwatch_log_group_ca5beb2e1a" {
 resource "aws_cloudwatch_log_metric_filter" "fix_cloudwatch_metric_filter_ca5beb2e1a" {
   name           = "filter-cloudwatch_changes_to_network_route_tables_alarm_configured"
   log_group_name = "/aws/cloudtrail/132410971304"
-  pattern        = "{ ($.eventName = \"CreateRoute\") || ($.eventName = \"CreateRouteTable\") || ($.eventName = \"ReplaceRoute\") || ($.eventName = \"ReplaceRouteTableAssociation\") || ($.eventName = \"DeleteRouteTable\") || ($.eventName = \"DeleteRoute\") || ($.eventName = \"DisassociateRouteTable\") }"
+  pattern        = "{ ($.eventSource = \"ec2.amazonaws.com\") && (($.eventName = \"CreateRoute\") || ($.eventName = \"CreateRouteTable\") || ($.eventName = \"ReplaceRoute\") || ($.eventName = \"ReplaceRouteTableAssociation\") || ($.eventName = \"DeleteRouteTable\") || ($.eventName = \"DeleteRoute\") || ($.eventName = \"DisassociateRouteTable\")) }"
 
   metric_transformation {
     name      = "cloudwatch_changes_to_network_route_tables_alarm_configured"

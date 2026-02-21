@@ -121,6 +121,15 @@ jobs:
                       manual_override_ids.add(cid_s)
             except Exception:
               pass
+          for cat_manifest in Path("remediation").glob("*/manifest.json"):
+            try:
+              cat_doc = json.loads(cat_manifest.read_text(encoding='utf-8'))
+              for item in cat_doc.get("items", []) or []:
+                cid = str(item.get("check_id", "")).strip()
+                if cid and bool(item.get("manual_required")):
+                  manual_override_ids.add(cid)
+            except Exception:
+              pass
 
           def is_manual_runbook(row):
             tier = str(row.get('remediation_tier', '')).strip().lower()

@@ -196,25 +196,13 @@ jobs:
             manual_table_lines.append("| none | 0 |")
           manual_table = "\n".join(manual_table_lines)
 
-          inc_line = ""
-          if incremental_reduced is not None:
-            inc_line = f"- incremental_reduced: {incremental_reduced} (previous_post_fail={previous_post_fail} -> current_post_fail={s['post_fail']})\n"
-          remediable_inc_line = ""
-          if incremental_reduced_remediable is not None:
-            remediable_inc_line = (
-              f"- incremental_reduced_remediable: {incremental_reduced_remediable} "
-              f"(previous_post_fail_remediable={previous_post_remediable_fail} -> current_post_fail_remediable={current_remediable_fail})\n"
-            )
-
           md = (
             "## Rescan Summary\n"
             f"- baseline_fail: {s['baseline_fail']}\n"
             f"- post_fail: {s['post_fail']}\n"
             f"- reduced: {s['reduced']} (baseline -> current)\n"
-            f"{inc_line}\n"
-            f"- post_fail_auto_or_review(terraform-capable): {current_remediable_fail}\n"
-            f"- post_fail_manual_runbook(exception/manual): {current_manual_fail}\n"
-            f"{remediable_inc_line}\n"
+            f"- actionable_fail(terraform-capable): {current_remediable_fail}\n"
+            f"- manual_fail(exception/manual): {current_manual_fail}\n\n"
             "### Remaining FAIL (All)\n"
             f"{rem_table}\n\n"
             "### Terraform-Capable FAIL (Auto/Review)\n"

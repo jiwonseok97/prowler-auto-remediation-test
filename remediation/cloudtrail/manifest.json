@@ -2,7 +2,7 @@
   "category": "cloudtrail",
   "account": "132410971304",
   "region": "ap-northeast-2",
-  "created_at": "2026-02-21T07:05:11.982168+00:00",
+  "created_at": "2026-02-21T07:41:53.128399+00:00",
   "items": [
     {
       "check_id": "prowler-cloudtrail_kms_encryption_enabled",

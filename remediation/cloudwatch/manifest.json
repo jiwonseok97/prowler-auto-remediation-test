@@ -2,7 +2,7 @@
   "category": "cloudwatch",
   "account": "132410971304",
   "region": "ap-northeast-2",
-  "created_at": "2026-02-20T16:52:29.793355+00:00",
+  "created_at": "2026-02-21T02:16:10.487501+00:00",
   "items": [
     {
       "check_id": "prowler-cloudwatch_changes_to_network_route_tables_alarm_configured",
@@ -21,12 +21,87 @@
         }
       ],
       "tf_file": "remediation/cloudwatch/fix-prowler_cloudwatch_changes_to_network_route_tables_alarm_configured_arn_aws_logs_ap_northeast_2_132410971304_log_group_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-cloudwatch_log_metric_filter_aws_organizations_changes",
+      "manual_required": false,
+      "files": [
+        "remediation/cloudwatch/fix-prowler_cloudwatch_log_metric_filter_aws_organizations_changes_arn_aws_logs_ap_northeast_2_132410971304_log_group_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 58.5,
+      "resources": [
+        {
+          "resource_address": "aws_cloudwatch_log_group.fix_cloudwatch_log_group_3a632f4b4d",
+          "arn": "/aws/cloudtrail/132410971304",
+          "resource_type": "aws_cloudwatch_log_group",
+          "optional": true
+        }
+      ],
+      "tf_file": "remediation/cloudwatch/fix-prowler_cloudwatch_log_metric_filter_aws_organizations_changes_arn_aws_logs_ap_northeast_2_132410971304_log_group_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-cloudwatch_log_metric_filter_root_usage",
+      "manual_required": false,
+      "files": [
+        "remediation/cloudwatch/fix-prowler_cloudwatch_log_metric_filter_root_usage_arn_aws_logs_ap_northeast_2_132410971304_log_group_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 58.5,
+      "resources": [
+        {
+          "resource_address": "aws_cloudwatch_log_group.fix_cloudwatch_log_group_176efa0407",
+          "arn": "/aws/cloudtrail/132410971304",
+          "resource_type": "aws_cloudwatch_log_group",
+          "optional": true
+        }
+      ],
+      "tf_file": "remediation/cloudwatch/fix-prowler_cloudwatch_log_metric_filter_root_usage_arn_aws_logs_ap_northeast_2_132410971304_log_group_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-cloudwatch_log_metric_filter_sign_in_without_mfa",
+      "manual_required": false,
+      "files": [
+        "remediation/cloudwatch/fix-prowler_cloudwatch_log_metric_filter_sign_in_without_mfa_arn_aws_logs_ap_northeast_2_132410971304_log_group_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 58.5,
+      "resources": [
+        {
+          "resource_address": "aws_cloudwatch_log_group.fix_cloudwatch_log_group_cdda5d6ebc",
+          "arn": "/aws/cloudtrail/132410971304",
+          "resource_type": "aws_cloudwatch_log_group",
+          "optional": true
+        }
+      ],
+      "tf_file": "remediation/cloudwatch/fix-prowler_cloudwatch_log_metric_filter_sign_in_without_mfa_arn_aws_logs_ap_northeast_2_132410971304_log_group_ap_northeast_2.tf"
     }
   ],
   "import_map": [
     {
       "check_id": "prowler-cloudwatch_changes_to_network_route_tables_alarm_configured",
       "address": "aws_cloudwatch_log_group.fix_cloudwatch_log_group_ca5beb2e1a",
+      "import_id": "/aws/cloudtrail/132410971304",
+      "resource_type": "aws_cloudwatch_log_group",
+      "optional": true
+    },
+    {
+      "check_id": "prowler-cloudwatch_log_metric_filter_aws_organizations_changes",
+      "address": "aws_cloudwatch_log_group.fix_cloudwatch_log_group_3a632f4b4d",
+      "import_id": "/aws/cloudtrail/132410971304",
+      "resource_type": "aws_cloudwatch_log_group",
+      "optional": true
+    },
+    {
+      "check_id": "prowler-cloudwatch_log_metric_filter_root_usage",
+      "address": "aws_cloudwatch_log_group.fix_cloudwatch_log_group_176efa0407",
+      "import_id": "/aws/cloudtrail/132410971304",
+      "resource_type": "aws_cloudwatch_log_group",
+      "optional": true
+    },
+    {
+      "check_id": "prowler-cloudwatch_log_metric_filter_sign_in_without_mfa",
+      "address": "aws_cloudwatch_log_group.fix_cloudwatch_log_group_cdda5d6ebc",
       "import_id": "/aws/cloudtrail/132410971304",
       "resource_type": "aws_cloudwatch_log_group",
       "optional": true

@@ -239,6 +239,18 @@ def extract_sg_id(arn: str) -> str:
     return ""
 
 
+def extract_instance_id(arn: str) -> str:
+    if ":instance/" in arn:
+        return arn.split(":instance/", 1)[1]
+    return ""
+
+
+def extract_iam_user_name(arn: str) -> str:
+    if ":user/" in arn:
+        return arn.split(":user/", 1)[1]
+    return ""
+
+
 def lookup_vpc_for_sg(arn: str, region: str) -> str:
     sg_id = extract_sg_id(arn)
     if not sg_id:
@@ -418,74 +430,118 @@ def build_sg_restrict_all_ports_tf(finding: Dict[str, Any], region: str) -> str:
         return ""
     if not sg_exists(sg_id, region):
         return ""
-    rule = find_open_sg_rule(sg_id, region)
-    safe_cidr4 = lookup_vpc_cidr_for_sg_id(sg_id, region) or "10.0.0.0/8"
-    finding["_sg_id"] = sg_id
-
-    # Fallback: if we cannot resolve rule-id, still import SG and tighten ingress.
-    # This avoids dropping remediation when describe_security_group_rules is unavailable.
-    if not rule:
-        vpc_id = lookup_vpc_for_sg(finding.get("resource_arn", ""), region)
-        if not vpc_id:
-            return ""
-        return (
-            'resource "aws_security_group" "fix_sg_restrict" {\n'
-            f'  name        = "sg-remediation-{safe_id(sg_id)}"\n'
-            '  description = "managed by remediation"\n'
-            f'  vpc_id      = "{vpc_id}"\n'
-            "  revoke_rules_on_delete = true\n"
-            "\n"
-            "  ingress {\n"
-            '    description = "restricted by remediation"\n'
-            "    from_port   = 0\n"
-            "    to_port     = 0\n"
-            '    protocol    = "-1"\n'
-            f'    cidr_blocks = ["{safe_cidr4}"]\n'
-            "  }\n"
-            "\n"
-            "  egress {\n"
-            "    from_port   = 0\n"
-            "    to_port     = 0\n"
-            '    protocol    = "-1"\n'
-            '    cidr_blocks = ["0.0.0.0/0"]\n'
-            "  }\n"
-            "\n"
-            "  lifecycle {\n"
-            "    ignore_changes = [name, description, tags, tags_all]\n"
-            "  }\n"
-            "}\n\n"
-        )
-
-    rule_id = str(rule.get("SecurityGroupRuleId", "") or "")
-    if not rule_id:
-        return ""
-    finding["_sg_ingress_rule_import_id"] = rule_id
-
-    ip_protocol = str(rule.get("IpProtocol", "-1") or "-1")
-    from_port = rule.get("FromPort")
-    to_port = rule.get("ToPort")
-
-    lines = [
-        'resource "aws_vpc_security_group_ingress_rule" "fix_sg_ingress_restrict" {',
-        f'  security_group_id = "{sg_id}"',
-        f'  ip_protocol       = "{ip_protocol}"',
-        f'  cidr_ipv4         = "{safe_cidr4}"',
-    ]
-
-    if ip_protocol not in {"-1", "icmp", "58"}:
-        if from_port is not None:
-            lines.append(f"  from_port         = {int(from_port)}")
-        if to_port is not None:
-            lines.append(f"  to_port           = {int(to_port)}")
-
-    lines.extend(
-        [
-            '  description       = "restricted by remediation"',
-            "}",
-            "",
-        ]
+    # Use AWS API level revoke by rule id. This is robust against varied existing
+    # ingress schemas and avoids provider-side schema drift for SG rule resources.
+    return (
+        'resource "null_resource" "fix_sg_restrict_world_ingress" {\n'
+        "  triggers = {\n"
+        f'    security_group_id = "{sg_id}"\n'
+        "  }\n"
+        "\n"
+        '  provisioner "local-exec" {\n'
+        '    interpreter = ["/bin/bash", "-lc"]\n'
+        '    command = <<-EOT\n'
+        "set -euo pipefail\n"
+        f'SG_ID="{sg_id}"\n'
+        'RULE_IDS=$(aws ec2 describe-security-group-rules --region "$AWS_REGION" \\\n'
+        '  --filters Name=group-id,Values="$SG_ID" Name=is-egress,Values=false \\\n'
+        '  --query "SecurityGroupRules[?CidrIpv4==`0.0.0.0/0` || CidrIpv6==`::/0`].SecurityGroupRuleId" \\\n'
+        '  --output text || true)\n'
+        'if [ -n "${RULE_IDS// /}" ]; then\n'
+        '  aws ec2 revoke-security-group-ingress --region "$AWS_REGION" --group-id "$SG_ID" --security-group-rule-ids $RULE_IDS || true\n'
+        "fi\n"
+        "EOT\n"
+        "  }\n"
+        "}\n"
     )
-    return "\n".join(lines)
+
+
+def build_ec2_instance_profile_attach_tf(finding: Dict[str, Any], account_id: str) -> str:
+    instance_id = extract_instance_id(finding.get("resource_arn", ""))
+    if not instance_id:
+        return ""
+    role_name = f"prowler-remediation-ec2-role-{safe_id(instance_id)}"[:64]
+    profile_name = f"prowler-remediation-ec2-profile-{safe_id(instance_id)}"[:128]
+    assume_doc = {
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Effect": "Allow",
+                "Principal": {"Service": "ec2.amazonaws.com"},
+                "Action": "sts:AssumeRole",
+            }
+        ],
+    }
+    return (
+        'resource "aws_iam_role" "fix_ec2_instance_profile_role" {\n'
+        f'  name               = "{role_name}"\n'
+        f"  assume_role_policy = {json.dumps(json.dumps(assume_doc))}\n"
+        "}\n\n"
+        'resource "aws_iam_instance_profile" "fix_ec2_instance_profile" {\n'
+        f'  name = "{profile_name}"\n'
+        "  role = aws_iam_role.fix_ec2_instance_profile_role.name\n"
+        "}\n\n"
+        'resource "aws_iam_instance_profile_association" "fix_ec2_instance_profile_association" {\n'
+        f'  instance_id          = "{instance_id}"\n'
+        "  iam_instance_profile = aws_iam_instance_profile.fix_ec2_instance_profile.name\n"
+        "}\n"
+    )
+
+
+def build_iam_detach_user_policies_tf(finding: Dict[str, Any]) -> str:
+    user_name = extract_iam_user_name(finding.get("resource_arn", ""))
+    if not user_name:
+        return ""
+    return (
+        'resource "null_resource" "fix_iam_user_policy_attachments" {\n'
+        "  triggers = {\n"
+        f'    user_name = "{user_name}"\n'
+        "  }\n"
+        "\n"
+        '  provisioner "local-exec" {\n'
+        '    interpreter = ["/bin/bash", "-lc"]\n'
+        '    command = <<-EOT\n'
+        "set -euo pipefail\n"
+        f'USER_NAME="{user_name}"\n'
+        'ATTACHED=$(aws iam list-attached-user-policies --user-name "$USER_NAME" --query "AttachedPolicies[].PolicyArn" --output text || true)\n'
+        'for P in $ATTACHED; do\n'
+        '  aws iam detach-user-policy --user-name "$USER_NAME" --policy-arn "$P" || true\n'
+        "done\n"
+        'INLINE=$(aws iam list-user-policies --user-name "$USER_NAME" --query "PolicyNames[]" --output text || true)\n'
+        'for PN in $INLINE; do\n'
+        '  aws iam delete-user-policy --user-name "$USER_NAME" --policy-name "$PN" || true\n'
+        "done\n"
+        "EOT\n"
+        "  }\n"
+        "}\n"
+    )
+
+
+def build_iam_detach_policy_everywhere_tf(finding: Dict[str, Any]) -> str:
+    policy_arn = str(finding.get("resource_arn", "") or "")
+    if not policy_arn.startswith("arn:aws:iam::"):
+        return ""
+    return (
+        'resource "null_resource" "fix_iam_detach_admin_policy" {\n'
+        "  triggers = {\n"
+        f'    policy_arn = "{policy_arn}"\n'
+        "  }\n"
+        "\n"
+        '  provisioner "local-exec" {\n'
+        '    interpreter = ["/bin/bash", "-lc"]\n'
+        '    command = <<-EOT\n'
+        "set -euo pipefail\n"
+        f'POLICY_ARN="{policy_arn}"\n'
+        'USERS=$(aws iam list-entities-for-policy --policy-arn "$POLICY_ARN" --query "PolicyUsers[].UserName" --output text || true)\n'
+        'for U in $USERS; do aws iam detach-user-policy --user-name "$U" --policy-arn "$POLICY_ARN" || true; done\n'
+        'ROLES=$(aws iam list-entities-for-policy --policy-arn "$POLICY_ARN" --query "PolicyRoles[].RoleName" --output text || true)\n'
+        'for R in $ROLES; do aws iam detach-role-policy --role-name "$R" --policy-arn "$POLICY_ARN" || true; done\n'
+        'GROUPS=$(aws iam list-entities-for-policy --policy-arn "$POLICY_ARN" --query "PolicyGroups[].GroupName" --output text || true)\n'
+        'for G in $GROUPS; do aws iam detach-group-policy --group-name "$G" --policy-arn "$POLICY_ARN" || true; done\n'
+        "EOT\n"
+        "  }\n"
+        "}\n"
+    )
 
 
 def uniquify_resource_names(tf_code: str, suffix: str) -> Tuple[str, List[Tuple[str, str]]]:
@@ -582,6 +638,10 @@ terraform {
     aws = {
       source = "hashicorp/aws"
       version = ">= 5.0"
+    }
+    null = {
+      source = "hashicorp/null"
+      version = ">= 3.0"
     }
   }
 }
@@ -1644,6 +1704,12 @@ def main() -> None:
             tf_code = build_nacl_restrict_ingress_tf(f, finding_region)
         elif "ec2_securitygroup_allow_ingress_from_internet_to_all_ports" in cid_l:
             tf_code = build_sg_restrict_all_ports_tf(f, finding_region)
+        elif "ec2_instance_profile_attached" in cid_l:
+            tf_code = build_ec2_instance_profile_attach_tf(f, a.account_id)
+        elif "iam_policy_attached_only_to_group_or_roles" in cid_l:
+            tf_code = build_iam_detach_user_policies_tf(f)
+        elif "iam_aws_attached_policy_no_administrative_privileges" in cid_l or "iam_customer_attached_policy_no_administrative_privileges" in cid_l:
+            tf_code = build_iam_detach_policy_everywhere_tf(f)
         elif "ec2_ebs_volume_encryption" in cid_l:
             if not ec2_allows_enable_ebs_encryption(finding_region, a.account_id):
                 overall["categories"][cat].append(

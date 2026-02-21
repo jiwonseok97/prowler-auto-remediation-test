@@ -98,6 +98,12 @@ jobs:
           s = json.loads(summary_path.read_text(encoding='utf-8'))
           current_post = json.loads(Path('artifacts/rescan/post_normalized.json').read_text(encoding='utf-8'))
           current_fail_ids = sorted({x.get('check_id', 'unknown') for x in current_post if x.get('status') == 'FAIL'})
+          fail_counts = {}
+          for row in current_post:
+            if row.get('status') != 'FAIL':
+              continue
+            cid = str(row.get('check_id', 'unknown'))
+            fail_counts[cid] = fail_counts.get(cid, 0) + 1
 
           prev_summary_path = Path('artifacts/previous_rescan/rescan_summary.json')
           prev_post_path = Path('artifacts/previous_rescan/post_normalized.json')
@@ -122,6 +128,16 @@ jobs:
             s['new_fail_since_previous_check_ids'] = new_fail_since_previous
 
           rem = '\n'.join(f"- {x}" for x in s['remaining_fail_check_ids'][:30]) or '- none'
+          rem_table_lines = [
+            "| Remaining Check ID | Count |",
+            "|---|---:|",
+          ]
+          if s['remaining_fail_check_ids']:
+            for cid in sorted(s['remaining_fail_check_ids']):
+              rem_table_lines.append(f"| `{cid}` | {int(fail_counts.get(cid, 0))} |")
+          else:
+            rem_table_lines.append("| none | 0 |")
+          rem_table = "\n".join(rem_table_lines)
           resolved = '\n'.join(f"- {x}" for x in resolved_since_previous[:30]) or '- none'
           introduced = '\n'.join(f"- {x}" for x in new_fail_since_previous[:30]) or '- none'
 
@@ -137,6 +153,8 @@ jobs:
             f"{inc_line}\n"
             "### Remaining FAIL\n"
             f"{rem}\n\n"
+            "### Remaining FAIL (Table)\n"
+            f"{rem_table}\n\n"
             "### Resolved Since Previous Rescan\n"
             f"{resolved}\n\n"
             "### New FAIL Since Previous Rescan\n"

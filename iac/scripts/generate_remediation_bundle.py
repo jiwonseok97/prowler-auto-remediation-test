@@ -457,35 +457,43 @@ def build_sg_restrict_all_ports_tf(finding: Dict[str, Any], region: str) -> str:
     )
 
 
-def build_ec2_instance_profile_attach_tf(finding: Dict[str, Any], account_id: str) -> str:
+def pick_reusable_instance_profile_name() -> str:
+    try:
+        iam = boto3.client("iam")
+        marker: Optional[str] = None
+        while True:
+            kwargs: Dict[str, Any] = {"MaxItems": 100}
+            if marker:
+                kwargs["Marker"] = marker
+            resp = iam.list_instance_profiles(**kwargs)
+            profiles = resp.get("InstanceProfiles", []) or []
+            for p in profiles:
+                name = str(p.get("InstanceProfileName", "") or "")
+                roles = p.get("Roles", []) or []
+                if name and roles:
+                    return name
+            if not resp.get("IsTruncated"):
+                break
+            marker = str(resp.get("Marker", "") or "")
+            if not marker:
+                break
+    except Exception:
+        return ""
+    return ""
+
+
+def build_ec2_instance_profile_attach_tf(finding: Dict[str, Any]) -> str:
     instance_id = extract_instance_id(finding.get("resource_arn", ""))
     if not instance_id:
         return ""
-    role_name = f"prowler-remediation-ec2-role-{safe_id(instance_id)}"[:64]
-    profile_name = f"prowler-remediation-ec2-profile-{safe_id(instance_id)}"[:128]
-    assume_doc = {
-        "Version": "2012-10-17",
-        "Statement": [
-            {
-                "Effect": "Allow",
-                "Principal": {"Service": "ec2.amazonaws.com"},
-                "Action": "sts:AssumeRole",
-            }
-        ],
-    }
+    profile_name = pick_reusable_instance_profile_name()
+    if not profile_name:
+        return ""
     return (
-        'resource "aws_iam_role" "fix_ec2_instance_profile_role" {\n'
-        f'  name               = "{role_name}"\n'
-        f"  assume_role_policy = {json.dumps(json.dumps(assume_doc))}\n"
-        "}\n\n"
-        'resource "aws_iam_instance_profile" "fix_ec2_instance_profile" {\n'
-        f'  name = "{profile_name}"\n'
-        "  role = aws_iam_role.fix_ec2_instance_profile_role.name\n"
-        "}\n\n"
         'resource "null_resource" "fix_ec2_instance_profile_association" {\n'
         "  triggers = {\n"
         f'    instance_id  = "{instance_id}"\n'
-        "    profile_name = aws_iam_instance_profile.fix_ec2_instance_profile.name\n"
+        f'    profile_name = "{profile_name}"\n'
         "  }\n\n"
         '  provisioner "local-exec" {\n'
         '    interpreter = ["/bin/bash", "-lc"]\n'
@@ -506,7 +514,6 @@ def build_ec2_instance_profile_attach_tf(finding: Dict[str, Any], account_id: st
         "exit 0\n"
         "EOT\n"
         "  }\n"
-        "  depends_on = [aws_iam_instance_profile.fix_ec2_instance_profile]\n"
         "}\n"
     )
 
@@ -1735,7 +1742,20 @@ def main() -> None:
         elif "ec2_securitygroup_allow_ingress_from_internet_to_all_ports" in cid_l:
             tf_code = build_sg_restrict_all_ports_tf(f, finding_region)
         elif "ec2_instance_profile_attached" in cid_l:
-            tf_code = build_ec2_instance_profile_attach_tf(f, a.account_id)
+            tf_code = build_ec2_instance_profile_attach_tf(f)
+            if not tf_code:
+                overall["categories"][cat].append(
+                    {
+                        "check_id": cid,
+                        "manual_required": True,
+                        "remediation_tier": "manual-runbook",
+                        "files": [],
+                        "priority": f.get("osfp", {}).get("priority_bucket", "P3"),
+                        "score": f.get("osfp", {}).get("priority_score", 0),
+                        "reason": "no_reusable_instance_profile_available",
+                    }
+                )
+                continue
         elif "iam_policy_attached_only_to_group_or_roles" in cid_l:
             tf_code = build_iam_detach_user_policies_tf(f)
         elif "iam_aws_attached_policy_no_administrative_privileges" in cid_l or "iam_customer_attached_policy_no_administrative_privileges" in cid_l:

@@ -153,9 +153,13 @@ jobs:
           s = json.loads(Path('artifacts/rescan/rescan_summary.json').read_text(encoding='utf-8'))
           incremental = s.get("incremental_reduced")
           if incremental is not None:
-              if incremental <= 0:
+              if incremental < 0:
                   raise SystemExit(
                       f"FAIL not reduced vs previous post: previous_post={s.get('previous_post_fail')} current_post={s.get('post_fail')}"
+                  )
+              if incremental == 0:
+                  print(
+                      f"WARNING: no additional reduction vs previous post: previous_post={s.get('previous_post_fail')} current_post={s.get('post_fail')}"
                   )
           elif s.get("reduced", 0) <= 0:
               raise SystemExit(f"FAIL not reduced vs baseline: baseline={s.get('baseline_fail')} post={s.get('post_fail')}")

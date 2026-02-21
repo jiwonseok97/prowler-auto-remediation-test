@@ -122,7 +122,13 @@ def normalize(rows: List[Dict[str, Any]], default_account: str, default_region: 
         severity = first(r.get("Severity", {}).get("Label"), r.get("Severity"), "MEDIUM").upper()
 
         non_tf = check_id.startswith(NON_TERRAFORM_PREFIX)
-        manual = non_tf or any(k in check_id for k in MANUAL_CHECK_KEYWORDS)
+        # Allow auto-remediation for CloudWatch metric-filter checks even if check ids
+        # include keywords like root/mfa/organizations.
+        cloudwatch_filter_check = (
+            check_id.startswith("prowler-cloudwatch_log_metric_filter_")
+            or check_id.startswith("cloudwatch_log_metric_filter_")
+        )
+        manual = non_tf or (any(k in check_id for k in MANUAL_CHECK_KEYWORDS) and not cloudwatch_filter_check)
 
         out.append(
             {

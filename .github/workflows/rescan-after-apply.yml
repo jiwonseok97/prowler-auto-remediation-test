@@ -158,12 +158,33 @@ jobs:
                       f"FAIL not reduced vs previous post: previous_post={s.get('previous_post_fail')} current_post={s.get('post_fail')}"
                   )
               if incremental == 0:
+                  Path("artifacts/rescan/no_reduction.flag").write_text("1", encoding="utf-8")
                   print(
                       f"WARNING: no additional reduction vs previous post: previous_post={s.get('previous_post_fail')} current_post={s.get('post_fail')}"
                   )
           elif s.get("reduced", 0) <= 0:
               raise SystemExit(f"FAIL not reduced vs baseline: baseline={s.get('baseline_fail')} post={s.get('post_fail')}")
           PY
+
+      - name: Comment on merged PR when no additional reduction
+        if: always()
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ ! -f artifacts/rescan/no_reduction.flag ]; then
+            echo "no neutral warning; skip PR comment"
+            exit 0
+          fi
+          TITLE='${{ github.event.workflow_run.display_title }}'
+          if [[ "$TITLE" =~ \#([0-9]+) ]]; then
+            PR_NUMBER="${BASH_REMATCH[1]}"
+          else
+            echo "could not parse PR number from title: $TITLE"
+            exit 0
+          fi
+          MSG=$'No additional FAIL reduction from this merge.\n\n- Result: neutral (apply succeeded, but fail count unchanged)\n- See workflow summary/artifact `rescan-${{ github.run_id }}` for remaining checks.'
+          gh pr comment "$PR_NUMBER" --repo "${{ github.repository }}" --body "$MSG" || true
 
       - name: Optional publish rescan result to external API
         continue-on-error: true

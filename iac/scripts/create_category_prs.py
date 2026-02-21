@@ -82,11 +82,19 @@ def main() -> None:
 
         top5 = "\n".join(f"- {x}" for x in cat.get("top5", [])[:5]) or "- none"
         manual = "\n".join(f"- {x}" for x in cat.get("manual_required", [])) or "- none"
+        tiers = cat.get("tier_breakdown", {}) if isinstance(cat.get("tier_breakdown"), dict) else {}
+        tier_lines = (
+            f"- safe-auto: `{int(tiers.get('safe-auto', 0))}`\n"
+            f"- review-then-apply: `{int(tiers.get('review-then-apply', 0))}`\n"
+            f"- manual-runbook: `{int(tiers.get('manual-runbook', 0))}`"
+        )
         body = (
             "## What This PR Changes\n"
             f"- Category: `{category}`\n"
             f"- Generated Terraform files: `{cat.get('checks', 0)}` checks\n"
             f"- Path: `{path}`\n\n"
+            "## Execution Tiers\n"
+            f"{tier_lines}\n\n"
             "## Priority (Top 5)\n"
             f"{top5}\n\n"
             "## Merge Impact\n"
@@ -96,7 +104,7 @@ def main() -> None:
             "1. Merge this PR.\n"
             "2. Confirm apply workflow succeeds.\n"
             "3. Confirm `Security Pipeline - 04 Verify FAIL Reduction` shows FAIL reduction.\n\n"
-            "## Remaining Manual Required\n"
+            "## Remaining Manual Runbook\n"
             f"{manual}\n"
         )
 

@@ -21,6 +21,15 @@ SUPPORTED_SERVICES = {
 }
 NON_TERRAFORM_PREFIX = ("guardduty_", "securityhub_", "inspector_", "iam_root_")
 MANUAL_CHECK_KEYWORDS = ("mfa", "root", "access_key", "organizations")
+REVIEW_REQUIRED_KEYWORDS = (
+    "iam_aws_attached_policy_no_administrative_privileges",
+    "iam_customer_attached_policy_no_administrative_privileges",
+    "iam_policy_attached_only_to_group_or_roles",
+    "ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+    "networkacl_allow_ingress_any_port",
+    "networkacl_allow_ingress_tcp_port_22",
+    "networkacl_allow_ingress_tcp_port_3389",
+)
 
 
 def first(*vals: Any) -> str:
@@ -129,6 +138,12 @@ def normalize(rows: List[Dict[str, Any]], default_account: str, default_region: 
             or check_id.startswith("cloudwatch_log_metric_filter_")
         )
         manual = non_tf or (any(k in check_id for k in MANUAL_CHECK_KEYWORDS) and not cloudwatch_filter_check)
+        if manual:
+            tier = "manual-runbook"
+        elif any(k in check_id for k in REVIEW_REQUIRED_KEYWORDS):
+            tier = "review-then-apply"
+        else:
+            tier = "safe-auto"
 
         out.append(
             {
@@ -141,6 +156,7 @@ def normalize(rows: List[Dict[str, Any]], default_account: str, default_region: 
                 "status": "FAIL",
                 "manual_required": manual,
                 "non_terraform": non_tf,
+                "remediation_tier": tier,
             }
         )
     return out

@@ -78,6 +78,15 @@ def category_of(service: str, check_id: str) -> str:
     return ""
 
 
+def normalize_tier(raw_tier: str, manual_required: bool) -> str:
+    tier = str(raw_tier or "").strip().lower()
+    if manual_required:
+        return "manual-runbook"
+    if tier in {"safe-auto", "review-then-apply"}:
+        return tier
+    return "safe-auto"
+
+
 def render_with_bedrock(model_id: str, prompt: str) -> str:
     client = boto3.client("bedrock-runtime")
     body = {
@@ -1426,6 +1435,7 @@ def main() -> None:
     for f in fail_rows:
         cid = f.get("check_id", "unknown")
         cat = category_of(f.get("service", ""), cid)
+        desired_tier = normalize_tier(f.get("remediation_tier", ""), bool(f.get("manual_required")))
         finding_region = str(f.get("region", "") or a.region).strip()
         if not finding_region:
             finding_region = a.region
@@ -1445,6 +1455,7 @@ def main() -> None:
                     {
                         "check_id": cid,
                         "manual_required": True,
+                        "remediation_tier": "manual-runbook",
                         "files": [],
                         "priority": f.get("osfp", {}).get("priority_bucket", "P3"),
                         "score": f.get("osfp", {}).get("priority_score", 0),
@@ -1458,6 +1469,7 @@ def main() -> None:
                 {
                     "check_id": cid,
                     "manual_required": True,
+                    "remediation_tier": "manual-runbook",
                     "files": [],
                     "priority": f.get("osfp", {}).get("priority_bucket", "P3"),
                     "score": f.get("osfp", {}).get("priority_score", 0),
@@ -1475,6 +1487,7 @@ def main() -> None:
                 {
                     "check_id": cid,
                     "manual_required": True,
+                    "remediation_tier": "manual-runbook",
                     "files": [],
                     "priority": f.get("osfp", {}).get("priority_bucket", "P3"),
                     "score": f.get("osfp", {}).get("priority_score", 0),
@@ -1508,6 +1521,7 @@ def main() -> None:
                     {
                         "check_id": cid,
                         "manual_required": True,
+                        "remediation_tier": "manual-runbook",
                         "files": [],
                         "priority": f.get("osfp", {}).get("priority_bucket", "P3"),
                         "score": f.get("osfp", {}).get("priority_score", 0),
@@ -1530,6 +1544,7 @@ def main() -> None:
                     {
                         "check_id": cid,
                         "manual_required": True,
+                        "remediation_tier": "manual-runbook",
                         "files": [],
                         "priority": f.get("osfp", {}).get("priority_bucket", "P3"),
                         "score": f.get("osfp", {}).get("priority_score", 0),
@@ -1555,6 +1570,7 @@ def main() -> None:
                 {
                     "check_id": cid,
                     "manual_required": True,
+                    "remediation_tier": "manual-runbook",
                     "files": [],
                     "priority": f.get("osfp", {}).get("priority_bucket", "P3"),
                     "score": f.get("osfp", {}).get("priority_score", 0),
@@ -1577,6 +1593,7 @@ def main() -> None:
                 {
                     "check_id": cid,
                     "manual_required": True,
+                    "remediation_tier": "manual-runbook",
                     "files": [],
                     "priority": f.get("osfp", {}).get("priority_bucket", "P3"),
                     "score": f.get("osfp", {}).get("priority_score", 0),
@@ -1590,6 +1607,7 @@ def main() -> None:
                 {
                     "check_id": cid,
                     "manual_required": True,
+                    "remediation_tier": "manual-runbook",
                     "files": [],
                     "priority": f.get("osfp", {}).get("priority_bucket", "P3"),
                     "score": f.get("osfp", {}).get("priority_score", 0),
@@ -1603,6 +1621,7 @@ def main() -> None:
                 {
                     "check_id": cid,
                     "manual_required": True,
+                    "remediation_tier": "manual-runbook",
                     "files": [],
                     "priority": f.get("osfp", {}).get("priority_bucket", "P3"),
                     "score": f.get("osfp", {}).get("priority_score", 0),
@@ -1633,6 +1652,7 @@ def main() -> None:
             {
                 "check_id": cid,
                 "manual_required": False,
+                "remediation_tier": desired_tier,
                 "files": [str(target).replace("\\", "/")],
                 "priority": f.get("osfp", {}).get("priority_bucket", "P3"),
                 "score": f.get("osfp", {}).get("priority_score", 0),

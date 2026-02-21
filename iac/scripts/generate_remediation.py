@@ -47,7 +47,8 @@ def infer_service(finding: Dict[str, Any]) -> str:
 def classify_action(finding: Dict[str, Any]) -> str:
     cid = str(finding.get("check_id", "")).strip().lower()
     arn = str(finding.get("resource_arn", "")).strip()
-    if finding.get("manual_required") or finding.get("non_terraform"):
+    tier = str(finding.get("remediation_tier", "")).strip().lower()
+    if finding.get("manual_required") or finding.get("non_terraform") or tier == "manual-runbook":
         return "SKIP"
     if not is_supported_service(finding):
         return "SKIP"
@@ -73,6 +74,7 @@ def build_plan(rows: List[Dict[str, Any]]) -> Dict[str, Any]:
                 "resource_arn": row.get("resource_arn", ""),
                 "region": row.get("region", ""),
                 "account_id": row.get("account_id", ""),
+                "remediation_tier": row.get("remediation_tier", ""),
                 "action": action,
             }
         )

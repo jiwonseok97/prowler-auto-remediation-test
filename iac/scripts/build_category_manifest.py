@@ -52,7 +52,16 @@ def main() -> None:
                 "path": f"remediation/{category}",
                 "checks": len(items),
                 "top5": [x.get("check_id") for x in top],
-                "manual_required": [x.get("check_id") for x in items if x.get("manual_required")],
+                "tier_breakdown": {
+                    "safe-auto": sum(1 for x in items if x.get("remediation_tier") == "safe-auto"),
+                    "review-then-apply": sum(1 for x in items if x.get("remediation_tier") == "review-then-apply"),
+                    "manual-runbook": sum(1 for x in items if x.get("remediation_tier") == "manual-runbook"),
+                },
+                "manual_required": [
+                    x.get("check_id")
+                    for x in items
+                    if x.get("remediation_tier") == "manual-runbook" or x.get("manual_required")
+                ],
                 "import_map": f"remediation/{category}/import-map.txt",
             }
         )
@@ -81,6 +90,7 @@ def main() -> None:
             cid = it.get("check_id")
             entry = {
                 "category": category,
+                "remediation_tier": it.get("remediation_tier", "safe-auto"),
                 "priority": it.get("priority", "P3"),
                 "osfp_score": it.get("score", 0),
                 "files": it.get("files", []),

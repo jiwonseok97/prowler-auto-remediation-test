@@ -482,9 +482,31 @@ def build_ec2_instance_profile_attach_tf(finding: Dict[str, Any], account_id: st
         f'  name = "{profile_name}"\n'
         "  role = aws_iam_role.fix_ec2_instance_profile_role.name\n"
         "}\n\n"
-        'resource "aws_iam_instance_profile_association" "fix_ec2_instance_profile_association" {\n'
-        f'  instance_id          = "{instance_id}"\n'
-        "  iam_instance_profile = aws_iam_instance_profile.fix_ec2_instance_profile.name\n"
+        'resource "null_resource" "fix_ec2_instance_profile_association" {\n'
+        "  triggers = {\n"
+        f'    instance_id  = "{instance_id}"\n'
+        "    profile_name = aws_iam_instance_profile.fix_ec2_instance_profile.name\n"
+        "  }\n\n"
+        '  provisioner "local-exec" {\n'
+        '    interpreter = ["/bin/bash", "-lc"]\n'
+        '    command = <<-EOT\n'
+        "set -uo pipefail\n"
+        f'INSTANCE_ID="{instance_id}"\n'
+        f'PROFILE_NAME="{profile_name}"\n'
+        "TARGET_ARN=$(aws iam get-instance-profile --instance-profile-name \"$PROFILE_NAME\" --query 'InstanceProfile.Arn' --output text)\n"
+        "ASSOC_ID=$(aws ec2 describe-iam-instance-profile-associations --region \"$AWS_REGION\" --filters Name=instance-id,Values=\"$INSTANCE_ID\" --query 'IamInstanceProfileAssociations[0].AssociationId' --output text || true)\n"
+        "CURRENT_ARN=$(aws ec2 describe-iam-instance-profile-associations --region \"$AWS_REGION\" --filters Name=instance-id,Values=\"$INSTANCE_ID\" --query 'IamInstanceProfileAssociations[0].IamInstanceProfile.Arn' --output text || true)\n"
+        "if [ \"$ASSOC_ID\" = \"None\" ] || [ -z \"$ASSOC_ID\" ]; then\n"
+        "  aws ec2 associate-iam-instance-profile --region \"$AWS_REGION\" --instance-id \"$INSTANCE_ID\" --iam-instance-profile Name=\"$PROFILE_NAME\" || true\n"
+        "else\n"
+        "  if [ \"$CURRENT_ARN\" != \"$TARGET_ARN\" ]; then\n"
+        "    aws ec2 replace-iam-instance-profile-association --region \"$AWS_REGION\" --association-id \"$ASSOC_ID\" --iam-instance-profile Name=\"$PROFILE_NAME\" || true\n"
+        "  fi\n"
+        "fi\n"
+        "exit 0\n"
+        "EOT\n"
+        "  }\n"
+        "  depends_on = [aws_iam_instance_profile.fix_ec2_instance_profile]\n"
         "}\n"
     )
 

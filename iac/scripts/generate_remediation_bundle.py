@@ -446,7 +446,7 @@ def build_sg_restrict_all_ports_tf(finding: Dict[str, Any], region: str) -> str:
         f'SG_ID="{sg_id}"\n'
         'RULE_IDS=$(aws ec2 describe-security-group-rules --region "$AWS_REGION" \\\n'
         '  --filters Name=group-id,Values="$SG_ID" Name=is-egress,Values=false \\\n'
-        '  --query "SecurityGroupRules[?CidrIpv4==`0.0.0.0/0` || CidrIpv6==`::/0`].SecurityGroupRuleId" \\\n'
+        "  --query 'SecurityGroupRules[?CidrIpv4==`0.0.0.0/0` || CidrIpv6==`::/0`].SecurityGroupRuleId' \\\n"
         '  --output text || true)\n'
         'if [ -n "$RULE_IDS" ] && [ "$RULE_IDS" != "None" ]; then\n'
         '  aws ec2 revoke-security-group-ingress --region "$AWS_REGION" --group-id "$SG_ID" --security-group-rule-ids $RULE_IDS || true\n'

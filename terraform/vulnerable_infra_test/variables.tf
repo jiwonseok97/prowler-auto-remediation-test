@@ -10,18 +10,18 @@ variable "region" {
 
 variable "vuln_bucket_count" {
   type        = number
-  description = "Number of intentionally vulnerable S3 buckets (kept low to avoid manual-runbook-only noise)"
-  default     = 0
+  description = "Number of intentionally vulnerable S3 buckets"
+  default     = 40
 }
 
 variable "security_group_count" {
   type        = number
-  description = "Number of wide-open security groups (kept low unless SG-focused demo is needed)"
-  default     = 0
+  description = "Number of wide-open security groups"
+  default     = 30
 }
 
 variable "cloudwatch_log_group_count" {
   type        = number
-  description = "Number of intentionally unencrypted CloudWatch log groups (auto-remediation-friendly)"
-  default     = 60
+  description = "Number of intentionally unencrypted CloudWatch log groups"
+  default     = 20
 }

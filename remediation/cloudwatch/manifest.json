@@ -2,7 +2,7 @@
   "category": "cloudwatch",
   "account": "132410971304",
   "region": "ap-northeast-2",
-  "created_at": "2026-02-21T06:44:27.605133+00:00",
+  "created_at": "2026-02-21T07:05:11.982387+00:00",
   "items": [
     {
       "check_id": "prowler-cloudwatch_changes_to_network_route_tables_alarm_configured",

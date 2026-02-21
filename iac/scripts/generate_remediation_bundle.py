@@ -1093,6 +1093,8 @@ def build_cloudtrail_tf(finding: Dict[str, Any], region: str, account_id: str) -
         f"  is_multi_region_trail         = {multi_region}",
         f"  enable_logging                = {enable_logging}",
     ]
+    existing_cw_group_arn = str(detail.get("CloudWatchLogsLogGroupArn", "") or "")
+    existing_cw_role_arn = str(detail.get("CloudWatchLogsRoleArn", "") or "")
 
     if "log_file_validation_enabled" in cid_l:
         lines.append("  enable_log_file_validation    = true")
@@ -1204,6 +1206,19 @@ def build_cloudtrail_tf(finding: Dict[str, Any], region: str, account_id: str) -
             lines.append(f'  kms_key_id                    = "{kms}"')
     else:
         return ""
+
+    # Preserve existing CloudWatch log delivery linkage when remediating other
+    # CloudTrail checks (e.g., kms/dataevents). Otherwise Terraform may drift
+    # these optional attributes to null on in-place update.
+    if (
+        "cloudtrail_cloudwatch_logging_enabled" not in cid_l
+        and existing_cw_group_arn
+        and existing_cw_role_arn
+    ):
+        if not existing_cw_group_arn.endswith(":*"):
+            existing_cw_group_arn = f"{existing_cw_group_arn}:*"
+        lines.append(f'  cloud_watch_logs_group_arn    = "{existing_cw_group_arn}"')
+        lines.append(f'  cloud_watch_logs_role_arn     = "{existing_cw_role_arn}"')
 
     if depends_on_resources:
         deps = ", ".join(depends_on_resources)

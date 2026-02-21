@@ -43,8 +43,8 @@ resource "aws_s3_bucket_policy" "fix_cloudtrail_bucket_policy_19040a1c46" {
       "Resource": "arn:aws:s3:::vuln-cloudtrail-ap-northeast-2-f9fd7730/AWSLogs/132410971304/*",
       "Condition": {
         "StringEquals": {
-          "aws:SourceArn": "arn:aws:cloudtrail:ap-northeast-2:132410971304:trail/vuln-trail",
-          "s3:x-amz-acl": "bucket-owner-full-control"
+          "s3:x-amz-acl": "bucket-owner-full-control",
+          "aws:SourceArn": "arn:aws:cloudtrail:ap-northeast-2:132410971304:trail/vuln-trail"
         }
       }
     }

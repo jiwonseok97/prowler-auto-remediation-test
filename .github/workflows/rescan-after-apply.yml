@@ -127,7 +127,6 @@ jobs:
             s['resolved_since_previous_check_ids'] = resolved_since_previous
             s['new_fail_since_previous_check_ids'] = new_fail_since_previous
 
-          rem = '\n'.join(f"- {x}" for x in s['remaining_fail_check_ids'][:30]) or '- none'
           rem_table_lines = [
             "| Remaining Check ID | Count |",
             "|---|---:|",
@@ -152,8 +151,6 @@ jobs:
             f"- reduced: {s['reduced']} (baseline -> current)\n"
             f"{inc_line}\n"
             "### Remaining FAIL\n"
-            f"{rem}\n\n"
-            "### Remaining FAIL (Table)\n"
             f"{rem_table}\n\n"
             "### Resolved Since Previous Rescan\n"
             f"{resolved}\n\n"

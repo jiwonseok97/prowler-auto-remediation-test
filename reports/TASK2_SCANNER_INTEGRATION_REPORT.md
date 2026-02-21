@@ -1,47 +1,74 @@
 # Task 2 Report: IaC/Infra Scanner Integration
 
 ## 1) Objective
-- Integrate target security scanners into current pipeline architecture where technically possible.
-- Separate:
-  - fully integrated now
-  - partially integrated now
-  - later items requiring license/appliance/network prerequisites
+- Integrate requested scanner set into this repository structure.
+- Split outcomes into:
+  - usable now
+  - usable with secrets/licenses
+  - later (external platform dependency)
 
-## 2) Target Tool Matrix
+## 2) What Was Implemented
 
-### 2.1 IaC Scanning (target 4)
-| Tool | Target Status | Current Integration | Blocking Requirement | Benefit |
+### 2.1 New workflows
+- `.github/workflows/security-pipeline-iac-scanners.yml`
+  - Checkov
+  - tfsec
+  - Terrascan
+  - Snyk IaC (optional via `SNYK_TOKEN`)
+- `.github/workflows/security-pipeline-infra-scanner-bridges.yml`
+  - Nessus bridge readiness
+  - Qualys bridge readiness
+  - InsightVM bridge readiness
+  - OpenVAS bridge readiness
+
+### 2.2 Execution runs
+- IaC scanner run: `22264147855` (success)
+- Infra bridge run: `22264147880` (success)
+
+## 3) Tool Matrix (Now vs Later)
+
+### 3.1 IaC scanning (target 4)
+| Tool | Current Status | Execution Result | Blocking Requirement | Benefit |
 |---|---|---|---|---|
-| Snyk |  |  |  |  |
-| Checkov |  |  |  |  |
-| Terrascan |  |  |  |  |
-| tfsec |  |  |  |  |
+| Checkov | now | `checkov-terraform failed=690, passed=181` / `checkov-remediation failed=0, passed=80` | none | strong policy coverage for Terraform misconfigurations |
+| tfsec | now | `tfsec-terraform failed=490` / `tfsec-remediation failed=0` | none | fast static feedback in PR/workflow |
+| Terrascan | now (tuned) | violations detected (`terraform scan_summary.violated_policies=2`) | optional scanner tuning by IaC type | policy-as-code perspective complementing Checkov/tfsec |
+| Snyk IaC | partial-now | skipped in run (`missing SNYK_TOKEN`) | `SNYK_TOKEN` | commercial rule feed, governance/reporting integration |
 
-### 2.2 Infra Scanning (target 4)
-| Tool | Target Status | Current Integration | Blocking Requirement | Benefit |
+### 3.2 Infra scanning (target 4)
+| Tool | Current Status | Execution Result | Blocking Requirement | Benefit |
 |---|---|---|---|---|
-| Nessus |  |  |  |  |
-| Qualys (or equivalent cloud VM) |  |  |  |  |
-| InsightVM |  |  |  |  |
-| OpenVAS/Greenbone |  |  |  |  |
+| Nessus | later-ready bridge | readiness reported as `later` | `NESSUS_URL`, `NESSUS_API_KEY` | vuln assessment at host/service layer |
+| Qualys | later-ready bridge | readiness reported as `later` | `QUALYS_API_URL`, `QUALYS_USERNAME`, `QUALYS_PASSWORD` | enterprise VM management integration |
+| InsightVM | later-ready bridge | readiness reported as `later` | `INSIGHTVM_URL`, `INSIGHTVM_API_KEY` | risk-prioritized asset-level vulnerability data |
+| OpenVAS | later-ready bridge | readiness reported as `later` | `OPENVAS_URL`, `OPENVAS_USERNAME`, `OPENVAS_PASSWORD` | open-source infra scanner option |
 
-## 3) Implementation Details
-- Workflow files changed:
-- New scripts/config:
-- Secrets/variables required:
+## 4) Artifact Evidence
+- IaC artifacts:
+  - `checkov-terraform.json`
+  - `checkov-remediation.json`
+  - `tfsec-terraform.json`
+  - `tfsec-remediation.json`
+  - `terrascan-terraform.json`
+  - `terrascan-remediation.json`
+  - `snyk-iac.json`
+  - `summary.md`
+- Infra bridge artifacts:
+  - `bridge-readiness.json`
+  - `summary.md`
 
-## 4) Execution Result
-- Test run IDs:
-- Pass/fail summary:
-- Artifact summary:
-
-## 5) Practical Benefits in This Pipeline
-- Shift-left IaC risk reduction:
-- Cross-validation with runtime scan:
-- Reduced false negatives/false positives:
-- Better triage for auto-remediable vs manual controls:
+## 5) Practical Benefits for Current Pipeline
+- Shift-left gain:
+  - Detect IaC risk before 01/02/03/04 cloud execution.
+- Cross-validation gain:
+  - Static IaC findings + runtime Prowler findings improve confidence.
+- Remediation quality gain:
+  - `remediation/` output can be scanned directly (`failed=0` in this run for checkov/tfsec).
+- Governance gain:
+  - Infra scanner bridges document exact prerequisite gaps instead of ad-hoc setup.
 
 ## 6) Remaining Work (Later)
-- Tool-by-tool prerequisite checklist:
-- Required account/network/licensing steps:
-- Planned rollout order:
+1. Set scanner secrets for Nessus/Qualys/InsightVM/OpenVAS bridge activation.
+2. Add API job steps per vendor (scan launch, polling, result ingest).
+3. Normalize external scanner findings into common report schema (with severity mapping).
+4. Add gating policy (advisory vs blocking threshold) per environment.

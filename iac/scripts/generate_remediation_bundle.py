@@ -1195,10 +1195,41 @@ def build_cloudtrail_tf(finding: Dict[str, Any], region: str, account_id: str) -
             depends_on_resources.append("aws_s3_bucket_policy.fix_cloudtrail_bucket_policy")
         kms = str(detail.get("KmsKeyId", ""))
         if not kms:
+            trail_arn = f"arn:aws:cloudtrail:{region}:{account_id}:trail/{name}"
+            key_policy = {
+                "Version": "2012-10-17",
+                "Statement": [
+                    {
+                        "Sid": "EnableRootPermissions",
+                        "Effect": "Allow",
+                        "Principal": {"AWS": f"arn:aws:iam::{account_id}:root"},
+                        "Action": "kms:*",
+                        "Resource": "*",
+                    },
+                    {
+                        "Sid": "AllowCloudTrailUseOfTheKey",
+                        "Effect": "Allow",
+                        "Principal": {"Service": "cloudtrail.amazonaws.com"},
+                        "Action": [
+                            "kms:GenerateDataKey*",
+                            "kms:Decrypt",
+                            "kms:Encrypt",
+                            "kms:DescribeKey",
+                        ],
+                        "Resource": "*",
+                        "Condition": {
+                            "StringEquals": {
+                                "aws:SourceArn": trail_arn,
+                            }
+                        },
+                    },
+                ],
+            }
             policy_prefix += (
                 'resource "aws_kms_key" "fix_cloudtrail_kms_key" {\n'
                 '  description         = "CloudTrail encryption key created by remediation"\n'
                 "  enable_key_rotation = true\n"
+                f"  policy              = {json.dumps(json.dumps(key_policy))}\n"
                 "}\n\n"
             )
             kms = "${aws_kms_key.fix_cloudtrail_kms_key.arn}"

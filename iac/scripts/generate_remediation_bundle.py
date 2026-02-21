@@ -539,7 +539,9 @@ def import_id_for_type(resource_type: str, finding: Dict[str, Any]) -> str:
     if resource_type == "aws_default_security_group":
         return finding.get("_vpc_id", "")
     if resource_type == "aws_kms_key":
-        return extract_kms_key_id(arn) or arn
+        if str(arn).startswith("arn:aws:kms:"):
+            return extract_kms_key_id(arn) or arn
+        return ""
     if resource_type == "aws_accessanalyzer_analyzer":
         return finding.get("_analyzer_name", "")
     if resource_type == "aws_s3_bucket_logging":
@@ -1179,15 +1181,10 @@ def build_cloudtrail_tf(finding: Dict[str, Any], region: str, account_id: str) -
             depends_on_resources.append("aws_s3_bucket_policy.fix_cloudtrail_bucket_policy")
         kms = str(detail.get("KmsKeyId", ""))
         if not kms:
-            kms_alias = f"cloudtrail-remediation-{safe_id(name)}"[:250]
             policy_prefix += (
                 'resource "aws_kms_key" "fix_cloudtrail_kms_key" {\n'
                 '  description         = "CloudTrail encryption key created by remediation"\n'
                 "  enable_key_rotation = true\n"
-                "}\n\n"
-                'resource "aws_kms_alias" "fix_cloudtrail_kms_alias" {\n'
-                f'  name          = "alias/{kms_alias}"\n'
-                "  target_key_id = aws_kms_key.fix_cloudtrail_kms_key.key_id\n"
                 "}\n\n"
             )
             kms = "${aws_kms_key.fix_cloudtrail_kms_key.arn}"

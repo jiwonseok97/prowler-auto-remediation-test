@@ -20,6 +20,19 @@ permissions:
 jobs:
   infra-bridge:
     runs-on: ubuntu-latest
+    env:
+      NESSUS_URL: ${{ secrets.NESSUS_URL }}
+      NESSUS_API_KEY: ${{ secrets.NESSUS_API_KEY }}
+      NESSUS_ACCESS_KEY: ${{ secrets.NESSUS_ACCESS_KEY }}
+      NESSUS_SECRET_KEY: ${{ secrets.NESSUS_SECRET_KEY }}
+      QUALYS_API_URL: ${{ secrets.QUALYS_API_URL }}
+      QUALYS_USERNAME: ${{ secrets.QUALYS_USERNAME }}
+      QUALYS_PASSWORD: ${{ secrets.QUALYS_PASSWORD }}
+      INSIGHTVM_URL: ${{ secrets.INSIGHTVM_URL }}
+      INSIGHTVM_API_KEY: ${{ secrets.INSIGHTVM_API_KEY }}
+      OPENVAS_URL: ${{ secrets.OPENVAS_URL }}
+      OPENVAS_USERNAME: ${{ secrets.OPENVAS_USERNAME }}
+      OPENVAS_PASSWORD: ${{ secrets.OPENVAS_PASSWORD }}
     steps:
       - uses: actions/checkout@v4
 
@@ -28,30 +41,14 @@ jobs:
 
       - name: Build bridge readiness report
         env:
-          NESSUS_URL: ${{ secrets.NESSUS_URL }}
-          NESSUS_API_KEY: ${{ secrets.NESSUS_API_KEY }}
-          NESSUS_ACCESS_KEY: ${{ secrets.NESSUS_ACCESS_KEY }}
-          NESSUS_SECRET_KEY: ${{ secrets.NESSUS_SECRET_KEY }}
-          QUALYS_API_URL: ${{ secrets.QUALYS_API_URL }}
-          QUALYS_USERNAME: ${{ secrets.QUALYS_USERNAME }}
-          QUALYS_PASSWORD: ${{ secrets.QUALYS_PASSWORD }}
-          INSIGHTVM_URL: ${{ secrets.INSIGHTVM_URL }}
-          INSIGHTVM_API_KEY: ${{ secrets.INSIGHTVM_API_KEY }}
-          OPENVAS_URL: ${{ secrets.OPENVAS_URL }}
-          OPENVAS_USERNAME: ${{ secrets.OPENVAS_USERNAME }}
-          OPENVAS_PASSWORD: ${{ secrets.OPENVAS_PASSWORD }}
           TARGET_HOST: ${{ inputs.target_host }}
         run: |
           python iac/scripts/infra_bridge_report.py
           cat artifacts/infra-scanners/summary.md >> "$GITHUB_STEP_SUMMARY"
 
       - name: Run Nessus real scan lifecycle
-        if: ${{ inputs.run_nessus_real_scan == true && secrets.NESSUS_URL != '' && inputs.target_host != '' && (secrets.NESSUS_API_KEY != '' || (secrets.NESSUS_ACCESS_KEY != '' && secrets.NESSUS_SECRET_KEY != '')) }}
+        if: ${{ inputs.run_nessus_real_scan == true && env.NESSUS_URL != '' && inputs.target_host != '' && (env.NESSUS_API_KEY != '' || (env.NESSUS_ACCESS_KEY != '' && env.NESSUS_SECRET_KEY != '')) }}
         env:
-          NESSUS_URL: ${{ secrets.NESSUS_URL }}
-          NESSUS_API_KEY: ${{ secrets.NESSUS_API_KEY }}
-          NESSUS_ACCESS_KEY: ${{ secrets.NESSUS_ACCESS_KEY }}
-          NESSUS_SECRET_KEY: ${{ secrets.NESSUS_SECRET_KEY }}
           TARGET_HOST: ${{ inputs.target_host }}
           NESSUS_VERIFY_TLS: "false"
           NESSUS_DELETE_SCAN: "false"
@@ -64,15 +61,15 @@ jobs:
           cat artifacts/infra-scanners/nessus/nessus_summary.md >> "$GITHUB_STEP_SUMMARY"
 
       - name: Nessus real scan prerequisites warning
-        if: ${{ inputs.run_nessus_real_scan == true && (inputs.target_host == '' || secrets.NESSUS_URL == '' || (secrets.NESSUS_API_KEY == '' && (secrets.NESSUS_ACCESS_KEY == '' || secrets.NESSUS_SECRET_KEY == ''))) }}
+        if: ${{ inputs.run_nessus_real_scan == true && (inputs.target_host == '' || env.NESSUS_URL == '' || (env.NESSUS_API_KEY == '' && (env.NESSUS_ACCESS_KEY == '' || env.NESSUS_SECRET_KEY == ''))) }}
         run: |
           {
             echo "## Nessus Real Scan Skipped"
             echo ""
             echo "- run_nessus_real_scan: \`${{ inputs.run_nessus_real_scan }}\`"
             echo "- target_host set: \`${{ inputs.target_host != '' }}\`"
-            echo "- NESSUS_URL set: \`${{ secrets.NESSUS_URL != '' }}\`"
-            echo "- auth set (api or access+secret): \`${{ secrets.NESSUS_API_KEY != '' || (secrets.NESSUS_ACCESS_KEY != '' && secrets.NESSUS_SECRET_KEY != '') }}\`"
+            echo "- NESSUS_URL set: \`${{ env.NESSUS_URL != '' }}\`"
+            echo "- auth set (api or access+secret): \`${{ env.NESSUS_API_KEY != '' || (env.NESSUS_ACCESS_KEY != '' && env.NESSUS_SECRET_KEY != '') }}\`"
             echo ""
             echo "Set missing input/secrets and rerun."
           } >> "$GITHUB_STEP_SUMMARY"

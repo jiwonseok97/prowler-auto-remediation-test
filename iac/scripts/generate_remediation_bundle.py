@@ -980,17 +980,14 @@ def build_cloudtrail_required_bucket_policy_tf(
     )
 
 
-def cloudtrail_supports_dataevents_patch(region: str, trail_name: str) -> bool:
+def cloudtrail_uses_advanced_selectors(region: str, trail_name: str) -> bool:
     if not trail_name:
         return False
     try:
         ct = boto3.client("cloudtrail", region_name=region)
         resp = ct.get_event_selectors(TrailName=trail_name)
         advanced = resp.get("AdvancedEventSelectors", []) or []
-        # If advanced selectors are in use, in-place event_selector mutation is high-risk and often rejected.
-        if isinstance(advanced, list) and len(advanced) > 0:
-            return False
-        return True
+        return isinstance(advanced, list) and len(advanced) > 0
     except Exception:
         return False
 
@@ -1104,26 +1101,50 @@ def build_cloudtrail_tf(finding: Dict[str, Any], region: str, account_id: str) -
     if "log_file_validation_enabled" in cid_l:
         lines.append("  enable_log_file_validation    = true")
     elif "s3_dataevents_" in cid_l:
-        if not cloudtrail_supports_dataevents_patch(region, name):
-            return ""
+        use_advanced = cloudtrail_uses_advanced_selectors(region, name)
         policy_prefix = build_cloudtrail_required_bucket_policy_tf(name, s3_bucket, account_id, region)
         if policy_prefix:
             depends_on_resources.append("aws_s3_bucket_policy.fix_cloudtrail_bucket_policy")
         lines.append("  enable_log_file_validation    = true")
-        lines.extend(
-            [
-                "",
-                "  event_selector {",
-                "    read_write_type           = \"All\"",
-                "    include_management_events = true",
-                "",
-                "    data_resource {",
-                "      type   = \"AWS::S3::Object\"",
-                "      values = [\"arn:aws:s3:::\"]",
-                "    }",
-                "  }",
-            ]
-        )
+        if use_advanced:
+            lines.extend(
+                [
+                    "",
+                    "  advanced_event_selector {",
+                    '    name = "S3DataEventsAll"',
+                    "",
+                    "    field_selector {",
+                    '      field  = "eventCategory"',
+                    '      equals = ["Data"]',
+                    "    }",
+                    "",
+                    "    field_selector {",
+                    '      field  = "resources.type"',
+                    '      equals = ["AWS::S3::Object"]',
+                    "    }",
+                    "",
+                    "    field_selector {",
+                    '      field       = "resources.ARN"',
+                    '      starts_with = ["arn:aws:s3:::"]',
+                    "    }",
+                    "  }",
+                ]
+            )
+        else:
+            lines.extend(
+                [
+                    "",
+                    "  event_selector {",
+                    "    read_write_type           = \"All\"",
+                    "    include_management_events = true",
+                    "",
+                    "    data_resource {",
+                    "      type   = \"AWS::S3::Object\"",
+                    "      values = [\"arn:aws:s3:::\"]",
+                    "    }",
+                    "  }",
+                ]
+            )
     elif "cloudtrail_cloudwatch_logging_enabled" in cid_l:
         policy_prefix = build_cloudtrail_required_bucket_policy_tf(name, s3_bucket, account_id, region)
         if policy_prefix:

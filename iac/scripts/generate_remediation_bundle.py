@@ -1008,7 +1008,9 @@ def iam_role_exists(role_name: str) -> bool:
 
 def build_cloudtrail_tf(finding: Dict[str, Any], region: str, account_id: str) -> str:
     cid_l = str(finding.get("check_id", "")).lower()
-    trail_name = extract_trail_name(finding.get("resource_arn", ""))
+    trail_name = str(finding.get("_trail_name", "") or "")
+    if not trail_name:
+        trail_name = extract_trail_name(finding.get("resource_arn", ""))
     detail = get_cloudtrail_detail(region, trail_name) if trail_name else {}
     if not detail:
         detail = pick_default_trail(region)
@@ -1400,7 +1402,9 @@ def build_cloudwatch_metric_alarm_tf(finding: Dict[str, Any], account_id: str, r
     if not pattern:
         return ""
     log_group = extract_log_group(finding.get("resource_arn", ""))
-    if not log_group:
+    # Prowler findings may carry synthetic/invalid log-group ids. Prefer an
+    # existing CloudTrail log group from trail configuration.
+    if not log_group or not cloudwatch_log_group_exists(log_group, region):
         log_group = pick_default_cloudtrail_log_group(region, account_id)
     finding["_log_group_name"] = log_group
     metric_ns = "CISBenchmark"
@@ -1549,6 +1553,8 @@ def main() -> None:
         trail_name = extract_trail_name(f.get("resource_arn", ""))
         if not trail_name and "cloudtrail_" in cid_l:
             trail_name = str(pick_default_trail(finding_region).get("Name", ""))
+        if trail_name:
+            f["_trail_name"] = trail_name
         if "cloudtrail_kms_encryption_enabled" in cid_l and trail_name:
             cloudtrail_with_kms.add(trail_name)
         if "cloudtrail_s3_dataevents_" in cid_l and trail_name:

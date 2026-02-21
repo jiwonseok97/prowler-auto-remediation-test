@@ -124,7 +124,10 @@ def extract_trail_name(arn: str) -> str:
 
 def extract_log_group(arn: str) -> str:
     if ":log-group:" in arn:
-        return arn.split(":log-group:", 1)[1].split(":", 1)[0]
+        name = arn.split(":log-group:", 1)[1].split(":", 1)[0]
+        if name in {"", "log-group"}:
+            return ""
+        return name
     return ""
 
 
@@ -1282,24 +1285,24 @@ def build_cloudtrail_tf(finding: Dict[str, Any], region: str, account_id: str) -
             ]
         )
 
-    lines.extend(
-        [
-            "",
-            "  lifecycle {",
-            "    ignore_changes = [",
-            "      event_selector,",
-            "      advanced_event_selector,",
-            "      insight_selector,",
-            "      kms_key_id,",
-            "      sns_topic_name,",
-            "      tags,",
-            "      tags_all",
-            "    ]",
-            "  }",
-            "}",
-            "",
-        ]
-    )
+    ignore_changes = [
+        "insight_selector",
+        "sns_topic_name",
+        "tags",
+        "tags_all",
+    ]
+    # Keep event selector mutable when remediating data-events checks.
+    if "s3_dataevents_" not in cid_l:
+        ignore_changes.extend(["event_selector", "advanced_event_selector"])
+    # Keep kms_key_id mutable when remediating kms-encryption checks.
+    if "kms_encryption_enabled" not in cid_l:
+        ignore_changes.append("kms_key_id")
+
+    lines.extend(["", "  lifecycle {", "    ignore_changes = ["])
+    for idx, attr in enumerate(ignore_changes):
+        suffix = "," if idx < len(ignore_changes) - 1 else ""
+        lines.append(f"      {attr}{suffix}")
+    lines.extend(["    ]", "  }", "}", ""])
     body = "\n".join(lines)
     if policy_prefix or extra_prefix:
         return policy_prefix + extra_prefix + body

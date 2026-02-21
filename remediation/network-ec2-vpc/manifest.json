@@ -2,7 +2,7 @@
   "category": "network-ec2-vpc",
   "account": "132410971304",
   "region": "ap-northeast-2",
-  "created_at": "2026-02-21T10:39:35.995188+00:00",
+  "created_at": "2026-02-21T10:46:04.116728+00:00",
   "items": [
     {
       "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
@@ -52,15 +52,13 @@
     },
     {
       "check_id": "prowler-ec2_instance_profile_attached",
-      "manual_required": false,
-      "remediation_tier": "safe-auto",
-      "files": [
-        "remediation/network-ec2-vpc/fix-prowler_ec2_instance_profile_attached_arn_aws_ec2_ap_northeast_2_132410971304_instance_i_0fbecaba3c48e7c79_ap_northeast_2.tf"
-      ],
+      "manual_required": true,
+      "remediation_tier": "manual-runbook",
+      "files": [],
       "priority": "P2",
       "score": 58.5,
-      "resources": [],
-      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_instance_profile_attached_arn_aws_ec2_ap_northeast_2_132410971304_instance_i_0fbecaba3c48e7c79_ap_northeast_2.tf"
+      "reason": "no_reusable_instance_profile_available",
+      "resources": []
     }
   ],
   "import_map": []

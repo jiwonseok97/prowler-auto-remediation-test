@@ -1,8 +1,8 @@
 {
-  "created_at": "2026-02-21T02:16:10.486393+00:00",
+  "created_at": "2026-02-21T02:55:08.601496+00:00",
   "account": "132410971304",
   "region": "ap-northeast-2",
-  "baseline_fail_count": 50,
+  "baseline_fail_count": 49,
   "categories": [
     {
       "category": "iam",
@@ -49,11 +49,12 @@
     {
       "category": "cloudtrail",
       "path": "remediation/cloudtrail",
-      "checks": 3,
+      "checks": 4,
       "top5": [
         "prowler-cloudtrail_kms_encryption_enabled",
         "prowler-cloudtrail_s3_dataevents_read_enabled",
-        "prowler-cloudtrail_s3_dataevents_write_enabled"
+        "prowler-cloudtrail_s3_dataevents_write_enabled",
+        "prowler-cloudtrail_cloudwatch_logging_enabled"
       ],
       "manual_required": [
         "prowler-cloudtrail_s3_dataevents_read_enabled",
@@ -64,12 +65,10 @@
     {
       "category": "cloudwatch",
       "path": "remediation/cloudwatch",
-      "checks": 4,
+      "checks": 2,
       "top5": [
         "prowler-cloudwatch_changes_to_network_route_tables_alarm_configured",
-        "prowler-cloudwatch_log_metric_filter_aws_organizations_changes",
-        "prowler-cloudwatch_log_metric_filter_root_usage",
-        "prowler-cloudwatch_log_metric_filter_sign_in_without_mfa"
+        "prowler-cloudwatch_log_metric_filter_aws_organizations_changes"
       ],
       "manual_required": [],
       "import_map": "remediation/cloudwatch/import-map.txt"
@@ -85,7 +84,7 @@
       "resources": [],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-21T02:16:10.486926+00:00"
+      "created_at": "2026-02-21T02:55:08.602005+00:00"
     },
     "prowler-iam_customer_attached_policy_no_administrative_privileges": {
       "category": "iam",
@@ -96,7 +95,7 @@
       "resources": [],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-21T02:16:10.486936+00:00"
+      "created_at": "2026-02-21T02:55:08.602015+00:00"
     },
     "prowler-iam_policy_attached_only_to_group_or_roles": [
       {
@@ -108,7 +107,7 @@
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-21T02:16:10.486939+00:00"
+        "created_at": "2026-02-21T02:55:08.602020+00:00"
       },
       {
         "category": "iam",
@@ -119,7 +118,7 @@
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-21T02:16:10.486942+00:00"
+        "created_at": "2026-02-21T02:55:08.602023+00:00"
       },
       {
         "category": "iam",
@@ -130,7 +129,7 @@
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-21T02:16:10.486945+00:00"
+        "created_at": "2026-02-21T02:55:08.602028+00:00"
       },
       {
         "category": "iam",
@@ -141,7 +140,7 @@
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-21T02:16:10.486948+00:00"
+        "created_at": "2026-02-21T02:55:08.602032+00:00"
       },
       {
         "category": "iam",
@@ -152,7 +151,7 @@
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-21T02:16:10.486955+00:00"
+        "created_at": "2026-02-21T02:55:08.602040+00:00"
       },
       {
         "category": "iam",
@@ -163,7 +162,7 @@
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-21T02:16:10.486957+00:00"
+        "created_at": "2026-02-21T02:55:08.602043+00:00"
       }
     ],
     "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports": [
@@ -176,7 +175,7 @@
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-21T02:16:10.487201+00:00"
+        "created_at": "2026-02-21T02:55:08.602307+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -187,7 +186,7 @@
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-21T02:16:10.487210+00:00"
+        "created_at": "2026-02-21T02:55:08.602317+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -198,7 +197,7 @@
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-21T02:16:10.487215+00:00"
+        "created_at": "2026-02-21T02:55:08.602323+00:00"
       }
     ],
     "prowler-ec2_ebs_volume_encryption": {
@@ -212,7 +211,7 @@
       "resources": [],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-21T02:16:10.487218+00:00"
+      "created_at": "2026-02-21T02:55:08.602328+00:00"
     },
     "prowler-ec2_instance_profile_attached": {
       "category": "network-ec2-vpc",
@@ -223,7 +222,7 @@
       "resources": [],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-21T02:16:10.487221+00:00"
+      "created_at": "2026-02-21T02:55:08.602333+00:00"
     },
     "prowler-cloudtrail_kms_encryption_enabled": {
       "category": "cloudtrail",
@@ -241,12 +240,6 @@
           "optional": true
         },
         {
-          "resource_address": "aws_kms_key.fix_cloudtrail_kms_key_19040a1c46",
-          "arn": "arn:aws:cloudtrail:ap-northeast-2:132410971304:trail/vuln-trail",
-          "resource_type": "aws_kms_key",
-          "optional": false
-        },
-        {
           "resource_address": "aws_cloudtrail.fix_cloudtrail_19040a1c46",
           "arn": "vuln-trail",
           "resource_type": "aws_cloudtrail",
@@ -255,7 +248,7 @@
       ],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-21T02:16:10.487474+00:00"
+      "created_at": "2026-02-21T02:55:08.602650+00:00"
     },
     "prowler-cloudtrail_s3_dataevents_read_enabled": {
       "category": "cloudtrail",
@@ -266,7 +259,7 @@
       "resources": [],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-21T02:16:10.487482+00:00"
+      "created_at": "2026-02-21T02:55:08.602658+00:00"
     },
     "prowler-cloudtrail_s3_dataevents_write_enabled": {
       "category": "cloudtrail",
@@ -277,7 +270,33 @@
       "resources": [],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-21T02:16:10.487485+00:00"
+      "created_at": "2026-02-21T02:55:08.602662+00:00"
+    },
+    "prowler-cloudtrail_cloudwatch_logging_enabled": {
+      "category": "cloudtrail",
+      "priority": "P3",
+      "osfp_score": 48.0,
+      "files": [
+        "remediation/cloudtrail/fix-prowler_cloudtrail_cloudwatch_logging_enabled_arn_aws_cloudtrail_ap_northeast_2_132410971304_trail_vuln_trail_ap_northeast_2.tf"
+      ],
+      "tf_file": "remediation/cloudtrail/fix-prowler_cloudtrail_cloudwatch_logging_enabled_arn_aws_cloudtrail_ap_northeast_2_132410971304_trail_vuln_trail_ap_northeast_2.tf",
+      "resources": [
+        {
+          "resource_address": "aws_s3_bucket_policy.fix_cloudtrail_bucket_policy_0a966160c4",
+          "arn": "vuln-cloudtrail-ap-northeast-2-f9fd7730",
+          "resource_type": "aws_s3_bucket_policy",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_cloudtrail.fix_cloudtrail_0a966160c4",
+          "arn": "vuln-trail",
+          "resource_type": "aws_cloudtrail",
+          "optional": false
+        }
+      ],
+      "account": "132410971304",
+      "region": "ap-northeast-2",
+      "created_at": "2026-02-21T02:55:08.602665+00:00"
     },
     "prowler-cloudwatch_changes_to_network_route_tables_alarm_configured": {
       "category": "cloudwatch",
@@ -297,7 +316,7 @@
       ],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-21T02:16:10.487788+00:00"
+      "created_at": "2026-02-21T02:55:08.602920+00:00"
     },
     "prowler-cloudwatch_log_metric_filter_aws_organizations_changes": {
       "category": "cloudwatch",
@@ -317,47 +336,7 @@
       ],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-21T02:16:10.487796+00:00"
-    },
-    "prowler-cloudwatch_log_metric_filter_root_usage": {
-      "category": "cloudwatch",
-      "priority": "P2",
-      "osfp_score": 58.5,
-      "files": [
-        "remediation/cloudwatch/fix-prowler_cloudwatch_log_metric_filter_root_usage_arn_aws_logs_ap_northeast_2_132410971304_log_group_ap_northeast_2.tf"
-      ],
-      "tf_file": "remediation/cloudwatch/fix-prowler_cloudwatch_log_metric_filter_root_usage_arn_aws_logs_ap_northeast_2_132410971304_log_group_ap_northeast_2.tf",
-      "resources": [
-        {
-          "resource_address": "aws_cloudwatch_log_group.fix_cloudwatch_log_group_176efa0407",
-          "arn": "/aws/cloudtrail/132410971304",
-          "resource_type": "aws_cloudwatch_log_group",
-          "optional": true
-        }
-      ],
-      "account": "132410971304",
-      "region": "ap-northeast-2",
-      "created_at": "2026-02-21T02:16:10.487799+00:00"
-    },
-    "prowler-cloudwatch_log_metric_filter_sign_in_without_mfa": {
-      "category": "cloudwatch",
-      "priority": "P2",
-      "osfp_score": 58.5,
-      "files": [
-        "remediation/cloudwatch/fix-prowler_cloudwatch_log_metric_filter_sign_in_without_mfa_arn_aws_logs_ap_northeast_2_132410971304_log_group_ap_northeast_2.tf"
-      ],
-      "tf_file": "remediation/cloudwatch/fix-prowler_cloudwatch_log_metric_filter_sign_in_without_mfa_arn_aws_logs_ap_northeast_2_132410971304_log_group_ap_northeast_2.tf",
-      "resources": [
-        {
-          "resource_address": "aws_cloudwatch_log_group.fix_cloudwatch_log_group_cdda5d6ebc",
-          "arn": "/aws/cloudtrail/132410971304",
-          "resource_type": "aws_cloudwatch_log_group",
-          "optional": true
-        }
-      ],
-      "account": "132410971304",
-      "region": "ap-northeast-2",
-      "created_at": "2026-02-21T02:16:10.487801+00:00"
+      "created_at": "2026-02-21T02:55:08.602929+00:00"
     }
   }
 }

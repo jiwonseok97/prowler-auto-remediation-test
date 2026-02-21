@@ -31,6 +31,7 @@ OPTIONAL_IMPORT_TYPES = {
 USE_BEDROCK_FALLBACK = os.getenv("BEDROCK_FALLBACK", "").strip().lower() in {"1", "true", "yes"}
 CW_ALARM_TAG_PERMISSION_CACHE: Dict[str, bool] = {}
 EBS_ENCRYPTION_PERMISSION_CACHE: Dict[str, bool] = {}
+TF_PLUGIN_CACHE_DIR = Path(tempfile.gettempdir()) / "prowler-tf-plugin-cache"
 
 
 def safe_id(x: str) -> str:
@@ -447,7 +448,7 @@ def build_sg_restrict_all_ports_tf(finding: Dict[str, Any], region: str) -> str:
         '  --filters Name=group-id,Values="$SG_ID" Name=is-egress,Values=false \\\n'
         '  --query "SecurityGroupRules[?CidrIpv4==`0.0.0.0/0` || CidrIpv6==`::/0`].SecurityGroupRuleId" \\\n'
         '  --output text || true)\n'
-        'if [ -n "${RULE_IDS// /}" ]; then\n'
+        'if [ -n "$RULE_IDS" ] && [ "$RULE_IDS" != "None" ]; then\n'
         '  aws ec2 revoke-security-group-ingress --region "$AWS_REGION" --group-id "$SG_ID" --security-group-rule-ids $RULE_IDS || true\n'
         "fi\n"
         "EOT\n"
@@ -656,11 +657,15 @@ provider "aws" {
         work = Path(td)
         (work / "main.tf").write_text(tf_code.rstrip() + "\n", encoding="utf-8")
         (work / "_provider.tf").write_text(provider_stub + "\n", encoding="utf-8")
+        TF_PLUGIN_CACHE_DIR.mkdir(parents=True, exist_ok=True)
+        tf_env = os.environ.copy()
+        tf_env["TF_PLUGIN_CACHE_DIR"] = str(TF_PLUGIN_CACHE_DIR)
 
         init = subprocess.run(
             [terraform_bin, f"-chdir={work}", "init", "-backend=false", "-input=false", "-no-color"],
             capture_output=True,
             text=True,
+            env=tf_env,
         )
         if init.returncode != 0:
             return False
@@ -669,6 +674,7 @@ provider "aws" {
             [terraform_bin, f"-chdir={work}", "validate", "-no-color"],
             capture_output=True,
             text=True,
+            env=tf_env,
         )
         return validate.returncode == 0
 

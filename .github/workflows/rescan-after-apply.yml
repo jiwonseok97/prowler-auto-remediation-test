@@ -105,10 +105,20 @@ jobs:
             try:
               merged_doc = json.loads(merged_manifest.read_text(encoding='utf-8'))
               for cat in merged_doc.get('categories', []) or []:
-                for item in cat.get('items', []) or []:
-                  cid = str(item.get('check_id', '')).strip()
-                  if cid and bool(item.get('manual_required')):
-                    manual_override_ids.add(cid)
+                for cid in cat.get('manual_required', []) or []:
+                  cid_s = str(cid).strip()
+                  if cid_s:
+                    manual_override_ids.add(cid_s)
+
+              check_map = merged_doc.get('check_map', {}) or {}
+              for cid, entry in check_map.items():
+                entries = entry if isinstance(entry, list) else [entry]
+                for e in entries:
+                  tier = str((e or {}).get('remediation_tier', '')).strip().lower()
+                  if tier == 'manual-runbook':
+                    cid_s = str(cid).strip()
+                    if cid_s:
+                      manual_override_ids.add(cid_s)
             except Exception:
               pass
 

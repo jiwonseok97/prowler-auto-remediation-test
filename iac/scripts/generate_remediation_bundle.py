@@ -1204,6 +1204,59 @@ def build_cloudtrail_tf(finding: Dict[str, Any], region: str, account_id: str) -
             lines.append(f"  kms_key_id                    = {kms[2:-1]}")
         else:
             lines.append(f'  kms_key_id                    = "{kms}"')
+        # CloudTrail KMS remediation can be applied on a trail where CloudWatch
+        # linkage is missing/null. Rehydrate linkage here to avoid regressing
+        # `cloudtrail_cloudwatch_logging_enabled` on the same in-place update.
+        if not existing_cw_group_arn or not existing_cw_role_arn:
+            cw_group_name = pick_default_cloudtrail_log_group(region, account_id)
+            cw_group_arn = f"arn:aws:logs:{region}:{account_id}:log-group:{cw_group_name}:*"
+            role_name = f"cloudtrail-to-cw-{safe_id(name)}"[:64]
+            create_role = not iam_role_exists(role_name)
+            role_arn_expr = f'"arn:aws:iam::{account_id}:role/{role_name}"'
+            if create_role:
+                role_arn_expr = "aws_iam_role.fix_cloudtrail_cw_role.arn"
+                assume_doc = json.dumps(
+                    {
+                        "Version": "2012-10-17",
+                        "Statement": [
+                            {
+                                "Effect": "Allow",
+                                "Principal": {"Service": "cloudtrail.amazonaws.com"},
+                                "Action": "sts:AssumeRole",
+                            }
+                        ],
+                    }
+                )
+                extra_prefix += (
+                    'resource "aws_iam_role" "fix_cloudtrail_cw_role" {\n'
+                    f'  name               = "{role_name}"\n'
+                    f"  assume_role_policy = {json.dumps(assume_doc)}\n"
+                    "}\n\n"
+                )
+
+            lg_arn_base = cw_group_arn[:-2] if cw_group_arn.endswith(":*") else cw_group_arn
+            inline_policy = {
+                "Version": "2012-10-17",
+                "Statement": [
+                    {
+                        "Effect": "Allow",
+                        "Action": ["logs:CreateLogStream", "logs:PutLogEvents"],
+                        "Resource": [f"{lg_arn_base}:*", lg_arn_base],
+                    }
+                ],
+            }
+            role_policy_depends = "  depends_on = [aws_iam_role.fix_cloudtrail_cw_role]\n" if create_role else ""
+            extra_prefix += (
+                'resource "aws_iam_role_policy" "fix_cloudtrail_cw_role_policy" {\n'
+                '  name   = "cloudtrail-to-cloudwatch-logs"\n'
+                f'  role   = "{role_name}"\n'
+                f"  policy = {json.dumps(json.dumps(inline_policy))}\n"
+                f"{role_policy_depends}"
+                "}\n\n"
+            )
+            depends_on_resources.append("aws_iam_role_policy.fix_cloudtrail_cw_role_policy")
+            lines.append(f'  cloud_watch_logs_group_arn    = "{cw_group_arn}"')
+            lines.append(f"  cloud_watch_logs_role_arn     = {role_arn_expr}")
     else:
         return ""
 

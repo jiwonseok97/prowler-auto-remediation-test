@@ -20,6 +20,14 @@
   - Qualys bridge readiness
   - InsightVM bridge readiness
   - OpenVAS bridge readiness
+  - Optional endpoint connectivity check (HTTP status test when URL secrets exist)
+
+### 2.2 New script
+- `iac/scripts/infra_bridge_report.py`
+  - Generates:
+    - `bridge-readiness.json`
+    - `summary.md`
+    - `ready-urls.json` (for optional endpoint HTTP checks)
 
 ### 2.2 Execution runs
 - IaC scanner run: `22264147855` (success)
@@ -42,6 +50,9 @@
 | Qualys | later-ready bridge | readiness reported as `later` | `QUALYS_API_URL`, `QUALYS_USERNAME`, `QUALYS_PASSWORD` | enterprise VM management integration |
 | InsightVM | later-ready bridge | readiness reported as `later` | `INSIGHTVM_URL`, `INSIGHTVM_API_KEY` | risk-prioritized asset-level vulnerability data |
 | OpenVAS | later-ready bridge | readiness reported as `later` | `OPENVAS_URL`, `OPENVAS_USERNAME`, `OPENVAS_PASSWORD` | open-source infra scanner option |
+
+Note:
+- If required URL/API secrets are configured, workflow now performs endpoint connectivity tests and publishes HTTP status table in the run summary.
 
 ## 4) Artifact Evidence
 - IaC artifacts:

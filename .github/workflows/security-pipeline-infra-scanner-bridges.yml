@@ -35,43 +35,50 @@ jobs:
           OPENVAS_PASSWORD: ${{ secrets.OPENVAS_PASSWORD }}
           TARGET_HOST: ${{ inputs.target_host }}
         run: |
-          python - <<'PY'
-          import json, os
-          tools = [
-            ("Nessus", ["NESSUS_URL", "NESSUS_API_KEY"]),
-            ("Qualys", ["QUALYS_API_URL", "QUALYS_USERNAME", "QUALYS_PASSWORD"]),
-            ("InsightVM", ["INSIGHTVM_URL", "INSIGHTVM_API_KEY"]),
-            ("OpenVAS", ["OPENVAS_URL", "OPENVAS_USERNAME", "OPENVAS_PASSWORD"]),
-          ]
-          rows = []
-          for tool, keys in tools:
-            missing = [k for k in keys if not os.getenv(k)]
-            if missing:
-              rows.append({"tool": tool, "status": "later", "detail": f"missing secrets: {', '.join(missing)}"})
-            else:
-              rows.append({"tool": tool, "status": "ready", "detail": "API bridge prerequisites satisfied"})
-
-          out = {
-            "target_host": os.getenv("TARGET_HOST", ""),
-            "tools": rows,
-          }
-          with open("artifacts/infra-scanners/bridge-readiness.json", "w", encoding="utf-8") as f:
-            json.dump(out, f, indent=2)
-
-          lines = [
-            "## Infra Scanner Bridge Readiness",
-            "",
-            f"- target_host: `{out['target_host'] or 'not provided'}`",
-            "",
-            "| Tool | Status | Detail |",
-            "|---|---|---|",
-          ]
-          for r in rows:
-            lines.append(f"| `{r['tool']}` | `{r['status']}` | {r['detail']} |")
-          with open("artifacts/infra-scanners/summary.md", "w", encoding="utf-8") as f:
-            f.write("\n".join(lines) + "\n")
-          PY
+          python iac/scripts/infra_bridge_report.py
           cat artifacts/infra-scanners/summary.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Optional endpoint connectivity checks
+        continue-on-error: true
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path("artifacts/infra-scanners/ready-urls.json")
+          rows = json.loads(p.read_text(encoding="utf-8")) if p.exists() else []
+          Path("artifacts/infra-scanners/connectivity.txt").write_text("", encoding="utf-8")
+          if not rows:
+            with open("artifacts/infra-scanners/connectivity.txt", "a", encoding="utf-8") as f:
+              f.write("no ready endpoints to test\n")
+          for r in rows:
+            tool = r.get("tool", "unknown")
+            url = r.get("url", "")
+            if not url:
+              continue
+            print(f"checking {tool}: {url}")
+          PY
+          if [ -f artifacts/infra-scanners/ready-urls.json ]; then
+            jq -r '.[] | "\(.tool)\t\(.url)"' artifacts/infra-scanners/ready-urls.json | while IFS=$'\t' read -r tool url; do
+              [ -z "$url" ] && continue
+              code="$(curl -k -L -sS -o /dev/null -w "%{http_code}" --connect-timeout 5 --max-time 10 "$url" || echo 000)"
+              echo "${tool}|${url}|${code}" >> artifacts/infra-scanners/connectivity.txt
+            done
+          fi
+          {
+            echo ""
+            echo "## Infra Endpoint Connectivity"
+            echo ""
+            echo "| Tool | URL | HTTP |"
+            echo "|---|---|---:|"
+            if [ -f artifacts/infra-scanners/connectivity.txt ]; then
+              while IFS='|' read -r tool url code; do
+                [ -z "$tool" ] && continue
+                echo "| \`$tool\` | \`$url\` | $code |"
+              done < artifacts/infra-scanners/connectivity.txt
+            else
+              echo "| none | n/a | n/a |"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload infra scanner artifacts
         uses: actions/upload-artifact@v4

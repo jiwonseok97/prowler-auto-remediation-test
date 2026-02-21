@@ -50,7 +50,7 @@ def main() -> None:
         for cat in manifest.get("categories", []):
             category = cat["category"]
             path = Path(cat["path"])
-            source_path = snapshot_root / path
+            source_path = snapshot_root / category
             if not source_path.exists():
                 continue
             if not any(source_path.glob("*.tf")):

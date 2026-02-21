@@ -457,7 +457,15 @@ def build_sg_restrict_all_ports_tf(finding: Dict[str, Any], region: str) -> str:
     )
 
 
-def pick_reusable_instance_profile_name() -> str:
+def _extract_profile_name_from_arn(profile_arn: str) -> str:
+    arn = str(profile_arn or "").strip()
+    if ":instance-profile/" in arn:
+        return arn.split(":instance-profile/", 1)[1].split("/", 1)[0]
+    return ""
+
+
+def pick_reusable_instance_profile_name(region: str) -> str:
+    # First try IAM inventory when permission exists.
     try:
         iam = boto3.client("iam")
         marker: Optional[str] = None
@@ -478,7 +486,25 @@ def pick_reusable_instance_profile_name() -> str:
             if not marker:
                 break
     except Exception:
-        return ""
+        pass
+
+    # Fallback: infer reusable profile from existing EC2 associations.
+    # This path can work even when iam:ListInstanceProfiles is not granted.
+    try:
+        ec2 = boto3.client("ec2", region_name=region)
+        paginator = ec2.get_paginator("describe_iam_instance_profile_associations")
+        for page in paginator.paginate():
+            for assoc in page.get("IamInstanceProfileAssociations", []) or []:
+                profile = assoc.get("IamInstanceProfile", {}) or {}
+                name = str(profile.get("Name", "") or "")
+                if name:
+                    return name
+                arn = str(profile.get("Arn", "") or "")
+                arn_name = _extract_profile_name_from_arn(arn)
+                if arn_name:
+                    return arn_name
+    except Exception:
+        pass
     return ""
 
 
@@ -486,7 +512,7 @@ def build_ec2_instance_profile_attach_tf(finding: Dict[str, Any]) -> str:
     instance_id = extract_instance_id(finding.get("resource_arn", ""))
     if not instance_id:
         return ""
-    profile_name = pick_reusable_instance_profile_name()
+    profile_name = pick_reusable_instance_profile_name(str(finding.get("region", "") or os.getenv("AWS_REGION", "")))
     if not profile_name:
         return ""
     return (

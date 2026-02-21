@@ -548,8 +548,9 @@ def build_ec2_instance_profile_attach_tf(finding: Dict[str, Any]) -> str:
     if not profile_name:
         role_name = pick_reusable_role_name_for_instance_profile()
         if role_name:
-            suffix = hashlib.sha1(instance_id.encode("utf-8")).hexdigest()[:10]
-            profile_name = f"prowler-ec2-profile-{suffix}"
+            # Prefer conventional profile name (= role name) first.
+            # If it already exists, we can attach without create permissions.
+            profile_name = role_name
     if not profile_name:
         return ""
     script_lines = [

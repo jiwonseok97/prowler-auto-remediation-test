@@ -97,20 +97,39 @@ jobs:
           summary_path = Path('artifacts/rescan/rescan_summary.json')
           s = json.loads(summary_path.read_text(encoding='utf-8'))
           current_post = json.loads(Path('artifacts/rescan/post_normalized.json').read_text(encoding='utf-8'))
-          current_fail_ids = sorted({x.get('check_id', 'unknown') for x in current_post if x.get('status') == 'FAIL'})
-          fail_counts = {}
-          for row in current_post:
-            if row.get('status') != 'FAIL':
-              continue
+          current_fail_rows = [x for x in current_post if x.get('status') == 'FAIL']
+          current_fail_ids = sorted({x.get('check_id', 'unknown') for x in current_fail_rows})
+
+          def is_manual_runbook(row):
+            tier = str(row.get('remediation_tier', '')).strip().lower()
+            return bool(row.get('manual_required')) or bool(row.get('non_terraform')) or tier == 'manual-runbook'
+
+          total_fail_counts = {}
+          remediable_fail_counts = {}
+          manual_fail_counts = {}
+          for row in current_fail_rows:
             cid = str(row.get('check_id', 'unknown'))
-            fail_counts[cid] = fail_counts.get(cid, 0) + 1
+            total_fail_counts[cid] = total_fail_counts.get(cid, 0) + 1
+            if is_manual_runbook(row):
+              manual_fail_counts[cid] = manual_fail_counts.get(cid, 0) + 1
+            else:
+              remediable_fail_counts[cid] = remediable_fail_counts.get(cid, 0) + 1
+
+          current_remediable_fail = len([r for r in current_fail_rows if not is_manual_runbook(r)])
+          current_manual_fail = len([r for r in current_fail_rows if is_manual_runbook(r)])
+          s['post_fail_remediable'] = current_remediable_fail
+          s['post_fail_manual_runbook'] = current_manual_fail
 
           prev_summary_path = Path('artifacts/previous_rescan/rescan_summary.json')
           prev_post_path = Path('artifacts/previous_rescan/post_normalized.json')
           previous_post_fail = None
           incremental_reduced = None
+          previous_post_remediable_fail = None
+          incremental_reduced_remediable = None
           resolved_since_previous = []
           new_fail_since_previous = []
+          resolved_since_previous_remediable = []
+          new_fail_since_previous_remediable = []
 
           if prev_summary_path.exists():
             prev_summary = json.loads(prev_summary_path.read_text(encoding='utf-8'))
@@ -118,14 +137,31 @@ jobs:
             incremental_reduced = previous_post_fail - int(s.get('post_fail', 0))
             s['previous_post_fail'] = previous_post_fail
             s['incremental_reduced'] = incremental_reduced
+            if 'post_fail_remediable' in prev_summary:
+              previous_post_remediable_fail = int(prev_summary.get('post_fail_remediable', 0))
+              incremental_reduced_remediable = previous_post_remediable_fail - int(current_remediable_fail)
+              s['previous_post_fail_remediable'] = previous_post_remediable_fail
+              s['incremental_reduced_remediable'] = incremental_reduced_remediable
 
           if prev_post_path.exists():
             prev_post = json.loads(prev_post_path.read_text(encoding='utf-8'))
-            prev_fail_ids = sorted({x.get('check_id', 'unknown') for x in prev_post if x.get('status') == 'FAIL'})
+            prev_fail_rows = [x for x in prev_post if x.get('status') == 'FAIL']
+            prev_fail_ids = sorted({x.get('check_id', 'unknown') for x in prev_fail_rows})
+            prev_remediable_ids = sorted({x.get('check_id', 'unknown') for x in prev_fail_rows if not is_manual_runbook(x)})
+            current_remediable_ids = sorted({x.get('check_id', 'unknown') for x in current_fail_rows if not is_manual_runbook(x)})
             resolved_since_previous = sorted(set(prev_fail_ids) - set(current_fail_ids))
             new_fail_since_previous = sorted(set(current_fail_ids) - set(prev_fail_ids))
             s['resolved_since_previous_check_ids'] = resolved_since_previous
             s['new_fail_since_previous_check_ids'] = new_fail_since_previous
+            resolved_since_previous_remediable = sorted(set(prev_remediable_ids) - set(current_remediable_ids))
+            new_fail_since_previous_remediable = sorted(set(current_remediable_ids) - set(prev_remediable_ids))
+            s['resolved_since_previous_remediable_check_ids'] = resolved_since_previous_remediable
+            s['new_fail_since_previous_remediable_check_ids'] = new_fail_since_previous_remediable
+            if previous_post_remediable_fail is None:
+              previous_post_remediable_fail = len(prev_remediable_ids)
+              incremental_reduced_remediable = previous_post_remediable_fail - int(current_remediable_fail)
+              s['previous_post_fail_remediable'] = previous_post_remediable_fail
+              s['incremental_reduced_remediable'] = incremental_reduced_remediable
 
           rem_table_lines = [
             "| Remaining Check ID | Count |",
@@ -133,16 +169,47 @@ jobs:
           ]
           if s['remaining_fail_check_ids']:
             for cid in sorted(s['remaining_fail_check_ids']):
-              rem_table_lines.append(f"| `{cid}` | {int(fail_counts.get(cid, 0))} |")
+              rem_table_lines.append(f"| `{cid}` | {int(total_fail_counts.get(cid, 0))} |")
           else:
             rem_table_lines.append("| none | 0 |")
           rem_table = "\n".join(rem_table_lines)
+
+          remediable_table_lines = [
+            "| Check ID (Terraform-Capable) | Count |",
+            "|---|---:|",
+          ]
+          if remediable_fail_counts:
+            for cid in sorted(remediable_fail_counts):
+              remediable_table_lines.append(f"| `{cid}` | {int(remediable_fail_counts.get(cid, 0))} |")
+          else:
+            remediable_table_lines.append("| none | 0 |")
+          remediable_table = "\n".join(remediable_table_lines)
+
+          manual_table_lines = [
+            "| Check ID (Manual Runbook) | Count |",
+            "|---|---:|",
+          ]
+          if manual_fail_counts:
+            for cid in sorted(manual_fail_counts):
+              manual_table_lines.append(f"| `{cid}` | {int(manual_fail_counts.get(cid, 0))} |")
+          else:
+            manual_table_lines.append("| none | 0 |")
+          manual_table = "\n".join(manual_table_lines)
+
           resolved = '\n'.join(f"- {x}" for x in resolved_since_previous[:30]) or '- none'
           introduced = '\n'.join(f"- {x}" for x in new_fail_since_previous[:30]) or '- none'
+          resolved_remediable = '\n'.join(f"- {x}" for x in resolved_since_previous_remediable[:30]) or '- none'
+          introduced_remediable = '\n'.join(f"- {x}" for x in new_fail_since_previous_remediable[:30]) or '- none'
 
           inc_line = ""
           if incremental_reduced is not None:
             inc_line = f"- incremental_reduced: {incremental_reduced} (previous_post_fail={previous_post_fail} -> current_post_fail={s['post_fail']})\n"
+          remediable_inc_line = ""
+          if incremental_reduced_remediable is not None:
+            remediable_inc_line = (
+              f"- incremental_reduced_remediable: {incremental_reduced_remediable} "
+              f"(previous_post_fail_remediable={previous_post_remediable_fail} -> current_post_fail_remediable={current_remediable_fail})\n"
+            )
 
           md = (
             "## Rescan Summary\n"
@@ -150,12 +217,23 @@ jobs:
             f"- post_fail: {s['post_fail']}\n"
             f"- reduced: {s['reduced']} (baseline -> current)\n"
             f"{inc_line}\n"
-            "### Remaining FAIL\n"
+            f"- post_fail_auto_or_review(terraform-capable): {current_remediable_fail}\n"
+            f"- post_fail_manual_runbook(exception/manual): {current_manual_fail}\n"
+            f"{remediable_inc_line}\n"
+            "### Remaining FAIL (All)\n"
             f"{rem_table}\n\n"
+            "### Terraform-Capable FAIL (Auto/Review)\n"
+            f"{remediable_table}\n\n"
+            "### Manual-Runbook FAIL (Exception/Manual)\n"
+            f"{manual_table}\n\n"
             "### Resolved Since Previous Rescan\n"
             f"{resolved}\n\n"
             "### New FAIL Since Previous Rescan\n"
-            f"{introduced}\n"
+            f"{introduced}\n\n"
+            "### Resolved Since Previous Rescan (Terraform-Capable)\n"
+            f"{resolved_remediable}\n\n"
+            "### New FAIL Since Previous Rescan (Terraform-Capable)\n"
+            f"{introduced_remediable}\n"
           )
           summary_path.write_text(json.dumps(s, indent=2), encoding='utf-8')
           Path('artifacts/rescan/rescan_summary.md').write_text(md, encoding='utf-8')
@@ -166,16 +244,22 @@ jobs:
           import json
           from pathlib import Path
           s = json.loads(Path('artifacts/rescan/rescan_summary.json').read_text(encoding='utf-8'))
-          incremental = s.get("incremental_reduced")
+          incremental = s.get("incremental_reduced_remediable")
+          if incremental is None:
+              incremental = s.get("incremental_reduced")
           if incremental is not None:
               if incremental < 0:
                   raise SystemExit(
-                      f"FAIL not reduced vs previous post: previous_post={s.get('previous_post_fail')} current_post={s.get('post_fail')}"
+                      "FAIL not reduced vs previous post (terraform-capable scope): "
+                      f"previous_post_remediable={s.get('previous_post_fail_remediable', s.get('previous_post_fail'))} "
+                      f"current_post_remediable={s.get('post_fail_remediable', s.get('post_fail'))}"
                   )
               if incremental == 0:
                   Path("artifacts/rescan/no_reduction.flag").write_text("1", encoding="utf-8")
                   print(
-                      f"WARNING: no additional reduction vs previous post: previous_post={s.get('previous_post_fail')} current_post={s.get('post_fail')}"
+                      "WARNING: no additional reduction vs previous post (terraform-capable scope): "
+                      f"previous_post_remediable={s.get('previous_post_fail_remediable', s.get('previous_post_fail'))} "
+                      f"current_post_remediable={s.get('post_fail_remediable', s.get('post_fail'))}"
                   )
           elif s.get("reduced", 0) <= 0:
               raise SystemExit(f"FAIL not reduced vs baseline: baseline={s.get('baseline_fail')} post={s.get('post_fail')}")

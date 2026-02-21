@@ -196,11 +196,6 @@ jobs:
             manual_table_lines.append("| none | 0 |")
           manual_table = "\n".join(manual_table_lines)
 
-          resolved = '\n'.join(f"- {x}" for x in resolved_since_previous[:30]) or '- none'
-          introduced = '\n'.join(f"- {x}" for x in new_fail_since_previous[:30]) or '- none'
-          resolved_remediable = '\n'.join(f"- {x}" for x in resolved_since_previous_remediable[:30]) or '- none'
-          introduced_remediable = '\n'.join(f"- {x}" for x in new_fail_since_previous_remediable[:30]) or '- none'
-
           inc_line = ""
           if incremental_reduced is not None:
             inc_line = f"- incremental_reduced: {incremental_reduced} (previous_post_fail={previous_post_fail} -> current_post_fail={s['post_fail']})\n"
@@ -225,15 +220,7 @@ jobs:
             "### Terraform-Capable FAIL (Auto/Review)\n"
             f"{remediable_table}\n\n"
             "### Manual-Runbook FAIL (Exception/Manual)\n"
-            f"{manual_table}\n\n"
-            "### Resolved Since Previous Rescan\n"
-            f"{resolved}\n\n"
-            "### New FAIL Since Previous Rescan\n"
-            f"{introduced}\n\n"
-            "### Resolved Since Previous Rescan (Terraform-Capable)\n"
-            f"{resolved_remediable}\n\n"
-            "### New FAIL Since Previous Rescan (Terraform-Capable)\n"
-            f"{introduced_remediable}\n"
+            f"{manual_table}\n"
           )
           summary_path.write_text(json.dumps(s, indent=2), encoding='utf-8')
           Path('artifacts/rescan/rescan_summary.md').write_text(md, encoding='utf-8')

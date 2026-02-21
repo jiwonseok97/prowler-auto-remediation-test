@@ -1,7 +1,7 @@
 resource "null_resource" "fix_ec2_instance_profile_association_a7e4e4fdd1" {
   triggers = {
     instance_id  = "i-0fbecaba3c48e7c79"
-    profile_name = "prowler-ec2-profile-2ec59795ac"
+    profile_name = "AmazonEKSAutoClusterRole"
     role_name    = "AmazonEKSAutoClusterRole"
   }
 
@@ -10,7 +10,7 @@ resource "null_resource" "fix_ec2_instance_profile_association_a7e4e4fdd1" {
     command     = <<-EOT
 set -uo pipefail
 INSTANCE_ID="i-0fbecaba3c48e7c79"
-PROFILE_NAME="prowler-ec2-profile-2ec59795ac"
+PROFILE_NAME="AmazonEKSAutoClusterRole"
 ROLE_NAME="AmazonEKSAutoClusterRole"
 aws iam get-instance-profile --instance-profile-name "$PROFILE_NAME" >/dev/null 2>&1 || aws iam create-instance-profile --instance-profile-name "$PROFILE_NAME" || true
 if [ -n "$ROLE_NAME" ]; then

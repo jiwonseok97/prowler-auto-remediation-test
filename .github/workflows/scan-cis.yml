@@ -132,12 +132,36 @@ jobs:
         run: |
           python - <<'PY'
           import json
+          from collections import Counter
           from pathlib import Path
           p = Path('artifacts/scan/prioritized_findings.json')
           rows = json.loads(p.read_text(encoding='utf-8')) if p.exists() else []
-          fail = len([r for r in rows if r.get('status') == 'FAIL'])
+          fail_rows = [r for r in rows if r.get('status') == 'FAIL']
+          fail = len(fail_rows)
+          by_check = Counter(str(r.get('check_id', 'unknown')) for r in fail_rows)
+          by_service = Counter(str(r.get('service', 'unknown')) for r in fail_rows)
+
+          check_lines = [
+              "| Check ID | FAIL Count |",
+              "|---|---:|",
+          ]
+          for check_id, count in by_check.most_common():
+              check_lines.append(f"| `{check_id}` | {count} |")
+
+          service_lines = [
+              "| Service | FAIL Count |",
+              "|---|---:|",
+          ]
+          for service, count in by_service.most_common():
+              service_lines.append(f"| `{service}` | {count} |")
+
           print(f"baseline_fail={fail}")
           with open(Path.cwd() / 'summary.md', 'w', encoding='utf-8') as f:
-              f.write(f"## Scan Result\n- baseline_fail: {fail}\n")
+              f.write("## Scan Result\n")
+              f.write(f"- baseline_fail: {fail}\n\n")
+              f.write("### FAIL by Service\n")
+              f.write("\n".join(service_lines) + "\n\n")
+              f.write("### FAIL by Check\n")
+              f.write("\n".join(check_lines) + "\n")
           PY
           cat summary.md >> "$GITHUB_STEP_SUMMARY"

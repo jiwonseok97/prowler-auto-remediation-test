@@ -99,10 +99,28 @@ jobs:
           current_post = json.loads(Path('artifacts/rescan/post_normalized.json').read_text(encoding='utf-8'))
           current_fail_rows = [x for x in current_post if x.get('status') == 'FAIL']
           current_fail_ids = sorted({x.get('check_id', 'unknown') for x in current_fail_rows})
+          manual_override_ids = set()
+          merged_manifest = Path('remediation/manifest.json')
+          if merged_manifest.exists():
+            try:
+              merged_doc = json.loads(merged_manifest.read_text(encoding='utf-8'))
+              for cat in merged_doc.get('categories', []) or []:
+                for item in cat.get('items', []) or []:
+                  cid = str(item.get('check_id', '')).strip()
+                  if cid and bool(item.get('manual_required')):
+                    manual_override_ids.add(cid)
+            except Exception:
+              pass
 
           def is_manual_runbook(row):
             tier = str(row.get('remediation_tier', '')).strip().lower()
-            return bool(row.get('manual_required')) or bool(row.get('non_terraform')) or tier == 'manual-runbook'
+            cid = str(row.get('check_id', '')).strip()
+            return (
+              bool(row.get('manual_required'))
+              or bool(row.get('non_terraform'))
+              or tier == 'manual-runbook'
+              or cid in manual_override_ids
+            )
 
           total_fail_counts = {}
           remediable_fail_counts = {}

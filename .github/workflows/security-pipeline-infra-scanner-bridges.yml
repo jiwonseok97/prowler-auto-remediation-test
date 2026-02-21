@@ -8,6 +8,11 @@ on:
         required: false
         type: string
         default: ""
+      run_nessus_real_scan:
+        description: "Run real Nessus API scan lifecycle (create/launch/poll/export)"
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -25,6 +30,8 @@ jobs:
         env:
           NESSUS_URL: ${{ secrets.NESSUS_URL }}
           NESSUS_API_KEY: ${{ secrets.NESSUS_API_KEY }}
+          NESSUS_ACCESS_KEY: ${{ secrets.NESSUS_ACCESS_KEY }}
+          NESSUS_SECRET_KEY: ${{ secrets.NESSUS_SECRET_KEY }}
           QUALYS_API_URL: ${{ secrets.QUALYS_API_URL }}
           QUALYS_USERNAME: ${{ secrets.QUALYS_USERNAME }}
           QUALYS_PASSWORD: ${{ secrets.QUALYS_PASSWORD }}
@@ -37,6 +44,38 @@ jobs:
         run: |
           python iac/scripts/infra_bridge_report.py
           cat artifacts/infra-scanners/summary.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Run Nessus real scan lifecycle
+        if: ${{ inputs.run_nessus_real_scan == true && secrets.NESSUS_URL != '' && inputs.target_host != '' && (secrets.NESSUS_API_KEY != '' || (secrets.NESSUS_ACCESS_KEY != '' && secrets.NESSUS_SECRET_KEY != '')) }}
+        env:
+          NESSUS_URL: ${{ secrets.NESSUS_URL }}
+          NESSUS_API_KEY: ${{ secrets.NESSUS_API_KEY }}
+          NESSUS_ACCESS_KEY: ${{ secrets.NESSUS_ACCESS_KEY }}
+          NESSUS_SECRET_KEY: ${{ secrets.NESSUS_SECRET_KEY }}
+          TARGET_HOST: ${{ inputs.target_host }}
+          NESSUS_VERIFY_TLS: "false"
+          NESSUS_DELETE_SCAN: "false"
+        run: |
+          python iac/scripts/nessus_scan_bridge.py \
+            --target-host "${{ inputs.target_host }}" \
+            --out-dir artifacts/infra-scanners/nessus \
+            --poll-interval 15 \
+            --timeout-sec 3600
+          cat artifacts/infra-scanners/nessus/nessus_summary.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Nessus real scan prerequisites warning
+        if: ${{ inputs.run_nessus_real_scan == true && (inputs.target_host == '' || secrets.NESSUS_URL == '' || (secrets.NESSUS_API_KEY == '' && (secrets.NESSUS_ACCESS_KEY == '' || secrets.NESSUS_SECRET_KEY == ''))) }}
+        run: |
+          {
+            echo "## Nessus Real Scan Skipped"
+            echo ""
+            echo "- run_nessus_real_scan: \`${{ inputs.run_nessus_real_scan }}\`"
+            echo "- target_host set: \`${{ inputs.target_host != '' }}\`"
+            echo "- NESSUS_URL set: \`${{ secrets.NESSUS_URL != '' }}\`"
+            echo "- auth set (api or access+secret): \`${{ secrets.NESSUS_API_KEY != '' || (secrets.NESSUS_ACCESS_KEY != '' && secrets.NESSUS_SECRET_KEY != '') }}\`"
+            echo ""
+            echo "Set missing input/secrets and rerun."
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Optional endpoint connectivity checks
         continue-on-error: true

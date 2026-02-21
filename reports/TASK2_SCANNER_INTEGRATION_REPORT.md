@@ -17,6 +17,7 @@
   - Snyk IaC (optional via `SNYK_TOKEN`)
 - `.github/workflows/security-pipeline-infra-scanner-bridges.yml`
   - Nessus bridge readiness
+  - Nessus real API scan lifecycle (create -> launch -> poll -> export/download) when `run_nessus_real_scan=true`
   - Qualys bridge readiness
   - InsightVM bridge readiness
   - OpenVAS bridge readiness
@@ -28,6 +29,14 @@
     - `bridge-readiness.json`
     - `summary.md`
     - `ready-urls.json` (for optional endpoint HTTP checks)
+- `iac/scripts/nessus_scan_bridge.py`
+  - Executes Nessus end-to-end API flow:
+    - create scan
+    - launch scan
+    - poll scan state
+    - export results
+    - poll export readiness
+    - download result JSON
 
 ### 2.2 Execution runs
 - IaC scanner run: `22264147855` (success)
@@ -46,7 +55,7 @@
 ### 3.2 Infra scanning (target 4)
 | Tool | Current Status | Execution Result | Blocking Requirement | Benefit |
 |---|---|---|---|---|
-| Nessus | later-ready bridge | readiness reported as `later` | `NESSUS_URL`, `NESSUS_API_KEY` | vuln assessment at host/service layer |
+| Nessus | bridge-ready + real-scan capable | readiness + real scan lifecycle path implemented | `NESSUS_URL`, (`NESSUS_API_KEY` or `NESSUS_ACCESS_KEY`+`NESSUS_SECRET_KEY`), `target_host` | vuln assessment at host/service layer |
 | Qualys | later-ready bridge | readiness reported as `later` | `QUALYS_API_URL`, `QUALYS_USERNAME`, `QUALYS_PASSWORD` | enterprise VM management integration |
 | InsightVM | later-ready bridge | readiness reported as `later` | `INSIGHTVM_URL`, `INSIGHTVM_API_KEY` | risk-prioritized asset-level vulnerability data |
 | OpenVAS | later-ready bridge | readiness reported as `later` | `OPENVAS_URL`, `OPENVAS_USERNAME`, `OPENVAS_PASSWORD` | open-source infra scanner option |

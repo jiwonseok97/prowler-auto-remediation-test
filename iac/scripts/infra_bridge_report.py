@@ -9,7 +9,7 @@ from pathlib import Path
 
 
 TOOLS = [
-    ("Nessus", ["NESSUS_URL", "NESSUS_API_KEY"], "NESSUS_URL"),
+    ("Nessus", ["NESSUS_URL"], "NESSUS_URL"),
     ("Qualys", ["QUALYS_API_URL", "QUALYS_USERNAME", "QUALYS_PASSWORD"], "QUALYS_API_URL"),
     ("InsightVM", ["INSIGHTVM_URL", "INSIGHTVM_API_KEY"], "INSIGHTVM_URL"),
     ("OpenVAS", ["OPENVAS_URL", "OPENVAS_USERNAME", "OPENVAS_PASSWORD"], "OPENVAS_URL"),
@@ -24,6 +24,12 @@ def main() -> None:
     ready_urls = []
     for tool, keys, url_key in TOOLS:
         missing = [k for k in keys if not os.getenv(k)]
+        if tool == "Nessus":
+            nessus_api = os.getenv("NESSUS_API_KEY", "")
+            nessus_access = os.getenv("NESSUS_ACCESS_KEY", "")
+            nessus_secret = os.getenv("NESSUS_SECRET_KEY", "")
+            if not nessus_api and not (nessus_access and nessus_secret):
+                missing.append("NESSUS_API_KEY or NESSUS_ACCESS_KEY+NESSUS_SECRET_KEY")
         if missing:
             rows.append(
                 {

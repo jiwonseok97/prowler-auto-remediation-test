@@ -233,6 +233,22 @@ jobs:
             manual_table_lines.append("| none | 0 |")
           manual_table = "\n".join(manual_table_lines)
 
+          now_lines = [
+            "### What We Can Continue Now (Pipeline-Auto/Review)",
+          ]
+          if remediable_fail_counts:
+            now_lines.append(f"- Remaining terraform-capable FAIL: {current_remediable_fail}")
+            now_lines.append("- Next action: keep generating remediation PRs and merge/apply.")
+          else:
+            now_lines.append("- Terraform-capable remaining FAIL is 0.")
+            now_lines.append("- Next action: focus on manual-runbook controls.")
+
+          later_lines = [
+            "### What Should Be Planned Later (Manual/Exception)",
+            f"- Remaining manual-runbook FAIL: {current_manual_fail}",
+            "- Typical items require account security policy, organizational controls, or manual operations.",
+          ]
+
           md = (
             "## Rescan Summary\n"
             f"- baseline_fail: {s['baseline_fail']}\n"
@@ -245,7 +261,11 @@ jobs:
             "### Terraform-Capable FAIL (Auto/Review)\n"
             f"{remediable_table}\n\n"
             "### Manual-Runbook FAIL (Exception/Manual)\n"
-            f"{manual_table}\n"
+            f"{manual_table}\n\n"
+            + "\n".join(now_lines)
+            + "\n\n"
+            + "\n".join(later_lines)
+            + "\n"
           )
           summary_path.write_text(json.dumps(s, indent=2), encoding='utf-8')
           Path('artifacts/rescan/rescan_summary.md').write_text(md, encoding='utf-8')

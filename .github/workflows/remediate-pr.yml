@@ -30,7 +30,7 @@ on:
         description: "Create one remediation PR across all categories (demo mode)"
         required: true
         type: boolean
-        default: false
+        default: true
   workflow_run:
     workflows: ["Security Pipeline - 01 Scan Baseline"]
     types: [completed]
@@ -60,7 +60,7 @@ jobs:
             echo "scan_run_id=${{ github.event.workflow_run.id }}" >> "$GITHUB_OUTPUT"
             echo "model_id=anthropic.claude-3-haiku-20240307-v1:0" >> "$GITHUB_OUTPUT"
             echo "bedrock_fallback=false" >> "$GITHUB_OUTPUT"
-            echo "single_pr_mode=false" >> "$GITHUB_OUTPUT"
+            echo "single_pr_mode=true" >> "$GITHUB_OUTPUT"
           else
             echo "scan_run_id=${{ inputs.scan_run_id }}" >> "$GITHUB_OUTPUT"
             echo "model_id=${{ inputs.model_id }}" >> "$GITHUB_OUTPUT"

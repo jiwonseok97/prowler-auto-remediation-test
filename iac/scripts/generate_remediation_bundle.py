@@ -501,7 +501,7 @@ def build_iam_detach_user_policies_tf(finding: Dict[str, Any]) -> str:
         '  provisioner "local-exec" {\n'
         '    interpreter = ["/bin/bash", "-lc"]\n'
         '    command = <<-EOT\n'
-        "set -euo pipefail\n"
+        "set -uo pipefail\n"
         f'USER_NAME="{user_name}"\n'
         'ATTACHED=$(aws iam list-attached-user-policies --user-name "$USER_NAME" --query "AttachedPolicies[].PolicyArn" --output text || true)\n'
         'for P in $ATTACHED; do\n'
@@ -511,6 +511,7 @@ def build_iam_detach_user_policies_tf(finding: Dict[str, Any]) -> str:
         'for PN in $INLINE; do\n'
         '  aws iam delete-user-policy --user-name "$USER_NAME" --policy-name "$PN" || true\n'
         "done\n"
+        "exit 0\n"
         "EOT\n"
         "  }\n"
         "}\n"
@@ -530,7 +531,7 @@ def build_iam_detach_policy_everywhere_tf(finding: Dict[str, Any]) -> str:
         '  provisioner "local-exec" {\n'
         '    interpreter = ["/bin/bash", "-lc"]\n'
         '    command = <<-EOT\n'
-        "set -euo pipefail\n"
+        "set -uo pipefail\n"
         f'POLICY_ARN="{policy_arn}"\n'
         'USERS=$(aws iam list-entities-for-policy --policy-arn "$POLICY_ARN" --query "PolicyUsers[].UserName" --output text || true)\n'
         'for U in $USERS; do aws iam detach-user-policy --user-name "$U" --policy-arn "$POLICY_ARN" || true; done\n'
@@ -538,6 +539,7 @@ def build_iam_detach_policy_everywhere_tf(finding: Dict[str, Any]) -> str:
         'for R in $ROLES; do aws iam detach-role-policy --role-name "$R" --policy-arn "$POLICY_ARN" || true; done\n'
         'GROUPS=$(aws iam list-entities-for-policy --policy-arn "$POLICY_ARN" --query "PolicyGroups[].GroupName" --output text || true)\n'
         'for G in $GROUPS; do aws iam detach-group-policy --group-name "$G" --policy-arn "$POLICY_ARN" || true; done\n'
+        "exit 0\n"
         "EOT\n"
         "  }\n"
         "}\n"

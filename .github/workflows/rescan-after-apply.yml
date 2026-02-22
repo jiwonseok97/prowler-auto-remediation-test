@@ -200,27 +200,93 @@ jobs:
               s['previous_post_fail_remediable'] = previous_post_remediable_fail
               s['incremental_reduced_remediable'] = incremental_reduced_remediable
 
-          rem_table_lines = [
-            "| Remaining Check ID | Count |",
-            "|---|---:|",
-          ]
-          if s['remaining_fail_check_ids']:
-            for cid in sorted(s['remaining_fail_check_ids']):
-              rem_table_lines.append(f"| `{cid}` | {int(total_fail_counts.get(cid, 0))} |")
-          else:
-            rem_table_lines.append("| none | 0 |")
-          rem_table = "\n".join(rem_table_lines)
+          MANUAL_REMEDIATION_GUIDE = {
+            'prowler-s3_bucket_no_mfa_delete': {
+              'reason': 'S3 MFA Delete 활성화는 루트 계정 자격증명과 MFA 토큰이 동시에 필요하며, Terraform/SDK에서 루트 세션을 지원하지 않아 자동화 불가',
+              'guide': '① 루트 계정으로 AWS CLI 로그인
+② 명령 실행: aws s3api put-bucket-versioning --bucket {버킷명} --versioning-configuration Status=Enabled,MFADelete=Enabled --mfa "arn:aws:iam::{계정ID}:mfa/root-account-mfa {TOTP코드}"',
+            },
+            'prowler-iam_root_hardware_mfa_enabled': {
+              'reason': '하드웨어 MFA 디바이스 등록은 물리적 디바이스가 필요하며 AWS 콘솔에서만 직접 조작 가능',
+              'guide': '① AWS 콘솔 → IAM → 보안 자격증명
+② MFA 디바이스 → 하드웨어 MFA 디바이스 활성화
+③ 호환 장치: YubiKey(FIDO2), Gemalto 토큰 등',
+            },
+            'prowler-ec2_ebs_volume_encryption': {
+              'reason': '기존 EBS 볼륨 암호화 전환은 인스턴스 중단 및 볼륨 교체가 필요하여 서비스 영향 발생',
+              'guide': '① 인스턴스 중지 → ② 볼륨 스냅샷 생성 → ③ 스냅샷 암호화 복사(KMS 키 지정) → ④ 암호화 스냅샷으로 새 볼륨 생성 → ⑤ 기존 볼륨 분리 후 새 볼륨 연결 → ⑥ 인스턴스 시작 및 검증',
+            },
+            'prowler-ec2_instance_profile_attached': {
+              'reason': 'EC2 인스턴스 프로파일 연결은 실행 중인 애플리케이션 권한에 영향을 주어 사전 검토 및 수동 적용 필요',
+              'guide': '① 적절한 권한의 IAM 역할 생성
+② EC2 콘솔 → 인스턴스 선택 → 작업 → 보안 → IAM 역할 수정
+③ 생성한 IAM 역할 연결 및 저장',
+            },
+          }
 
-          remediable_table_lines = [
-            "| Check ID (Terraform-Capable) | Count |",
-            "|---|---:|",
-          ]
-          if remediable_fail_counts:
-            for cid in sorted(remediable_fail_counts):
-              remediable_table_lines.append(f"| `{cid}` | {int(remediable_fail_counts.get(cid, 0))} |")
+          def make_comparison_section(title, asis_counts, is_counts, asis_label):
+            asis_lines = [
+              f"**{asis_label}**",
+              "| Check ID | Count |",
+              "|---|---:|",
+            ]
+            if asis_counts:
+              for cid in sorted(asis_counts):
+                asis_lines.append(f"| `{cid}` | {asis_counts[cid]} |")
+            else:
+              asis_lines.append("| none | 0 |")
+            is_lines = [
+              "**IS (현재)**",
+              "| Check ID | Count |",
+              "|---|---:|",
+            ]
+            if is_counts:
+              for cid in sorted(is_counts):
+                is_lines.append(f"| `{cid}` | {is_counts[cid]} |")
+            else:
+              is_lines.append("| none | 0 |")
+            return (
+              f"### {title}
+"
+              + "
+".join(asis_lines)
+              + "
+
+**→**
+
+"
+              + "
+".join(is_lines)
+            )
+
+          asis_label = "AS-IS (이전 rescan)" if prev_post_path.exists() else "AS-IS (베이스라인)"
+          if prev_post_path.exists():
+            prev_fail_all = [x for x in json.loads(prev_post_path.read_text(encoding='utf-8')) if x.get('status') == 'FAIL']
           else:
-            remediable_table_lines.append("| none | 0 |")
-          remediable_table = "\n".join(remediable_table_lines)
+            bl_path = Path('artifacts/baseline_scan/prioritized_findings.json')
+            prev_fail_all = [x for x in json.loads(bl_path.read_text(encoding='utf-8')) if x.get('status') == 'FAIL'] if bl_path.exists() else []
+
+          asis_total_counts = {}
+          asis_remediable_counts = {}
+          for row in prev_fail_all:
+            cid = str(row.get('check_id', 'unknown'))
+            asis_total_counts[cid] = asis_total_counts.get(cid, 0) + 1
+            if not is_manual_runbook(row):
+              asis_remediable_counts[cid] = asis_remediable_counts.get(cid, 0) + 1
+
+          rem_comparison = make_comparison_section(
+            "Remaining FAIL (All)",
+            asis_total_counts,
+            total_fail_counts,
+            asis_label
+          )
+
+          remediable_comparison = make_comparison_section(
+            "Terraform-Capable FAIL (Auto/Review)",
+            asis_remediable_counts,
+            remediable_fail_counts,
+            asis_label
+          )
 
           manual_table_lines = [
             "| Check ID (Manual Runbook) | Count |",
@@ -231,7 +297,24 @@ jobs:
               manual_table_lines.append(f"| `{cid}` | {int(manual_fail_counts.get(cid, 0))} |")
           else:
             manual_table_lines.append("| none | 0 |")
-          manual_table = "\n".join(manual_table_lines)
+          manual_table = "
+".join(manual_table_lines)
+
+          manual_guide_lines = []
+          if manual_fail_counts:
+            manual_guide_lines.append("
+**수동 조치 가이드:**")
+            for cid in sorted(manual_fail_counts):
+              guide_info = MANUAL_REMEDIATION_GUIDE.get(cid)
+              if guide_info:
+                manual_guide_lines.append(f"
+**`{cid}`**")
+                manual_guide_lines.append(f"- **분류 이유:** {guide_info['reason']}")
+                manual_guide_lines.append(f"- **조치 방법:** {guide_info['guide']}")
+              else:
+                manual_guide_lines.append(f"
+**`{cid}`**")
+                manual_guide_lines.append("- 해당 항목은 콘솔 또는 수동 조치가 필요합니다.")
 
           now_lines = [
             "### What We Can Continue Now (Pipeline-Auto/Review)",
@@ -250,22 +333,43 @@ jobs:
           ]
 
           md = (
-            "## Rescan Summary\n"
-            f"- baseline_fail: {s['baseline_fail']}\n"
-            f"- post_fail: {s['post_fail']}\n"
-            f"- reduced: {s['reduced']} (baseline -> current)\n"
-            f"- actionable_fail(terraform-capable): {current_remediable_fail}\n"
-            f"- manual_fail(exception/manual): {current_manual_fail}\n\n"
-            "### Remaining FAIL (All)\n"
-            f"{rem_table}\n\n"
-            "### Terraform-Capable FAIL (Auto/Review)\n"
-            f"{remediable_table}\n\n"
-            "### Manual-Runbook FAIL (Exception/Manual)\n"
-            f"{manual_table}\n\n"
-            + "\n".join(now_lines)
-            + "\n\n"
-            + "\n".join(later_lines)
-            + "\n"
+            "## Rescan Summary
+"
+            f"- baseline_fail: {s['baseline_fail']}
+"
+            f"- post_fail: {s['post_fail']}
+"
+            f"- reduced: {s['reduced']} (baseline -> current)
+"
+            f"- actionable_fail(terraform-capable): {current_remediable_fail}
+"
+            f"- manual_fail(exception/manual): {current_manual_fail}
+
+"
+            + rem_comparison + "
+
+"
+            + remediable_comparison + "
+
+"
+            + "### Manual-Runbook FAIL (Exception/Manual)
+"
+            + manual_table + "
+"
+            + ("
+".join(manual_guide_lines) if manual_guide_lines else "")
+            + "
+
+"
+            + "
+".join(now_lines)
+            + "
+
+"
+            + "
+".join(later_lines)
+            + "
+"
           )
           summary_path.write_text(json.dumps(s, indent=2), encoding='utf-8')
           Path('artifacts/rescan/rescan_summary.md').write_text(md, encoding='utf-8')

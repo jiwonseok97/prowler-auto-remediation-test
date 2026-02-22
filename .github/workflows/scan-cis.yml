@@ -142,14 +142,14 @@ jobs:
           by_service = Counter(str(r.get('service', 'unknown')) for r in fail_rows)
 
           check_lines = [
-              "| Check ID | FAIL Count |",
+              "| Check ID | Count |",
               "|---|---:|",
           ]
           for check_id, count in by_check.most_common():
               check_lines.append(f"| `{check_id}` | {count} |")
 
           service_lines = [
-              "| Service | FAIL Count |",
+              "| Service | Count |",
               "|---|---:|",
           ]
           for service, count in by_service.most_common():

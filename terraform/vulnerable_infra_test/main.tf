@@ -37,6 +37,7 @@ resource "random_id" "bucket_suffix" {
 resource "aws_s3_bucket" "vuln_bucket" {
   count  = var.vuln_bucket_count
   bucket = format("vuln-demo-%s-%02d-%s", var.region, count.index + 1, random_id.bucket_suffix[count.index].hex)
+  force_destroy = true
 }
 
 resource "aws_s3_bucket_public_access_block" "vuln_bucket_pab" {
@@ -46,6 +47,26 @@ resource "aws_s3_bucket_public_access_block" "vuln_bucket_pab" {
   block_public_policy     = false
   ignore_public_acls      = false
   restrict_public_buckets = false
+}
+
+# =================================
+# IAM password policy vulnerable setup
+# =================================
+# This intentionally weakens the account password policy to generate multiple
+# auto-remediable IAM password-policy FAIL findings (minimum length, complexity,
+# reuse prevention).
+resource "aws_iam_account_password_policy" "weak_password_policy" {
+  count = var.create_weak_account_password_policy ? 1 : 0
+
+  minimum_password_length        = 6
+  require_lowercase_characters   = false
+  require_uppercase_characters   = false
+  require_numbers                = false
+  require_symbols                = false
+  allow_users_to_change_password = true
+  max_password_age               = 0
+  password_reuse_prevention      = 1
+  hard_expiry                    = false
 }
 
 # =================================

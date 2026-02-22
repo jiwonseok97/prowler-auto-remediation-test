@@ -202,64 +202,44 @@ jobs:
 
           MANUAL_REMEDIATION_GUIDE = {
             'prowler-s3_bucket_no_mfa_delete': {
-              'reason': 'S3 MFA Delete 활성화는 루트 계정 자격증명과 MFA 토큰이 동시에 필요하며, Terraform/SDK에서 루트 세션을 지원하지 않아 자동화 불가',
-              'guide': '① 루트 계정으로 AWS CLI 로그인
-② 명령 실행: aws s3api put-bucket-versioning --bucket {버킷명} --versioning-configuration Status=Enabled,MFADelete=Enabled --mfa "arn:aws:iam::{계정ID}:mfa/root-account-mfa {TOTP코드}"',
+              'reason': 'S3 MFA Delete 활성화는 루트 계정 자격증명+MFA 토큰이 동시에 필요하며, Terraform/SDK에서 루트 세션을 지원하지 않아 자동화 불가',
+              'guide': '1. 루트 계정으로 AWS CLI 로그인\n2. aws s3api put-bucket-versioning --bucket {버킷명} --versioning-configuration Status=Enabled,MFADelete=Enabled --mfa "arn:aws:iam::{계정ID}:mfa/root-account-mfa {TOTP코드}"',
             },
             'prowler-iam_root_hardware_mfa_enabled': {
-              'reason': '하드웨어 MFA 디바이스 등록은 물리적 디바이스가 필요하며 AWS 콘솔에서만 직접 조작 가능',
-              'guide': '① AWS 콘솔 → IAM → 보안 자격증명
-② MFA 디바이스 → 하드웨어 MFA 디바이스 활성화
-③ 호환 장치: YubiKey(FIDO2), Gemalto 토큰 등',
+              'reason': '하드웨어 MFA 디바이스 등록은 물리적 디바이스가 필요하며, AWS 콘솔에서만 직접 조작 가능',
+              'guide': '1. AWS 콘솔 → IAM → 보안 자격증명\n2. MFA 디바이스 → 하드웨어 MFA 디바이스 활성화\n3. 호환 장치: YubiKey(FIDO2), Gemalto 토큰',
             },
             'prowler-ec2_ebs_volume_encryption': {
               'reason': '기존 EBS 볼륨 암호화 전환은 인스턴스 중단 및 볼륨 교체가 필요하여 서비스 영향 발생',
-              'guide': '① 인스턴스 중지 → ② 볼륨 스냅샷 생성 → ③ 스냅샷 암호화 복사(KMS 키 지정) → ④ 암호화 스냅샷으로 새 볼륨 생성 → ⑤ 기존 볼륨 분리 후 새 볼륨 연결 → ⑥ 인스턴스 시작 및 검증',
+              'guide': '1. 인스턴스 중지 → 2. 볼륨 스냅샷 생성 → 3. 스냅샷 암호화 복사(KMS 키 지정) → 4. 암호화 스냅샷으로 새 볼륨 생성 → 5. 기존 볼륨 분리 후 새 볼륨 연결 → 6. 인스턴스 시작 및 검증',
             },
             'prowler-ec2_instance_profile_attached': {
               'reason': 'EC2 인스턴스 프로파일 연결은 실행 중인 애플리케이션 권한에 영향을 주어 사전 검토 및 수동 적용 필요',
-              'guide': '① 적절한 권한의 IAM 역할 생성
-② EC2 콘솔 → 인스턴스 선택 → 작업 → 보안 → IAM 역할 수정
-③ 생성한 IAM 역할 연결 및 저장',
+              'guide': '1. 적절한 권한의 IAM 역할 생성 → 2. EC2 콘솔 → 인스턴스 → 작업 → 보안 → IAM 역할 수정 → 3. 생성한 IAM 역할 연결 및 저장',
             },
           }
 
-          def make_comparison_section(title, asis_counts, is_counts, asis_label):
-            asis_lines = [
-              f"**{asis_label}**",
-              "| Check ID | Count |",
-              "|---|---:|",
-            ]
+          def make_comparison_section(title, asis_counts, is_counts, asis_lbl):
+            asis_lines = [f'**{asis_lbl}**', '| 점검 항목 ID | 건수 |', '|---|---:|']
             if asis_counts:
               for cid in sorted(asis_counts):
-                asis_lines.append(f"| `{cid}` | {asis_counts[cid]} |")
+                asis_lines.append(f'| `{cid}` | {asis_counts[cid]} |')
             else:
-              asis_lines.append("| none | 0 |")
-            is_lines = [
-              "**IS (현재)**",
-              "| Check ID | Count |",
-              "|---|---:|",
-            ]
+              asis_lines.append('| 없음 | 0 |')
+            is_lines = ['**IS (현재)**', '| 점검 항목 ID | 건수 |', '|---|---:|']
             if is_counts:
               for cid in sorted(is_counts):
-                is_lines.append(f"| `{cid}` | {is_counts[cid]} |")
+                is_lines.append(f'| `{cid}` | {is_counts[cid]} |')
             else:
-              is_lines.append("| none | 0 |")
+              is_lines.append('| 없음 | 0 |')
             return (
-              f"### {title}
-"
-              + "
-".join(asis_lines)
-              + "
-
-**→**
-
-"
-              + "
-".join(is_lines)
+              f'### {title}\n'
+              + '\n'.join(asis_lines)
+              + '\n\n**→**\n\n'
+              + '\n'.join(is_lines)
             )
 
-          asis_label = "AS-IS (이전 rescan)" if prev_post_path.exists() else "AS-IS (베이스라인)"
+          asis_lbl = 'AS-IS (이전 재스캔)' if prev_post_path.exists() else 'AS-IS (베이스라인)'
           if prev_post_path.exists():
             prev_fail_all = [x for x in json.loads(prev_post_path.read_text(encoding='utf-8')) if x.get('status') == 'FAIL']
           else:
@@ -274,102 +254,83 @@ jobs:
             if not is_manual_runbook(row):
               asis_remediable_counts[cid] = asis_remediable_counts.get(cid, 0) + 1
 
-          rem_comparison = make_comparison_section(
-            "Remaining FAIL (All)",
-            asis_total_counts,
-            total_fail_counts,
-            asis_label
-          )
+          rem_table_lines = [
+            '| 남은 점검 항목 | 건수 |',
+            '|---|---:|',
+          ]
+          if s['remaining_fail_check_ids']:
+            for cid in sorted(s['remaining_fail_check_ids']):
+              rem_table_lines.append(f'| `{cid}` | {int(total_fail_counts.get(cid, 0))} |')
+          else:
+            rem_table_lines.append('| 없음 | 0 |')
 
-          remediable_comparison = make_comparison_section(
-            "Terraform-Capable FAIL (Auto/Review)",
-            asis_remediable_counts,
-            remediable_fail_counts,
-            asis_label
-          )
+          remediable_table_lines = [
+            '| 점검 항목 (Terraform 가능) | 건수 |',
+            '|---|---:|',
+          ]
+          if remediable_fail_counts:
+            for cid in sorted(remediable_fail_counts):
+              remediable_table_lines.append(f'| `{cid}` | {int(remediable_fail_counts.get(cid, 0))} |')
+          else:
+            remediable_table_lines.append('| 없음 | 0 |')
 
           manual_table_lines = [
-            "| Check ID (Manual Runbook) | Count |",
-            "|---|---:|",
+            '| 점검 항목 (수동 조치 필요) | 건수 |',
+            '|---|---:|',
           ]
           if manual_fail_counts:
             for cid in sorted(manual_fail_counts):
-              manual_table_lines.append(f"| `{cid}` | {int(manual_fail_counts.get(cid, 0))} |")
+              manual_table_lines.append(f'| `{cid}` | {int(manual_fail_counts.get(cid, 0))} |')
           else:
-            manual_table_lines.append("| none | 0 |")
-          manual_table = "
-".join(manual_table_lines)
+            manual_table_lines.append('| 없음 | 0 |')
+          manual_table = '\n'.join(manual_table_lines)
 
           manual_guide_lines = []
           if manual_fail_counts:
-            manual_guide_lines.append("
-**수동 조치 가이드:**")
+            manual_guide_lines.append('\n**수동 조치 가이드:**')
             for cid in sorted(manual_fail_counts):
               guide_info = MANUAL_REMEDIATION_GUIDE.get(cid)
               if guide_info:
-                manual_guide_lines.append(f"
-**`{cid}`**")
-                manual_guide_lines.append(f"- **분류 이유:** {guide_info['reason']}")
-                manual_guide_lines.append(f"- **조치 방법:** {guide_info['guide']}")
+                manual_guide_lines.append(f'\n**`{cid}`**')
+                manual_guide_lines.append(f'- **수동 분류 이유:** {guide_info["reason"]}')
+                manual_guide_lines.append(f'- **조치 방법:** {guide_info["guide"]}')
               else:
-                manual_guide_lines.append(f"
-**`{cid}`**")
-                manual_guide_lines.append("- 해당 항목은 콘솔 또는 수동 조치가 필요합니다.")
+                manual_guide_lines.append(f'\n**`{cid}`**')
+                manual_guide_lines.append('- 해당 항목은 콘솔 또는 수동 조치가 필요합니다.')
 
           now_lines = [
-            "### What We Can Continue Now (Pipeline-Auto/Review)",
+            '### 지속 자동화 가능 항목 (파이프라인 계속 진행)',
           ]
           if remediable_fail_counts:
-            now_lines.append(f"- Remaining terraform-capable FAIL: {current_remediable_fail}")
-            now_lines.append("- Next action: keep generating remediation PRs and merge/apply.")
+            now_lines.append(f'- 남은 Terraform 자동화 가능 FAIL: {current_remediable_fail}')
+            now_lines.append('- 다음 조치: 보완 PR 생성 후 병합/적용을 반복하세요.')
           else:
-            now_lines.append("- Terraform-capable remaining FAIL is 0.")
-            now_lines.append("- Next action: focus on manual-runbook controls.")
+            now_lines.append('- Terraform 자동화로 조치 가능한 FAIL이 모두 해소되었습니다.')
+            now_lines.append('- 다음 조치: 아래 수동 조치 항목에 집중하세요.')
 
           later_lines = [
-            "### What Should Be Planned Later (Manual/Exception)",
-            f"- Remaining manual-runbook FAIL: {current_manual_fail}",
-            "- Typical items require account security policy, organizational controls, or manual operations.",
+            '### 향후 계획 필요 항목 (수동 운영/예외 처리)',
+            f'- 남은 수동 조치 필요 FAIL: {current_manual_fail}',
+            '- 해당 항목은 계정 보안 정책, 조직 통제 또는 수동 운영 절차가 필요합니다.',
           ]
 
           md = (
-            "## Rescan Summary
-"
-            f"- baseline_fail: {s['baseline_fail']}
-"
-            f"- post_fail: {s['post_fail']}
-"
-            f"- reduced: {s['reduced']} (baseline -> current)
-"
-            f"- actionable_fail(terraform-capable): {current_remediable_fail}
-"
-            f"- manual_fail(exception/manual): {current_manual_fail}
-
-"
-            + rem_comparison + "
-
-"
-            + remediable_comparison + "
-
-"
-            + "### Manual-Runbook FAIL (Exception/Manual)
-"
-            + manual_table + "
-"
-            + ("
-".join(manual_guide_lines) if manual_guide_lines else "")
-            + "
-
-"
-            + "
-".join(now_lines)
-            + "
-
-"
-            + "
-".join(later_lines)
-            + "
-"
+            '## 04. 재스캔 결과 요약\n'
+            f'- 기준선 FAIL: {s["baseline_fail"]}\n'
+            f'- 현재 FAIL: {s["post_fail"]}\n'
+            f'- 감소된 FAIL: {s["reduced"]} (기준선 → 현재)\n'
+            f'- Terraform 자동화 가능 FAIL: {current_remediable_fail}\n'
+            f'- 수동 조치 필요 FAIL: {current_manual_fail}\n\n'
+            + make_comparison_section('전체 FAIL 변화 현황', asis_total_counts, total_fail_counts, asis_lbl) + '\n\n'
+            + make_comparison_section('Terraform 자동화 가능 FAIL 변화', asis_remediable_counts, remediable_fail_counts, asis_lbl) + '\n\n'
+            + '### 수동 조치 필요 항목 (콘솔/수동 운영 필요)\n'
+            + manual_table + '\n'
+            + ('\n'.join(manual_guide_lines) if manual_guide_lines else '')
+            + '\n\n'
+            + '\n'.join(now_lines)
+            + '\n\n'
+            + '\n'.join(later_lines)
+            + '\n'
           )
           summary_path.write_text(json.dumps(s, indent=2), encoding='utf-8')
           Path('artifacts/rescan/rescan_summary.md').write_text(md, encoding='utf-8')

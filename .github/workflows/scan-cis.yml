@@ -162,42 +162,39 @@ jobs:
                   elif status in ('PASSED', 'WARNING'):
                       service_data[service]['pass'] += 1
               if not service_data:
-                  return f"### {title}
-_스캔 결과 없음_
-"
+                  return f'### {title}\n_스캔 결과 없음_\n'
               total_pass = sum(v['pass'] for v in service_data.values())
               total_fail = sum(v['fail'] for v in service_data.values())
               total = total_pass + total_fail
               fail_pct = round(100 * total_fail / total, 2) if total > 0 else 0
               pass_pct = round(100 * total_pass / total, 2) if total > 0 else 0
               lines = [
-                  f"### {title}",
-                  f"| {fail_pct}% ({total_fail}) Failed | {pass_pct}% ({total_pass}) Passed |",
-                  "|---|---|",
-                  "",
-                  "| Provider | Service | Status | Critical | High | Medium | Low |",
-                  "|---|---|---|---:|---:|---:|---:|",
+                  f'### {title}',
+                  f'| {fail_pct}% ({total_fail}) 미준수 | {pass_pct}% ({total_pass}) 준수 |',
+                  '|---|---|',
+                  '',
+                  '| 공급자 | 서비스 | 상태 | Critical | High | Medium | Low |',
+                  '|---|---|---|---:|---:|---:|---:|',
               ]
               for service in sorted(service_data.keys()):
                   v = service_data[service]
-                  status_str = f"FAIL ({v['fail']})" if v['fail'] > 0 else f"PASS ({v['pass']})"
-                  lines.append(f"| aws | `{service}` | {status_str} | {v['critical']} | {v['high']} | {v['medium']} | {v['low']} |")
-              lines.append("")
-              lines.append("> \* 리소스가 있는 서비스만 표시됩니다.")
-              return "
-".join(lines)
+                  status_str = f'미준수 ({v["fail"]})' if v['fail'] > 0 else f'준수 ({v["pass"]})'
+                  lines.append(f'| aws | `{service}` | {status_str} | {v["critical"]} | {v["high"]} | {v["medium"]} | {v["low"]} |')
+              lines.append('')
+              lines.append('> \\* 리소스가 존재하는 서비스만 표시됩니다.')
+              return '\n'.join(lines)
 
           CHECK_DESCRIPTIONS = {
               'prowler-s3_bucket_no_mfa_delete': 'S3 버킷 MFA Delete 비활성화 — 객체 삭제 시 MFA 인증이 요구되지 않아 실수/악의적 삭제에 취약',
-              'prowler-iam_root_hardware_mfa_enabled': '루트 계정 하드웨어 MFA 미설정 — 루트 계정 탈취 시 계정 전체 위험 노출',
-              'prowler-iam_password_policy_minimum_length_14': 'IAM 패스워드 최소 길이 14자 미만 — 무차별 대입 공격에 취약',
+              'prowler-iam_root_hardware_mfa_enabled': '루트 계정 하드웨어 MFA 미설정 — 루트 계정 탈취 시 전체 AWS 계정 위험 노출',
+              'prowler-iam_password_policy_minimum_length_14': 'IAM 패스워드 최소 길이 14자 미만 — 무차별 대입 공격(Brute Force)에 취약',
               'prowler-iam_password_policy_reuse_24': 'IAM 패스워드 재사용 제한 24회 미만 — 이전 패스워드 재사용 가능',
-              'prowler-iam_password_policy_lowercase': 'IAM 패스워드 소문자 요구 조건 없음',
-              'prowler-iam_password_policy_number': 'IAM 패스워드 숫자 요구 조건 없음',
-              'prowler-iam_password_policy_symbol': 'IAM 패스워드 특수문자 요구 조건 없음',
-              'prowler-iam_password_policy_uppercase': 'IAM 패스워드 대문자 요구 조건 없음',
-              'prowler-ec2_ebs_volume_encryption': 'EBS 볼륨 미암호화 — 저장 데이터 평문으로 물리적 접근 시 데이터 유출 위험',
-              'prowler-ec2_instance_profile_attached': 'EC2 인스턴스 IAM 프로파일 미연결 — 액세스 키 하드코딩 위험 증가',
+              'prowler-iam_password_policy_lowercase': 'IAM 패스워드 소문자 요구 조건 미설정',
+              'prowler-iam_password_policy_number': 'IAM 패스워드 숫자 요구 조건 미설정',
+              'prowler-iam_password_policy_symbol': 'IAM 패스워드 특수문자 요구 조건 미설정',
+              'prowler-iam_password_policy_uppercase': 'IAM 패스워드 대문자 요구 조건 미설정',
+              'prowler-ec2_ebs_volume_encryption': 'EBS 볼륨 미암호화 — 저장 데이터가 평문으로, 물리적 접근 시 데이터 유출 위험',
+              'prowler-ec2_instance_profile_attached': 'EC2 인스턴스 IAM 프로파일 미연결 — 애플리케이션 액세스 키 하드코딩 위험 증가',
           }
 
           p = Path('artifacts/scan/prioritized_findings.json')
@@ -211,57 +208,40 @@ _스캔 결과 없음_
           isms_findings = parse_asff_findings('artifacts/scan/baseline_isms_p*.json')
 
           check_lines = [
-              "| Check ID | Fail |",
-              "|---|---:|",
+              '| 점검 항목 ID | Fail 수 |',
+              '|---|---:|',
           ]
           for check_id, count in by_check.most_common():
-              check_lines.append(f"| `{check_id}` | {count} |")
+              check_lines.append(f'| `{check_id}` | {count} |')
 
           service_lines = [
-              "| Service | Fail |",
-              "|---|---:|",
+              '| 서비스 | Fail 수 |',
+              '|---|---:|',
           ]
           for service, count in by_service.most_common():
-              service_lines.append(f"| `{service}` | {count} |")
+              service_lines.append(f'| `{service}` | {count} |')
 
           desc_lines = []
           if by_check:
-              desc_lines.append("
-**FAIL 항목 요약:**")
+              desc_lines.append('\n**FAIL 항목 요약:**')
               for check_id in by_check.keys():
                   desc = CHECK_DESCRIPTIONS.get(check_id, '해당 보안 항목이 설정 기준에 미달합니다.')
-                  desc_lines.append(f"- `{check_id}`: {desc}")
+                  desc_lines.append(f'- `{check_id}`: {desc}')
 
-          print(f"baseline_fail={fail}")
+          print(f'baseline_fail={fail}')
 
           with open(Path.cwd() / 'summary.md', 'w', encoding='utf-8') as f:
-              f.write("## Scan Result
-")
-              f.write(f"- baseline_fail: {fail}
-
-")
+              f.write('## 01. 베이스라인 스캔 결과\n')
+              f.write(f'- 기준선 FAIL 항목 수: {fail}\n\n')
               if cis_findings:
-                  f.write(make_service_table(cis_findings, "CIS 1.4 스캔 결과") + "
-
-")
+                  f.write(make_service_table(cis_findings, 'CIS 1.4 스캔 결과') + '\n\n')
               if isms_findings:
-                  f.write(make_service_table(isms_findings, "ISMS-P 스캔 결과") + "
-
-")
-              f.write("### FAIL by Service
-")
-              f.write("
-".join(service_lines) + "
-
-")
-              f.write("### FAIL by Check
-")
-              f.write("
-".join(check_lines) + "
-")
+                  f.write(make_service_table(isms_findings, 'ISMS-P 스캔 결과') + '\n\n')
+              f.write('### 서비스별 FAIL 현황\n')
+              f.write('\n'.join(service_lines) + '\n\n')
+              f.write('### 점검 항목별 FAIL 현황\n')
+              f.write('\n'.join(check_lines) + '\n')
               if desc_lines:
-                  f.write("
-".join(desc_lines) + "
-")
+                  f.write('\n'.join(desc_lines) + '\n')
           PY
           cat summary.md >> "$GITHUB_STEP_SUMMARY"

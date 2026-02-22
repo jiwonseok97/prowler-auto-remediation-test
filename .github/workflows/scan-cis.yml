@@ -49,6 +49,59 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
 
+      - name: Cleanup stale vulnerable demo resources
+        if: inputs.deploy_vulnerable == true
+        shell: bash
+        run: |
+          set +e
+
+          echo "cleanup: old demo cloudtrail"
+          aws cloudtrail delete-trail --region "$AWS_REGION" --name vuln-trail || true
+
+          echo "cleanup: old demo iam user/policy"
+          aws iam detach-user-policy --user-name vuln-user --policy-arn "arn:aws:iam::${AWS_ACCOUNT_ID}:policy/vuln-wildcard-policy" || true
+          aws iam delete-user --user-name vuln-user || true
+          aws iam delete-policy --policy-arn "arn:aws:iam::${AWS_ACCOUNT_ID}:policy/vuln-wildcard-policy" || true
+
+          echo "cleanup: stale demo cloudwatch log groups"
+          mapfile -t LOG_GROUPS < <(
+            aws logs describe-log-groups \
+              --region "$AWS_REGION" \
+              --query "logGroups[?starts_with(logGroupName, '/vuln/log-group')].logGroupName" \
+              --output text | tr '\t' '\n' | sed '/^$/d' | sort -u
+          )
+          for lg in "${LOG_GROUPS[@]}"; do
+            echo "delete log group $lg"
+            aws logs delete-log-group --region "$AWS_REGION" --log-group-name "$lg" || true
+          done
+
+          echo "cleanup: stale demo security groups"
+          mapfile -t SG_IDS < <(
+            aws ec2 describe-security-groups \
+              --region "$AWS_REGION" \
+              --filters Name=group-name,Values='vuln-sg*' \
+              --query 'SecurityGroups[].GroupId' \
+              --output text | tr '\t' '\n' | sed '/^$/d' | sort -u
+          )
+          for sg_id in "${SG_IDS[@]}"; do
+            echo "delete sg $sg_id"
+            aws ec2 delete-security-group --region "$AWS_REGION" --group-id "$sg_id" || true
+          done
+
+          echo "cleanup: stale demo s3 buckets"
+          mapfile -t BUCKETS < <(
+            aws s3api list-buckets \
+              --query "Buckets[?starts_with(Name, 'vuln-demo-') || starts_with(Name, 'vuln-bucket-') || starts_with(Name, 'vuln-cloudtrail-')].Name" \
+              --output text | tr '\t' '\n' | sed '/^$/d' | sort -u
+          )
+          for b in "${BUCKETS[@]}"; do
+            echo "empty+delete bucket $b"
+            aws s3 rm "s3://$b" --recursive || true
+            aws s3 rb "s3://$b" --force || true
+          done
+
+          set -e
+
       - name: Deploy vulnerable infra
         if: inputs.deploy_vulnerable == true
         run: |
@@ -131,117 +184,24 @@ jobs:
       - name: Summary
         run: |
           python - <<'PY'
-          import json, glob
+          import json
+          from collections import Counter
           from pathlib import Path
-          from collections import defaultdict, Counter
-
-          def parse_asff_findings(pattern):
-              findings = []
-              for f in sorted(glob.glob(pattern)):
-                  try:
-                      data = json.loads(Path(f).read_text(encoding='utf-8'))
-                      if isinstance(data, list):
-                          findings.extend(data)
-                      elif isinstance(data, dict):
-                          findings.extend(data.get('Findings', []))
-                  except Exception:
-                      pass
-              return findings
-
-          def make_service_table(findings, title):
-              service_data = defaultdict(lambda: {'pass': 0, 'fail': 0, 'critical': 0, 'high': 0, 'medium': 0, 'low': 0})
-              for f in findings:
-                  pf = f.get('ProductFields', {})
-                  service = (pf.get('ServiceName') or pf.get('aws/service') or 'unknown').lower().strip()
-                  status = f.get('Compliance', {}).get('Status', '')
-                  severity = f.get('Severity', {}).get('Label', '').lower()
-                  if status == 'FAILED':
-                      service_data[service]['fail'] += 1
-                      if severity in ('critical', 'high', 'medium', 'low'):
-                          service_data[service][severity] += 1
-                  elif status in ('PASSED', 'WARNING'):
-                      service_data[service]['pass'] += 1
-              if not service_data:
-                  return f'### {title}\n_스캔 결과 없음_\n'
-              total_pass = sum(v['pass'] for v in service_data.values())
-              total_fail = sum(v['fail'] for v in service_data.values())
-              total = total_pass + total_fail
-              fail_pct = round(100 * total_fail / total, 2) if total > 0 else 0
-              pass_pct = round(100 * total_pass / total, 2) if total > 0 else 0
-              lines = [
-                  f'### {title}',
-                  f'| {fail_pct}% ({total_fail}) 미준수 | {pass_pct}% ({total_pass}) 준수 |',
-                  '|---|---|',
-                  '',
-                  '| 공급자 | 서비스 | 상태 | Critical | High | Medium | Low |',
-                  '|---|---|---|---:|---:|---:|---:|',
-              ]
-              for service in sorted(service_data.keys()):
-                  v = service_data[service]
-                  status_str = f'미준수 ({v["fail"]})' if v['fail'] > 0 else f'준수 ({v["pass"]})'
-                  lines.append(f'| aws | `{service}` | {status_str} | {v["critical"]} | {v["high"]} | {v["medium"]} | {v["low"]} |')
-              lines.append('')
-              lines.append('> \\* 리소스가 존재하는 서비스만 표시됩니다.')
-              return '\n'.join(lines)
-
-          CHECK_DESCRIPTIONS = {
-              'prowler-s3_bucket_no_mfa_delete': 'S3 버킷 MFA Delete 비활성화 — 객체 삭제 시 MFA 인증이 요구되지 않아 실수/악의적 삭제에 취약',
-              'prowler-iam_root_hardware_mfa_enabled': '루트 계정 하드웨어 MFA 미설정 — 루트 계정 탈취 시 전체 AWS 계정 위험 노출',
-              'prowler-iam_password_policy_minimum_length_14': 'IAM 패스워드 최소 길이 14자 미만 — 무차별 대입 공격(Brute Force)에 취약',
-              'prowler-iam_password_policy_reuse_24': 'IAM 패스워드 재사용 제한 24회 미만 — 이전 패스워드 재사용 가능',
-              'prowler-iam_password_policy_lowercase': 'IAM 패스워드 소문자 요구 조건 미설정',
-              'prowler-iam_password_policy_number': 'IAM 패스워드 숫자 요구 조건 미설정',
-              'prowler-iam_password_policy_symbol': 'IAM 패스워드 특수문자 요구 조건 미설정',
-              'prowler-iam_password_policy_uppercase': 'IAM 패스워드 대문자 요구 조건 미설정',
-              'prowler-ec2_ebs_volume_encryption': 'EBS 볼륨 미암호화 — 저장 데이터가 평문으로, 물리적 접근 시 데이터 유출 위험',
-              'prowler-ec2_instance_profile_attached': 'EC2 인스턴스 IAM 프로파일 미연결 — 애플리케이션 액세스 키 하드코딩 위험 증가',
-          }
-
           p = Path('artifacts/scan/prioritized_findings.json')
           rows = json.loads(p.read_text(encoding='utf-8')) if p.exists() else []
           fail_rows = [r for r in rows if r.get('status') == 'FAIL']
-          fail = len(fail_rows)
           by_check = Counter(str(r.get('check_id', 'unknown')) for r in fail_rows)
-          by_service = Counter(str(r.get('service', 'unknown')) for r in fail_rows)
-
-          cis_findings = parse_asff_findings('artifacts/scan/baseline_cis*.json')
-          isms_findings = parse_asff_findings('artifacts/scan/baseline_isms_p*.json')
 
           check_lines = [
-              '| 점검 항목 ID | Fail 수 |',
-              '|---|---:|',
+              "| Check ID | FAIL Count |",
+              "|---|---:|",
           ]
           for check_id, count in by_check.most_common():
-              check_lines.append(f'| `{check_id}` | {count} |')
-
-          service_lines = [
-              '| 서비스 | Fail 수 |',
-              '|---|---:|',
-          ]
-          for service, count in by_service.most_common():
-              service_lines.append(f'| `{service}` | {count} |')
-
-          desc_lines = []
-          if by_check:
-              desc_lines.append('\n**FAIL 항목 요약:**')
-              for check_id in by_check.keys():
-                  desc = CHECK_DESCRIPTIONS.get(check_id, '해당 보안 항목이 설정 기준에 미달합니다.')
-                  desc_lines.append(f'- `{check_id}`: {desc}')
-
-          print(f'baseline_fail={fail}')
+              check_lines.append(f"| `{check_id}` | {count} |")
 
           with open(Path.cwd() / 'summary.md', 'w', encoding='utf-8') as f:
-              f.write('## 01. 베이스라인 스캔 결과\n')
-              f.write(f'- 기준선 FAIL 항목 수: {fail}\n\n')
-              if cis_findings:
-                  f.write(make_service_table(cis_findings, 'CIS 1.4 스캔 결과') + '\n\n')
-              if isms_findings:
-                  f.write(make_service_table(isms_findings, 'ISMS-P 스캔 결과') + '\n\n')
-              f.write('### 서비스별 FAIL 현황\n')
-              f.write('\n'.join(service_lines) + '\n\n')
-              f.write('### 점검 항목별 FAIL 현황\n')
-              f.write('\n'.join(check_lines) + '\n')
-              if desc_lines:
-                  f.write('\n'.join(desc_lines) + '\n')
+              f.write("## Scan Result\n")
+              f.write("### Prowler FAIL by Check\n")
+              f.write("\n".join(check_lines) + "\n")
           PY
           cat summary.md >> "$GITHUB_STEP_SUMMARY"

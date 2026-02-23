@@ -141,6 +141,7 @@ jobs:
             --region "${{ steps.target.outputs.region }}"
 
       - name: Create category PRs
+        id: create_prs
         env:
           GH_TOKEN: ${{ secrets.AUTO_PR_TOKEN != '' && secrets.AUTO_PR_TOKEN || secrets.GITHUB_TOKEN }}
         shell: bash
@@ -155,6 +156,17 @@ jobs:
             --account-id "${{ steps.target.outputs.account_id }}" \
             --run-id "${{ github.run_id }}" \
             $SINGLE_PR_FLAG
+
+      - name: Trigger rescan (no remediable PRs — current state already clean)
+        if: steps.create_prs.outputs.pr_count == '0'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          echo "No remediation PRs were created. Triggering Pipeline 04 to confirm clean state."
+          gh workflow run rescan-after-apply.yml \
+            --ref main \
+            -f triggered_by="no-remediation-needed"
 
       - name: Upload remediation artifact
         uses: actions/upload-artifact@v4

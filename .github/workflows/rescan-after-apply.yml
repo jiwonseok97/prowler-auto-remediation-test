@@ -1,7 +1,12 @@
 name: Security Pipeline - 04 Verify FAIL Reduction
 
 on:
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      triggered_by:
+        description: "Trigger reason (e.g. manual, no-remediation-needed)"
+        required: false
+        default: "manual"
   workflow_run:
     workflows: ["Security Pipeline - 03 Apply Merged Generated Terraform Remediation"]
     types: [completed]

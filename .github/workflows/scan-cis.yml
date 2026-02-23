@@ -131,62 +131,81 @@ jobs:
       - name: Summary
         run: |
           python - <<'PY'
-          import json, glob
+          import json, glob, re
           from pathlib import Path
           from collections import defaultdict, Counter
 
-          def parse_asff_aggregate(pattern):
-              total_fail, total_pass = 0, 0
+          CIS_LOGO  = '<img src="https://raw.githubusercontent.com/jiwonseok97/prowler-auto-remediation-test/main/.github/assets/cis-logo.svg" alt="CIS" height="40">'
+          ISMS_LOGO = '<img src="https://raw.githubusercontent.com/jiwonseok97/prowler-auto-remediation-test/main/.github/assets/isms-logo.jpg" alt="ISMS-P" height="50">'
+
+          def extract_service(f):
+              pf = f.get('ProductFields', {})
+              svc = (pf.get('ServiceName') or pf.get('aws/service') or '').lower().strip()
+              if svc and svc not in ('unknown', ''):
+                  return svc
+              gen_id = (f.get('GeneratorId') or '').lower()
+              m = re.search(r'prowler-([a-z][a-z0-9]+)_', gen_id)
+              if m:
+                  return m.group(1)
+              return 'unknown'
+
+          def parse_asff(pattern):
+              findings = []
               for fn in sorted(glob.glob(pattern)):
                   try:
                       data = json.loads(Path(fn).read_text(encoding='utf-8'))
-                      findings = data if isinstance(data, list) else data.get('Findings', [])
-                      for f in findings:
-                          st = f.get('Compliance', {}).get('Status', '')
-                          if st == 'FAILED': total_fail += 1
-                          elif st in ('PASSED', 'WARNING'): total_pass += 1
+                      findings.extend(data if isinstance(data, list) else data.get('Findings', []))
                   except Exception:
                       pass
-              return total_fail, total_pass
+              return findings
 
-          def make_detail_service_table(rows):
+          def make_compliance_table(findings, logo_html, title, acct):
+              if not findings:
+                  return f'{logo_html}\n\n**{title}**\n\n_스캔 결과 없음_\n'
               svc_data = defaultdict(lambda: {'pass': 0, 'fail': 0, 'critical': 0, 'high': 0, 'medium': 0, 'low': 0})
-              for r in rows:
-                  svc = str(r.get('service', 'unknown')).lower().strip() or 'unknown'
-                  status = str(r.get('status', '')).upper()
-                  sev = str(r.get('severity', '')).lower()
-                  if status == 'FAIL':
+              for f in findings:
+                  if not acct:
+                      acct = f.get('AwsAccountId', '')
+                  svc = extract_service(f)
+                  status = f.get('Compliance', {}).get('Status', '')
+                  sev = f.get('Severity', {}).get('Label', '').lower()
+                  if status == 'FAILED':
                       svc_data[svc]['fail'] += 1
                       if sev in ('critical', 'high', 'medium', 'low'):
                           svc_data[svc][sev] += 1
-                  else:
+                  elif status in ('PASSED', 'WARNING'):
                       svc_data[svc]['pass'] += 1
-              if not svc_data:
-                  return '### 서비스별 상세 현황\n_데이터 없음_\n'
+              total_fail = sum(v['fail'] for v in svc_data.values())
+              total_pass = sum(v['pass'] for v in svc_data.values())
+              total = total_fail + total_pass
+              fp = round(100 * total_fail / total, 2) if total > 0 else 0
+              pp = round(100 * total_pass / total, 2) if total > 0 else 0
               lines = [
-                  '### 서비스별 상세 현황',
+                  logo_html, '',
+                  f'**{title}**', '',
+                  '| 미준수 | 준수 |', '|---|---|',
+                  f'| {fp}% ({total_fail}건) | {pp}% ({total_pass}건) |', '',
+                  f'계정 {acct} 스캔 결과 _(심각도 컬럼은 FAIL 항목에만 적용)_', '',
                   '| 공급자 | 서비스 | 상태 | Critical | High | Medium | Low |',
                   '|---|---|---|---:|---:|---:|---:|',
               ]
               for svc in sorted(svc_data.keys()):
                   v = svc_data[svc]
-                  st_str = f'미준수 ({v["fail"]})' if v['fail'] > 0 else f'준수 ({v["pass"]})'
-                  lines.append(f'| aws | `{svc}` | {st_str} | {v["critical"]} | {v["high"]} | {v["medium"]} | {v["low"]} |')
-              lines.append('')
-              lines.append('> \\* Prowler 스캔 대상 전체 서비스')
+                  st = f'미준수 ({v["fail"]})' if v['fail'] > 0 else f'준수 ({v["pass"]})'
+                  lines.append(f'| aws | `{svc}` | {st} | {v["critical"]} | {v["high"]} | {v["medium"]} | {v["low"]} |')
               return '\n'.join(lines)
 
           CHECK_DESCRIPTIONS = {
-              'prowler-s3_bucket_no_mfa_delete': 'S3 버킷 MFA Delete 비활성화 — 객체 삭제 시 MFA 인증이 요구되지 않아 실수/악의적 삭제에 취약',
-              'prowler-iam_root_hardware_mfa_enabled': '루트 계정 하드웨어 MFA 미설정 — 루트 계정 탈취 시 전체 AWS 계정 위험 노출',
+              'prowler-s3_bucket_no_mfa_delete':           'S3 버킷 MFA Delete 비활성화 — 객체 삭제 시 MFA 인증이 요구되지 않아 실수/악의적 삭제에 취약',
+              'prowler-iam_root_hardware_mfa_enabled':      '루트 계정 하드웨어 MFA 미설정 — 루트 계정 탈취 시 전체 AWS 계정 위험 노출',
               'prowler-iam_password_policy_minimum_length_14': 'IAM 패스워드 최소 길이 14자 미만 — 무차별 대입 공격에 취약',
-              'prowler-iam_password_policy_reuse_24': 'IAM 패스워드 재사용 제한 24회 미만 — 이전 패스워드 재사용 가능',
-              'prowler-iam_password_policy_lowercase': 'IAM 패스워드 소문자 요구 조건 미설정',
-              'prowler-iam_password_policy_number': 'IAM 패스워드 숫자 요구 조건 미설정',
-              'prowler-iam_password_policy_symbol': 'IAM 패스워드 특수문자 요구 조건 미설정',
-              'prowler-iam_password_policy_uppercase': 'IAM 패스워드 대문자 요구 조건 미설정',
-              'prowler-ec2_ebs_volume_encryption': 'EBS 볼륨 미암호화 — 저장 데이터 평문으로 물리적 접근 시 데이터 유출 위험',
-              'prowler-ec2_instance_profile_attached': 'EC2 인스턴스 IAM 프로파일 미연결 — 액세스 키 하드코딩 위험 증가',
+              'prowler-iam_password_policy_reuse_24':       'IAM 패스워드 재사용 제한 24회 미만 — 이전 패스워드 재사용 가능',
+              'prowler-iam_password_policy_lowercase':      'IAM 패스워드 소문자 요구 조건 미설정',
+              'prowler-iam_password_policy_number':         'IAM 패스워드 숫자 요구 조건 미설정',
+              'prowler-iam_password_policy_symbol':         'IAM 패스워드 특수문자 요구 조건 미설정',
+              'prowler-iam_password_policy_uppercase':      'IAM 패스워드 대문자 요구 조건 미설정',
+              'prowler-ec2_ebs_volume_encryption':          'EBS 볼륨 미암호화 — 저장 데이터 평문으로 물리적 접근 시 데이터 유출 위험',
+              'prowler-ec2_instance_profile_attached':      'EC2 인스턴스 IAM 프로파일 미연결 — 액세스 키 하드코딩 위험 증가',
           }
 
           p = Path('artifacts/scan/prioritized_findings.json')
@@ -195,43 +214,38 @@ jobs:
           fail = len(fail_rows)
           by_check = Counter(str(r.get('check_id', 'unknown')) for r in fail_rows)
 
-          cis_fail, cis_pass = parse_asff_aggregate('artifacts/scan/baseline_cis*.json')
-          isms_fail, isms_pass = parse_asff_aggregate('artifacts/scan/baseline_isms_p*.json')
+          manifest = Path('artifacts/scan/scan_manifest.json')
+          acct = ''
+          if manifest.exists():
+              m = json.loads(manifest.read_text(encoding='utf-8'))
+              acct = m.get('account') or m.get('account_id') or ''
 
-          def pct(a, total): return round(100 * a / total, 2) if total > 0 else 0
+          cis_findings  = parse_asff('artifacts/scan/baseline_cis*.json')
+          isms_findings = parse_asff('artifacts/scan/baseline_isms_p*.json')
 
-          check_lines = [
-              '| 점검 항목 ID | Fail 수 |',
-              '|---|---:|',
-          ]
-          for check_id, count in by_check.most_common():
-              check_lines.append(f'| `{check_id}` | {count} |')
+          check_lines = ['| 점검 항목 ID | Fail 수 |', '|---|---:|']
+          for cid, cnt in by_check.most_common():
+              check_lines.append(f'| `{cid}` | {cnt} |')
 
           desc_lines = []
           if by_check:
               desc_lines.append('\n**FAIL 항목 요약:**')
-              for check_id in by_check.keys():
-                  desc = CHECK_DESCRIPTIONS.get(check_id, '해당 보안 항목이 설정 기준에 미달합니다.')
-                  desc_lines.append(f'- `{check_id}`: {desc}')
+              for cid in by_check.keys():
+                  desc = CHECK_DESCRIPTIONS.get(cid, '해당 보안 항목이 설정 기준에 미달합니다.')
+                  desc_lines.append(f'- `{cid}`: {desc}')
 
           print(f'baseline_fail={fail}')
 
           with open(Path.cwd() / 'summary.md', 'w', encoding='utf-8') as f:
               f.write('## 01. 베이스라인 스캔 결과\n')
               f.write(f'- 기준선 FAIL 항목 수: {fail}\n\n')
-              if cis_fail + cis_pass > 0:
-                  cis_total = cis_fail + cis_pass
-                  f.write('### CIS 1.4 준수 현황\n')
-                  f.write(f'| 미준수 | 준수 |\n')
-                  f.write('|---|---|\n')
-                  f.write(f'| {pct(cis_fail,cis_total)}% ({cis_fail}건) | {pct(cis_pass,cis_total)}% ({cis_pass}건) |\n\n')
-              if isms_fail + isms_pass > 0:
-                  isms_total = isms_fail + isms_pass
-                  f.write('### ISMS-P 준수 현황\n')
-                  f.write(f'| 미준수 | 준수 |\n')
-                  f.write('|---|---|\n')
-                  f.write(f'| {pct(isms_fail,isms_total)}% ({isms_fail}건) | {pct(isms_pass,isms_total)}% ({isms_pass}건) |\n\n')
-              f.write(make_detail_service_table(rows) + '\n\n')
+              f.write('---\n\n')
+              if cis_findings:
+                  f.write(make_compliance_table(cis_findings, CIS_LOGO, 'CIS Amazon Web Services Foundations Benchmark v1.4', acct) + '\n\n')
+                  f.write('---\n\n')
+              if isms_findings:
+                  f.write(make_compliance_table(isms_findings, ISMS_LOGO, 'ISMS-P 정보보호 관리체계 인증', acct) + '\n\n')
+                  f.write('---\n\n')
               f.write('### 점검 항목별 FAIL 현황\n')
               f.write('\n'.join(check_lines) + '\n')
               if desc_lines:

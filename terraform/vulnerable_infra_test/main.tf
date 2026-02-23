@@ -5,10 +5,6 @@ terraform {
       source  = "hashicorp/aws"
       version = ">= 5.0"
     }
-    random = {
-      source  = "hashicorp/random"
-      version = ">= 3.5"
-    }
   }
 }
 
@@ -22,22 +18,20 @@ data "aws_vpc" "default" {
   default = true
 }
 
-resource "random_id" "stack" {
-  byte_length = 4
-}
-
-resource "random_id" "bucket_suffix" {
-  count       = var.vuln_bucket_count
-  byte_length = 4
-}
-
 # ====================
 # S3 vulnerable setup
 # ====================
 resource "aws_s3_bucket" "vuln_bucket" {
   count  = var.vuln_bucket_count
-  bucket = format("vuln-demo-%s-%02d-%s", var.region, count.index + 1, random_id.bucket_suffix[count.index].hex)
+  bucket = format("vuln-demo-%s-%s-%02d", var.account_id, var.region, count.index + 1)
   force_destroy = true
+
+  tags = {
+    Name          = format("vuln-demo-%02d", count.index + 1)
+    ManagedBy     = "terraform"
+    ProwlerDemo   = "vulnerable_infra_test"
+    CleanupTarget = "true"
+  }
 }
 
 resource "aws_s3_bucket_public_access_block" "vuln_bucket_pab" {
@@ -74,8 +68,14 @@ resource "aws_iam_account_password_policy" "weak_password_policy" {
 # =================================
 resource "aws_cloudwatch_log_group" "vuln_logs" {
   count             = var.cloudwatch_log_group_count
-  name              = format("/vuln/log-group-%02d-%s", count.index + 1, random_id.stack.hex)
+  name              = format("/vuln/log-group-%02d", count.index + 1)
   retention_in_days = 7
+
+  tags = {
+    ManagedBy     = "terraform"
+    ProwlerDemo   = "vulnerable_infra_test"
+    CleanupTarget = "true"
+  }
 }
 
 # =================================
@@ -83,7 +83,7 @@ resource "aws_cloudwatch_log_group" "vuln_logs" {
 # =================================
 resource "aws_security_group" "vuln_sg" {
   count  = var.security_group_count
-  name   = format("vuln-sg-%02d-%s", count.index + 1, random_id.stack.hex)
+  name   = format("vuln-sg-%02d", count.index + 1)
   vpc_id = data.aws_vpc.default.id
 
   ingress {
@@ -98,5 +98,12 @@ resource "aws_security_group" "vuln_sg" {
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name          = format("vuln-sg-%02d", count.index + 1)
+    ManagedBy     = "terraform"
+    ProwlerDemo   = "vulnerable_infra_test"
+    CleanupTarget = "true"
   }
 }

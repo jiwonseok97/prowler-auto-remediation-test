@@ -104,6 +104,14 @@ remediation/
   cloudwatch/
 ```
 
+## Local Workspace Layout
+
+Local-only files are grouped to keep the repository root clean:
+
+- `local/tmp/`: temporary files
+- `local/workspaces/`: ad-hoc implementation workspaces
+- `local/trust-policy.json`: local OIDC trust policy draft file
+
 ## Supported Auto-Remediation Scope
 
 - IAM
@@ -128,6 +136,8 @@ Secrets:
 
 - `AWS_OIDC_ROLE_ARN` (recommended)
 - or static AWS credentials (legacy fallback)
+- `PROWLER_APP_API_URL` (optional: baseline/rescan JSON publish endpoint)
+- `PROWLER_APP_API_TOKEN` (optional: bearer token for publish endpoint)
 
 Variables:
 
@@ -151,3 +161,4 @@ Variables:
 - Existing resources are imported and patched when possible.
 - Optional Terraform sub-config resources may be created when import returns non-existent object.
 - Apply is category-isolated; one category failure does not block others.
+- If `PROWLER_APP_API_URL` and `PROWLER_APP_API_TOKEN` are configured, step 01 and step 04 publish JSON results to external API. If missing, publish steps are skipped.

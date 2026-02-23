@@ -1,0 +1,1109 @@
+{
+  "category": "network-ec2-vpc",
+  "account": "132410971304",
+  "region": "ap-northeast-2",
+  "created_at": "2026-02-23T12:21:44.788866+00:00",
+  "items": [
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0f3e39591f5c3137e_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0f3e39591f5c3137e_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0adcbf999861c382f_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0adcbf999861c382f_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0f1c1801b03278b2b_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0f1c1801b03278b2b_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0ca50d7e5e76e01bd_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0ca50d7e5e76e01bd_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0eef1e5277b2b98a3_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0eef1e5277b2b98a3_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_092c1f050cd8e6a4a_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_092c1f050cd8e6a4a_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_01a6397127a7410fe_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_01a6397127a7410fe_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0968e3416139d38a5_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0968e3416139d38a5_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_01af74b8d77582a23_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_01af74b8d77582a23_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_002181da3b8679695_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_002181da3b8679695_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_057528cfad3cdff93_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_057528cfad3cdff93_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_07b769a99f8fc0427_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_07b769a99f8fc0427_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_05aba91f29bc39609_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_05aba91f29bc39609_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0b7eac4c51151b9ea_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0b7eac4c51151b9ea_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0b66cca5bd7a4435d_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0b66cca5bd7a4435d_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0106fad39f5f1cb4d_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0106fad39f5f1cb4d_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_08074ee046d894228_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_08074ee046d894228_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_084a491c5b0227e15_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_084a491c5b0227e15_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0d2c8f83c4c21958a_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0d2c8f83c4c21958a_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0e61eacf522ba587a_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0e61eacf522ba587a_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0dee2401f7bcb863c_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0dee2401f7bcb863c_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0f63c038301ddda67_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0f63c038301ddda67_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_073dca6fe04160b5d_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_073dca6fe04160b5d_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_02d5c6037945fffb6_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_02d5c6037945fffb6_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0fc256e32e27c879e_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0fc256e32e27c879e_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_08e48f93cb7c92d99_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_08e48f93cb7c92d99_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0d3fe87524e0f5df1_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0d3fe87524e0f5df1_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_091b6ff2584d7fc9c_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_091b6ff2584d7fc9c_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0fc35cfaf6345fe76_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0fc35cfaf6345fe76_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0d46625b129611992_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0d46625b129611992_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0fdff7ec6074e9531_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0fdff7ec6074e9531_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0b22af4911c9f7fc8_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0b22af4911c9f7fc8_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_035d66ca0cd391682_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_035d66ca0cd391682_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_06c8e45cceeec3816_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_06c8e45cceeec3816_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_07ae378f9add5f311_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_07ae378f9add5f311_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0fac8574a234b265e_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0fac8574a234b265e_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_074aab93aef19696c_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_074aab93aef19696c_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_046699f07690cc512_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_046699f07690cc512_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0da46284872ddf8d6_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0da46284872ddf8d6_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_01185ead5776b2beb_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_01185ead5776b2beb_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_090a961ef9debf4b9_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_090a961ef9debf4b9_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0f0bdb86b8cb71414_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0f0bdb86b8cb71414_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0454a5ec5d399ba6e_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0454a5ec5d399ba6e_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_050636fa0fdb4915d_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_050636fa0fdb4915d_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0fe2be52c03b0603c_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0fe2be52c03b0603c_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_00fbfeef3c1a5b6c6_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_00fbfeef3c1a5b6c6_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_088df9f4fd6473066_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_088df9f4fd6473066_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_07252453acdf11c27_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_07252453acdf11c27_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0925122ce92851911_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0925122ce92851911_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_004fc3b9d0005a126_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_004fc3b9d0005a126_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_054d6fbc3886ef5d4_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_054d6fbc3886ef5d4_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0fcea0ea8e7bdc69c_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0fcea0ea8e7bdc69c_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0396cd1cf8bd35bad_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0396cd1cf8bd35bad_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_02a601cdecbcc49b0_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_02a601cdecbcc49b0_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0a28947d0608fb5ba_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0a28947d0608fb5ba_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_01070660c35384be5_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_01070660c35384be5_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0e03aeaadcbcb93b1_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0e03aeaadcbcb93b1_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0c5ef2c586646dfaa_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0c5ef2c586646dfaa_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0ec3f4fd4e40f3ce8_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0ec3f4fd4e40f3ce8_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_06bc072f1d7f7ca97_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_06bc072f1d7f7ca97_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0ebd780e5a6607e2f_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0ebd780e5a6607e2f_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0414a4a65f3bbdd5f_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0414a4a65f3bbdd5f_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_011e7343682c50f31_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_011e7343682c50f31_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_031b1a8148e9d641e_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_031b1a8148e9d641e_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0142585ca051f24c1_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0142585ca051f24c1_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_04f5eb407bc84e73e_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_04f5eb407bc84e73e_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_04604bfa27be34159_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_04604bfa27be34159_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_081269dd2a45a539c_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_081269dd2a45a539c_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_02588b398f3c2aa48_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_02588b398f3c2aa48_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_091378566af8cc3ba_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_091378566af8cc3ba_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0be376a29c4f668d1_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0be376a29c4f668d1_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0cd667cd3bed1b5c4_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0cd667cd3bed1b5c4_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_08301b73bef779af4_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_08301b73bef779af4_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0b6e6efd01da4a95f_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0b6e6efd01da4a95f_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0f533ebe139fb0f47_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0f533ebe139fb0f47_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0e78a5aeee1ab50e4_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0e78a5aeee1ab50e4_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_062e96bebf6c63b9d_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_062e96bebf6c63b9d_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0d5fef1d086e7aec0_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0d5fef1d086e7aec0_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0d2e1506a06b22802_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0d2e1506a06b22802_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0b73b698e7c2ec607_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0b73b698e7c2ec607_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_05b02e43fa60870f4_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_05b02e43fa60870f4_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0dfad8bc45ecb886e_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0dfad8bc45ecb886e_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_087376a0f04ebe9fb_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_087376a0f04ebe9fb_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_02c75adc3bff5139f_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_02c75adc3bff5139f_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_05899c2d275f10c99_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_05899c2d275f10c99_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0c9bb5836f4029aa1_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0c9bb5836f4029aa1_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_041444209d3d64782_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_041444209d3d64782_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_03b856bbd6775bf63_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_03b856bbd6775bf63_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0ee461b436ece1d18_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0ee461b436ece1d18_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_027d4ddc96de7c37a_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 65.5,
+      "resources": [],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_027d4ddc96de7c37a_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-ec2_ebs_volume_encryption",
+      "manual_required": true,
+      "remediation_tier": "manual-runbook",
+      "files": [],
+      "priority": "P2",
+      "score": 58.5,
+      "reason": "insufficient_runner_permission_enable_ebs_encryption_default",
+      "resources": []
+    },
+    {
+      "check_id": "prowler-ec2_instance_profile_attached",
+      "manual_required": true,
+      "remediation_tier": "manual-runbook",
+      "files": [],
+      "priority": "P2",
+      "score": 58.5,
+      "reason": "no_reusable_instance_profile_available",
+      "resources": []
+    }
+  ],
+  "import_map": []
+}

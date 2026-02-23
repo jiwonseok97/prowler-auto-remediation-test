@@ -43,7 +43,7 @@ permissions:
   id-token: write
   contents: write
   pull-requests: write
-  actions: read
+  actions: write
 
 jobs:
   remediate:
@@ -173,4 +173,3 @@ jobs:
         with:
           name: remediation-${{ github.run_id }}
           path: remediation/
-

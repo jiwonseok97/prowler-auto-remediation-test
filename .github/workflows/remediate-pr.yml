@@ -157,10 +157,10 @@ jobs:
             --run-id "${{ github.run_id }}" \
             $SINGLE_PR_FLAG
 
-      - name: Trigger rescan (no remediable PRs — current state already clean)
+      - name: Trigger rescan (no remediable PRs - current state already clean)
         if: steps.create_prs.outputs.pr_count == '0'
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.AUTO_PR_TOKEN }}
         shell: bash
         run: |
           echo "No remediation PRs were created. Triggering Pipeline 04 to confirm clean state."
@@ -173,3 +173,4 @@ jobs:
         with:
           name: remediation-${{ github.run_id }}
           path: remediation/
+

@@ -144,7 +144,7 @@ resource "aws_security_group" "secure" {
 
 ---
 
-## 💻 코드 비교 — S3 Public Access Block
+##  코드 비교 — S3 Public Access Block
 
 ### Before — `CKV_AWS_53~56` ❌
 

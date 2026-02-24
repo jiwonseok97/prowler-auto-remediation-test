@@ -14,40 +14,70 @@ Checkov를 활용하여 **취약한 인프라 코드(terraform/)** 와 **자동 
 | 총 점검 수 | 938건 | 82건 |
 | ✅ PASS | 81건 | 82건 |
 | ❌ FAIL | 857건 | 0건 |
-| **통과율** | **8.6%** | **100%** |
+| **통과율** | **81 ÷ 938 = 8.6%** | **82 ÷ 82 = 100%** |
 
 ---
 
-##  취약 코드 — 취약점 카테고리별 분류
+## ❌ 취약 코드 — 리소스별 실패 건수 계산
 
-| 카테고리 | 건수 | 비율 |
+```
+aws_security_group               90개 ×  7개 체크 =  630건
+aws_s3_bucket 관련               20개 × 11개 체크 =  220건
+aws_iam_account_password_policy   1개 ×  7개 체크 =    7건
+                                 ─────────────────────────
+합계                                                 857건
+```
+
+| 리소스 | 개수 | 적용 체크 수 | 계산식 |
+| --- | --- | --- | --- |
+| `aws_security_group` | 90개 | 7개 | 90 × 7 = **630건** |
+| `aws_s3_bucket` 관련 | 20개 | 11개 | 20 × 11 = **220건** |
+| `aws_iam_account_password_policy` | 1개 | 7개 | 1 × 7 = **7건** |
+| **합계** | | | **630 + 220 + 7 = 857건** |
+
+### Security Group — 7개 체크 상세 (90개 × 7 = 630건)
+
+| Check ID | 설명 | 위험도 |
 | --- | --- | --- |
-| Security Group | 630건 | 73.5% |
-| S3 버킷 보안 | 120건 | 14.0% |
-| 암호화 / KMS | 0건 | 0.0% |
-| 로깅 / 감사 | 0건 | 0.0% |
-| 기타 | 107건 | 12.5% |
+| `CKV_AWS_23` | SSH(22) 무제한 인바운드 (0.0.0.0/0) | 🔴 CRITICAL |
+| `CKV_AWS_24` | RDP(3389) 무제한 인바운드 (0.0.0.0/0) | 🔴 CRITICAL |
+| `CKV_AWS_25` | 모든 포트 무제한 인바운드 | 🟠 HIGH |
+| `CKV_AWS_260` | HTTP(80) 무제한 인바운드 | 🟠 HIGH |
+| `CKV_AWS_277` | HTTPS(443) 무제한 인바운드 | 🟠 HIGH |
+| `CKV_AWS_382` | 무제한 인바운드 허용 | 🟠 HIGH |
+| `CKV2_AWS_5` | EC2 인스턴스 연결 미검증 | 🟠 HIGH |
+
+### S3 버킷 관련 — 11개 체크 상세 (20개 × 11 = 220건)
+
+| Check ID | 설명 | 위험도 |
+| --- | --- | --- |
+| `CKV_AWS_53` | Block Public ACLs 미설정 | 🟠 HIGH |
+| `CKV_AWS_54` | Block Public Policy 미설정 | 🟠 HIGH |
+| `CKV_AWS_55` | Ignore Public ACLs 미설정 | 🟠 HIGH |
+| `CKV_AWS_56` | Restrict Public Buckets 미설정 | 🟠 HIGH |
+| `CKV_AWS_18` | 액세스 로깅 미설정 | 🟡 MEDIUM |
+| `CKV_AWS_21` | 버저닝 미설정 | 🟡 MEDIUM |
+| `CKV_AWS_144` | 크로스 리전 복제 미설정 | 🟡 MEDIUM |
+| `CKV_AWS_145` | KMS 암호화 미설정 | 🟠 HIGH |
+| `CKV2_AWS_6` | Public Access Block 누락 | 🟠 HIGH |
+| `CKV2_AWS_61` | 수명 주기 정책 미설정 | 🟡 MEDIUM |
+| `CKV2_AWS_62` | 이벤트 알림 미설정 | 🟡 MEDIUM |
+
+### IAM 패스워드 정책 — 7개 체크 상세 (1개 × 7 = 7건)
+
+| Check ID | 설명 | 위험도 |
+| --- | --- | --- |
+| `CKV_AWS_9` | 비밀번호 만료 정책 미설정 | 🟡 MEDIUM |
+| `CKV_AWS_10` | 비밀번호 재사용 제한 미설정 | 🟡 MEDIUM |
+| `CKV_AWS_11` | 대문자 요구 미설정 | 🟡 MEDIUM |
+| `CKV_AWS_12` | 소문자 요구 미설정 | 🟡 MEDIUM |
+| `CKV_AWS_13` | 숫자 요구 미설정 | 🟡 MEDIUM |
+| `CKV_AWS_14` | 특수문자 요구 미설정 | 🟡 MEDIUM |
+| `CKV_AWS_15` | 최소 길이 14자 미달 | 🟡 MEDIUM |
 
 ---
 
-##  상위 10개 실패 항목 (취약 코드)
-
-| 순위 | Check ID | 설명 | 건수 | 위험도 |
-| --- | --- | --- | --- | --- |
-| 1 | `CKV_AWS_23` | Security Group — SSH(22) 무제한 인바운드 | 90건 | 🔴 CRITICAL |
-| 2 | `CKV_AWS_382` | Security Group — 무제한 인바운드 허용 | 90건 | 🟠 HIGH |
-| 3 | `CKV_AWS_24` | Security Group — RDP(3389) 무제한 인바운드 | 90건 | 🔴 CRITICAL |
-| 4 | `CKV_AWS_25` | Security Group — 모든 포트 무제한 인바운드 | 90건 | 🟠 HIGH |
-| 5 | `CKV_AWS_260` | Security Group — HTTP(80) 무제한 인바운드 | 90건 | 🟠 HIGH |
-| 6 | `CKV_AWS_277` | Security Group — HTTPS(443) 무제한 인바운드 | 90건 | 🟠 HIGH |
-| 7 | `CKV2_AWS_5` | Security Group — EC2 인스턴스 연결 미검증 | 90건 | 🟠 HIGH |
-| 8 | `CKV_AWS_53` | S3 — Block Public ACLs 미설정 | 20건 | 🟠 HIGH |
-| 9 | `CKV_AWS_54` | S3 — Block Public Policy 미설정 | 20건 | 🟠 HIGH |
-| 10 | `CKV_AWS_55` | S3 — Ignore Public ACLs 미설정 | 20건 | 🟡 MEDIUM |
-
----
-
-##  코드 비교 — Security Group
+## 💻 코드 비교 — Security Group
 
 ### Before (취약 코드) — `CKV_AWS_23` ❌
 
@@ -77,7 +107,7 @@ resource "aws_security_group" "secure" {
 
 ---
 
-##  코드 비교 — S3 Public Access Block
+## 💻 코드 비교 — S3 Public Access Block
 
 ### Before (취약 코드) — `CKV_AWS_53~56` ❌
 
@@ -126,7 +156,7 @@ resource "aws_s3_bucket_public_access_block" "secure" {
 
 ---
 
-##  OpenVAS GitHub Secrets 설정
+## ✅ OpenVAS GitHub Secrets 설정
 
 | Secret 이름 | 예시 값 | 설명 |
 | --- | --- | --- |
@@ -137,14 +167,14 @@ resource "aws_s3_bucket_public_access_block" "secure" {
 
 ---
 
-##  핵심 성과
+## 🏆 핵심 성과
 
 | 지표 | 수치 |
 | --- | --- |
-| 발견된 보안 취약점 | **857건** |
-| 보안 점검 통과율 개선 | **8.6% → 100%** |
+| 발견된 보안 취약점 | **857건** (630 + 220 + 7) |
+| 보안 점검 통과율 개선 | **8.6% → 100%** (81/938 → 82/82) |
 | 자동 보안 강화 파일 수 | **116개** (remediation/) |
-| 가장 많은 취약 항목 | Security Group 무제한 인바운드 **(630건)** |
+| 최다 실패 리소스 | Security Group 90개 × 7체크 = **630건** |
 
 ---
 

@@ -100,6 +100,34 @@ jobs:
             aws s3 rb "s3://$b" --force || true
           done
 
+          echo "cleanup: stale demo VPCs"
+          mapfile -t VPCS < <(
+            aws ec2 describe-vpcs \
+              --region "$AWS_REGION" \
+              --filters Name=tag:ProwlerDemo,Values=vulnerable_infra_test \
+              --query 'Vpcs[].VpcId' \
+              --output text | tr '\t' '\n' | sed '/^$/d' | sort -u
+          )
+          for vpc_id in "${VPCS[@]}"; do
+            echo "delete vpc $vpc_id"
+            aws ec2 delete-vpc --region "$AWS_REGION" --vpc-id "$vpc_id" || true
+          done
+
+          echo "cleanup: stale demo KMS keys (schedule deletion)"
+          mapfile -t KMS_ARNS < <(
+            aws resourcegroupstaggingapi get-resources \
+              --region "$AWS_REGION" \
+              --tag-filters Key=ProwlerDemo,Values=vulnerable_infra_test \
+              --resource-type-filters kms \
+              --query "ResourceTagMappingList[].ResourceARN" \
+              --output text 2>/dev/null | tr '\t' '\n' | sed '/^$/d' | sort -u
+          )
+          for key_arn in "${KMS_ARNS[@]}"; do
+            key_id="${key_arn##*/}"
+            echo "schedule deletion kms key $key_id"
+            aws kms schedule-key-deletion --region "$AWS_REGION" --key-id "$key_id" --pending-window-in-days 7 || true
+          done
+
           set -e
 
       - name: Deploy vulnerable infra

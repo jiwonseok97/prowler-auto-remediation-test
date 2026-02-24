@@ -43,3 +43,9 @@ variable "vuln_kms_key_count" {
   description = "KMS CMK 자동 교체 비활성화 키 수 → kms_cmk_rotation_enabled FAIL ×N (auto-remediable)"
   default     = 2
 }
+
+variable "vuln_vpc_count" {
+  type        = number
+  description = "flow logs 없는 VPC 수 → vpc_flow_logs_enabled + ec2_securitygroup_default_restrict_traffic FAIL ×N"
+  default     = 2
+}

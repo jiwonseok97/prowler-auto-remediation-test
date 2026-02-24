@@ -186,12 +186,6 @@ resource "aws_kms_key" "vuln_kms" {
   }
 }
 
-resource "aws_kms_alias" "vuln_kms" {
-  count         = var.vuln_kms_key_count
-  name          = format("alias/vuln-demo-kms-%02d", count.index + 1)
-  target_key_id = aws_kms_key.vuln_kms[count.index].key_id
-}
-
 # ==================================================
 # CloudWatch 로그 그룹 취약 설정 (KMS 없음)
 # → prowler-cloudwatch_log_group_encrypted ×N
@@ -237,3 +231,22 @@ resource "aws_default_security_group" "vuln_default_sg" {
     ProwlerDemo = "vulnerable_infra_test"
   }
 }
+
+# ==================================================
+# VPC (flow logs 없음 + default SG 허용)
+# → prowler-vpc_flow_logs_enabled                      ×N (auto-remediable)
+# → prowler-ec2_securitygroup_default_restrict_traffic ×N (auto-remediable)
+# ==================================================
+resource "aws_vpc" "vuln_vpc" {
+  count      = var.vuln_vpc_count
+  cidr_block = format("10.%d.0.0/16", 100 + count.index)
+
+  tags = {
+    Name        = format("vuln-demo-vpc-%02d", count.index + 1)
+    ManagedBy   = "terraform"
+    ProwlerDemo = "vulnerable_infra_test"
+    CleanupTarget = "true"
+  }
+}
+# flow logs 미설정 → vpc_flow_logs_enabled FAIL ×N
+# default SG은 AWS가 자동 생성 (self-참조 ingress 규칙) → ec2_securitygroup_default_restrict_traffic FAIL ×N

@@ -10,24 +10,30 @@ variable "region" {
 
 variable "vuln_bucket_count" {
   type        = number
-  description = "Number of intentionally vulnerable S3 buckets (keep low/zero for auto-remediable demo mode)"
-  default     = 0
-}
-
-variable "security_group_count" {
-  type        = number
-  description = "Number of wide-open security groups (auto-remediable demo driver)"
-  default     = 36
+  description = "S3 버킷 수 (PAB false + 암호화 없음 → s3 FAIL ×2N + 1)"
+  default     = 10
 }
 
 variable "cloudwatch_log_group_count" {
   type        = number
-  description = "Number of intentionally unencrypted CloudWatch log groups (optional; keep 0 unless mapped in your environment)"
-  default     = 0
+  description = "CloudWatch 로그 그룹 수 (KMS 없음 → cloudwatch_log_group_encrypted FAIL ×N)"
+  default     = 5
 }
 
 variable "create_weak_account_password_policy" {
   type        = bool
-  description = "Create a weak IAM account password policy to trigger multiple auto-remediable IAM password policy checks"
+  description = "약한 IAM 패스워드 정책 생성 → 6종 IAM FAIL"
+  default     = true
+}
+
+variable "create_vuln_cloudtrail" {
+  type        = bool
+  description = "취약 CloudTrail 생성 (검증/KMS/CW로깅/데이터이벤트 미설정) → 3~5종 CloudTrail FAIL"
+  default     = true
+}
+
+variable "open_default_security_group" {
+  type        = bool
+  description = "Default SG 전체 허용 설정 → ec2_securitygroup_default_restrict_traffic FAIL (auto-remediable)"
   default     = true
 }

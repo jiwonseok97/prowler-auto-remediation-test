@@ -10,10 +10,18 @@ output "vulnerable_buckets" {
   value = aws_s3_bucket.vuln_bucket[*].bucket
 }
 
-output "vulnerable_security_groups" {
-  value = aws_security_group.vuln_sg[*].id
-}
-
 output "vuln_log_groups" {
   value = aws_cloudwatch_log_group.vuln_logs[*].name
+}
+
+output "vuln_trail_name" {
+  value = var.create_vuln_cloudtrail ? aws_cloudtrail.vuln_trail[0].name : null
+}
+
+output "vuln_trail_bucket" {
+  value = var.create_vuln_cloudtrail ? aws_s3_bucket.vuln_trail_logs[0].bucket : null
+}
+
+output "default_sg_id" {
+  value = var.open_default_security_group ? aws_default_security_group.vuln_default_sg[0].id : null
 }

@@ -20,7 +20,7 @@
 
 ---
 
-## ❌ 취약점 유형 분류 (25종)
+## 취약점 유형 분류 (25종)
 
 | 카테고리 | 유형 수 | 영향 리소스 |
 | --- | --- | --- |
@@ -31,21 +31,21 @@
 
 ---
 
-## 🔴 Security Group — 7종 (영향 리소스: 90개)
+##  Security Group — 7종 (영향 리소스: 90개)
 
 | Check ID | 취약점 설명 | 위험도 |
 | --- | --- | --- |
 | `CKV_AWS_23` | 보안 그룹 및 규칙에 설명(Description) 누락 | 🔴 CRITICAL |
-| `CKV_AWS_24` | SSH(22번 포트) 인바운드 0.0.0.0/0 허용 | 🔴 CRITICAL |
+| `CKV_AWS_24` | SSH(22번 포트) 인바운드 0.0.0.0/0 허용   | 🔴 CRITICAL |
 | `CKV_AWS_25` | RDP(3389번 포트) 인바운드 0.0.0.0/0 허용 | 🔴 CRITICAL |
 | `CKV_AWS_260` | HTTP(80번 포트) 인바운드 0.0.0.0/0 허용 | 🟠 HIGH |
-| `CKV_AWS_277` | 전체 포트(-1) 인바운드 0.0.0.0/0 허용 | 🟠 HIGH |
+| `CKV_AWS_277` | 전체 포트(-1) 인바운드 0.0.0.0/0 허용   | 🟠 HIGH |
 | `CKV_AWS_382` | 전체 포트(-1) 아웃바운드 0.0.0.0/0 허용 | 🟠 HIGH |
 | `CKV2_AWS_5` | 보안 그룹이 어떤 리소스에도 연결되지 않음 | 🟡 MEDIUM |
 
 ---
 
-## 🟠 S3 버킷 보안 — 11종 (영향 리소스: 20개)
+## S3 버킷 보안 — 11종 (영향 리소스: 20개)
 
 | Check ID | 취약점 설명 | 위험도 |
 | --- | --- | --- |
@@ -63,7 +63,7 @@
 
 ---
 
-## 🟡 IAM 패스워드 정책 — 7종 (영향 리소스: 1개)
+##  IAM 패스워드 정책 — 7종 (영향 리소스: 1개)
 
 | Check ID | 취약점 설명 | 위험도 |
 | --- | --- | --- |
@@ -77,7 +77,7 @@
 
 ---
 
-## ✅ 통과된 체크 유형 (5종, terraform/)
+##  통과된 체크 유형 (5종, terraform/)
 
 | Check ID | 설명 |
 | --- | --- |
@@ -89,7 +89,7 @@
 
 ---
 
-## 💻 코드 비교 — Security Group
+##  코드 비교 — Security Group
 
 ### Before — `CKV_AWS_24` / `CKV_AWS_25` ❌
 
@@ -111,7 +111,7 @@ resource "aws_security_group" "vuln" {
 }
 ```
 
-### After — 강화 코드 ✅
+### After — 강화 코드 
 
 ```hcl
 resource "aws_security_group" "secure" {
@@ -147,7 +147,7 @@ resource "aws_s3_bucket_public_access_block" "bad" {
 }
 ```
 
-### After — 강화 코드 ✅
+### After — 강화 코드 
 
 ```hcl
 resource "aws_s3_bucket_public_access_block" "secure" {
@@ -180,7 +180,7 @@ resource "aws_s3_bucket_public_access_block" "secure" {
 
 ---
 
-## 🏆 핵심 성과 요약
+##  핵심 성과 요약
 
 | 지표 | Before | After |
 | --- | --- | --- |

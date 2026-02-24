@@ -15,3 +15,12 @@ create_vuln_cloudtrail = true
 
 # EC2/VPC: Default SG 전체 허용 → 1건 FAIL (auto-remediable)
 open_default_security_group = true
+
+# EC2: EBS 기본 암호화 비활성화 → 1건 FAIL (auto-remediable)
+# (aws_ebs_encryption_by_default.vuln_ebs_enc)
+
+# S3: 버킷 버저닝 미설정 → 10건 FAIL (auto-remediable)
+# (aws_s3_bucket_versioning 각 버킷)
+
+# KMS: CMK 자동 교체 비활성화 → 2건 FAIL (auto-remediable, IMPORT_AND_PATCH)
+vuln_kms_key_count = 2

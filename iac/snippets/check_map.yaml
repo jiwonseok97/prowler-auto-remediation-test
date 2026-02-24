@@ -47,6 +47,12 @@ checks:
   prowler-ec2_securitygroup_default_restrict_traffic:
     category: network-ec2-vpc
     template: iac/snippets/network-ec2-vpc/fix-ec2_securitygroup_default_restrict_traffic.tf
+  prowler-ec2_ebs_default_encryption_enabled:
+    category: network-ec2-vpc
+    template: iac/snippets/network-ec2-vpc/fix-ec2_ebs_default_encryption.tf
+  prowler-s3_bucket_versioning_enabled:
+    category: s3
+    template: iac/snippets/s3/fix-s3_bucket_versioning.tf
   iam_password_policy_strong:
     category: iam
     template: iac/snippets/iam/fix-iam_password_policy_strong.tf

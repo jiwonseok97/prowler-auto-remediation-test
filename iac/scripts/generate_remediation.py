@@ -12,6 +12,7 @@ GLOBAL_CHECK_HINTS = (
     "iam_password_policy",
     "account_level_public_access",
     "account_public_access",
+    "ec2_ebs_default_encryption",
 )
 CREATE_MISSING_HINTS = (
     "cloudtrail_cloudwatch_logging_enabled",

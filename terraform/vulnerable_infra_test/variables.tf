@@ -37,3 +37,9 @@ variable "open_default_security_group" {
   description = "Default SG 전체 허용 설정 → ec2_securitygroup_default_restrict_traffic FAIL (auto-remediable)"
   default     = true
 }
+
+variable "vuln_kms_key_count" {
+  type        = number
+  description = "KMS CMK 자동 교체 비활성화 키 수 → kms_cmk_rotation_enabled FAIL ×N (auto-remediable)"
+  default     = 2
+}

@@ -25,3 +25,11 @@ output "vuln_trail_bucket" {
 output "default_sg_id" {
   value = var.open_default_security_group ? aws_default_security_group.vuln_default_sg[0].id : null
 }
+
+output "vuln_kms_key_ids" {
+  value = aws_kms_key.vuln_kms[*].key_id
+}
+
+output "ebs_default_encryption_enabled" {
+  value = aws_ebs_encryption_by_default.vuln_ebs_enc.enabled
+}

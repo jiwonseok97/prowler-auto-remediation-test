@@ -143,6 +143,56 @@ resource "aws_cloudtrail" "vuln_trail" {
 }
 
 # ==================================================
+# EBS 기본 암호화 비활성화 (계정 수준)
+# → prowler-ec2_ebs_default_encryption_enabled ×1 (auto-remediable)
+# ==================================================
+resource "aws_ebs_encryption_by_default" "vuln_ebs_enc" {
+  enabled = false
+
+  lifecycle {
+    ignore_changes = []
+  }
+}
+
+# ==================================================
+# S3 버킷 버저닝 미설정
+# → prowler-s3_bucket_versioning_enabled ×N (auto-remediable)
+# ==================================================
+resource "aws_s3_bucket_versioning" "vuln_bucket_versioning" {
+  count  = var.vuln_bucket_count
+  bucket = aws_s3_bucket.vuln_bucket[count.index].id
+
+  versioning_configuration {
+    status = "Suspended" # 버저닝 비활성 → s3_bucket_versioning_enabled FAIL
+  }
+
+  depends_on = [aws_s3_bucket.vuln_bucket]
+}
+
+# ==================================================
+# KMS 키 자동 교체 비활성화
+# → prowler-kms_cmk_rotation_enabled ×N (auto-remediable, IMPORT_AND_PATCH)
+# ==================================================
+resource "aws_kms_key" "vuln_kms" {
+  count               = var.vuln_kms_key_count
+  description         = format("vuln-demo-kms-%02d (rotation disabled)", count.index + 1)
+  enable_key_rotation = false # → kms_cmk_rotation_enabled FAIL
+  deletion_window_in_days = 7
+
+  tags = {
+    ManagedBy     = "terraform"
+    ProwlerDemo   = "vulnerable_infra_test"
+    CleanupTarget = "true"
+  }
+}
+
+resource "aws_kms_alias" "vuln_kms" {
+  count         = var.vuln_kms_key_count
+  name          = format("alias/vuln-demo-kms-%02d", count.index + 1)
+  target_key_id = aws_kms_key.vuln_kms[count.index].key_id
+}
+
+# ==================================================
 # CloudWatch 로그 그룹 취약 설정 (KMS 없음)
 # → prowler-cloudwatch_log_group_encrypted ×N
 # ==================================================

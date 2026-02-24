@@ -1,0 +1,15 @@
+
+       _               _
+   ___| |__   ___  ___| | _______   __
+  / __| '_ \ / _ \/ __| |/ / _ \ \ / /
+ | (__| | | |  __/ (__|   < (_) \ V /
+  \___|_| |_|\___|\___|_|\_\___/ \_/
+
+By Prisma Cloud | version: 3.2.506 
+terraform scan results:
+
+Passed checks: 82, Failed checks: 0, Skipped checks: 0
+
+
+
+Wrote output in SARIF format to the file 'results.sarif'

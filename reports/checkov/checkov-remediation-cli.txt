@@ -1,0 +1,342 @@
+
+       _               _
+   ___| |__   ___  ___| | _______   __
+  / __| '_ \ / _ \/ __| |/ / _ \ \ / /
+ | (__| | | |  __/ (__|   < (_) \ V /
+  \___|_| |_|\___|\___|_|\_\___/ \_/
+
+By Prisma Cloud | version: 3.2.506 
+
+terraform scan results:
+
+Passed checks: 82, Failed checks: 0, Skipped checks: 0
+
+Check: CKV_AWS_9: "Ensure IAM password policy expires passwords within 90 days or less"
+	PASSED for resource: aws_iam_account_password_policy.fix_iam_password_policy_737d8717cc
+	File: \iam\fix-prowler_iam_password_policy_lowercase_arn_aws_iam_ap_northeast_2_132410971304_password_policy_ap_northeast_2.tf:1-11
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/iam-11
+[0mCheck: CKV_AWS_10: "Ensure IAM password policy requires minimum length of 14 or greater"
+	PASSED for resource: aws_iam_account_password_policy.fix_iam_password_policy_737d8717cc
+	File: \iam\fix-prowler_iam_password_policy_lowercase_arn_aws_iam_ap_northeast_2_132410971304_password_policy_ap_northeast_2.tf:1-11
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/iam-9-1
+[0mCheck: CKV_AWS_11: "Ensure IAM password policy requires at least one lowercase letter"
+	PASSED for resource: aws_iam_account_password_policy.fix_iam_password_policy_737d8717cc
+	File: \iam\fix-prowler_iam_password_policy_lowercase_arn_aws_iam_ap_northeast_2_132410971304_password_policy_ap_northeast_2.tf:1-11
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/iam-6
+[0mCheck: CKV_AWS_12: "Ensure IAM password policy requires at least one number"
+	PASSED for resource: aws_iam_account_password_policy.fix_iam_password_policy_737d8717cc
+	File: \iam\fix-prowler_iam_password_policy_lowercase_arn_aws_iam_ap_northeast_2_132410971304_password_policy_ap_northeast_2.tf:1-11
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/iam-8
+[0mCheck: CKV_AWS_13: "Ensure IAM password policy prevents password reuse"
+	PASSED for resource: aws_iam_account_password_policy.fix_iam_password_policy_737d8717cc
+	File: \iam\fix-prowler_iam_password_policy_lowercase_arn_aws_iam_ap_northeast_2_132410971304_password_policy_ap_northeast_2.tf:1-11
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/iam-10
+[0mCheck: CKV_AWS_14: "Ensure IAM password policy requires at least one symbol"
+	PASSED for resource: aws_iam_account_password_policy.fix_iam_password_policy_737d8717cc
+	File: \iam\fix-prowler_iam_password_policy_lowercase_arn_aws_iam_ap_northeast_2_132410971304_password_policy_ap_northeast_2.tf:1-11
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/iam-7
+[0mCheck: CKV_AWS_15: "Ensure IAM password policy requires at least one uppercase letter"
+	PASSED for resource: aws_iam_account_password_policy.fix_iam_password_policy_737d8717cc
+	File: \iam\fix-prowler_iam_password_policy_lowercase_arn_aws_iam_ap_northeast_2_132410971304_password_policy_ap_northeast_2.tf:1-11
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/iam-5
+[0mCheck: CKV_AWS_9: "Ensure IAM password policy expires passwords within 90 days or less"
+	PASSED for resource: aws_iam_account_password_policy.fix_iam_password_policy_4713846702
+	File: \iam\fix-prowler_iam_password_policy_minimum_length_14_arn_aws_iam_ap_northeast_2_132410971304_password_policy_ap_northeast_2.tf:1-11
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/iam-11
+[0mCheck: CKV_AWS_10: "Ensure IAM password policy requires minimum length of 14 or greater"
+	PASSED for resource: aws_iam_account_password_policy.fix_iam_password_policy_4713846702
+	File: \iam\fix-prowler_iam_password_policy_minimum_length_14_arn_aws_iam_ap_northeast_2_132410971304_password_policy_ap_northeast_2.tf:1-11
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/iam-9-1
+[0mCheck: CKV_AWS_11: "Ensure IAM password policy requires at least one lowercase letter"
+	PASSED for resource: aws_iam_account_password_policy.fix_iam_password_policy_4713846702
+	File: \iam\fix-prowler_iam_password_policy_minimum_length_14_arn_aws_iam_ap_northeast_2_132410971304_password_policy_ap_northeast_2.tf:1-11
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/iam-6
+[0mCheck: CKV_AWS_12: "Ensure IAM password policy requires at least one number"
+	PASSED for resource: aws_iam_account_password_policy.fix_iam_password_policy_4713846702
+	File: \iam\fix-prowler_iam_password_policy_minimum_length_14_arn_aws_iam_ap_northeast_2_132410971304_password_policy_ap_northeast_2.tf:1-11
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/iam-8
+[0mCheck: CKV_AWS_13: "Ensure IAM password policy prevents password reuse"
+	PASSED for resource: aws_iam_account_password_policy.fix_iam_password_policy_4713846702
+	File: \iam\fix-prowler_iam_password_policy_minimum_length_14_arn_aws_iam_ap_northeast_2_132410971304_password_policy_ap_northeast_2.tf:1-11
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/iam-10
+[0mCheck: CKV_AWS_14: "Ensure IAM password policy requires at least one symbol"
+	PASSED for resource: aws_iam_account_password_policy.fix_iam_password_policy_4713846702
+	File: \iam\fix-prowler_iam_password_policy_minimum_length_14_arn_aws_iam_ap_northeast_2_132410971304_password_policy_ap_northeast_2.tf:1-11
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/iam-7
+[0mCheck: CKV_AWS_15: "Ensure IAM password policy requires at least one uppercase letter"
+	PASSED for resource: aws_iam_account_password_policy.fix_iam_password_policy_4713846702
+	File: \iam\fix-prowler_iam_password_policy_minimum_length_14_arn_aws_iam_ap_northeast_2_132410971304_password_policy_ap_northeast_2.tf:1-11
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/iam-5
+[0mCheck: CKV_AWS_9: "Ensure IAM password policy expires passwords within 90 days or less"
+	PASSED for resource: aws_iam_account_password_policy.fix_iam_password_policy_25a834c100
+	File: \iam\fix-prowler_iam_password_policy_number_arn_aws_iam_ap_northeast_2_132410971304_password_policy_ap_northeast_2.tf:1-11
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/iam-11
+[0mCheck: CKV_AWS_10: "Ensure IAM password policy requires minimum length of 14 or greater"
+	PASSED for resource: aws_iam_account_password_policy.fix_iam_password_policy_25a834c100
+	File: \iam\fix-prowler_iam_password_policy_number_arn_aws_iam_ap_northeast_2_132410971304_password_policy_ap_northeast_2.tf:1-11
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/iam-9-1
+[0mCheck: CKV_AWS_11: "Ensure IAM password policy requires at least one lowercase letter"
+	PASSED for resource: aws_iam_account_password_policy.fix_iam_password_policy_25a834c100
+	File: \iam\fix-prowler_iam_password_policy_number_arn_aws_iam_ap_northeast_2_132410971304_password_policy_ap_northeast_2.tf:1-11
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/iam-6
+[0mCheck: CKV_AWS_12: "Ensure IAM password policy requires at least one number"
+	PASSED for resource: aws_iam_account_password_policy.fix_iam_password_policy_25a834c100
+	File: \iam\fix-prowler_iam_password_policy_number_arn_aws_iam_ap_northeast_2_132410971304_password_policy_ap_northeast_2.tf:1-11
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/iam-8
+[0mCheck: CKV_AWS_13: "Ensure IAM password policy prevents password reuse"
+	PASSED for resource: aws_iam_account_password_policy.fix_iam_password_policy_25a834c100
+	File: \iam\fix-prowler_iam_password_policy_number_arn_aws_iam_ap_northeast_2_132410971304_password_policy_ap_northeast_2.tf:1-11
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/iam-10
+[0mCheck: CKV_AWS_14: "Ensure IAM password policy requires at least one symbol"
+	PASSED for resource: aws_iam_account_password_policy.fix_iam_password_policy_25a834c100
+	File: \iam\fix-prowler_iam_password_policy_number_arn_aws_iam_ap_northeast_2_132410971304_password_policy_ap_northeast_2.tf:1-11
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/iam-7
+[0mCheck: CKV_AWS_15: "Ensure IAM password policy requires at least one uppercase letter"
+	PASSED for resource: aws_iam_account_password_policy.fix_iam_password_policy_25a834c100
+	File: \iam\fix-prowler_iam_password_policy_number_arn_aws_iam_ap_northeast_2_132410971304_password_policy_ap_northeast_2.tf:1-11
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/iam-5
+[0mCheck: CKV_AWS_9: "Ensure IAM password policy expires passwords within 90 days or less"
+	PASSED for resource: aws_iam_account_password_policy.fix_iam_password_policy_cbffca3971
+	File: \iam\fix-prowler_iam_password_policy_reuse_24_arn_aws_iam_ap_northeast_2_132410971304_password_policy_ap_northeast_2.tf:1-11
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/iam-11
+[0mCheck: CKV_AWS_10: "Ensure IAM password policy requires minimum length of 14 or greater"
+	PASSED for resource: aws_iam_account_password_policy.fix_iam_password_policy_cbffca3971
+	File: \iam\fix-prowler_iam_password_policy_reuse_24_arn_aws_iam_ap_northeast_2_132410971304_password_policy_ap_northeast_2.tf:1-11
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/iam-9-1
+[0mCheck: CKV_AWS_11: "Ensure IAM password policy requires at least one lowercase letter"
+	PASSED for resource: aws_iam_account_password_policy.fix_iam_password_policy_cbffca3971
+	File: \iam\fix-prowler_iam_password_policy_reuse_24_arn_aws_iam_ap_northeast_2_132410971304_password_policy_ap_northeast_2.tf:1-11
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/iam-6
+[0mCheck: CKV_AWS_12: "Ensure IAM password policy requires at least one number"
+	PASSED for resource: aws_iam_account_password_policy.fix_iam_password_policy_cbffca3971
+	File: \iam\fix-prowler_iam_password_policy_reuse_24_arn_aws_iam_ap_northeast_2_132410971304_password_policy_ap_northeast_2.tf:1-11
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/iam-8
+[0mCheck: CKV_AWS_13: "Ensure IAM password policy prevents password reuse"
+	PASSED for resource: aws_iam_account_password_policy.fix_iam_password_policy_cbffca3971
+	File: \iam\fix-prowler_iam_password_policy_reuse_24_arn_aws_iam_ap_northeast_2_132410971304_password_policy_ap_northeast_2.tf:1-11
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/iam-10
+[0mCheck: CKV_AWS_14: "Ensure IAM password policy requires at least one symbol"
+	PASSED for resource: aws_iam_account_password_policy.fix_iam_password_policy_cbffca3971
+	File: \iam\fix-prowler_iam_password_policy_reuse_24_arn_aws_iam_ap_northeast_2_132410971304_password_policy_ap_northeast_2.tf:1-11
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/iam-7
+[0mCheck: CKV_AWS_15: "Ensure IAM password policy requires at least one uppercase letter"
+	PASSED for resource: aws_iam_account_password_policy.fix_iam_password_policy_cbffca3971
+	File: \iam\fix-prowler_iam_password_policy_reuse_24_arn_aws_iam_ap_northeast_2_132410971304_password_policy_ap_northeast_2.tf:1-11
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/iam-5
+[0mCheck: CKV_AWS_9: "Ensure IAM password policy expires passwords within 90 days or less"
+	PASSED for resource: aws_iam_account_password_policy.fix_iam_password_policy_126739a4cd
+	File: \iam\fix-prowler_iam_password_policy_symbol_arn_aws_iam_ap_northeast_2_132410971304_password_policy_ap_northeast_2.tf:1-11
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/iam-11
+[0mCheck: CKV_AWS_10: "Ensure IAM password policy requires minimum length of 14 or greater"
+	PASSED for resource: aws_iam_account_password_policy.fix_iam_password_policy_126739a4cd
+	File: \iam\fix-prowler_iam_password_policy_symbol_arn_aws_iam_ap_northeast_2_132410971304_password_policy_ap_northeast_2.tf:1-11
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/iam-9-1
+[0mCheck: CKV_AWS_11: "Ensure IAM password policy requires at least one lowercase letter"
+	PASSED for resource: aws_iam_account_password_policy.fix_iam_password_policy_126739a4cd
+	File: \iam\fix-prowler_iam_password_policy_symbol_arn_aws_iam_ap_northeast_2_132410971304_password_policy_ap_northeast_2.tf:1-11
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/iam-6
+[0mCheck: CKV_AWS_12: "Ensure IAM password policy requires at least one number"
+	PASSED for resource: aws_iam_account_password_policy.fix_iam_password_policy_126739a4cd
+	File: \iam\fix-prowler_iam_password_policy_symbol_arn_aws_iam_ap_northeast_2_132410971304_password_policy_ap_northeast_2.tf:1-11
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/iam-8
+[0mCheck: CKV_AWS_13: "Ensure IAM password policy prevents password reuse"
+	PASSED for resource: aws_iam_account_password_policy.fix_iam_password_policy_126739a4cd
+	File: \iam\fix-prowler_iam_password_policy_symbol_arn_aws_iam_ap_northeast_2_132410971304_password_policy_ap_northeast_2.tf:1-11
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/iam-10
+[0mCheck: CKV_AWS_14: "Ensure IAM password policy requires at least one symbol"
+	PASSED for resource: aws_iam_account_password_policy.fix_iam_password_policy_126739a4cd
+	File: \iam\fix-prowler_iam_password_policy_symbol_arn_aws_iam_ap_northeast_2_132410971304_password_policy_ap_northeast_2.tf:1-11
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/iam-7
+[0mCheck: CKV_AWS_15: "Ensure IAM password policy requires at least one uppercase letter"
+	PASSED for resource: aws_iam_account_password_policy.fix_iam_password_policy_126739a4cd
+	File: \iam\fix-prowler_iam_password_policy_symbol_arn_aws_iam_ap_northeast_2_132410971304_password_policy_ap_northeast_2.tf:1-11
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/iam-5
+[0mCheck: CKV_AWS_9: "Ensure IAM password policy expires passwords within 90 days or less"
+	PASSED for resource: aws_iam_account_password_policy.fix_iam_password_policy_9a54e5d7e7
+	File: \iam\fix-prowler_iam_password_policy_uppercase_arn_aws_iam_ap_northeast_2_132410971304_password_policy_ap_northeast_2.tf:1-11
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/iam-11
+[0mCheck: CKV_AWS_10: "Ensure IAM password policy requires minimum length of 14 or greater"
+	PASSED for resource: aws_iam_account_password_policy.fix_iam_password_policy_9a54e5d7e7
+	File: \iam\fix-prowler_iam_password_policy_uppercase_arn_aws_iam_ap_northeast_2_132410971304_password_policy_ap_northeast_2.tf:1-11
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/iam-9-1
+[0mCheck: CKV_AWS_11: "Ensure IAM password policy requires at least one lowercase letter"
+	PASSED for resource: aws_iam_account_password_policy.fix_iam_password_policy_9a54e5d7e7
+	File: \iam\fix-prowler_iam_password_policy_uppercase_arn_aws_iam_ap_northeast_2_132410971304_password_policy_ap_northeast_2.tf:1-11
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/iam-6
+[0mCheck: CKV_AWS_12: "Ensure IAM password policy requires at least one number"
+	PASSED for resource: aws_iam_account_password_policy.fix_iam_password_policy_9a54e5d7e7
+	File: \iam\fix-prowler_iam_password_policy_uppercase_arn_aws_iam_ap_northeast_2_132410971304_password_policy_ap_northeast_2.tf:1-11
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/iam-8
+[0mCheck: CKV_AWS_13: "Ensure IAM password policy prevents password reuse"
+	PASSED for resource: aws_iam_account_password_policy.fix_iam_password_policy_9a54e5d7e7
+	File: \iam\fix-prowler_iam_password_policy_uppercase_arn_aws_iam_ap_northeast_2_132410971304_password_policy_ap_northeast_2.tf:1-11
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/iam-10
+[0mCheck: CKV_AWS_14: "Ensure IAM password policy requires at least one symbol"
+	PASSED for resource: aws_iam_account_password_policy.fix_iam_password_policy_9a54e5d7e7
+	File: \iam\fix-prowler_iam_password_policy_uppercase_arn_aws_iam_ap_northeast_2_132410971304_password_policy_ap_northeast_2.tf:1-11
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/iam-7
+[0mCheck: CKV_AWS_15: "Ensure IAM password policy requires at least one uppercase letter"
+	PASSED for resource: aws_iam_account_password_policy.fix_iam_password_policy_9a54e5d7e7
+	File: \iam\fix-prowler_iam_password_policy_uppercase_arn_aws_iam_ap_northeast_2_132410971304_password_policy_ap_northeast_2.tf:1-11
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/iam-5
+[0mCheck: CKV_AWS_70: "Ensure S3 bucket does not allow an action with any Principal"
+	PASSED for resource: aws_s3_bucket_policy.fix_s3_secure_transport_47cad284c0
+	File: \s3\fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_123456789012_ap_northeast_2_01_ap_northeast_2.tf:1-25
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/bc-aws-s3-23
+[0mCheck: CKV_AWS_93: "Ensure S3 bucket policy does not lockout all but root user. (Prevent lockouts needing root account fixes)"
+	PASSED for resource: aws_s3_bucket_policy.fix_s3_secure_transport_47cad284c0
+	File: \s3\fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_123456789012_ap_northeast_2_01_ap_northeast_2.tf:1-25
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/bc-aws-s3-24
+[0mCheck: CKV_AWS_70: "Ensure S3 bucket does not allow an action with any Principal"
+	PASSED for resource: aws_s3_bucket_policy.fix_s3_secure_transport_8ad0e0da48
+	File: \s3\fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_123456789012_ap_northeast_2_02_ap_northeast_2.tf:1-25
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/bc-aws-s3-23
+[0mCheck: CKV_AWS_93: "Ensure S3 bucket policy does not lockout all but root user. (Prevent lockouts needing root account fixes)"
+	PASSED for resource: aws_s3_bucket_policy.fix_s3_secure_transport_8ad0e0da48
+	File: \s3\fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_123456789012_ap_northeast_2_02_ap_northeast_2.tf:1-25
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/bc-aws-s3-24
+[0mCheck: CKV_AWS_70: "Ensure S3 bucket does not allow an action with any Principal"
+	PASSED for resource: aws_s3_bucket_policy.fix_s3_secure_transport_532f2d8837
+	File: \s3\fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_123456789012_ap_northeast_2_03_ap_northeast_2.tf:1-25
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/bc-aws-s3-23
+[0mCheck: CKV_AWS_93: "Ensure S3 bucket policy does not lockout all but root user. (Prevent lockouts needing root account fixes)"
+	PASSED for resource: aws_s3_bucket_policy.fix_s3_secure_transport_532f2d8837
+	File: \s3\fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_123456789012_ap_northeast_2_03_ap_northeast_2.tf:1-25
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/bc-aws-s3-24
+[0mCheck: CKV_AWS_70: "Ensure S3 bucket does not allow an action with any Principal"
+	PASSED for resource: aws_s3_bucket_policy.fix_s3_secure_transport_5e713ec44c
+	File: \s3\fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_123456789012_ap_northeast_2_04_ap_northeast_2.tf:1-25
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/bc-aws-s3-23
+[0mCheck: CKV_AWS_93: "Ensure S3 bucket policy does not lockout all but root user. (Prevent lockouts needing root account fixes)"
+	PASSED for resource: aws_s3_bucket_policy.fix_s3_secure_transport_5e713ec44c
+	File: \s3\fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_123456789012_ap_northeast_2_04_ap_northeast_2.tf:1-25
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/bc-aws-s3-24
+[0mCheck: CKV_AWS_70: "Ensure S3 bucket does not allow an action with any Principal"
+	PASSED for resource: aws_s3_bucket_policy.fix_s3_secure_transport_688f4bd2fe
+	File: \s3\fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_123456789012_ap_northeast_2_05_ap_northeast_2.tf:1-25
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/bc-aws-s3-23
+[0mCheck: CKV_AWS_93: "Ensure S3 bucket policy does not lockout all but root user. (Prevent lockouts needing root account fixes)"
+	PASSED for resource: aws_s3_bucket_policy.fix_s3_secure_transport_688f4bd2fe
+	File: \s3\fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_123456789012_ap_northeast_2_05_ap_northeast_2.tf:1-25
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/bc-aws-s3-24
+[0mCheck: CKV_AWS_70: "Ensure S3 bucket does not allow an action with any Principal"
+	PASSED for resource: aws_s3_bucket_policy.fix_s3_secure_transport_bf31b64b2b
+	File: \s3\fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_123456789012_ap_northeast_2_06_ap_northeast_2.tf:1-25
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/bc-aws-s3-23
+[0mCheck: CKV_AWS_93: "Ensure S3 bucket policy does not lockout all but root user. (Prevent lockouts needing root account fixes)"
+	PASSED for resource: aws_s3_bucket_policy.fix_s3_secure_transport_bf31b64b2b
+	File: \s3\fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_123456789012_ap_northeast_2_06_ap_northeast_2.tf:1-25
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/bc-aws-s3-24
+[0mCheck: CKV_AWS_70: "Ensure S3 bucket does not allow an action with any Principal"
+	PASSED for resource: aws_s3_bucket_policy.fix_s3_secure_transport_e7cf1f7206
+	File: \s3\fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_123456789012_ap_northeast_2_07_ap_northeast_2.tf:1-25
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/bc-aws-s3-23
+[0mCheck: CKV_AWS_93: "Ensure S3 bucket policy does not lockout all but root user. (Prevent lockouts needing root account fixes)"
+	PASSED for resource: aws_s3_bucket_policy.fix_s3_secure_transport_e7cf1f7206
+	File: \s3\fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_123456789012_ap_northeast_2_07_ap_northeast_2.tf:1-25
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/bc-aws-s3-24
+[0mCheck: CKV_AWS_70: "Ensure S3 bucket does not allow an action with any Principal"
+	PASSED for resource: aws_s3_bucket_policy.fix_s3_secure_transport_d6e7e63b05
+	File: \s3\fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_123456789012_ap_northeast_2_08_ap_northeast_2.tf:1-25
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/bc-aws-s3-23
+[0mCheck: CKV_AWS_93: "Ensure S3 bucket policy does not lockout all but root user. (Prevent lockouts needing root account fixes)"
+	PASSED for resource: aws_s3_bucket_policy.fix_s3_secure_transport_d6e7e63b05
+	File: \s3\fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_123456789012_ap_northeast_2_08_ap_northeast_2.tf:1-25
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/bc-aws-s3-24
+[0mCheck: CKV_AWS_70: "Ensure S3 bucket does not allow an action with any Principal"
+	PASSED for resource: aws_s3_bucket_policy.fix_s3_secure_transport_8ffcdf6924
+	File: \s3\fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_123456789012_ap_northeast_2_09_ap_northeast_2.tf:1-25
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/bc-aws-s3-23
+[0mCheck: CKV_AWS_93: "Ensure S3 bucket policy does not lockout all but root user. (Prevent lockouts needing root account fixes)"
+	PASSED for resource: aws_s3_bucket_policy.fix_s3_secure_transport_8ffcdf6924
+	File: \s3\fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_123456789012_ap_northeast_2_09_ap_northeast_2.tf:1-25
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/bc-aws-s3-24
+[0mCheck: CKV_AWS_70: "Ensure S3 bucket does not allow an action with any Principal"
+	PASSED for resource: aws_s3_bucket_policy.fix_s3_secure_transport_d8b1c11942
+	File: \s3\fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_123456789012_ap_northeast_2_10_ap_northeast_2.tf:1-25
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/bc-aws-s3-23
+[0mCheck: CKV_AWS_93: "Ensure S3 bucket policy does not lockout all but root user. (Prevent lockouts needing root account fixes)"
+	PASSED for resource: aws_s3_bucket_policy.fix_s3_secure_transport_d8b1c11942
+	File: \s3\fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_123456789012_ap_northeast_2_10_ap_northeast_2.tf:1-25
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/bc-aws-s3-24
+[0mCheck: CKV_AWS_70: "Ensure S3 bucket does not allow an action with any Principal"
+	PASSED for resource: aws_s3_bucket_policy.fix_s3_secure_transport_cf50f8da9f
+	File: \s3\fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_123456789012_ap_northeast_2_11_ap_northeast_2.tf:1-25
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/bc-aws-s3-23
+[0mCheck: CKV_AWS_93: "Ensure S3 bucket policy does not lockout all but root user. (Prevent lockouts needing root account fixes)"
+	PASSED for resource: aws_s3_bucket_policy.fix_s3_secure_transport_cf50f8da9f
+	File: \s3\fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_123456789012_ap_northeast_2_11_ap_northeast_2.tf:1-25
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/bc-aws-s3-24
+[0mCheck: CKV_AWS_70: "Ensure S3 bucket does not allow an action with any Principal"
+	PASSED for resource: aws_s3_bucket_policy.fix_s3_secure_transport_c3ce251a60
+	File: \s3\fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_123456789012_ap_northeast_2_12_ap_northeast_2.tf:1-25
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/bc-aws-s3-23
+[0mCheck: CKV_AWS_93: "Ensure S3 bucket policy does not lockout all but root user. (Prevent lockouts needing root account fixes)"
+	PASSED for resource: aws_s3_bucket_policy.fix_s3_secure_transport_c3ce251a60
+	File: \s3\fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_123456789012_ap_northeast_2_12_ap_northeast_2.tf:1-25
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/bc-aws-s3-24
+[0mCheck: CKV_AWS_70: "Ensure S3 bucket does not allow an action with any Principal"
+	PASSED for resource: aws_s3_bucket_policy.fix_s3_secure_transport_07bec3ebaa
+	File: \s3\fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_123456789012_ap_northeast_2_13_ap_northeast_2.tf:1-25
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/bc-aws-s3-23
+[0mCheck: CKV_AWS_93: "Ensure S3 bucket policy does not lockout all but root user. (Prevent lockouts needing root account fixes)"
+	PASSED for resource: aws_s3_bucket_policy.fix_s3_secure_transport_07bec3ebaa
+	File: \s3\fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_123456789012_ap_northeast_2_13_ap_northeast_2.tf:1-25
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/bc-aws-s3-24
+[0mCheck: CKV_AWS_70: "Ensure S3 bucket does not allow an action with any Principal"
+	PASSED for resource: aws_s3_bucket_policy.fix_s3_secure_transport_32738adeed
+	File: \s3\fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_123456789012_ap_northeast_2_14_ap_northeast_2.tf:1-25
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/bc-aws-s3-23
+[0mCheck: CKV_AWS_93: "Ensure S3 bucket policy does not lockout all but root user. (Prevent lockouts needing root account fixes)"
+	PASSED for resource: aws_s3_bucket_policy.fix_s3_secure_transport_32738adeed
+	File: \s3\fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_123456789012_ap_northeast_2_14_ap_northeast_2.tf:1-25
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/bc-aws-s3-24
+[0mCheck: CKV_AWS_70: "Ensure S3 bucket does not allow an action with any Principal"
+	PASSED for resource: aws_s3_bucket_policy.fix_s3_secure_transport_6a95bf635f
+	File: \s3\fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_123456789012_ap_northeast_2_15_ap_northeast_2.tf:1-25
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/bc-aws-s3-23
+[0mCheck: CKV_AWS_93: "Ensure S3 bucket policy does not lockout all but root user. (Prevent lockouts needing root account fixes)"
+	PASSED for resource: aws_s3_bucket_policy.fix_s3_secure_transport_6a95bf635f
+	File: \s3\fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_123456789012_ap_northeast_2_15_ap_northeast_2.tf:1-25
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/bc-aws-s3-24
+[0mCheck: CKV_AWS_70: "Ensure S3 bucket does not allow an action with any Principal"
+	PASSED for resource: aws_s3_bucket_policy.fix_s3_secure_transport_dfd64597d3
+	File: \s3\fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_123456789012_ap_northeast_2_16_ap_northeast_2.tf:1-25
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/bc-aws-s3-23
+[0mCheck: CKV_AWS_93: "Ensure S3 bucket policy does not lockout all but root user. (Prevent lockouts needing root account fixes)"
+	PASSED for resource: aws_s3_bucket_policy.fix_s3_secure_transport_dfd64597d3
+	File: \s3\fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_123456789012_ap_northeast_2_16_ap_northeast_2.tf:1-25
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/bc-aws-s3-24
+[0mCheck: CKV_AWS_70: "Ensure S3 bucket does not allow an action with any Principal"
+	PASSED for resource: aws_s3_bucket_policy.fix_s3_secure_transport_d9a9c6be57
+	File: \s3\fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_123456789012_ap_northeast_2_17_ap_northeast_2.tf:1-25
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/bc-aws-s3-23
+[0mCheck: CKV_AWS_93: "Ensure S3 bucket policy does not lockout all but root user. (Prevent lockouts needing root account fixes)"
+	PASSED for resource: aws_s3_bucket_policy.fix_s3_secure_transport_d9a9c6be57
+	File: \s3\fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_123456789012_ap_northeast_2_17_ap_northeast_2.tf:1-25
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/bc-aws-s3-24
+[0mCheck: CKV_AWS_70: "Ensure S3 bucket does not allow an action with any Principal"
+	PASSED for resource: aws_s3_bucket_policy.fix_s3_secure_transport_46c493880f
+	File: \s3\fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_123456789012_ap_northeast_2_18_ap_northeast_2.tf:1-25
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/bc-aws-s3-23
+[0mCheck: CKV_AWS_93: "Ensure S3 bucket policy does not lockout all but root user. (Prevent lockouts needing root account fixes)"
+	PASSED for resource: aws_s3_bucket_policy.fix_s3_secure_transport_46c493880f
+	File: \s3\fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_123456789012_ap_northeast_2_18_ap_northeast_2.tf:1-25
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/bc-aws-s3-24
+[0mCheck: CKV_AWS_70: "Ensure S3 bucket does not allow an action with any Principal"
+	PASSED for resource: aws_s3_bucket_policy.fix_s3_secure_transport_f91df1dfc5
+	File: \s3\fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_123456789012_ap_northeast_2_19_ap_northeast_2.tf:1-25
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/bc-aws-s3-23
+[0mCheck: CKV_AWS_93: "Ensure S3 bucket policy does not lockout all but root user. (Prevent lockouts needing root account fixes)"
+	PASSED for resource: aws_s3_bucket_policy.fix_s3_secure_transport_f91df1dfc5
+	File: \s3\fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_123456789012_ap_northeast_2_19_ap_northeast_2.tf:1-25
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/bc-aws-s3-24
+[0mCheck: CKV_AWS_70: "Ensure S3 bucket does not allow an action with any Principal"
+	PASSED for resource: aws_s3_bucket_policy.fix_s3_secure_transport_fd69d02d25
+	File: \s3\fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_123456789012_ap_northeast_2_20_ap_northeast_2.tf:1-25
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/bc-aws-s3-23
+[0mCheck: CKV_AWS_93: "Ensure S3 bucket policy does not lockout all but root user. (Prevent lockouts needing root account fixes)"
+	PASSED for resource: aws_s3_bucket_policy.fix_s3_secure_transport_fd69d02d25
+	File: \s3\fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_123456789012_ap_northeast_2_20_ap_northeast_2.tf:1-25
+	Guide: [1mhttps://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/bc-aws-s3-24
+[0m

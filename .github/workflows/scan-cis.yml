@@ -107,13 +107,54 @@ jobs:
         run: |
           python - <<'PY'
           import json
+          from collections import defaultdict
           from pathlib import Path
+
           p = Path('artifacts/scan/prioritized_findings.json')
           rows = json.loads(p.read_text(encoding='utf-8')) if p.exists() else []
-          fail = len([r for r in rows if r.get('status') == 'FAIL'])
-          print(f"baseline_fail={fail}")              
+
+          SEV_COLS = ['critical', 'high', 'medium', 'low', 'info']
+
+          def get_sev(row):
+              sev = row.get('severity') or row.get('Severity') or ''
+              if isinstance(sev, dict):
+                  sev = sev.get('Label', '')
+              sev = str(sev).lower().strip()
+              return sev.replace('informational', 'info') if sev in (*SEV_COLS, 'informational') else 'info'
+
+          svcs = defaultdict(lambda: {'fail': 0, 'pass': 0, **{s: 0 for s in SEV_COLS}})
+          for r in rows:
+              svc = str(r.get('service', 'unknown')).lower().strip() or 'unknown'
+              if str(r.get('status', '')).upper() == 'FAIL':
+                  svcs[svc]['fail'] += 1
+                  svcs[svc][get_sev(r)] += 1
+              else:
+                  svcs[svc]['pass'] += 1
+
+          fail_total = sum(v['fail'] for v in svcs.values())
+          print(f"baseline_fail={fail_total}")
+
+          lines = [
+              '## 01. 기준 스캔 결과',
+              '',
+              f'- 기준 FAIL 항목 수: **{fail_total}**',
+              '',
+              '| Provider | 서비스 | 상태 | Critical | High | Medium | Low | Info |',
+              '|---|---|---|---:|---:|---:|---:|---:|',
+          ]
+          for svc in sorted(svcs.keys()):
+              d = svcs[svc]
+              fail_n, pass_n = d['fail'], d['pass']
+              if fail_n > 0:
+                  status_str = f'fail ({fail_n})'
+                  sevs = [str(d[s]) if d[s] else '0' for s in SEV_COLS]
+              else:
+                  status_str = f'pass ({pass_n})'
+                  sevs = ['-'] * len(SEV_COLS)
+              lines.append(f'| aws | `{svc}` | {status_str} | {" | ".join(sevs)} |')
+
           with open(Path.cwd() / 'summary.md', 'w', encoding='utf-8') as f:
-              f.write(f"## 01. 기준 스캔 결과\n\n- 기준 FAIL 항목 수: **{fail}**\n")
+              f.write('\n'.join(lines) + '\n')
           PY
           cat summary.md >> "$GITHUB_STEP_SUMMARY"
  

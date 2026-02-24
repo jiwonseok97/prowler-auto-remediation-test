@@ -225,13 +225,13 @@ jobs:
             },
           }
 
-          def make_comparison_section(title, asis_counts, is_counts, asis_lbl):
-            asis_lines = [f'**{asis_lbl}**', '| 점검 항목 ID | 건수 |', '|---|---:|']
+          def make_comparison_section(title, asis_counts, is_counts, before_lbl, after_lbl):
+            asis_lines = [f'**{before_lbl}**', '| 점검 항목 ID | FAIL 수 |', '|---|---:|']
             if asis_counts:
               for cid in sorted(asis_counts): asis_lines.append(f'| `{cid}` | {asis_counts[cid]} |')
             else:
               asis_lines.append('| 없음 | 0 |')
-            is_lines = ['**IS (현재)**', '| 점검 항목 ID | 건수 |', '|---|---:|']
+            is_lines = [f'**{after_lbl}**', '| 점검 항목 ID | FAIL 수 |', '|---|---:|']
             if is_counts:
               for cid in sorted(is_counts): is_lines.append(f'| `{cid}` | {is_counts[cid]} |')
             else:
@@ -241,7 +241,7 @@ jobs:
               + '\n'.join(asis_lines) + '\n\n**→**\n\n' + '\n'.join(is_lines)
             )
 
-          def make_service_comparison(asis_rows, is_rows, asis_lbl):
+          def make_service_comparison(asis_rows, is_rows, before_lbl, after_lbl):
             def svc_counts(rows):
               c = {}
               for r in rows:
@@ -251,20 +251,21 @@ jobs:
             asis_c = svc_counts(asis_rows)
             is_c = svc_counts(is_rows)
             all_svcs = sorted(set(list(asis_c.keys()) + list(is_c.keys())))
-            asis_lines = [f'**{asis_lbl}**', '| 서비스 | FAIL 수 |', '|---|---:|']
+            asis_lines = [f'**{before_lbl}**', '| 서비스 | FAIL 수 |', '|---|---:|']
             for svc in all_svcs:
               if svc in asis_c: asis_lines.append(f'| `{svc}` | {asis_c[svc]} |')
             if not asis_c: asis_lines.append('| 없음 | 0 |')
-            is_lines = ['**IS (현재)**', '| 서비스 | FAIL 수 |', '|---|---:|']
+            is_lines = [f'**{after_lbl}**', '| 서비스 | FAIL 수 |', '|---|---:|']
             for svc in all_svcs:
               if svc in is_c: is_lines.append(f'| `{svc}` | {is_c[svc]} |')
             if not is_c: is_lines.append('| 없음 | 0 |')
             return (
-              '### 서비스별 FAIL 변화 현황\n'
+              '### 서비스별 FAIL 비교표\n'
               + '\n'.join(asis_lines) + '\n\n**→**\n\n' + '\n'.join(is_lines)
             )
 
-          asis_lbl = 'AS-IS (이전 재스캔)' if prev_post_path.exists() else 'AS-IS (베이스라인)'
+          before_lbl = '🔴 조치 전 (이전 재스캔 기준)' if prev_post_path.exists() else '🔴 조치 전 (베이스라인 기준)'
+          after_lbl = '🟢 조치 후 (현재 재스캔 결과)'
           if prev_post_path.exists():
             prev_fail_all = [x for x in json.loads(prev_post_path.read_text(encoding='utf-8')) if x.get('status') == 'FAIL']
           else:
@@ -324,31 +325,31 @@ jobs:
                 manual_guide_lines.append('- 해당 항목은 콘솔 또는 수동 조치가 필요합니다.')
 
           now_lines = [
-            '### 지속 자동화 가능 항목 (파이프라인 계속 진행)',
+            '### 다음 진행 항목 (자동 조치 가능)',
           ]
           if remediable_fail_counts:
-            now_lines.append(f'- 남은 Terraform 자동화 가능 FAIL: {current_remediable_fail}')
-            now_lines.append('- 다음 조치: 보완 PR 생성 후 병합/적용을 반복하세요.')
+            now_lines.append(f'- Terraform로 계속 줄일 수 있는 FAIL: {current_remediable_fail}')
+            now_lines.append('- 조치 방향: 보완 PR 생성 → 병합/적용 → 재스캔 순서로 반복')
           else:
-            now_lines.append('- Terraform 자동화로 조치 가능한 FAIL이 모두 해소되었습니다.')
-            now_lines.append('- 다음 조치: 아래 수동 조치 항목에 집중하세요.')
+            now_lines.append('- Terraform 자동화로 처리 가능한 FAIL은 모두 정리되었습니다.')
+            now_lines.append('- 다음은 아래 수동 조치 항목 중심으로 진행하면 됩니다.')
 
           later_lines = [
-            '### 향후 계획 필요 항목 (수동 운영/예외 처리)',
-            f'- 남은 수동 조치 필요 FAIL: {current_manual_fail}',
-            '- 해당 항목은 계정 보안 정책, 조직 통제 또는 수동 운영 절차가 필요합니다.',
+            '### 수동 확인/운영이 필요한 항목',
+            f'- 수동 조치가 필요한 FAIL: {current_manual_fail}',
+            '- 계정 정책, 조직 통제, 콘솔 작업이 필요한 항목입니다.',
           ]
 
           md = (
             '## 04. 재스캔 결과 요약\n'
             f'- 기준선 FAIL: {s["baseline_fail"]}\n'
             f'- 현재 FAIL: {s["post_fail"]}\n'
-            f'- 감소된 FAIL: {s["reduced"]} (기준선 → 현재)\n'
-            f'- Terraform 자동화 가능 FAIL: {current_remediable_fail}\n'
+            f'- 줄어든 FAIL: {s["reduced"]} (기준선 대비)\n'
+            f'- 자동 조치 가능 FAIL(Terraform): {current_remediable_fail}\n'
             f'- 수동 조치 필요 FAIL: {current_manual_fail}\n\n'
-            + make_service_comparison(prev_fail_all, current_fail_rows, asis_lbl) + '\n\n'
-            + make_comparison_section('전체 FAIL 변화 현황', asis_total_counts, total_fail_counts, asis_lbl) + '\n\n'
-            + make_comparison_section('Terraform 자동화 가능 FAIL 변화', asis_remediable_counts, remediable_fail_counts, asis_lbl) + '\n\n'
+            + make_service_comparison(prev_fail_all, current_fail_rows, before_lbl, after_lbl) + '\n\n'
+            + make_comparison_section('전체 FAIL 비교표', asis_total_counts, total_fail_counts, before_lbl, after_lbl) + '\n\n'
+            + make_comparison_section('자동 조치 가능 FAIL 비교표 (Terraform)', asis_remediable_counts, remediable_fail_counts, before_lbl, after_lbl) + '\n\n'
             + '### 수동 조치 필요 항목 (콘솔/수동 운영 필요)\n'
             + manual_table + '\n'
             + ('\n'.join(manual_guide_lines) if manual_guide_lines else '')
@@ -428,6 +429,7 @@ jobs:
             echo "skip publish: PROWLER_APP_API_URL or PROWLER_APP_API_TOKEN is empty"
             exit 0
           fi
+          CALLER_ACCOUNT_ID="$(aws sts get-caller-identity --query Account --output text 2>/dev/null || echo "")"
           python iac/scripts/publish_scan_to_api.py \
             --input artifacts/rescan/rescan_summary.json \
             --event rescan_verify \
@@ -435,6 +437,7 @@ jobs:
             --api-token "$PROWLER_APP_API_TOKEN" \
             --repo "${{ github.repository }}" \
             --run-id "${{ github.run_id }}" \
+            --account-id "$CALLER_ACCOUNT_ID" \
             --region "ap-northeast-2" \
             --framework "cis_1.4_plus_isms_p"
 

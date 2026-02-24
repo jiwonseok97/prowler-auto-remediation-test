@@ -12,14 +12,11 @@ on:
         description: "Target AWS account id"
         required: true
         type: string
-      compliance_mode:
-        description: "Scan mode"
+      region:
+        description: "Target AWS region"
         required: true
-        type: choice
-        options:
-          - cis_1.4_plus_isms_p
-          - cis_1.4_only
-        default: cis_1.4_plus_isms_p
+        type: string
+        default: us-east-1
 
 concurrency:
   group: security-pipeline-01-scan-${{ github.ref }}
@@ -33,9 +30,9 @@ jobs:
   scan:
     runs-on: ubuntu-latest
     env:
-      AWS_REGION: ap-northeast-2
+      AWS_REGION: ${{ inputs.region }}
       AWS_ACCOUNT_ID: ${{ inputs.account_id }}
-      TF_VAR_region: ap-northeast-2
+      TF_VAR_region: ${{ inputs.region }}
       TF_VAR_account_id: ${{ inputs.account_id }}
     steps:
       - uses: actions/checkout@v4
@@ -44,69 +41,16 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_OIDC_ROLE_ARN }}
-          aws-region: ap-northeast-2
+          aws-region: ${{ inputs.region }}
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
 
-      - name: Cleanup stale vulnerable demo resources
-        if: inputs.deploy_vulnerable == true
-        shell: bash
-        run: |
-          set +e
-
-          echo "cleanup: old demo cloudtrail"
-          aws cloudtrail delete-trail --region "$AWS_REGION" --name vuln-trail || true
-
-          echo "cleanup: old demo iam user/policy"
-          aws iam detach-user-policy --user-name vuln-user --policy-arn "arn:aws:iam::${AWS_ACCOUNT_ID}:policy/vuln-wildcard-policy" || true
-          aws iam delete-user --user-name vuln-user || true
-          aws iam delete-policy --policy-arn "arn:aws:iam::${AWS_ACCOUNT_ID}:policy/vuln-wildcard-policy" || true
-
-          echo "cleanup: stale demo cloudwatch log groups"
-          mapfile -t LOG_GROUPS < <(
-            aws logs describe-log-groups \
-              --region "$AWS_REGION" \
-              --query "logGroups[?starts_with(logGroupName, '/vuln/log-group')].logGroupName" \
-              --output text | tr '\t' '\n' | sed '/^$/d' | sort -u
-          )
-          for lg in "${LOG_GROUPS[@]}"; do
-            echo "delete log group $lg"
-            aws logs delete-log-group --region "$AWS_REGION" --log-group-name "$lg" || true
-          done
-
-          echo "cleanup: stale demo security groups"
-          mapfile -t SG_IDS < <(
-            aws ec2 describe-security-groups \
-              --region "$AWS_REGION" \
-              --filters Name=group-name,Values='vuln-sg*' \
-              --query 'SecurityGroups[].GroupId' \
-              --output text | tr '\t' '\n' | sed '/^$/d' | sort -u
-          )
-          for sg_id in "${SG_IDS[@]}"; do
-            echo "delete sg $sg_id"
-            aws ec2 delete-security-group --region "$AWS_REGION" --group-id "$sg_id" || true
-          done
-
-          echo "cleanup: stale demo s3 buckets"
-          mapfile -t BUCKETS < <(
-            aws s3api list-buckets \
-              --query "Buckets[?starts_with(Name, 'vuln-demo-') || starts_with(Name, 'vuln-bucket-') || starts_with(Name, 'vuln-cloudtrail-')].Name" \
-              --output text | tr '\t' '\n' | sed '/^$/d' | sort -u
-          )
-          for b in "${BUCKETS[@]}"; do
-            echo "empty+delete bucket $b"
-            aws s3 rm "s3://$b" --recursive || true
-            aws s3 rb "s3://$b" --force || true
-          done
-
-          set -e
-
       - name: Deploy vulnerable infra
         if: inputs.deploy_vulnerable == true
         run: |
-          terraform -chdir=terraform/vulnerable_infra_test init -input=false
-          terraform -chdir=terraform/vulnerable_infra_test apply -auto-approve -input=false
+          terraform -chdir=terraform/test_infra init -input=false
+          terraform -chdir=terraform/test_infra apply -auto-approve -input=false
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -118,20 +62,20 @@ jobs:
           python -m pip install --upgrade pip
           pip install "prowler>=3.11,<4.0"
 
-      - name: Run Prowler (Seoul + CIS/ISMS-P)
+      - name: Run Prowler CIS 1.4
         run: |
           mkdir -p artifacts/scan
-          prowler aws --region ap-northeast-2 --compliance cis_1.4_aws -M json-asff -o artifacts/scan -F baseline_cis || true
-          if [ "${{ inputs.compliance_mode }}" = "cis_1.4_plus_isms_p" ]; then
-            CHECKS="$(tr '\n' ' ' < iac/compliance/isms_p_checks.txt | xargs)"
-            if [ -n "$CHECKS" ]; then
-              prowler aws --region ap-northeast-2 -c $CHECKS -M json-asff -o artifacts/scan -F baseline_isms_p || true
+          prowler aws --compliance cis_1.4_aws -M json-asff -o artifacts/scan -F baseline || true
+          FOUND="$(find artifacts/scan -maxdepth 1 -type f -name 'baseline*.json*' | head -n 1)"
+          if [ -z "$FOUND" ]; then
+            echo "[]" > artifacts/scan/baseline.asff.json
+          else
+            TARGET="$(realpath artifacts/scan/baseline.asff.json)"
+            SRC="$(realpath "$FOUND")"
+            if [ "$SRC" != "$TARGET" ]; then
+              cp "$FOUND" artifacts/scan/baseline.asff.json
             fi
           fi
-          python iac/scripts/merge_prowler_outputs.py \
-            --dir artifacts/scan \
-            --prefix baseline \
-            --output artifacts/scan/baseline.asff.json
 
       - name: Normalize and score findings
         run: |
@@ -139,7 +83,7 @@ jobs:
             --input artifacts/scan/baseline.asff.json \
             --output artifacts/scan/normalized_findings.json \
             --account-id "${{ inputs.account_id }}" \
-            --region "ap-northeast-2"
+            --region "${{ inputs.region }}"
           python iac/scripts/osfp_score.py \
             --input artifacts/scan/normalized_findings.json \
             --output artifacts/scan/prioritized_findings.json
@@ -151,29 +95,7 @@ jobs:
             --prioritized artifacts/scan/prioritized_findings.json \
             --output artifacts/scan/scan_manifest.json \
             --account-id "${{ inputs.account_id }}" \
-            --region "ap-northeast-2" \
-            --framework "${{ inputs.compliance_mode }}"
-
-      - name: Optional publish baseline scan to external API
-        continue-on-error: true
-        env:
-          PROWLER_APP_API_URL: ${{ secrets.PROWLER_APP_API_URL }}
-          PROWLER_APP_API_TOKEN: ${{ secrets.PROWLER_APP_API_TOKEN }}
-        run: |
-          if [ -z "$PROWLER_APP_API_URL" ] || [ -z "$PROWLER_APP_API_TOKEN" ]; then
-            echo "skip publish: PROWLER_APP_API_URL or PROWLER_APP_API_TOKEN is empty"
-            exit 0
-          fi
-          python iac/scripts/publish_scan_to_api.py \
-            --input artifacts/scan/scan_manifest.json \
-            --event baseline_scan \
-            --api-url "$PROWLER_APP_API_URL" \
-            --api-token "$PROWLER_APP_API_TOKEN" \
-            --repo "${{ github.repository }}" \
-            --run-id "${{ github.run_id }}" \
-            --account-id "${{ inputs.account_id }}" \
-            --region "ap-northeast-2" \
-            --framework "${{ inputs.compliance_mode }}"
+            --region "${{ inputs.region }}"
 
       - name: Upload scan artifact
         uses: actions/upload-artifact@v4
@@ -184,157 +106,14 @@ jobs:
       - name: Summary
         run: |
           python - <<'PY'
-          import glob
           import json
-          import re
-          from collections import Counter, defaultdict
           from pathlib import Path
-
-          CIS_LOGO_URL = "https://raw.githubusercontent.com/jiwonseok97/prowler-auto-remediation-test/main/.github/assets/cis-logo.svg"
-          ISMS_LOGO_URL = "https://raw.githubusercontent.com/jiwonseok97/prowler-auto-remediation-test/main/.github/assets/isms-logo.png"
-
-          def parse_asff(pattern):
-              findings = []
-              for fn in sorted(glob.glob(pattern)):
-                  try:
-                      data = json.loads(Path(fn).read_text(encoding="utf-8"))
-                      if isinstance(data, list):
-                          findings.extend(data)
-                      elif isinstance(data, dict):
-                          findings.extend(data.get("Findings", []))
-                  except Exception:
-                      pass
-              return findings
-
-          def extract_service(finding):
-              pf = finding.get("ProductFields", {}) or {}
-              service = (pf.get("ServiceName") or pf.get("aws/service") or "").strip().lower()
-              if service and service != "unknown":
-                  return service
-              generator_id = (finding.get("GeneratorId") or "").lower()
-              m = re.search(r"prowler-([a-z][a-z0-9]+)_", generator_id)
-              return m.group(1) if m else "unknown"
-
-          def title_with_logo(logo_url, alt_text, title, height, cell_width=86):
-              logo_html = f'<img src="{logo_url}" alt="{alt_text}" height="{height}">'
-              return (
-                  "<table><tr>"
-                  f'<td valign="middle" width="{cell_width}">{logo_html}</td>'
-                  f'<td valign="middle"><strong>{title}</strong></td>'
-                  "</tr></table>"
-              )
-
-          def make_compliance_table(findings, logo_url, alt_text, title, account_id, logo_height, logo_cell_width=86):
-              if not findings:
-                  return (
-                      title_with_logo(logo_url, alt_text, title, logo_height, logo_cell_width)
-                      + "\n\n_No results_\n"
-                  )
-
-              svc_data = defaultdict(lambda: {
-                  "pass": 0, "fail": 0, "critical": 0, "high": 0, "medium": 0, "low": 0, "info": 0
-              })
-              local_account_id = account_id
-              for finding in findings:
-                  if not local_account_id:
-                      local_account_id = finding.get("AwsAccountId", "") or ""
-                  service = extract_service(finding)
-                  status = ((finding.get("Compliance", {}) or {}).get("Status") or "").upper()
-                  severity = (((finding.get("Severity", {}) or {}).get("Label") or "").lower())
-                  if status == "FAILED":
-                      svc_data[service]["fail"] += 1
-                      if severity in ("critical", "high", "medium", "low"):
-                          svc_data[service][severity] += 1
-                      elif severity in ("informational", "info", ""):
-                          svc_data[service]["info"] += 1
-                      else:
-                          # Keep FAIL count and severity columns aligned even for unexpected labels.
-                          svc_data[service]["info"] += 1
-                  elif status in ("PASSED", "WARNING"):
-                      svc_data[service]["pass"] += 1
-
-              total_fail = sum(v["fail"] for v in svc_data.values())
-              total_pass = sum(v["pass"] for v in svc_data.values())
-              total = total_fail + total_pass
-              fail_pct = round((total_fail / total) * 100, 2) if total else 0
-              pass_pct = round((total_pass / total) * 100, 2) if total else 0
-
-              lines = [
-                  title_with_logo(logo_url, alt_text, title, logo_height, logo_cell_width),
-                  "",
-                  "| fail | pass |",
-                  "|---|---|",
-                  f"| {fail_pct}% ({total_fail}) | {pass_pct}% ({total_pass}) |",
-                  "",
-              ]
-              if local_account_id:
-                  lines.append(f"Account `{local_account_id}` summary")
-                  lines.append("")
-
-              lines.extend([
-                  "| Provider | Service | Status | Critical | High | Medium | Low | Info |",
-                  "|---|---|---|---:|---:|---:|---:|---:|",
-              ])
-              for service in sorted(svc_data):
-                  v = svc_data[service]
-                  status_text = f'fail ({v["fail"]})' if v["fail"] > 0 else f'pass ({v["pass"]})'
-                  lines.append(
-                      f'| aws | `{service}` | {status_text} | {v["critical"]} | {v["high"]} | {v["medium"]} | {v["low"]} | {v["info"]} |'
-                  )
-              return "\n".join(lines)
-
           p = Path('artifacts/scan/prioritized_findings.json')
           rows = json.loads(p.read_text(encoding='utf-8')) if p.exists() else []
-          fail_rows = [r for r in rows if r.get('status') == 'FAIL']
-          by_check = Counter(str(r.get('check_id', 'unknown')) for r in fail_rows)
-          fail_count = len(fail_rows)
-
-          manifest = Path('artifacts/scan/scan_manifest.json')
-          account_id = ""
-          if manifest.exists():
-              try:
-                  manifest_data = json.loads(manifest.read_text(encoding='utf-8'))
-                  account_id = manifest_data.get("account") or manifest_data.get("account_id") or ""
-              except Exception:
-                  account_id = ""
-
-          cis_findings = parse_asff("artifacts/scan/baseline_cis*.json")
-          isms_findings = parse_asff("artifacts/scan/baseline_isms_p*.json")
-
-          check_lines = [
-              "| Check ID | FAIL Count |",
-              "|---|---:|",
-          ]
-          for check_id, count in by_check.most_common():
-              check_lines.append(f"| `{check_id}` | {count} |")
-
+          fail = len([r for r in rows if r.get('status') == 'FAIL'])
+          print(f"baseline_fail={fail}")              
           with open(Path.cwd() / 'summary.md', 'w', encoding='utf-8') as f:
-              f.write("## 01. Baseline Scan Result\n")
-              f.write(f"- Total FAIL items: {fail_count}\n\n")
-
-              if cis_findings:
-                  f.write(make_compliance_table(
-                      cis_findings,
-                      CIS_LOGO_URL,
-                      "CIS",
-                      "CIS Amazon Web Services Foundations Benchmark v1.4",
-                      account_id,
-                      40,
-                      96,
-                  ) + "\n\n")
-
-              if isms_findings:
-                  f.write(make_compliance_table(
-                      isms_findings,
-                      ISMS_LOGO_URL,
-                      "ISMS-P",
-                      "ISMS-P 정보보호 관리체계 인증",
-                      account_id,
-                      72,
-                      150,
-                  ) + "\n\n")
-
-              f.write("### Prowler FAIL by Check\n")
-              f.write("\n".join(check_lines) + "\n")
+              f.write(f"## 01. 기준 스캔 결과\n\n- 기준 FAIL 항목 수: **{fail}**\n")
           PY
           cat summary.md >> "$GITHUB_STEP_SUMMARY"
+ 

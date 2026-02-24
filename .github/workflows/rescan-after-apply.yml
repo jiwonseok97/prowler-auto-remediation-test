@@ -311,44 +311,44 @@ jobs:
 
           manual_guide_lines = []
           if manual_fail_counts:
-            manual_guide_lines.append('\n**수동 조치 가이드:**')
+            manual_guide_lines.append('\n**조치 가이드:**')
             for cid in sorted(manual_fail_counts):
               guide_info = MANUAL_REMEDIATION_GUIDE.get(cid)
               if guide_info:
                 manual_guide_lines.append(f'\n**`{cid}`**')
-                manual_guide_lines.append(f'- **수동 분류 이유:** {guide_info["reason"]}')
+                manual_guide_lines.append(f'- **수동 처리 이유:** {guide_info["reason"]}')
                 manual_guide_lines.append(f'- **조치 방법:** {guide_info["guide"]}')
               else:
                 manual_guide_lines.append(f'\n**`{cid}`**')
-                manual_guide_lines.append('- 해당 항목은 콘솔 또는 수동 조치가 필요합니다.')
+                manual_guide_lines.append('- 콘솔에서 직접 처리해야 하는 항목입니다.')
 
           now_lines = [
             '### 지속 자동화 가능 항목',
           ]
           if remediable_fail_counts:
-            now_lines.append(f'- Terraform으로 추가 감소 가능한 FAIL: {current_remediable_fail}')
-            now_lines.append('- PR 생성 → 병합/적용 → 재스캔 순서로 반복')
+            now_lines.append(f'- Terraform으로 더 줄일 수 있는 FAIL: {current_remediable_fail}')
+            now_lines.append('- PR 생성 → 병합 → 적용 → 재스캔 순서로 계속 진행')
           else:
-            now_lines.append('- Terraform으로 처리 가능한 FAIL이 모두 해소되었습니다.')
-            now_lines.append('- 이후 단계는 아래 수동 조치 항목을 참고하여 진행하세요.')
+            now_lines.append('- Terraform으로 처리할 수 있는 FAIL은 남아 있지 않습니다.')
+            now_lines.append('- 남은 건 아래 수동 조치 목록 위주로 처리하면 됩니다.')
 
           later_lines = [
-            '### 수동 조치 항목',
-            f'- 수동 조치가 필요한 FAIL: {current_manual_fail}',
-            '- 계정 정책, 조직 통제, 콘솔 직접 조작이 필요한 항목들입니다.',
+            '### 수동 처리 현황',
+            f'- 수동 조치 필요 FAIL: {current_manual_fail}',
+            '- AWS 콘솔 직접 작업 또는 계정/조직 단위 정책 변경이 필요한 항목입니다.',
           ]
 
           md = (
             '## 04. 재스캔 결과 요약\n\n'
             f'- 기준 FAIL: {s["baseline_fail"]}\n'
             f'- 현재 FAIL: {s["post_fail"]}\n'
-            f'- 감소한 FAIL: {s["reduced"]} (기준 대비)\n'
-            f'- Terraform 자동 처리 가능 FAIL: {current_remediable_fail}\n'
-            f'- 수동 조치 필요 FAIL: {current_manual_fail}\n\n'
+            f'- 줄어든 FAIL: {s["reduced"]} (기준 대비)\n'
+            f'- Terraform 처리 가능 FAIL: {current_remediable_fail}\n'
+            f'- 수동 처리 필요 FAIL: {current_manual_fail}\n\n'
             + make_service_comparison(prev_fail_all, current_fail_rows, before_lbl, after_lbl) + '\n\n'
             + make_comparison_section('전체 FAIL 변화', asis_total_counts, total_fail_counts, before_lbl, after_lbl) + '\n\n'
             + make_comparison_section('Terraform 자동화 가능 FAIL 변화', asis_remediable_counts, remediable_fail_counts, before_lbl, after_lbl) + '\n\n'
-            + '### 수동 조치 항목 (콘솔/직접 운영 필요)\n'
+            + '### 수동 조치 항목\n'
             + manual_table + '\n'
             + ('\n'.join(manual_guide_lines) if manual_guide_lines else '')
             + '\n\n'
@@ -414,7 +414,7 @@ jobs:
             echo "could not parse PR number from title: $TITLE"
             exit 0
           fi
-          MSG=$'No additional FAIL reduction from this merge.\n\n- Result: neutral (apply succeeded, but fail count unchanged)\n- See workflow summary/artifact `rescan-${{ github.run_id }}` for remaining checks.'
+          MSG=$'이번 병합으로 FAIL이 추가로 줄지 않았습니다.\n\n- 결과: 변화 없음 (적용은 성공했으나 FAIL 수 유지)\n- 남은 항목은 워크플로우 요약 또는 아티팩트 `rescan-${{ github.run_id }}`에서 확인하세요.'
           gh pr comment "$PR_NUMBER" --repo "${{ github.repository }}" --body "$MSG" || true
 
       - name: Optional publish rescan result to external API

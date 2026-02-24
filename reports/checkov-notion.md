@@ -190,7 +190,7 @@ resource "aws_s3_bucket_public_access_block" "secure" {
 
 ---
 
-## 🏆 핵심 성과 요약
+## 핵심 성과 요약
 
 | 지표 | Before | After |
 | --- | --- | --- |

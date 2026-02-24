@@ -1,0 +1,2 @@
+aws_s3_bucket_policy.fix_cloudtrail_bucket_policy_41c4cc5c5c|aws-cloudtrail-logs-132410971304-0971c04b|true|prowler-cloudtrail_cloudwatch_logging_enabled
+aws_cloudtrail.fix_cloudtrail_41c4cc5c5c|security-cloudtail|false|prowler-cloudtrail_cloudwatch_logging_enabled

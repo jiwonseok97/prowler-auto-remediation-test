@@ -38,10 +38,6 @@ terraform {
       source = "hashicorp/aws"
       version = ">= 5.0"
     }
-    null = {
-      source = "hashicorp/null"
-      version = ">= 3.0"
-    }
   }
 }
 provider "aws" {
@@ -172,3 +168,7 @@ echo "failed_categories=${failed_categories:-none}" | tee -a "$LOG_DIR/apply.log
 if [ "$attempted" -gt 0 ] && [ "$succeeded" -eq 0 ]; then
   exit 1
 fi
+
+
+
+

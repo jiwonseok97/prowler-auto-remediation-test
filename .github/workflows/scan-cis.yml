@@ -17,6 +17,11 @@ on:
         required: true
         type: string
         default: us-east-1
+      scan_id:
+        description: "Prowler App scan UUID (optional, used to activate download button)"
+        required: false
+        type: string
+        default: ""
 
 concurrency:
   group: security-pipeline-01-scan-${{ github.ref }}
@@ -102,6 +107,29 @@ jobs:
         with:
           name: scan-${{ github.run_id }}
           path: artifacts/scan/
+
+      - name: Upload report to Prowler App
+        if: inputs.scan_id != ''
+        continue-on-error: true
+        env:
+          PROWLER_APP_API_URL: ${{ secrets.PROWLER_APP_API_URL }}
+          PROWLER_APP_API_TOKEN: ${{ secrets.PROWLER_APP_API_TOKEN }}
+        run: |
+          SCAN_ID="${{ inputs.scan_id }}"
+          if [ -z "$SCAN_ID" ] || [ -z "$PROWLER_APP_API_URL" ]; then
+            echo "skip report upload: scan_id or PROWLER_APP_API_URL not set"
+            exit 0
+          fi
+          cd artifacts/scan
+          zip -r scan-report.zip . -x "*.zip"
+          cd -
+          curl -sf -X POST \
+            -H "Authorization: Bearer $PROWLER_APP_API_TOKEN" \
+            -F "scan_id=${SCAN_ID}" \
+            -F "report_zip=@artifacts/scan/scan-report.zip" \
+            "${PROWLER_APP_API_URL%/}/api/v1/pipeline-publish/scan-output" \
+            && echo "report uploaded: scan_id=${SCAN_ID}" \
+            || echo "report upload failed (non-fatal)"
 
       - name: Summary
         run: |

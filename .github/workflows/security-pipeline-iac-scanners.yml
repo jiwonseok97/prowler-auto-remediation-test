@@ -1,4 +1,4 @@
-name: Security Pipeline - IaC Scanners (Checkov/tfsec/Terrascan/Snyk)
+name: Security Pipeline - IaC Scanners (Checkov)
 
 on:
   workflow_dispatch:
@@ -22,15 +22,10 @@ jobs:
       - name: Prepare result directory
         run: mkdir -p artifacts/iac-scanners
 
-      - name: Install scanner dependencies
+      - name: Install Checkov
         run: |
           python -m pip install --upgrade pip
           pip install checkov
-          curl -s https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | bash
-          wget -qO terrascan.tar.gz https://github.com/tenable/terrascan/releases/download/v1.19.9/terrascan_1.19.9_Linux_x86_64.tar.gz
-          tar -xzf terrascan.tar.gz terrascan
-          sudo mv terrascan /usr/local/bin/terrascan
-          npm install -g snyk
 
       - name: Run Checkov
         continue-on-error: true
@@ -38,41 +33,16 @@ jobs:
           checkov -d terraform -o json > artifacts/iac-scanners/checkov-terraform.json || true
           checkov -d remediation -o json > artifacts/iac-scanners/checkov-remediation.json || true
 
-      - name: Run tfsec
-        continue-on-error: true
-        run: |
-          tfsec terraform --format json --out artifacts/iac-scanners/tfsec-terraform.json || true
-          tfsec remediation --format json --out artifacts/iac-scanners/tfsec-remediation.json || true
-
-      - name: Run Terrascan
-        continue-on-error: true
-        run: |
-          terrascan scan -d terraform -o json > artifacts/iac-scanners/terrascan-terraform.json || true
-          terrascan scan -d remediation -o json > artifacts/iac-scanners/terrascan-remediation.json || true
-
-      - name: Run Snyk IaC (optional)
-        continue-on-error: true
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        run: |
-          if [ -z "$SNYK_TOKEN" ]; then
-            echo '{"status":"skipped","reason":"missing SNYK_TOKEN"}' > artifacts/iac-scanners/snyk-iac.json
-            exit 0
-          fi
-          snyk auth "$SNYK_TOKEN"
-          snyk iac test terraform --json-file-output=artifacts/iac-scanners/snyk-terraform.json || true
-          snyk iac test remediation --json-file-output=artifacts/iac-scanners/snyk-remediation.json || true
-
       - name: Build scan summary
         run: |
           python - <<'PY'
-          import json
           from pathlib import Path
           root = Path("artifacts/iac-scanners")
           files = sorted(p.name for p in root.glob("*.json"))
           lines = ["## IaC Scanner Summary", "", "| Tool/Scope | Output file |", "|---|---|"]
           for f in files:
-              lines.append(f"| `{f.split('-')[0]}` | `{f}` |")
+              # checkov-terraform.json / checkov-remediation.json
+              lines.append(f"| `checkov` | `{f}` |")
           if not files:
               lines.append("| none | none |")
           md = "\n".join(lines) + "\n"

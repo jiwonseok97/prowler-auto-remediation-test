@@ -49,3 +49,9 @@ variable "vuln_vpc_count" {
   description = "flow logs 없는 VPC 수 → vpc_flow_logs_enabled + ec2_securitygroup_default_restrict_traffic FAIL ×N"
   default     = 2
 }
+
+variable "create_vuln_iam_direct_policy_user" {
+  type        = bool
+  description = "IAM 사용자에게 정책 직접 부여 (그룹/Role 우회) → iam_policy_attached_only_to_group_or_roles FAIL ×1 (review-then-apply)"
+  default     = true
+}

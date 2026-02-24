@@ -1871,7 +1871,7 @@ def main() -> None:
             tf_code = build_iam_detach_user_policies_tf(f)
         elif "iam_aws_attached_policy_no_administrative_privileges" in cid_l or "iam_customer_attached_policy_no_administrative_privileges" in cid_l:
             tf_code = build_iam_detach_policy_everywhere_tf(f)
-        elif "ec2_ebs_volume_encryption" in cid_l:
+        elif "ec2_ebs_volume_encryption" in cid_l or "ec2_ebs_default_encryption_enabled" in cid_l:
             if not ec2_allows_enable_ebs_encryption(finding_region, a.account_id):
                 overall["categories"][cat].append(
                     {

@@ -233,6 +233,50 @@ resource "aws_default_security_group" "vuln_default_sg" {
 }
 
 # ==================================================
+# IAM 사용자에게 정책 직접 부여 (그룹/Role 우회)
+# → prowler-iam_policy_attached_only_to_group_or_roles ×1 (review-then-apply)
+# ==================================================
+resource "aws_iam_user" "vuln_direct_policy" {
+  count = var.create_vuln_iam_direct_policy_user ? 1 : 0
+  name  = "vuln-demo-direct-policy-user"
+
+  tags = {
+    ManagedBy     = "terraform"
+    ProwlerDemo   = "vulnerable_infra_test"
+    CleanupTarget = "true"
+  }
+}
+
+resource "aws_iam_policy" "vuln_readonly" {
+  count       = var.create_vuln_iam_direct_policy_user ? 1 : 0
+  name        = "vuln-demo-readonly-policy"
+  description = "Demo: read-only policy attached directly to user (not via group/role)"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect   = "Allow"
+        Action   = ["s3:GetObject", "s3:ListBucket"]
+        Resource = "*"
+      }
+    ]
+  })
+
+  tags = {
+    ManagedBy     = "terraform"
+    ProwlerDemo   = "vulnerable_infra_test"
+    CleanupTarget = "true"
+  }
+}
+
+resource "aws_iam_user_policy_attachment" "vuln_direct" {
+  count      = var.create_vuln_iam_direct_policy_user ? 1 : 0
+  user       = aws_iam_user.vuln_direct_policy[0].name
+  policy_arn = aws_iam_policy.vuln_readonly[0].arn
+}
+
+# ==================================================
 # VPC (flow logs 없음 + default SG 허용)
 # → prowler-vpc_flow_logs_enabled                      ×N (auto-remediable)
 # → prowler-ec2_securitygroup_default_restrict_traffic ×N (auto-remediable)

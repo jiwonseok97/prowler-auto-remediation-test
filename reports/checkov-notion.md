@@ -170,7 +170,7 @@ resource "aws_s3_bucket_public_access_block" "secure" {
 
 ---
 
-## ⚙️ 파이프라인 설정
+## 파이프라인 설정
 
 ```yaml
 - name: Run Checkov

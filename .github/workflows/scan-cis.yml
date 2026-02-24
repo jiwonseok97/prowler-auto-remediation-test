@@ -273,13 +273,18 @@ jobs:
 
               lines.extend([
                   "| Provider | Service | Status | Critical | High | Medium | Low | Info |",
-                  "|---|---|---|---:|---:|---:|---:|---:|",
+                  "|---|---|:---:|---:|---:|---:|---:|---:|",
               ])
               for service in sorted(svc_data):
                   v = svc_data[service]
-                  status_text = f'fail ({v["fail"]})' if v["fail"] > 0 else f'pass ({v["pass"]})'
+                  is_fail = v["fail"] > 0
+                  status_text = f'fail ({v["fail"]})' if is_fail else f'pass ({v["pass"]})'
+                  if is_fail:
+                      sev_cols = f'{v["critical"]} | {v["high"]} | {v["medium"]} | {v["low"]} | {v["info"]}'
+                  else:
+                      sev_cols = '- | - | - | - | -'
                   lines.append(
-                      f'| aws | `{service}` | {status_text} | {v["critical"]} | {v["high"]} | {v["medium"]} | {v["low"]} | {v["info"]} |'
+                      f'| aws | `{service}` | {status_text} | {sev_cols} |'
                   )
               return "\n".join(lines)
 

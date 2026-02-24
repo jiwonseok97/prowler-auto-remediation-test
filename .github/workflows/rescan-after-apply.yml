@@ -351,10 +351,6 @@ jobs:
             + '### 수동 조치 항목\n'
             + manual_table + '\n'
             + ('\n'.join(manual_guide_lines) if manual_guide_lines else '')
-            + '\n\n'
-            + '\n'.join(now_lines)
-            + '\n\n'
-            + '\n'.join(later_lines)
             + '\n'
           )
           summary_path.write_text(json.dumps(s, indent=2), encoding='utf-8')

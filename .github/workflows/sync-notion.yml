@@ -1,0 +1,185 @@
+name: Sync Checkov Report → Notion
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "reports/checkov-notion.md"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Push markdown to Notion page
+        env:
+          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+          NOTION_PAGE_ID: ${{ secrets.NOTION_PAGE_ID }}
+        run: |
+          python3 - <<'PY'
+          import os, re, json, urllib.request, urllib.error
+
+          API_KEY = os.environ["NOTION_API_KEY"]
+          PAGE_ID = os.environ["NOTION_PAGE_ID"].replace("-", "")
+
+          md = open("reports/checkov-notion.md", encoding="utf-8").read()
+
+          HEADERS = {
+              "Authorization": f"Bearer {API_KEY}",
+              "Notion-Version": "2022-06-28",
+              "Content-Type": "application/json",
+          }
+
+          def api(method, path, body=None):
+              url = f"https://api.notion.com/v1{path}"
+              data = json.dumps(body).encode() if body else None
+              req  = urllib.request.Request(url, data=data, headers=HEADERS, method=method)
+              try:
+                  with urllib.request.urlopen(req) as r:
+                      return json.loads(r.read())
+              except urllib.error.HTTPError as e:
+                  print("ERROR", e.code, e.read().decode())
+                  raise
+
+          # ── 기존 블록 전체 삭제 ───────────────────────────────────────────
+          children = api("GET", f"/blocks/{PAGE_ID}/children?page_size=100")
+          for blk in children.get("results", []):
+              api("DELETE", f"/blocks/{blk['id']}")
+          print(f"기존 블록 {len(children.get('results',[]))}개 삭제")
+
+          # ── 마크다운 → Notion 블록 변환 ──────────────────────────────────
+          def txt(content, bold=False, code=False, color="default"):
+              ann = {"bold": bold, "code": code, "color": color}
+              return {"type": "text", "text": {"content": content}, "annotations": ann}
+
+          def rich(line):
+              """인라인 **bold** / `code` 파싱"""
+              parts = []
+              # **bold**
+              segments = re.split(r'(\*\*[^*]+\*\*|`[^`]+`)', line)
+              for seg in segments:
+                  if seg.startswith("**") and seg.endswith("**"):
+                      parts.append(txt(seg[2:-2], bold=True))
+                  elif seg.startswith("`") and seg.endswith("`"):
+                      parts.append(txt(seg[1:-1], code=True))
+                  elif seg:
+                      parts.append(txt(seg))
+              return parts or [txt(line)]
+
+          blocks = []
+          code_buf  = []
+          in_code   = False
+          code_lang = "plain text"
+
+          for raw in md.splitlines():
+              line = raw.rstrip()
+
+              # 코드 블록
+              if line.startswith("```"):
+                  if not in_code:
+                      in_code   = True
+                      code_lang = line[3:].strip() or "plain text"
+                      code_buf  = []
+                  else:
+                      in_code = False
+                      blocks.append({
+                          "object": "block", "type": "code",
+                          "code": {
+                              "rich_text": [{"type":"text","text":{"content": "\n".join(code_buf)}}],
+                              "language": code_lang if code_lang in (
+                                  "python","javascript","typescript","bash","shell",
+                                  "yaml","json","hcl","sql","plain text") else "plain text",
+                          }
+                      })
+                  continue
+
+              if in_code:
+                  code_buf.append(line)
+                  continue
+
+              # 구분선
+              if line == "---":
+                  blocks.append({"object":"block","type":"divider","divider":{}})
+                  continue
+
+              # 제목
+              if line.startswith("# "):
+                  blocks.append({"object":"block","type":"heading_1",
+                      "heading_1":{"rich_text": rich(line[2:])}})
+              elif line.startswith("## "):
+                  blocks.append({"object":"block","type":"heading_2",
+                      "heading_2":{"rich_text": rich(line[3:])}})
+              elif line.startswith("### "):
+                  blocks.append({"object":"block","type":"heading_3",
+                      "heading_3":{"rich_text": rich(line[4:])}})
+
+              # 표 행
+              elif line.startswith("|"):
+                  cells = [c.strip() for c in line.strip("|").split("|")]
+                  if all(re.match(r'^[-: ]+$', c) for c in cells):
+                      continue  # 구분행 무시
+                  row_cells = []
+                  for c in cells:
+                      row_cells.append(rich(c))
+                  blocks.append({
+                      "object":"block","type":"table_row",
+                      "table_row":{"cells": row_cells},
+                      "_is_table_row": True,
+                  })
+
+              # 인용
+              elif line.startswith("> "):
+                  blocks.append({"object":"block","type":"quote",
+                      "quote":{"rich_text": rich(line[2:])}})
+
+              # 빈 줄
+              elif line == "":
+                  pass
+
+              # 일반 단락
+              else:
+                  blocks.append({"object":"block","type":"paragraph",
+                      "paragraph":{"rich_text": rich(line)}})
+
+          # 표 행을 table 블록으로 묶기
+          merged = []
+          i = 0
+          while i < len(blocks):
+              blk = blocks[i]
+              if blk.get("_is_table_row"):
+                  rows = []
+                  while i < len(blocks) and blocks[i].get("_is_table_row"):
+                      row = blocks[i]
+                      del row["_is_table_row"]
+                      rows.append(row)
+                      i += 1
+                  col_count = len(rows[0]["table_row"]["cells"]) if rows else 1
+                  merged.append({
+                      "object":"block","type":"table",
+                      "table":{
+                          "table_width": col_count,
+                          "has_column_header": True,
+                          "has_row_header": False,
+                          "children": rows,
+                      }
+                  })
+              else:
+                  merged.append(blk)
+                  i += 1
+
+          # ── Notion API에 100개씩 나눠서 업로드 ───────────────────────────
+          CHUNK = 100
+          total = 0
+          for start in range(0, len(merged), CHUNK):
+              chunk = merged[start:start+CHUNK]
+              api("PATCH", f"/blocks/{PAGE_ID}/children", {"children": chunk})
+              total += len(chunk)
+              print(f"  업로드: {total}/{len(merged)} 블록")
+
+          print(f"[완료] Notion 페이지 업데이트: {total}개 블록")
+          PY

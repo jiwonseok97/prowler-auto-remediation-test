@@ -51,11 +51,59 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
 
+      # -------------------------------------------------------
+      # 이전 실행 누적 리소스 정리 (로컬 state 없이 재실행 시 중복 생성 방지)
+      # ProwlerDemo=vulnerable_infra_test 태그가 붙은 SG·S3·LogGroup 삭제
+      # -------------------------------------------------------
+      - name: Cleanup leftover vulnerable infra (pre-deploy)
+        if: inputs.deploy_vulnerable == true
+        continue-on-error: true
+        env:
+          AWS_REGION: ${{ inputs.region }}
+        run: |
+          TAG_KEY="ProwlerDemo"
+          TAG_VAL="vulnerable_infra_test"
+          REGION="${{ inputs.region }}"
+
+          echo "=== [Cleanup] Security Groups ==="
+          SG_IDS=$(aws ec2 describe-security-groups \
+            --region "$REGION" \
+            --filters "Name=tag:${TAG_KEY},Values=${TAG_VAL}" \
+            --query "SecurityGroups[*].GroupId" \
+            --output text 2>/dev/null || true)
+          for SG in $SG_IDS; do
+            echo "  삭제: $SG"
+            aws ec2 delete-security-group --region "$REGION" --group-id "$SG" 2>/dev/null || true
+          done
+          echo "  완료 ($(echo $SG_IDS | wc -w)개)"
+
+          echo "=== [Cleanup] S3 Buckets (vuln-demo-*) ==="
+          BUCKETS=$(aws s3api list-buckets \
+            --query "Buckets[?starts_with(Name,'vuln-demo-')].Name" \
+            --output text 2>/dev/null || true)
+          for BUCKET in $BUCKETS; do
+            echo "  삭제: $BUCKET"
+            aws s3 rb "s3://${BUCKET}" --force 2>/dev/null || true
+          done
+          echo "  완료 ($(echo $BUCKETS | wc -w)개)"
+
+          echo "=== [Cleanup] CloudWatch Log Groups (/vuln/*) ==="
+          LOG_GROUPS=$(aws logs describe-log-groups \
+            --region "$REGION" \
+            --log-group-name-prefix "/vuln/" \
+            --query "logGroups[*].logGroupName" \
+            --output text 2>/dev/null || true)
+          for LG in $LOG_GROUPS; do
+            echo "  삭제: $LG"
+            aws logs delete-log-group --region "$REGION" --log-group-name "$LG" 2>/dev/null || true
+          done
+          echo "  완료 ($(echo $LOG_GROUPS | wc -w)개)"
+
       - name: Deploy vulnerable infra
         if: inputs.deploy_vulnerable == true
         run: |
-          terraform -chdir=terraform/test_infra init -input=false
-          terraform -chdir=terraform/test_infra apply -auto-approve -input=false
+          terraform -chdir=terraform/vulnerable_infra_test init -input=false
+          terraform -chdir=terraform/vulnerable_infra_test apply -auto-approve -input=false
 
       - name: Setup Python
         uses: actions/setup-python@v5

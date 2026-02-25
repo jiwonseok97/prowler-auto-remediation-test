@@ -44,12 +44,6 @@ resource "aws_kms_key" "fix_cloudtrail_kms_key_19040a1c46" {
   policy              = "{\"Version\": \"2012-10-17\", \"Statement\": [{\"Sid\": \"EnableRootAndCallerPermissions\", \"Effect\": \"Allow\", \"Principal\": {\"AWS\": [\"arn:aws:iam::132410971304:root\", \"arn:aws:iam::132410971304:role/GitHubActionsProwlerRole\"]}, \"Action\": \"kms:*\", \"Resource\": \"*\"}, {\"Sid\": \"AllowCloudTrailUseOfTheKey\", \"Effect\": \"Allow\", \"Principal\": {\"Service\": \"cloudtrail.amazonaws.com\"}, \"Action\": [\"kms:GenerateDataKey*\", \"kms:Decrypt\", \"kms:Encrypt\", \"kms:DescribeKey\"], \"Resource\": \"*\", \"Condition\": {\"StringEquals\": {\"aws:SourceArn\": \"arn:aws:cloudtrail:ap-northeast-2:132410971304:trail/vuln-trail\"}}}]}"
 }
 
-resource "aws_iam_role_policy" "fix_cloudtrail_cw_role_policy_19040a1c46" {
-  name   = "cloudtrail-to-cloudwatch-logs"
-  role   = "cloudtrail-to-cw-vuln_trail"
-  policy = "{\"Version\": \"2012-10-17\", \"Statement\": [{\"Effect\": \"Allow\", \"Action\": [\"logs:CreateLogStream\", \"logs:PutLogEvents\"], \"Resource\": [\"arn:aws:logs:ap-northeast-2:132410971304:log-group:/aws/cloudtrail/132410971304:*\", \"arn:aws:logs:ap-northeast-2:132410971304:log-group:/aws/cloudtrail/132410971304\"]}]}"
-}
-
 resource "aws_cloudtrail" "fix_cloudtrail_19040a1c46" {
   name                          = "vuln-trail"
   s3_bucket_name                = "vuln-cloudtrail-132410971304-ap-northeast-2"
@@ -59,9 +53,9 @@ resource "aws_cloudtrail" "fix_cloudtrail_19040a1c46" {
   enable_log_file_validation    = true
   kms_key_id                    = aws_kms_key.fix_cloudtrail_kms_key_19040a1c46.arn
   cloud_watch_logs_group_arn    = "arn:aws:logs:ap-northeast-2:132410971304:log-group:/aws/cloudtrail/132410971304:*"
-  cloud_watch_logs_role_arn     = "arn:aws:iam::132410971304:role/cloudtrail-to-cw-vuln_trail"
+  cloud_watch_logs_role_arn     = "arn:aws:iam::132410971304:role/remediation_ct_cw_vuln_trail"
 
-  depends_on = [aws_s3_bucket_policy.fix_cloudtrail_bucket_policy_19040a1c46, aws_iam_role_policy.fix_cloudtrail_cw_role_policy_19040a1c46]
+  depends_on = [aws_s3_bucket_policy.fix_cloudtrail_bucket_policy_19040a1c46]
 
   lifecycle {
     ignore_changes = [

@@ -30,10 +30,10 @@ create_vuln_ebs_disabled = false
 # EC2/VPC: Default SG 전체 허용 → 1건 FAIL (auto-remediable)
 open_default_security_group = true
 
-# KMS: CMK 자동 교체 비활성화 → 3건 FAIL (auto-remediable, IMPORT_AND_PATCH)
-vuln_kms_key_count = 3
+# KMS: CMK 자동 교체 비활성화 → 5건 FAIL (auto-remediable, IMPORT_AND_PATCH)
+vuln_kms_key_count = 5
 
 # VPC: flow logs 없음 + default SG 허용
-#   → vpc_flow_logs_enabled               ×1 FAIL (auto-remediable)
-#   → ec2_securitygroup_default_restrict_traffic ×1 FAIL (auto-remediable)
-vuln_vpc_count = 1
+#   → vpc_flow_logs_enabled               ×2 FAIL (auto-remediable)
+#   → ec2_securitygroup_default_restrict_traffic ×2 FAIL (auto-remediable, 기본 VPC 포함 시 +1)
+vuln_vpc_count = 2

@@ -204,6 +204,24 @@ def pick_default_cloudtrail_log_group(region: str, account_id: str) -> str:
     return f"/aws/cloudtrail/{account_id}"
 
 
+def get_caller_arn() -> str:
+    """Return the IAM role ARN of the current caller (not session ARN)."""
+    try:
+        sts = boto3.client("sts")
+        identity = sts.get_caller_identity()
+        arn = str(identity.get("Arn", ""))
+        # Convert assumed-role session ARN to IAM role ARN
+        # e.g. arn:aws:sts::123:assumed-role/MyRole/session -> arn:aws:iam::123:role/MyRole
+        if ":assumed-role/" in arn:
+            parts = arn.split(":assumed-role/", 1)
+            account_part = parts[0].replace("arn:aws:sts:", "arn:aws:iam:")
+            role_name = parts[1].split("/")[0]
+            return f"{account_part}:role/{role_name}"
+        return arn
+    except Exception:
+        return ""
+
+
 def pick_default_log_bucket(account_id: str) -> str:
     try:
         s3 = boto3.client("s3")
@@ -748,6 +766,10 @@ def import_id_for_type(resource_type: str, finding: Dict[str, Any]) -> str:
     if resource_type == "aws_s3_account_public_access_block":
         return finding.get("account_id", "")
     if resource_type == "aws_default_security_group":
+        # AWS provider v5+ imports aws_default_security_group by SG ID (sg-xxx), not VPC ID
+        sg_id = extract_sg_id(finding.get("resource_arn", ""))
+        if sg_id:
+            return sg_id
         return finding.get("_vpc_id", "")
     if resource_type == "aws_kms_key":
         if str(arn).startswith("arn:aws:kms:"):
@@ -1370,7 +1392,8 @@ def build_cloudtrail_tf(finding: Dict[str, Any], region: str, account_id: str) -
         if ":role/" in role_arn_existing:
             role_name_existing = role_arn_existing.split(":role/", 1)[1]
 
-        role_name = role_name_existing if role_name_existing else f"cloudtrail-to-cw-{safe_id(name)}"
+        # Use remediation_ prefix so IAM policy (RoleManagement) covers this role
+        role_name = role_name_existing if role_name_existing else f"remediation_ct_cw_{safe_id(name)}"
         role_name = role_name[:64]
         create_role = not iam_role_exists(role_name)
         role_arn_expr = f'"arn:aws:iam::{account_id}:role/{role_name}"'
@@ -1427,13 +1450,17 @@ def build_cloudtrail_tf(finding: Dict[str, Any], region: str, account_id: str) -
         kms = str(detail.get("KmsKeyId", ""))
         if not kms:
             trail_arn = f"arn:aws:cloudtrail:{region}:{account_id}:trail/{name}"
+            caller_arn = get_caller_arn()
+            admin_principals: list = [f"arn:aws:iam::{account_id}:root"]
+            if caller_arn and caller_arn not in admin_principals:
+                admin_principals.append(caller_arn)
             key_policy = {
                 "Version": "2012-10-17",
                 "Statement": [
                     {
-                        "Sid": "EnableRootPermissions",
+                        "Sid": "EnableRootAndCallerPermissions",
                         "Effect": "Allow",
-                        "Principal": {"AWS": f"arn:aws:iam::{account_id}:root"},
+                        "Principal": {"AWS": admin_principals},
                         "Action": "kms:*",
                         "Resource": "*",
                     },

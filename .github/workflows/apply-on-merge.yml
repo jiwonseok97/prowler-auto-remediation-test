@@ -60,49 +60,18 @@ jobs:
             BEFORE="${{ github.event.before }}"
             AFTER="${{ github.sha }}"
             CHANGED_FILES="$(git diff --name-only "$BEFORE" "$AFTER" | awk '/^remediation\// {print}')"
-            SCOPE="artifacts/apply_scope"
-            rm -rf "$SCOPE"
-            mkdir -p "$SCOPE"
-            CHANGED_CATS=""
 
-            while IFS= read -r f; do
-              [ -z "$f" ] && continue
-              cat="$(echo "$f" | awk -F/ '{print $2}')"
-              if ! echo " $VALID " | grep -q " $cat "; then
-                continue
-              fi
-              case ",$CHANGED_CATS," in
-                *",$cat,"*) ;;
-                *) CHANGED_CATS="${CHANGED_CATS:+$CHANGED_CATS,}$cat" ;;
-              esac
-              if [ ! -f "$f" ]; then
-                echo "skip missing file in diff: $f"
-                continue
-              fi
-              mkdir -p "$SCOPE/$cat"
-              cp "$f" "$SCOPE/$cat/$(basename "$f")"
-            done <<< "$CHANGED_FILES"
-
-            IFS=',' read -r -a cats_arr <<< "$CHANGED_CATS"
-            for cat in "${cats_arr[@]}"; do
-              [ -z "$cat" ] && continue
-              mkdir -p "$SCOPE/$cat"
-
-              # If only manifest changed, include current tf set so apply can run on that category.
-              if ! find "$SCOPE/$cat" -maxdepth 1 -name '*.tf' | grep -q .; then
-                if [ -d "remediation/$cat" ]; then
-                  cp remediation/"$cat"/*.tf "$SCOPE/$cat/" 2>/dev/null || true
-                fi
-              fi
-
-              if [ -f "remediation/$cat/import-map.txt" ]; then
-                mkdir -p "$SCOPE/$cat"
-                cp "remediation/$cat/import-map.txt" "$SCOPE/$cat/import-map.txt"
-              fi
-            done
-
-            CATS="$CHANGED_CATS"
-            APPLY_ROOT="$SCOPE"
+            if [ -n "$CHANGED_FILES" ]; then
+              # Any remediation file changed → apply ALL valid categories from current state.
+              # Using APPLY_ROOT=remediation (not a diff-scoped copy) ensures stable-named
+              # resources (e.g. CloudWatch log groups with same names after vuln infra recreate)
+              # are not skipped just because their TF content is unchanged in the diff.
+              CATS="iam,s3,network-ec2-vpc,cloudtrail,cloudwatch"
+              APPLY_ROOT="remediation"
+            else
+              CATS=""
+              APPLY_ROOT="remediation"
+            fi
           fi
 
           FILTERED=""

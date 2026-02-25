@@ -20,10 +20,10 @@ Prowler(CIS 1.4 + ISMS-P)로 AWS 계정을 스캔하고, 발견된 취약점에 
 
 ```
 [취약 인프라 배포]
-terraform/vulnerable_infra_test/
-├── main.tf          # 전체 취약 리소스 정의
-├── variables.tf     # 취약 항목별 토글 변수
-└── terraform.tfvars # 실제 배포 수량 및 활성화 설정
+  terraform/vulnerable_infra_test/
+  ├── main.tf          # 전체 취약 리소스 정의
+  ├── variables.tf     # 취약 항목별 토글 변수
+  └── terraform.tfvars # 실제 배포 수량 및 활성화 설정
 
 [01] Scan Baseline (scan-cis.yml)
   └─ Prowler CIS 1.4 + ISMS-P 스캔

@@ -1,8 +1,8 @@
 {
-  "created_at": "2026-02-25T08:13:38.578880+00:00",
+  "created_at": "2026-02-25T11:29:21.681551+00:00",
   "account": "132410971304",
   "region": "ap-northeast-2",
-  "baseline_fail_count": 53,
+  "baseline_fail_count": 51,
   "categories": [
     {
       "category": "s3",
@@ -44,20 +44,16 @@
     {
       "category": "cloudtrail",
       "path": "remediation/cloudtrail",
-      "checks": 3,
+      "checks": 1,
       "top5": [
-        "prowler-cloudtrail_kms_encryption_enabled",
-        "prowler-cloudtrail_log_file_validation_enabled",
-        "prowler-cloudtrail_cloudwatch_logging_enabled"
+        "prowler-cloudtrail_kms_encryption_enabled"
       ],
       "tier_breakdown": {
-        "safe-auto": 2,
+        "safe-auto": 1,
         "review-then-apply": 0,
-        "manual-runbook": 1
+        "manual-runbook": 0
       },
-      "manual_required": [
-        "prowler-cloudtrail_log_file_validation_enabled"
-      ],
+      "manual_required": [],
       "import_map": "remediation/cloudtrail/import-map.txt"
     }
   ],
@@ -81,7 +77,7 @@
       ],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-25T08:13:38.579218+00:00"
+      "created_at": "2026-02-25T11:29:21.681850+00:00"
     },
     "prowler-ec2_networkacl_allow_ingress_any_port": [
       {
@@ -96,20 +92,20 @@
         "resources": [
           {
             "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_be359c7ac0",
-            "arn": "acl-058581ca52ec4f8da:101:-1:false",
+            "arn": "acl-058581ca52ec4f8da:102:-1:false",
             "resource_type": "aws_network_acl_rule",
             "optional": true
           },
           {
             "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_29c4b86f72",
-            "arn": "acl-0ae7a4508e4f18172:101:-1:false",
+            "arn": "acl-0ae7a4508e4f18172:102:-1:false",
             "resource_type": "aws_network_acl_rule",
             "optional": true
           }
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-25T08:13:38.579653+00:00"
+        "created_at": "2026-02-25T11:29:21.682295+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -123,20 +119,20 @@
         "resources": [
           {
             "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_be359c7ac0",
-            "arn": "acl-058581ca52ec4f8da:101:-1:false",
+            "arn": "acl-058581ca52ec4f8da:102:-1:false",
             "resource_type": "aws_network_acl_rule",
             "optional": true
           },
           {
             "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_29c4b86f72",
-            "arn": "acl-0ae7a4508e4f18172:101:-1:false",
+            "arn": "acl-0ae7a4508e4f18172:102:-1:false",
             "resource_type": "aws_network_acl_rule",
             "optional": true
           }
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-25T08:13:38.579661+00:00"
+        "created_at": "2026-02-25T11:29:21.682303+00:00"
       }
     ],
     "prowler-ec2_networkacl_allow_ingress_tcp_port_22": [
@@ -152,20 +148,20 @@
         "resources": [
           {
             "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_585e4b17d3",
-            "arn": "acl-058581ca52ec4f8da:101:6:false",
+            "arn": "acl-058581ca52ec4f8da:102:6:false",
             "resource_type": "aws_network_acl_rule",
             "optional": true
           },
           {
             "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_8844e94833",
-            "arn": "acl-0ae7a4508e4f18172:101:6:false",
+            "arn": "acl-0ae7a4508e4f18172:102:6:false",
             "resource_type": "aws_network_acl_rule",
             "optional": true
           }
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-25T08:13:38.579665+00:00"
+        "created_at": "2026-02-25T11:29:21.682307+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -179,20 +175,20 @@
         "resources": [
           {
             "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_585e4b17d3",
-            "arn": "acl-058581ca52ec4f8da:101:6:false",
+            "arn": "acl-058581ca52ec4f8da:102:6:false",
             "resource_type": "aws_network_acl_rule",
             "optional": true
           },
           {
             "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_8844e94833",
-            "arn": "acl-0ae7a4508e4f18172:101:6:false",
+            "arn": "acl-0ae7a4508e4f18172:102:6:false",
             "resource_type": "aws_network_acl_rule",
             "optional": true
           }
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-25T08:13:38.579668+00:00"
+        "created_at": "2026-02-25T11:29:21.682310+00:00"
       }
     ],
     "prowler-ec2_networkacl_allow_ingress_tcp_port_3389": [
@@ -208,20 +204,20 @@
         "resources": [
           {
             "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_7e42feb9f3",
-            "arn": "acl-058581ca52ec4f8da:101:6:false",
+            "arn": "acl-058581ca52ec4f8da:102:6:false",
             "resource_type": "aws_network_acl_rule",
             "optional": true
           },
           {
             "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_058da684af",
-            "arn": "acl-0ae7a4508e4f18172:101:6:false",
+            "arn": "acl-0ae7a4508e4f18172:102:6:false",
             "resource_type": "aws_network_acl_rule",
             "optional": true
           }
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-25T08:13:38.579670+00:00"
+        "created_at": "2026-02-25T11:29:21.682312+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -235,20 +231,20 @@
         "resources": [
           {
             "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_7e42feb9f3",
-            "arn": "acl-058581ca52ec4f8da:101:6:false",
+            "arn": "acl-058581ca52ec4f8da:102:6:false",
             "resource_type": "aws_network_acl_rule",
             "optional": true
           },
           {
             "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_058da684af",
-            "arn": "acl-0ae7a4508e4f18172:101:6:false",
+            "arn": "acl-0ae7a4508e4f18172:102:6:false",
             "resource_type": "aws_network_acl_rule",
             "optional": true
           }
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-25T08:13:38.579673+00:00"
+        "created_at": "2026-02-25T11:29:21.682314+00:00"
       }
     ],
     "prowler-vpc_flow_logs_enabled": [
@@ -264,7 +260,7 @@
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-25T08:13:38.579675+00:00"
+        "created_at": "2026-02-25T11:29:21.682317+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -278,7 +274,7 @@
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-25T08:13:38.579677+00:00"
+        "created_at": "2026-02-25T11:29:21.682318+00:00"
       }
     ],
     "prowler-ec2_ebs_volume_encryption": {
@@ -291,7 +287,7 @@
       "resources": [],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-25T08:13:38.579679+00:00"
+      "created_at": "2026-02-25T11:29:21.682321+00:00"
     },
     "prowler-ec2_instance_profile_attached": {
       "category": "network-ec2-vpc",
@@ -303,7 +299,7 @@
       "resources": [],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-25T08:13:38.579681+00:00"
+      "created_at": "2026-02-25T11:29:21.682323+00:00"
     },
     "prowler-cloudtrail_kms_encryption_enabled": {
       "category": "cloudtrail",
@@ -330,46 +326,7 @@
       ],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-25T08:13:38.579953+00:00"
-    },
-    "prowler-cloudtrail_log_file_validation_enabled": {
-      "category": "cloudtrail",
-      "remediation_tier": "manual-runbook",
-      "priority": "P2",
-      "osfp_score": 58.5,
-      "files": [],
-      "tf_file": "",
-      "resources": [],
-      "account": "132410971304",
-      "region": "ap-northeast-2",
-      "created_at": "2026-02-25T08:13:38.579961+00:00"
-    },
-    "prowler-cloudtrail_cloudwatch_logging_enabled": {
-      "category": "cloudtrail",
-      "remediation_tier": "safe-auto",
-      "priority": "P3",
-      "osfp_score": 48.0,
-      "files": [
-        "remediation/cloudtrail/fix-prowler_cloudtrail_cloudwatch_logging_enabled_arn_aws_cloudtrail_ap_northeast_2_132410971304_trail_vuln_trail_ap_northeast_2.tf"
-      ],
-      "tf_file": "remediation/cloudtrail/fix-prowler_cloudtrail_cloudwatch_logging_enabled_arn_aws_cloudtrail_ap_northeast_2_132410971304_trail_vuln_trail_ap_northeast_2.tf",
-      "resources": [
-        {
-          "resource_address": "aws_s3_bucket_policy.fix_cloudtrail_bucket_policy_0a966160c4",
-          "arn": "vuln-cloudtrail-132410971304-ap-northeast-2",
-          "resource_type": "aws_s3_bucket_policy",
-          "optional": true
-        },
-        {
-          "resource_address": "aws_cloudtrail.fix_cloudtrail_0a966160c4",
-          "arn": "vuln-trail",
-          "resource_type": "aws_cloudtrail",
-          "optional": false
-        }
-      ],
-      "account": "132410971304",
-      "region": "ap-northeast-2",
-      "created_at": "2026-02-25T08:13:38.579964+00:00"
+      "created_at": "2026-02-25T11:29:21.682503+00:00"
     }
   }
 }

@@ -2,7 +2,7 @@
   "category": "s3",
   "account": "132410971304",
   "region": "ap-northeast-2",
-  "created_at": "2026-02-25T08:13:38.578907+00:00",
+  "created_at": "2026-02-25T11:29:21.681577+00:00",
   "items": [
     {
       "check_id": "prowler-s3_bucket_secure_transport_policy",

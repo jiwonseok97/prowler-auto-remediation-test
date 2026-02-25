@@ -2,7 +2,7 @@
   "category": "cloudtrail",
   "account": "132410971304",
   "region": "ap-northeast-2",
-  "created_at": "2026-02-25T08:13:38.579699+00:00",
+  "created_at": "2026-02-25T11:29:21.682336+00:00",
   "items": [
     {
       "check_id": "prowler-cloudtrail_kms_encryption_enabled",
@@ -28,41 +28,6 @@
         }
       ],
       "tf_file": "remediation/cloudtrail/fix-prowler_cloudtrail_kms_encryption_enabled_arn_aws_cloudtrail_ap_northeast_2_132410971304_trail_vuln_trail_ap_northeast_2.tf"
-    },
-    {
-      "check_id": "prowler-cloudtrail_log_file_validation_enabled",
-      "manual_required": true,
-      "remediation_tier": "manual-runbook",
-      "files": [],
-      "priority": "P2",
-      "score": 58.5,
-      "reason": "consolidated_into_kms_cloudtrail_fix",
-      "resources": []
-    },
-    {
-      "check_id": "prowler-cloudtrail_cloudwatch_logging_enabled",
-      "manual_required": false,
-      "remediation_tier": "safe-auto",
-      "files": [
-        "remediation/cloudtrail/fix-prowler_cloudtrail_cloudwatch_logging_enabled_arn_aws_cloudtrail_ap_northeast_2_132410971304_trail_vuln_trail_ap_northeast_2.tf"
-      ],
-      "priority": "P3",
-      "score": 48.0,
-      "resources": [
-        {
-          "resource_address": "aws_s3_bucket_policy.fix_cloudtrail_bucket_policy_0a966160c4",
-          "arn": "vuln-cloudtrail-132410971304-ap-northeast-2",
-          "resource_type": "aws_s3_bucket_policy",
-          "optional": true
-        },
-        {
-          "resource_address": "aws_cloudtrail.fix_cloudtrail_0a966160c4",
-          "arn": "vuln-trail",
-          "resource_type": "aws_cloudtrail",
-          "optional": false
-        }
-      ],
-      "tf_file": "remediation/cloudtrail/fix-prowler_cloudtrail_cloudwatch_logging_enabled_arn_aws_cloudtrail_ap_northeast_2_132410971304_trail_vuln_trail_ap_northeast_2.tf"
     }
   ],
   "import_map": [
@@ -76,20 +41,6 @@
     {
       "check_id": "prowler-cloudtrail_kms_encryption_enabled",
       "address": "aws_cloudtrail.fix_cloudtrail_19040a1c46",
-      "import_id": "vuln-trail",
-      "resource_type": "aws_cloudtrail",
-      "optional": false
-    },
-    {
-      "check_id": "prowler-cloudtrail_cloudwatch_logging_enabled",
-      "address": "aws_s3_bucket_policy.fix_cloudtrail_bucket_policy_0a966160c4",
-      "import_id": "vuln-cloudtrail-132410971304-ap-northeast-2",
-      "resource_type": "aws_s3_bucket_policy",
-      "optional": true
-    },
-    {
-      "check_id": "prowler-cloudtrail_cloudwatch_logging_enabled",
-      "address": "aws_cloudtrail.fix_cloudtrail_0a966160c4",
       "import_id": "vuln-trail",
       "resource_type": "aws_cloudtrail",
       "optional": false

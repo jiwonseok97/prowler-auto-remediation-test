@@ -1,7 +1,7 @@
 resource "aws_network_acl_rule" "fix_network_acl_ingress_deny_585e4b17d3" {
   network_acl_id = "acl-058581ca52ec4f8da"
   egress         = false
-  rule_number    = 251
+  rule_number    = 101
   protocol       = "6"
   rule_action    = "deny"
   cidr_block     = "0.0.0.0/0"

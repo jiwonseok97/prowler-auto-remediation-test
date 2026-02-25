@@ -1,5 +1,5 @@
-resource "aws_default_security_group" "fix_default_sg_248a9650db" {
-  vpc_id = "vpc-099ef085633a8d818"
+resource "aws_default_security_group" "fix_default_sg_cdb7ee9ba7" {
+  vpc_id = "vpc-019168b7be6e9f31a"
 
   ingress = []
   egress  = []

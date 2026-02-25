@@ -49,173 +49,159 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
 
-      - name: Cleanup stale vulnerable demo resources
+      - name: Deploy vulnerable infra
         if: inputs.deploy_vulnerable == true
         shell: bash
         run: |
-          set +e
+          set -euo pipefail
+          STATE_BUCKET="prowler-auto-tfstate-${AWS_ACCOUNT_ID}"
+          STATE_KEY="vulnerable_infra_test/terraform.tfstate"
 
-          echo "cleanup: old demo cloudtrail"
-          aws cloudtrail delete-trail --region "$AWS_REGION" --name vuln-trail || true
-          sleep 5  # wait for any in-flight CloudTrail writes to land before bucket cleanup
-
-          echo "cleanup: old demo iam user/policy"
-          aws iam detach-user-policy --user-name vuln-user --policy-arn "arn:aws:iam::${AWS_ACCOUNT_ID}:policy/vuln-wildcard-policy" || true
-          aws iam delete-user --user-name vuln-user || true
-          aws iam delete-policy --policy-arn "arn:aws:iam::${AWS_ACCOUNT_ID}:policy/vuln-wildcard-policy" || true
-
-          echo "cleanup: new demo iam direct-policy user"
-          aws iam detach-user-policy --user-name vuln-demo-direct-policy-user --policy-arn "arn:aws:iam::${AWS_ACCOUNT_ID}:policy/vuln-demo-readonly-policy" || true
-          aws iam delete-user --user-name vuln-demo-direct-policy-user || true
-          aws iam delete-policy --policy-arn "arn:aws:iam::${AWS_ACCOUNT_ID}:policy/vuln-demo-readonly-policy" || true
-
-          echo "cleanup: stale demo cloudwatch log groups"
-          mapfile -t LOG_GROUPS < <(
-            aws logs describe-log-groups \
+          # 1. Ensure Terraform state bucket exists
+          echo "==> ensure state bucket: $STATE_BUCKET"
+          if ! aws s3api head-bucket --bucket "$STATE_BUCKET" 2>/dev/null; then
+            aws s3api create-bucket \
+              --bucket "$STATE_BUCKET" \
               --region "$AWS_REGION" \
+              --create-bucket-configuration LocationConstraint="$AWS_REGION"
+            aws s3api put-bucket-versioning \
+              --bucket "$STATE_BUCKET" \
+              --versioning-configuration Status=Enabled
+            echo "state bucket created"
+          fi
+
+          # 2. Terraform init with S3 backend
+          echo "==> terraform init (S3 backend)"
+          terraform -chdir=terraform/vulnerable_infra_test init -input=false -reconfigure \
+            -backend-config="bucket=${STATE_BUCKET}" \
+            -backend-config="key=${STATE_KEY}" \
+            -backend-config="region=${AWS_REGION}"
+
+          # 3. Destroy previous run (uses stored state, idempotent)
+          # - force_destroy=true on S3 buckets: Terraform empties + deletes them
+          # - || true: no-op on first run; tolerates KMS pending deletion
+          echo "==> terraform destroy (clean previous state)"
+          terraform -chdir=terraform/vulnerable_infra_test destroy \
+            -auto-approve -input=false \
+            -var account_id="${{ inputs.account_id }}" \
+            -var region="${AWS_REGION}" || true
+
+          # 4. Fallback CLI cleanup (orphaned resources outside Terraform state)
+          set +e
+          echo "==> fallback: cloudtrail trail"
+          aws cloudtrail delete-trail --region "$AWS_REGION" --name vuln-trail || true
+          sleep 5
+
+          echo "==> fallback: iam users"
+          for uname in vuln-user vuln-demo-direct-policy-user; do
+            for pol in vuln-wildcard-policy vuln-demo-readonly-policy; do
+              aws iam detach-user-policy --user-name "$uname" \
+                --policy-arn "arn:aws:iam::${AWS_ACCOUNT_ID}:policy/$pol" 2>/dev/null || true
+            done
+            aws iam delete-user --user-name "$uname" 2>/dev/null || true
+          done
+          aws iam delete-policy \
+            --policy-arn "arn:aws:iam::${AWS_ACCOUNT_ID}:policy/vuln-wildcard-policy" || true
+          aws iam delete-policy \
+            --policy-arn "arn:aws:iam::${AWS_ACCOUNT_ID}:policy/vuln-demo-readonly-policy" || true
+
+          echo "==> fallback: cloudwatch log groups"
+          mapfile -t LOG_GROUPS < <(
+            aws logs describe-log-groups --region "$AWS_REGION" \
               --query "logGroups[?starts_with(logGroupName, '/vuln/log-group')].logGroupName" \
-              --output text | tr '\t' '\n' | sed '/^$/d' | sort -u
+              --output text | tr '\t' '\n' | sed '/^$/d'
           )
           for lg in "${LOG_GROUPS[@]}"; do
-            echo "delete log group $lg"
             aws logs delete-log-group --region "$AWS_REGION" --log-group-name "$lg" || true
           done
 
-          echo "cleanup: stale demo security groups"
-          mapfile -t SG_IDS < <(
-            aws ec2 describe-security-groups \
-              --region "$AWS_REGION" \
-              --filters Name=group-name,Values='vuln-sg*' \
-              --query 'SecurityGroups[].GroupId' \
-              --output text | tr '\t' '\n' | sed '/^$/d' | sort -u
-          )
-          for sg_id in "${SG_IDS[@]}"; do
-            echo "delete sg $sg_id"
-            aws ec2 delete-security-group --region "$AWS_REGION" --group-id "$sg_id" || true
-          done
-
-          echo "cleanup: stale demo s3 buckets"
+          echo "==> fallback: s3 buckets"
           mapfile -t BUCKETS < <(
             aws s3api list-buckets \
-              --query "Buckets[?starts_with(Name, 'vuln-demo-') || starts_with(Name, 'vuln-bucket-') || starts_with(Name, 'vuln-cloudtrail-')].Name" \
-              --output text | tr '\t' '\n' | sed '/^$/d' | sort -u
+              --query "Buckets[?starts_with(Name,'vuln-demo-')||starts_with(Name,'vuln-cloudtrail-')].Name" \
+              --output text | tr '\t' '\n' | sed '/^$/d'
           )
           for b in "${BUCKETS[@]}"; do
-            echo "empty+delete bucket $b"
+            echo "  force-delete $b"
             aws s3 rm "s3://$b" --recursive || true
-            # delete versioned objects and delete markers (handles versioning-suspended buckets)
-            python3 - <<PYEOF || true
-          import subprocess, json, sys
-          bucket = '$b'
-          result = subprocess.run(
-              ['aws', 's3api', 'list-object-versions', '--bucket', bucket],
-              capture_output=True, text=True
-          )
-          if result.returncode != 0:
-              sys.exit(0)
-          try:
-              data = json.loads(result.stdout or '{}')
-          except Exception:
-              sys.exit(0)
-          objects = [
-              {'Key': v['Key'], 'VersionId': v['VersionId']}
-              for v in data.get('Versions', []) + data.get('DeleteMarkers', [])
-          ]
-          if not objects:
-              sys.exit(0)
-          for i in range(0, len(objects), 1000):
-              batch = {'Objects': objects[i:i+1000], 'Quiet': True}
-              subprocess.run(['aws', 's3api', 'delete-objects', '--bucket', bucket,
-                              '--delete', json.dumps(batch)], capture_output=True)
-          print(f'deleted {len(objects)} versioned objects from {bucket}', flush=True)
-          PYEOF
+            while IFS=$'\t' read -r key vid; do
+              [ -n "$key" ] && aws s3api delete-object \
+                --bucket "$b" --key "$key" --version-id "$vid" 2>/dev/null || true
+            done < <(aws s3api list-object-versions --bucket "$b" \
+              --query 'Versions[].{Key:Key,VersionId:VersionId}' \
+              --output text 2>/dev/null)
+            while IFS=$'\t' read -r key vid; do
+              [ -n "$key" ] && aws s3api delete-object \
+                --bucket "$b" --key "$key" --version-id "$vid" 2>/dev/null || true
+            done < <(aws s3api list-object-versions --bucket "$b" \
+              --query 'DeleteMarkers[].{Key:Key,VersionId:VersionId}' \
+              --output text 2>/dev/null)
             aws s3 rb "s3://$b" --force || true
           done
 
-          echo "cleanup: stale demo VPCs (with dependencies)"
+          echo "==> fallback: vpcs"
           mapfile -t VPCS < <(
-            aws ec2 describe-vpcs \
-              --region "$AWS_REGION" \
+            aws ec2 describe-vpcs --region "$AWS_REGION" \
               --filters Name=tag:ProwlerDemo,Values=vulnerable_infra_test \
               --query 'Vpcs[].VpcId' \
-              --output text | tr '\t' '\n' | sed '/^$/d' | sort -u
+              --output text | tr '\t' '\n' | sed '/^$/d'
           )
           for vpc_id in "${VPCS[@]}"; do
-            echo "  cleaning vpc $vpc_id dependencies..."
-
-            # 1. subnets
-            mapfile -t SUBNETS < <(
-              aws ec2 describe-subnets --region "$AWS_REGION" \
-                --filters Name=vpc-id,Values="$vpc_id" \
-                --query 'Subnets[].SubnetId' \
-                --output text | tr '\t' '\n' | sed '/^$/d'
-            )
-            for sn in "${SUBNETS[@]}"; do
+            echo "  cleanup vpc $vpc_id"
+            mapfile -t SNS < <(aws ec2 describe-subnets --region "$AWS_REGION" \
+              --filters Name=vpc-id,Values="$vpc_id" \
+              --query 'Subnets[].SubnetId' --output text | tr '\t' '\n' | sed '/^$/d')
+            for sn in "${SNS[@]}"; do
               aws ec2 delete-subnet --region "$AWS_REGION" --subnet-id "$sn" || true
             done
-
-            # 2. internet gateways (detach then delete)
-            mapfile -t IGWS < <(
-              aws ec2 describe-internet-gateways --region "$AWS_REGION" \
-                --filters Name=attachment.vpc-id,Values="$vpc_id" \
-                --query 'InternetGateways[].InternetGatewayId' \
-                --output text | tr '\t' '\n' | sed '/^$/d'
-            )
+            mapfile -t IGWS < <(aws ec2 describe-internet-gateways --region "$AWS_REGION" \
+              --filters Name=attachment.vpc-id,Values="$vpc_id" \
+              --query 'InternetGateways[].InternetGatewayId' \
+              --output text | tr '\t' '\n' | sed '/^$/d')
             for igw in "${IGWS[@]}"; do
-              aws ec2 detach-internet-gateway --region "$AWS_REGION" --internet-gateway-id "$igw" --vpc-id "$vpc_id" || true
-              aws ec2 delete-internet-gateway --region "$AWS_REGION" --internet-gateway-id "$igw" || true
+              aws ec2 detach-internet-gateway --region "$AWS_REGION" \
+                --internet-gateway-id "$igw" --vpc-id "$vpc_id" || true
+              aws ec2 delete-internet-gateway --region "$AWS_REGION" \
+                --internet-gateway-id "$igw" || true
             done
-
-            # 3. non-main route tables
-            mapfile -t RTBS < <(
-              aws ec2 describe-route-tables --region "$AWS_REGION" \
-                --filters Name=vpc-id,Values="$vpc_id" Name=association.main,Values=false \
-                --query 'RouteTables[].RouteTableId' \
-                --output text | tr '\t' '\n' | sed '/^$/d'
-            )
+            mapfile -t RTBS < <(aws ec2 describe-route-tables --region "$AWS_REGION" \
+              --filters Name=vpc-id,Values="$vpc_id" Name=association.main,Values=false \
+              --query 'RouteTables[].RouteTableId' --output text | tr '\t' '\n' | sed '/^$/d')
             for rtb in "${RTBS[@]}"; do
               aws ec2 delete-route-table --region "$AWS_REGION" --route-table-id "$rtb" || true
             done
-
-            # 4. non-default security groups
-            mapfile -t CUSTOM_SGS < <(
-              aws ec2 describe-security-groups --region "$AWS_REGION" \
-                --filters Name=vpc-id,Values="$vpc_id" \
-                --query "SecurityGroups[?GroupName!='default'].GroupId" \
-                --output text | tr '\t' '\n' | sed '/^$/d'
-            )
-            for sg in "${CUSTOM_SGS[@]}"; do
+            mapfile -t CSGS < <(aws ec2 describe-security-groups --region "$AWS_REGION" \
+              --filters Name=vpc-id,Values="$vpc_id" \
+              --query "SecurityGroups[?GroupName!='default'].GroupId" \
+              --output text | tr '\t' '\n' | sed '/^$/d')
+            for sg in "${CSGS[@]}"; do
               aws ec2 delete-security-group --region "$AWS_REGION" --group-id "$sg" || true
             done
-
-            echo "  delete vpc $vpc_id"
             aws ec2 delete-vpc --region "$AWS_REGION" --vpc-id "$vpc_id" || true
           done
 
-          echo "cleanup: stale demo KMS keys (schedule deletion)"
+          echo "==> fallback: kms keys"
           mapfile -t KMS_ARNS < <(
-            aws resourcegroupstaggingapi get-resources \
-              --region "$AWS_REGION" \
+            aws resourcegroupstaggingapi get-resources --region "$AWS_REGION" \
               --tag-filters Key=ProwlerDemo,Values=vulnerable_infra_test \
               --resource-type-filters kms \
               --query "ResourceTagMappingList[].ResourceARN" \
-              --output text 2>/dev/null | tr '\t' '\n' | sed '/^$/d' | sort -u
+              --output text 2>/dev/null | tr '\t' '\n' | sed '/^$/d'
           )
           for key_arn in "${KMS_ARNS[@]}"; do
             key_id="${key_arn##*/}"
-            echo "schedule deletion kms key $key_id"
-            aws kms schedule-key-deletion --region "$AWS_REGION" --key-id "$key_id" --pending-window-in-days 7 || true
+            aws kms schedule-key-deletion --region "$AWS_REGION" \
+              --key-id "$key_id" --pending-window-in-days 7 || true
           done
-
           set -e
 
-      - name: Deploy vulnerable infra
-        if: inputs.deploy_vulnerable == true
-        run: |
-          terraform -chdir=terraform/vulnerable_infra_test init -input=false
-          terraform -chdir=terraform/vulnerable_infra_test apply -auto-approve -input=false \
+          # 5. Deploy fresh vulnerable infra
+          echo "==> terraform apply"
+          terraform -chdir=terraform/vulnerable_infra_test apply \
+            -auto-approve -input=false \
             -var account_id="${{ inputs.account_id }}" \
             -var region="${AWS_REGION}"
+
 
       - name: Setup Python
         uses: actions/setup-python@v5

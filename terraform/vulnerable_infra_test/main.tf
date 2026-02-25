@@ -6,6 +6,8 @@ terraform {
       version = ">= 5.0"
     }
   }
+  # Partial backend config – bucket/key/region supplied via -backend-config in CI
+  backend "s3" {}
 }
 
 provider "aws" {

@@ -34,6 +34,6 @@ open_default_security_group = true
 vuln_kms_key_count = 3
 
 # VPC: flow logs 없음 + default SG 허용
-#   → vpc_flow_logs_enabled               ×2 FAIL (auto-remediable)
-#   → ec2_securitygroup_default_restrict_traffic ×2 FAIL (auto-remediable)
-vuln_vpc_count = 2
+#   → vpc_flow_logs_enabled               ×1 FAIL (auto-remediable)
+#   → ec2_securitygroup_default_restrict_traffic ×1 FAIL (auto-remediable)
+vuln_vpc_count = 1

@@ -63,6 +63,11 @@ jobs:
           aws iam delete-user --user-name vuln-user || true
           aws iam delete-policy --policy-arn "arn:aws:iam::${AWS_ACCOUNT_ID}:policy/vuln-wildcard-policy" || true
 
+          echo "cleanup: new demo iam direct-policy user"
+          aws iam detach-user-policy --user-name vuln-demo-direct-policy-user --policy-arn "arn:aws:iam::${AWS_ACCOUNT_ID}:policy/vuln-demo-readonly-policy" || true
+          aws iam delete-user --user-name vuln-demo-direct-policy-user || true
+          aws iam delete-policy --policy-arn "arn:aws:iam::${AWS_ACCOUNT_ID}:policy/vuln-demo-readonly-policy" || true
+
           echo "cleanup: stale demo cloudwatch log groups"
           mapfile -t LOG_GROUPS < <(
             aws logs describe-log-groups \

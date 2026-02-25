@@ -12,7 +12,7 @@ Prowler(CIS 1.4 + ISMS-P)로 AWS 계정을 스캔하고, 발견된 취약점에 
 - **메인 파이프라인**: Prowler 스캔 → 자동 Remediation PR 생성 → Apply → 재스캔 (01→04)
 - **IaC 정적 분석**  : Checkov를 통한 Terraform 코드 보안 점검 (SARIF → GitHub Code Scanning)
 - **인프라 스캐너**  : OpenVAS GMP 프로토콜 기반 네트워크 취약점 스캐너 연동
-- **데모 인프라**    : 취약 인프라(55 FAIL) → 자동 보안 코드 생성 → PR·Apply → FAIL 0건 검증
+- **데모 인프라**      : 취약 인프라(55 FAIL) → 자동 보안 코드 생성 → PR·Apply → FAIL 0건 검증
 
 ---
 

@@ -57,6 +57,7 @@ jobs:
 
           echo "cleanup: old demo cloudtrail"
           aws cloudtrail delete-trail --region "$AWS_REGION" --name vuln-trail || true
+          sleep 5  # wait for any in-flight CloudTrail writes to land before bucket cleanup
 
           echo "cleanup: old demo iam user/policy"
           aws iam detach-user-policy --user-name vuln-user --policy-arn "arn:aws:iam::${AWS_ACCOUNT_ID}:policy/vuln-wildcard-policy" || true
@@ -102,6 +103,32 @@ jobs:
           for b in "${BUCKETS[@]}"; do
             echo "empty+delete bucket $b"
             aws s3 rm "s3://$b" --recursive || true
+            # delete versioned objects and delete markers (handles versioning-suspended buckets)
+            python3 - <<PYEOF || true
+          import subprocess, json, sys
+          bucket = '$b'
+          result = subprocess.run(
+              ['aws', 's3api', 'list-object-versions', '--bucket', bucket],
+              capture_output=True, text=True
+          )
+          if result.returncode != 0:
+              sys.exit(0)
+          try:
+              data = json.loads(result.stdout or '{}')
+          except Exception:
+              sys.exit(0)
+          objects = [
+              {'Key': v['Key'], 'VersionId': v['VersionId']}
+              for v in data.get('Versions', []) + data.get('DeleteMarkers', [])
+          ]
+          if not objects:
+              sys.exit(0)
+          for i in range(0, len(objects), 1000):
+              batch = {'Objects': objects[i:i+1000], 'Quiet': True}
+              subprocess.run(['aws', 's3api', 'delete-objects', '--bucket', bucket,
+                              '--delete', json.dumps(batch)], capture_output=True)
+          print(f'deleted {len(objects)} versioned objects from {bucket}', flush=True)
+          PYEOF
             aws s3 rb "s3://$b" --force || true
           done
 

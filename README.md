@@ -7,7 +7,7 @@
 
 ## 프로젝트 개요
 
-Prowler(CIS 1.4 + ISMS-P)로 AWS 계정을 스캔하고, 발견된 취약점에 대한 Terraform 보안 강화 코드를 자동 생성·적용·재검증하는 End-to-End CI/CD 보안 파이프라인입니다.
+Prowler(CIS 1.4 + ISMS-P)로 AWS 계정을 스캔, 발견 취약점에 대한 Terraform 보안 강화 코드를 자동 생성·적용·재검증하는 End-to-End CI/CD 보안 파이프라인
 
 - **메인 파이프라인**: Prowler 스캔 → 자동 Remediation PR 생성 → Apply → 재스캔 (01→04)
 - **IaC 정적 분석**  : Checkov를 통한 Terraform 코드 보안 점검 (SARIF → GitHub Code Scanning)

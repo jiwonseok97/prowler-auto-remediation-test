@@ -31,5 +31,5 @@ output "vuln_kms_key_ids" {
 }
 
 output "ebs_default_encryption_enabled" {
-  value = aws_ebs_encryption_by_default.vuln_ebs_enc.enabled
+  value = var.create_vuln_ebs_disabled ? aws_ebs_encryption_by_default.vuln_ebs_enc[0].enabled : false
 }

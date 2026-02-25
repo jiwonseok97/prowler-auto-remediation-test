@@ -239,6 +239,20 @@ jobs:
             --region "ap-northeast-2" \
             --framework "${{ inputs.compliance_mode }}"
 
+      - name: Trigger Prowler native scan (self-hosted)
+        continue-on-error: true
+        env:
+          PROWLER_NATIVE_API_URL: ${{ secrets.PROWLER_NATIVE_API_URL }}
+          PROWLER_NATIVE_EMAIL: ${{ secrets.PROWLER_NATIVE_EMAIL }}
+          PROWLER_NATIVE_PASSWORD: ${{ secrets.PROWLER_NATIVE_PASSWORD }}
+          PROWLER_NATIVE_PROVIDER_NAME: prowler-auto
+        run: |
+          if [ -z "$PROWLER_NATIVE_API_URL" ] || [ -z "$PROWLER_NATIVE_EMAIL" ] || [ -z "$PROWLER_NATIVE_PASSWORD" ]; then
+            echo "skip: PROWLER_NATIVE_API_URL / PROWLER_NATIVE_EMAIL / PROWLER_NATIVE_PASSWORD not set"
+            exit 0
+          fi
+          bash iac/scripts/prowler_native_scan_trigger.sh
+
       - name: Optional publish baseline scan to external API
         continue-on-error: true
         env:

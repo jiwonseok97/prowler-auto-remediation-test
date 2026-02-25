@@ -55,3 +55,9 @@ variable "create_vuln_iam_direct_policy_user" {
   description = "IAM 사용자에게 정책 직접 부여 (그룹/Role 우회) → iam_policy_attached_only_to_group_or_roles FAIL ×1 (review-then-apply)"
   default     = true
 }
+
+variable "create_vuln_ebs_disabled" {
+  type        = bool
+  description = "EBS 기본 암호화 비활성화 → ec2_ebs_default_encryption_enabled FAIL ×1 (ec2:DisableEbsEncryptionByDefault 권한 필요)"
+  default     = false
+}

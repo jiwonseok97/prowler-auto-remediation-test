@@ -145,13 +145,12 @@ resource "aws_cloudtrail" "vuln_trail" {
 # ==================================================
 # EBS 기본 암호화 비활성화 (계정 수준)
 # → prowler-ec2_ebs_default_encryption_enabled ×1 (auto-remediable)
+# 주의: ec2:DisableEbsEncryptionByDefault 권한 필요
+#       GitHubActionsProwlerRole에 권한이 없으면 create_vuln_ebs_disabled=false
 # ==================================================
 resource "aws_ebs_encryption_by_default" "vuln_ebs_enc" {
+  count   = var.create_vuln_ebs_disabled ? 1 : 0
   enabled = false
-
-  lifecycle {
-    ignore_changes = []
-  }
 }
 
 # ==================================================

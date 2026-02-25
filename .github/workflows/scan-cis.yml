@@ -139,7 +139,9 @@ jobs:
         if: inputs.deploy_vulnerable == true
         run: |
           terraform -chdir=terraform/vulnerable_infra_test init -input=false
-          terraform -chdir=terraform/vulnerable_infra_test apply -auto-approve -input=false
+          terraform -chdir=terraform/vulnerable_infra_test apply -auto-approve -input=false \
+            -var account_id="${{ inputs.account_id }}" \
+            -var region="${AWS_REGION}"
 
       - name: Setup Python
         uses: actions/setup-python@v5

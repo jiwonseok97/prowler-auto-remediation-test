@@ -21,7 +21,11 @@ create_weak_account_password_policy = true
 create_vuln_cloudtrail = true
 
 # IAM: 정책 직접 부여 (그룹/Role 우회) → 1건 FAIL (review-then-apply)
-create_vuln_iam_direct_policy_user = true
+# GitHubActionsProwlerRole에 iam:CreateUser/CreatePolicy 권한 필요 → 현재 비활성화
+create_vuln_iam_direct_policy_user = false
+
+# EBS: 기본 암호화 비활성화 → ec2:DisableEbsEncryptionByDefault 권한 필요 → 현재 비활성화
+create_vuln_ebs_disabled = false
 
 # EC2/VPC: Default SG 전체 허용 → 1건 FAIL (auto-remediable)
 open_default_security_group = true

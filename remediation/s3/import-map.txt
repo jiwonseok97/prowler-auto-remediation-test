@@ -1,4 +1,3 @@
-aws_s3_bucket_policy.fix_s3_secure_transport_658e1bf9f7|prowler-auto-tfstate-132410971304|true|prowler-s3_bucket_secure_transport_policy
 aws_s3_bucket_policy.fix_s3_secure_transport_68f79c5437|vuln-cloudtrail-132410971304-ap-northeast-2|true|prowler-s3_bucket_secure_transport_policy
 aws_s3_bucket_policy.fix_s3_secure_transport_12401c85dd|vuln-demo-132410971304-ap-northeast-2-01|true|prowler-s3_bucket_secure_transport_policy
 aws_s3_bucket_policy.fix_s3_secure_transport_af91b97544|vuln-demo-132410971304-ap-northeast-2-02|true|prowler-s3_bucket_secure_transport_policy

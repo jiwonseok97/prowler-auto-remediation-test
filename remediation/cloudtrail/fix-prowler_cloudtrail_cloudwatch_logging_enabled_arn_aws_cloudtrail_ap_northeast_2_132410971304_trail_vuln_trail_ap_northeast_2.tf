@@ -32,10 +32,16 @@ resource "aws_s3_bucket_policy" "fix_cloudtrail_bucket_policy_0a966160c4" {
 POLICY
 }
 
+resource "aws_iam_role" "fix_cloudtrail_cw_role_0a966160c4" {
+  name               = "remediation_ct_cw_vuln_trail"
+  assume_role_policy = "{\"Version\": \"2012-10-17\", \"Statement\": [{\"Effect\": \"Allow\", \"Principal\": {\"Service\": \"cloudtrail.amazonaws.com\"}, \"Action\": \"sts:AssumeRole\"}]}"
+}
+
 resource "aws_iam_role_policy" "fix_cloudtrail_cw_role_policy_0a966160c4" {
-  name   = "cloudtrail-to-cloudwatch-logs"
-  role   = "cloudtrail-to-cw-vuln_trail"
-  policy = "{\"Version\": \"2012-10-17\", \"Statement\": [{\"Effect\": \"Allow\", \"Action\": [\"logs:CreateLogStream\", \"logs:PutLogEvents\"], \"Resource\": [\"arn:aws:logs:ap-northeast-2:132410971304:log-group:/aws/cloudtrail/132410971304:*\", \"arn:aws:logs:ap-northeast-2:132410971304:log-group:/aws/cloudtrail/132410971304\"]}]}"
+  name       = "cloudtrail-to-cloudwatch-logs"
+  role       = "remediation_ct_cw_vuln_trail"
+  policy     = "{\"Version\": \"2012-10-17\", \"Statement\": [{\"Effect\": \"Allow\", \"Action\": [\"logs:CreateLogStream\", \"logs:PutLogEvents\"], \"Resource\": [\"arn:aws:logs:ap-northeast-2:132410971304:log-group:/aws/cloudtrail/132410971304:*\", \"arn:aws:logs:ap-northeast-2:132410971304:log-group:/aws/cloudtrail/132410971304\"]}]}"
+  depends_on = [aws_iam_role.fix_cloudtrail_cw_role_0a966160c4]
 }
 
 resource "aws_cloudtrail" "fix_cloudtrail_0a966160c4" {
@@ -45,7 +51,7 @@ resource "aws_cloudtrail" "fix_cloudtrail_0a966160c4" {
   is_multi_region_trail         = false
   enable_logging                = true
   cloud_watch_logs_group_arn    = "arn:aws:logs:ap-northeast-2:132410971304:log-group:/aws/cloudtrail/132410971304:*"
-  cloud_watch_logs_role_arn     = "arn:aws:iam::132410971304:role/cloudtrail-to-cw-vuln_trail"
+  cloud_watch_logs_role_arn     = aws_iam_role.fix_cloudtrail_cw_role_0a966160c4.arn
   enable_log_file_validation    = true
 
   depends_on = [aws_s3_bucket_policy.fix_cloudtrail_bucket_policy_0a966160c4, aws_iam_role_policy.fix_cloudtrail_cw_role_policy_0a966160c4]

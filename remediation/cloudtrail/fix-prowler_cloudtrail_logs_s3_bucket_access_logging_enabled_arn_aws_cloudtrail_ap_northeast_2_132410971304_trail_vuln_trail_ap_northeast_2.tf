@@ -55,8 +55,8 @@ resource "aws_s3_bucket_policy" "fix_cloudtrail_accesslog_target_policy_87323435
       "Resource": "arn:aws:s3:::aws-cloudtrail-logs-132410971304-0971c04b/AWSLogs/132410971304/*",
       "Condition": {
         "StringEquals": {
-          "aws:SourceArn": "arn:aws:cloudtrail:ap-northeast-2:132410971304:trail/security-cloudtail",
-          "s3:x-amz-acl": "bucket-owner-full-control"
+          "s3:x-amz-acl": "bucket-owner-full-control",
+          "aws:SourceArn": "arn:aws:cloudtrail:ap-northeast-2:132410971304:trail/security-cloudtail"
         }
       }
     },
@@ -70,8 +70,8 @@ resource "aws_s3_bucket_policy" "fix_cloudtrail_accesslog_target_policy_87323435
       "Resource": "arn:aws:s3:::aws-cloudtrail-logs-132410971304-0971c04b/AWSLogs/132410971304/*",
       "Condition": {
         "StringEquals": {
-          "aws:SourceAccount": "132410971304",
-          "s3:x-amz-acl": "bucket-owner-full-control"
+          "s3:x-amz-acl": "bucket-owner-full-control",
+          "aws:SourceAccount": "132410971304"
         },
         "ArnLike": {
           "aws:SourceArn": "arn:aws:logs:ap-northeast-2:132410971304:*"

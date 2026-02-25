@@ -1,5 +1,5 @@
-resource "aws_network_acl_rule" "fix_network_acl_ingress_deny_6313bdc812" {
-  network_acl_id = "acl-0908a8c50bf9615a7"
+resource "aws_network_acl_rule" "fix_network_acl_ingress_deny_585e4b17d3" {
+  network_acl_id = "acl-058581ca52ec4f8da"
   egress         = false
   rule_number    = 251
   protocol       = "6"

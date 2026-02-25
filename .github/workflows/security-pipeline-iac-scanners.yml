@@ -1,4 +1,4 @@
-name: Security Pipeline - IaC Scanners (Checkov)
+name: 보안 파이프라인 - IaC 코드 정적 분석 (Checkov)
 
 on:
   workflow_dispatch:

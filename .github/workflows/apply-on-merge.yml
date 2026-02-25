@@ -1,4 +1,4 @@
-name: Security Pipeline - 03 Apply Merged Generated Terraform Remediation
+name: 보안 파이프라인 - 03 머지된 리메디 적용
 
 on:
   workflow_dispatch:

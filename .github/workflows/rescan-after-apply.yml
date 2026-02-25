@@ -1,4 +1,4 @@
-name: Security Pipeline - 04 Verify FAIL Reduction
+name: 보안 파이프라인 - 04 적용 후 재스캔 검증
 
 on:
   workflow_dispatch:

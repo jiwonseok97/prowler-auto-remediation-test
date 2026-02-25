@@ -54,21 +54,11 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          STATE_BUCKET="prowler-auto-tfstate-${AWS_ACCOUNT_ID}"
+          STATE_BUCKET="prowler-terraform-state-${AWS_ACCOUNT_ID}"
           STATE_KEY="vulnerable_infra_test/terraform.tfstate"
 
-          # 1. Ensure Terraform state bucket exists
-          echo "==> ensure state bucket: $STATE_BUCKET"
-          if ! aws s3api head-bucket --bucket "$STATE_BUCKET" 2>/dev/null; then
-            aws s3api create-bucket \
-              --bucket "$STATE_BUCKET" \
-              --region "$AWS_REGION" \
-              --create-bucket-configuration LocationConstraint="$AWS_REGION"
-            aws s3api put-bucket-versioning \
-              --bucket "$STATE_BUCKET" \
-              --versioning-configuration Status=Enabled
-            echo "state bucket created"
-          fi
+          # 1. State bucket already exists (prowler-terraform-state-{account})
+          echo "==> using state bucket: $STATE_BUCKET"
 
           # 2. Terraform init with S3 backend
           echo "==> terraform init (S3 backend)"

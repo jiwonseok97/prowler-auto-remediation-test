@@ -1,7 +1,7 @@
 # Prowler Auto Remediation
 
 > AWS 보안 취약점 자동 탐지 → 코드 생성 → 적용 → 재검증 파이프라인
-> Checkov IaC 정적 분석 + OpenVAS 인프라 스캐너 통합
+> Checkov IaC 정적 분석
 
 ---
 
@@ -20,9 +20,10 @@ Prowler(CIS 1.4 + ISMS-P)로 AWS 계정을 스캔하고, 발견된 취약점에 
 
 ```
 [취약 인프라 배포]
-  scan-cis.yml (deploy_vulnerable=true)
-  └─ pre-deploy cleanup → terraform apply
-     └─ SG 90개 (0.0.0.0/0 허용) + S3 20개 (Public Access ON) 생성
+terraform/vulnerable_infra_test/
+├── main.tf          # 전체 취약 리소스 정의
+├── variables.tf     # 취약 항목별 토글 변수
+└── terraform.tfvars # 실제 배포 수량 및 활성화 설정
 
 [01] Scan Baseline (scan-cis.yml)
   └─ Prowler CIS 1.4 + ISMS-P 스캔

@@ -1,4 +1,4 @@
-name: 보안 파이프라인 - 03 Merge된 리메디에이션 적용
+name: 보안 파이프라인 - 03 Merge된 리메디에이션 적용 → Terraform Apply
 
 on:
   workflow_dispatch:

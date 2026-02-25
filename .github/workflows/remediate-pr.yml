@@ -1,4 +1,4 @@
-name: 보안 파이프라인 - 02 자동 리메디에이션 PR 생성
+name: 보안 파이프라인 - 02 자동 리메디에이션 PR 생성 → 취약점별 Terraform 수정 코드 자동 생성
 
 on:
   workflow_dispatch:

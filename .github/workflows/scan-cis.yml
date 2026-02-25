@@ -1,4 +1,4 @@
-name: 보안 파이프라인 - 01 취약 인프라 초기 스캔
+name: 보안 파이프라인 - 01 취약 인프라 초기 스캔 → AWS Prowler로 취약점 스캔
 
 on:
   workflow_dispatch:

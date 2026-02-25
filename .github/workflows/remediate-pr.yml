@@ -1,4 +1,4 @@
-name: 보안 파이프라인 - 02 자동 리메디 PR 생성
+name: 보안 파이프라인 - 02 자동 리메디에이션 PR 생성
 
 on:
   workflow_dispatch:

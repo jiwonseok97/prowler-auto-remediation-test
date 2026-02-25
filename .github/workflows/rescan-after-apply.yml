@@ -367,19 +367,22 @@ jobs:
           if incremental is not None:
               if incremental < 0:
                   if new_remediable:
-                      raise SystemExit(
-                          "FAIL increased with new terraform-capable checks since previous rescan: "
+                      # 새 취약 인프라 배포로 신규 항목 생성 - 실패 처리하지 않음 (01번 스캔 기준으로 판정)
+                      print(
+                          "INFO: new terraform-capable checks appeared since previous rescan "
+                          "(likely new vulnerable infra deployment): "
                           f"new={','.join(new_remediable)} "
                           f"previous_post_remediable={s.get('previous_post_fail_remediable', s.get('previous_post_fail'))} "
                           f"current_post_remediable={s.get('post_fail_remediable', s.get('post_fail'))}"
                       )
-                  Path("artifacts/rescan/no_reduction.flag").write_text("1", encoding="utf-8")
-                  print(
-                      "WARNING: remediable fail count increased but no new check IDs "
-                      "(count fluctuation/noise treated as neutral): "
-                      f"previous_post_remediable={s.get('previous_post_fail_remediable', s.get('previous_post_fail'))} "
-                      f"current_post_remediable={s.get('post_fail_remediable', s.get('post_fail'))}"
-                  )
+                  else:
+                      Path("artifacts/rescan/no_reduction.flag").write_text("1", encoding="utf-8")
+                      print(
+                          "WARNING: remediable fail count increased but no new check IDs "
+                          "(count fluctuation/noise treated as neutral): "
+                          f"previous_post_remediable={s.get('previous_post_fail_remediable', s.get('previous_post_fail'))} "
+                          f"current_post_remediable={s.get('post_fail_remediable', s.get('post_fail'))}"
+                      )
               if incremental == 0:
                   Path("artifacts/rescan/no_reduction.flag").write_text("1", encoding="utf-8")
                   print(
@@ -387,7 +390,8 @@ jobs:
                       f"previous_post_remediable={s.get('previous_post_fail_remediable', s.get('previous_post_fail'))} "
                       f"current_post_remediable={s.get('post_fail_remediable', s.get('post_fail'))}"
                   )
-          elif s.get("reduced", 0) <= 0:
+          # 항상 01번 스캔 기준으로 최종 판정 (elif → if로 변경)
+          if s.get("reduced", 0) <= 0:
               raise SystemExit(f"FAIL not reduced vs baseline: baseline={s.get('baseline_fail')} post={s.get('post_fail')}")
           PY
 

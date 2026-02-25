@@ -1,4 +1,4 @@
-name: 보안 파이프라인 - 04 적용 후 재스캔 검증 → 취약도 감소 확인
+name: 보안 파이프라인 - 04 배포 후 재스캔 검증 → 취약점 감소 확인
 
 on:
   workflow_dispatch:
@@ -8,7 +8,7 @@ on:
         required: false
         default: "manual"
   workflow_run:
-    workflows: ["Security Pipeline - 03 Apply Merged Generated Terraform Remediation"]
+    workflows: ["보안 파이프라인 - 03 Merge 리메디에이션 적용 → Terraform Apply"]
     types: [completed]
 
 concurrency:
@@ -70,7 +70,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           mkdir -p artifacts/baseline_scan
-          RID="$(gh run list --workflow "Security Pipeline - 01 Scan Baseline" --repo "${{ github.repository }}" --limit 30 --json databaseId,conclusion --jq '[.[] | select(.conclusion=="success")][0].databaseId')"
+          RID="$(gh run list --workflow "보안 파이프라인 - 01 인프라 취약점 스캔 → AWS Prowler ( CIS 1.4 / ISMS-P )" --repo "${{ github.repository }}" --limit 30 --json databaseId,conclusion --jq '[.[] | select(.conclusion=="success")][0].databaseId')"
           if [ -n "$RID" ] && [ "$RID" != "null" ]; then
             gh run download "$RID" --repo "${{ github.repository }}" --name "scan-$RID" --dir artifacts/baseline_scan || true
           fi
@@ -81,7 +81,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           mkdir -p artifacts/previous_rescan
-          PREV_RID="$(gh run list --workflow "Security Pipeline - 04 Verify FAIL Reduction" --repo "${{ github.repository }}" --limit 30 --json databaseId,conclusion --jq '[.[] | select(.conclusion=="success" and (.databaseId|tostring)!="${{ github.run_id }}")][0].databaseId')"
+          PREV_RID="$(gh run list --workflow "보안 파이프라인 - 04 배포 후 재스캔 검증 → 취약점 감소 확인" --repo "${{ github.repository }}" --limit 30 --json databaseId,conclusion --jq '[.[] | select(.conclusion=="success" and (.databaseId|tostring)!="${{ github.run_id }}")][0].databaseId')"
           if [ -n "$PREV_RID" ] && [ "$PREV_RID" != "null" ]; then
             echo "previous_rescan_run_id=$PREV_RID" >> "$GITHUB_ENV"
             gh run download "$PREV_RID" --repo "${{ github.repository }}" --name "rescan-$PREV_RID" --dir artifacts/previous_rescan || true

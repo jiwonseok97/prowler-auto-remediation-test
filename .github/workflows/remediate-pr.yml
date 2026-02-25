@@ -1,4 +1,4 @@
-name: 보안 파이프라인 - 02 자동 리메디에이션 PR 생성 → 취약점별 Terraform 수정 코드 자동 생성
+name: 보안 파이프라인 - 02 자동 리메디에이션 PR 생성 → 취약점 보완 Terraform코드 생성
 
 on:
   workflow_dispatch:
@@ -32,7 +32,7 @@ on:
         type: boolean
         default: true
   workflow_run:
-    workflows: ["Security Pipeline - 01 Scan Baseline"]
+    workflows: ["보안 파이프라인 - 01 인프라 취약점 스캔 → AWS Prowler ( CIS 1.4 / ISMS-P )"]
     types: [completed]
 
 concurrency:

@@ -1,4 +1,4 @@
-name: 보안 파이프라인 - IaC 코드 정적 분석 (Checkov)
+﻿name: 보안 파이프라인 - IaC 코드 정적 분석 (Checkov)
 
 on:
   workflow_dispatch:
@@ -28,16 +28,19 @@ jobs:
           pip install checkov
 
       # -------------------------------------------------------
-      # Checkov – terraform/ (취약 인프라 배포 코드)
+      # Checkov - terraform/ (취약 인프라 배포 코드)
       # -------------------------------------------------------
       - name: Run Checkov on terraform/
         continue-on-error: true
         run: |
           checkov -d terraform \
             -o json \
+            --output-file-path artifacts/iac-scanners/checkov-terraform.json \
+            --quiet || true
+
+          checkov -d terraform \
             -o sarif \
-            --output-file-path artifacts/iac-scanners \
-            --output-filename checkov-terraform \
+            --output-file-path artifacts/iac-scanners/checkov-terraform.sarif \
             --quiet || true
 
           python - <<'PY'
@@ -66,16 +69,19 @@ jobs:
           PY
 
       # -------------------------------------------------------
-      # Checkov – remediation/ (자동 생성 보안 수정 코드)
+      # Checkov - remediation/ (자동 생성 보안 보완 코드)
       # -------------------------------------------------------
       - name: Run Checkov on remediation/
         continue-on-error: true
         run: |
           checkov -d remediation \
             -o json \
+            --output-file-path artifacts/iac-scanners/checkov-remediation.json \
+            --quiet || true
+
+          checkov -d remediation \
             -o sarif \
-            --output-file-path artifacts/iac-scanners \
-            --output-filename checkov-remediation \
+            --output-file-path artifacts/iac-scanners/checkov-remediation.sarif \
             --quiet || true
 
           python - <<'PY'
@@ -98,7 +104,7 @@ jobs:
           PY
 
       # -------------------------------------------------------
-      # SARIF → GitHub Code Scanning 업로드
+      # SARIF - GitHub Code Scanning 업로드
       # -------------------------------------------------------
       - name: Upload terraform SARIF to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v3
@@ -157,11 +163,11 @@ jobs:
 
           md  = "## IaC Scanner (Checkov) 결과 요약\n\n"
           md += "### Before vs After 비교\n\n"
-          md += "| 스캔 대상 | 총 항목 | PASS | FAIL | 통과율 |\n"
+          md += "| 대상 구분 | 총 항목 | PASS | FAIL | 통과율 |\n"
           md += "|---|---:|---:|---:|---:|\n"
           md += f"| 취약 인프라 코드 (`terraform/`) | {tf_total} | {len(tf_pass)} | {len(tf_fail)} | **{tf_rate:.1f}%** |\n"
-          md += f"| 보안 수정 코드 (`remediation/`) | {rem_total} | {len(rem_pass)} | {len(rem_fail)} | **{rem_rate:.1f}%** |\n"
-          md += f"\n> ✅ 보안 수정 코드 Checkov 통과율 **{rem_rate:.1f}%** — 취약 코드 대비 +**{rem_rate-tf_rate:.1f}%p** 개선\n\n"
+          md += f"| 보안 보완 코드 (`remediation/`) | {rem_total} | {len(rem_pass)} | {len(rem_fail)} | **{rem_rate:.1f}%** |\n"
+          md += f"\n> 보안 보완 코드 Checkov 통과율 **{rem_rate:.1f}%** / 취약 코드 대비 **{rem_rate-tf_rate:.1f}%p** 개선\n\n"
 
           md += "### terraform/ Top Failing Checks\n\n"
           md += "| Check ID | 위반 건수 |\n|---|---:|\n"
@@ -175,10 +181,10 @@ jobs:
 
           md += "\n### GitHub Code Scanning 통합\n\n"
           md += "| 기능 | 상태 |\n|---|---|\n"
-          md += "| Checkov JSON 아티팩트 | ✅ 저장됨 |\n"
-          md += "| SARIF → Code Scanning | ✅ 업로드됨 |\n"
-          md += "| PR Gate 트리거 | ✅ 활성 |\n"
-          md += "| Before/After 비교 | ✅ 이 요약 |\n"
+          md += "| Checkov JSON 아티팩트 | 저장됨 |\n"
+          md += "| SARIF → Code Scanning | 업로드됨 |\n"
+          md += "| PR Gate 트리거 | 활성 |\n"
+          md += "| Before/After 비교 | 이 요약 |\n"
 
           (root / "summary.md").write_text(md, encoding="utf-8")
           print(md)

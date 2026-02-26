@@ -454,12 +454,6 @@ resource "aws_iam_user" "vuln_direct_policy" {
 resource "aws_iam_group" "vuln_direct_group" {
   count = var.create_vuln_iam_direct_policy_user ? 1 : 0
   name  = local.iam_group_name
-
-  tags = {
-    ManagedBy     = "terraform"
-    ProwlerDemo   = "vulnerable_infra_test"
-    CleanupTarget = "true"
-  }
 }
 
 resource "aws_iam_user_group_membership" "vuln_user_group" {
@@ -486,7 +480,7 @@ resource "aws_iam_policy" "vuln_readonly" {
       ] : [
       {
         Effect   = "Allow"
-        Action   = "*"
+        Action   = ["*"]
         Resource = "*"
       }
     ]

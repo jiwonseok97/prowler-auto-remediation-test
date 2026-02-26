@@ -56,6 +56,7 @@ locals {
   s3_data_event_arns    = [for b in aws_s3_bucket.vuln_bucket : "${b.arn}/"]
   s3_bucket_arns        = [for b in aws_s3_bucket.vuln_bucket : b.arn]
   s3_bucket_object_arns = [for b in aws_s3_bucket.vuln_bucket : "${b.arn}/*"]
+  open_sg_ports         = [22, 3389, 80, 443, 3306, 5432]
 
   sg_ingress_rules = local.is_remediate ? [] : [
     {
@@ -437,6 +438,36 @@ resource "aws_default_security_group" "vuln_default_sg" {
 }
 
 # ==================================================
+# Open Security Groups (0.0.0.0/0)
+# → EC2/Network ingress exposure checks 증가
+# ==================================================
+resource "aws_security_group" "vuln_open_sg" {
+  count  = local.is_remediate ? 0 : var.vuln_open_sg_count
+  name   = format("sec-open-%s-%02d", local.name_seed, count.index + 1)
+  vpc_id = data.aws_vpc.default.id
+
+  ingress {
+    from_port   = local.open_sg_ports[count.index % length(local.open_sg_ports)]
+    to_port     = local.open_sg_ports[count.index % length(local.open_sg_ports)]
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    ManagedBy     = "terraform"
+    ProwlerDemo   = "vulnerable_infra_test"
+    CleanupTarget = "true"
+  }
+}
+
+# ==================================================
 # IAM 사용자에게 정책 직접 부여 (그룹/Role 우회)
 # → prowler-iam_policy_attached_only_to_group_or_roles ×1 (review-then-apply)
 # ==================================================
@@ -503,6 +534,26 @@ resource "aws_iam_group_policy_attachment" "vuln_group_attach" {
   count      = var.create_vuln_iam_direct_policy_user && local.is_remediate ? 1 : 0
   group      = aws_iam_group.vuln_direct_group[0].name
   policy_arn = aws_iam_policy.vuln_readonly[0].arn
+}
+
+# ==================================================
+# Multiple admin IAM users (direct policy attach)
+# ==================================================
+resource "aws_iam_user" "vuln_admin_users" {
+  count = var.create_vuln_admin_iam_users && !local.is_remediate ? var.vuln_admin_iam_user_count : 0
+  name  = format("svc-admin-%s-%02d", local.name_seed, count.index + 1)
+
+  tags = {
+    ManagedBy     = "terraform"
+    ProwlerDemo   = "vulnerable_infra_test"
+    CleanupTarget = "true"
+  }
+}
+
+resource "aws_iam_user_policy_attachment" "vuln_admin_attach" {
+  count      = var.create_vuln_admin_iam_users && !local.is_remediate ? var.vuln_admin_iam_user_count : 0
+  user       = aws_iam_user.vuln_admin_users[count.index].name
+  policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
 }
 
 # ==================================================

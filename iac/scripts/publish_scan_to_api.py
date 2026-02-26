@@ -42,6 +42,10 @@ def resolve_api_url(raw_url: str) -> str:
         return url
 
     parsed = urlparse(url)
+    if not parsed.scheme:
+        url = f"http://{url.lstrip('/')}"
+        parsed = urlparse(url)
+
     path = (parsed.path or "").rstrip("/")
     if path in {"", "/"}:
         return urljoin(url.rstrip("/") + "/", "api/v1/pipeline-publish/events")

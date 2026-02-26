@@ -1,5 +1,5 @@
 {
-  "created_at": "2026-02-25T12:17:07.800434+00:00",
+  "created_at": "2026-02-26T02:15:42.005192+00:00",
   "account": "132410971304",
   "region": "ap-northeast-2",
   "baseline_fail_count": 84,
@@ -105,7 +105,7 @@
       ],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-25T12:17:07.800970+00:00"
+      "created_at": "2026-02-26T02:15:42.005817+00:00"
     },
     "prowler-iam_password_policy_reuse_24": {
       "category": "iam",
@@ -126,7 +126,7 @@
       ],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-25T12:17:07.800977+00:00"
+      "created_at": "2026-02-26T02:15:42.005825+00:00"
     },
     "prowler-iam_password_policy_lowercase": {
       "category": "iam",
@@ -147,7 +147,7 @@
       ],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-25T12:17:07.800980+00:00"
+      "created_at": "2026-02-26T02:15:42.005828+00:00"
     },
     "prowler-iam_password_policy_number": {
       "category": "iam",
@@ -168,7 +168,7 @@
       ],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-25T12:17:07.800982+00:00"
+      "created_at": "2026-02-26T02:15:42.005831+00:00"
     },
     "prowler-iam_password_policy_symbol": {
       "category": "iam",
@@ -189,7 +189,7 @@
       ],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-25T12:17:07.800984+00:00"
+      "created_at": "2026-02-26T02:15:42.005833+00:00"
     },
     "prowler-iam_password_policy_uppercase": {
       "category": "iam",
@@ -210,7 +210,7 @@
       ],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-25T12:17:07.800986+00:00"
+      "created_at": "2026-02-26T02:15:42.005835+00:00"
     },
     "prowler-kms_cmk_rotation_enabled": [
       {
@@ -219,44 +219,44 @@
         "priority": "P2",
         "osfp_score": 58.5,
         "files": [
-          "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_1ee9a78f_4a5b_4f4d_a1d9_29008ce210ef_ap_northeast_2.tf"
+          "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_2fa75b06_27f7_4fa5_b39c_abf0ce3aca4e_ap_northeast_2.tf"
         ],
-        "tf_file": "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_1ee9a78f_4a5b_4f4d_a1d9_29008ce210ef_ap_northeast_2.tf",
+        "tf_file": "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_2fa75b06_27f7_4fa5_b39c_abf0ce3aca4e_ap_northeast_2.tf",
         "resources": [
           {
-            "resource_address": "aws_kms_key.fix_kms_rotation_3d972076c6",
-            "arn": "1ee9a78f-4a5b-4f4d-a1d9-29008ce210ef",
+            "resource_address": "aws_kms_key.fix_kms_rotation_5ca6e34279",
+            "arn": "2fa75b06-27f7-4fa5-b39c-abf0ce3aca4e",
             "resource_type": "aws_kms_key",
             "optional": false
           },
           {
-            "resource_address": "aws_kms_key.fix_kms_rotation_a00fe169d4",
-            "arn": "5ae16aa7-d8d6-40da-9d04-9ecf81794bc1",
+            "resource_address": "aws_kms_key.fix_kms_rotation_e2662b55c7",
+            "arn": "5c6e3b23-1327-4ade-be34-99922d3f0669",
             "resource_type": "aws_kms_key",
             "optional": false
           },
           {
-            "resource_address": "aws_kms_key.fix_kms_rotation_98fb11754b",
-            "arn": "eab04df3-9ccb-4f1e-b0c3-619f98052c3e",
+            "resource_address": "aws_kms_key.fix_kms_rotation_c2c0e40b15",
+            "arn": "8808d9d7-5cd5-4e96-90ad-30999d03ec8b",
             "resource_type": "aws_kms_key",
             "optional": false
           },
           {
-            "resource_address": "aws_kms_key.fix_kms_rotation_00ed093424",
-            "arn": "f53a5253-7337-4358-9e1f-5d17c3d1ee17",
+            "resource_address": "aws_kms_key.fix_kms_rotation_ac345f974b",
+            "arn": "8918aafa-dbaf-48b5-807f-2a3010585e6b",
             "resource_type": "aws_kms_key",
             "optional": false
           },
           {
-            "resource_address": "aws_kms_key.fix_kms_rotation_6d21af5b44",
-            "arn": "fdb9a598-853b-42ae-8c0f-035669d3c111",
+            "resource_address": "aws_kms_key.fix_kms_rotation_df4efcec21",
+            "arn": "da625f87-582f-432e-9ca3-812030a89fca",
             "resource_type": "aws_kms_key",
             "optional": false
           }
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-25T12:17:07.800988+00:00"
+        "created_at": "2026-02-26T02:15:42.005837+00:00"
       },
       {
         "category": "iam",
@@ -264,44 +264,44 @@
         "priority": "P2",
         "osfp_score": 58.5,
         "files": [
-          "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_5ae16aa7_d8d6_40da_9d04_9ecf81794bc1_ap_northeast_2.tf"
+          "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_5c6e3b23_1327_4ade_be34_99922d3f0669_ap_northeast_2.tf"
         ],
-        "tf_file": "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_5ae16aa7_d8d6_40da_9d04_9ecf81794bc1_ap_northeast_2.tf",
+        "tf_file": "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_5c6e3b23_1327_4ade_be34_99922d3f0669_ap_northeast_2.tf",
         "resources": [
           {
-            "resource_address": "aws_kms_key.fix_kms_rotation_3d972076c6",
-            "arn": "1ee9a78f-4a5b-4f4d-a1d9-29008ce210ef",
+            "resource_address": "aws_kms_key.fix_kms_rotation_5ca6e34279",
+            "arn": "2fa75b06-27f7-4fa5-b39c-abf0ce3aca4e",
             "resource_type": "aws_kms_key",
             "optional": false
           },
           {
-            "resource_address": "aws_kms_key.fix_kms_rotation_a00fe169d4",
-            "arn": "5ae16aa7-d8d6-40da-9d04-9ecf81794bc1",
+            "resource_address": "aws_kms_key.fix_kms_rotation_e2662b55c7",
+            "arn": "5c6e3b23-1327-4ade-be34-99922d3f0669",
             "resource_type": "aws_kms_key",
             "optional": false
           },
           {
-            "resource_address": "aws_kms_key.fix_kms_rotation_98fb11754b",
-            "arn": "eab04df3-9ccb-4f1e-b0c3-619f98052c3e",
+            "resource_address": "aws_kms_key.fix_kms_rotation_c2c0e40b15",
+            "arn": "8808d9d7-5cd5-4e96-90ad-30999d03ec8b",
             "resource_type": "aws_kms_key",
             "optional": false
           },
           {
-            "resource_address": "aws_kms_key.fix_kms_rotation_00ed093424",
-            "arn": "f53a5253-7337-4358-9e1f-5d17c3d1ee17",
+            "resource_address": "aws_kms_key.fix_kms_rotation_ac345f974b",
+            "arn": "8918aafa-dbaf-48b5-807f-2a3010585e6b",
             "resource_type": "aws_kms_key",
             "optional": false
           },
           {
-            "resource_address": "aws_kms_key.fix_kms_rotation_6d21af5b44",
-            "arn": "fdb9a598-853b-42ae-8c0f-035669d3c111",
+            "resource_address": "aws_kms_key.fix_kms_rotation_df4efcec21",
+            "arn": "da625f87-582f-432e-9ca3-812030a89fca",
             "resource_type": "aws_kms_key",
             "optional": false
           }
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-25T12:17:07.800990+00:00"
+        "created_at": "2026-02-26T02:15:42.005839+00:00"
       },
       {
         "category": "iam",
@@ -309,44 +309,44 @@
         "priority": "P2",
         "osfp_score": 58.5,
         "files": [
-          "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_eab04df3_9ccb_4f1e_b0c3_619f98052c3e_ap_northeast_2.tf"
+          "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_8808d9d7_5cd5_4e96_90ad_30999d03ec8b_ap_northeast_2.tf"
         ],
-        "tf_file": "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_eab04df3_9ccb_4f1e_b0c3_619f98052c3e_ap_northeast_2.tf",
+        "tf_file": "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_8808d9d7_5cd5_4e96_90ad_30999d03ec8b_ap_northeast_2.tf",
         "resources": [
           {
-            "resource_address": "aws_kms_key.fix_kms_rotation_3d972076c6",
-            "arn": "1ee9a78f-4a5b-4f4d-a1d9-29008ce210ef",
+            "resource_address": "aws_kms_key.fix_kms_rotation_5ca6e34279",
+            "arn": "2fa75b06-27f7-4fa5-b39c-abf0ce3aca4e",
             "resource_type": "aws_kms_key",
             "optional": false
           },
           {
-            "resource_address": "aws_kms_key.fix_kms_rotation_a00fe169d4",
-            "arn": "5ae16aa7-d8d6-40da-9d04-9ecf81794bc1",
+            "resource_address": "aws_kms_key.fix_kms_rotation_e2662b55c7",
+            "arn": "5c6e3b23-1327-4ade-be34-99922d3f0669",
             "resource_type": "aws_kms_key",
             "optional": false
           },
           {
-            "resource_address": "aws_kms_key.fix_kms_rotation_98fb11754b",
-            "arn": "eab04df3-9ccb-4f1e-b0c3-619f98052c3e",
+            "resource_address": "aws_kms_key.fix_kms_rotation_c2c0e40b15",
+            "arn": "8808d9d7-5cd5-4e96-90ad-30999d03ec8b",
             "resource_type": "aws_kms_key",
             "optional": false
           },
           {
-            "resource_address": "aws_kms_key.fix_kms_rotation_00ed093424",
-            "arn": "f53a5253-7337-4358-9e1f-5d17c3d1ee17",
+            "resource_address": "aws_kms_key.fix_kms_rotation_ac345f974b",
+            "arn": "8918aafa-dbaf-48b5-807f-2a3010585e6b",
             "resource_type": "aws_kms_key",
             "optional": false
           },
           {
-            "resource_address": "aws_kms_key.fix_kms_rotation_6d21af5b44",
-            "arn": "fdb9a598-853b-42ae-8c0f-035669d3c111",
+            "resource_address": "aws_kms_key.fix_kms_rotation_df4efcec21",
+            "arn": "da625f87-582f-432e-9ca3-812030a89fca",
             "resource_type": "aws_kms_key",
             "optional": false
           }
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-25T12:17:07.800993+00:00"
+        "created_at": "2026-02-26T02:15:42.005842+00:00"
       },
       {
         "category": "iam",
@@ -354,44 +354,44 @@
         "priority": "P2",
         "osfp_score": 58.5,
         "files": [
-          "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_f53a5253_7337_4358_9e1f_5d17c3d1ee17_ap_northeast_2.tf"
+          "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_8918aafa_dbaf_48b5_807f_2a3010585e6b_ap_northeast_2.tf"
         ],
-        "tf_file": "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_f53a5253_7337_4358_9e1f_5d17c3d1ee17_ap_northeast_2.tf",
+        "tf_file": "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_8918aafa_dbaf_48b5_807f_2a3010585e6b_ap_northeast_2.tf",
         "resources": [
           {
-            "resource_address": "aws_kms_key.fix_kms_rotation_3d972076c6",
-            "arn": "1ee9a78f-4a5b-4f4d-a1d9-29008ce210ef",
+            "resource_address": "aws_kms_key.fix_kms_rotation_5ca6e34279",
+            "arn": "2fa75b06-27f7-4fa5-b39c-abf0ce3aca4e",
             "resource_type": "aws_kms_key",
             "optional": false
           },
           {
-            "resource_address": "aws_kms_key.fix_kms_rotation_a00fe169d4",
-            "arn": "5ae16aa7-d8d6-40da-9d04-9ecf81794bc1",
+            "resource_address": "aws_kms_key.fix_kms_rotation_e2662b55c7",
+            "arn": "5c6e3b23-1327-4ade-be34-99922d3f0669",
             "resource_type": "aws_kms_key",
             "optional": false
           },
           {
-            "resource_address": "aws_kms_key.fix_kms_rotation_98fb11754b",
-            "arn": "eab04df3-9ccb-4f1e-b0c3-619f98052c3e",
+            "resource_address": "aws_kms_key.fix_kms_rotation_c2c0e40b15",
+            "arn": "8808d9d7-5cd5-4e96-90ad-30999d03ec8b",
             "resource_type": "aws_kms_key",
             "optional": false
           },
           {
-            "resource_address": "aws_kms_key.fix_kms_rotation_00ed093424",
-            "arn": "f53a5253-7337-4358-9e1f-5d17c3d1ee17",
+            "resource_address": "aws_kms_key.fix_kms_rotation_ac345f974b",
+            "arn": "8918aafa-dbaf-48b5-807f-2a3010585e6b",
             "resource_type": "aws_kms_key",
             "optional": false
           },
           {
-            "resource_address": "aws_kms_key.fix_kms_rotation_6d21af5b44",
-            "arn": "fdb9a598-853b-42ae-8c0f-035669d3c111",
+            "resource_address": "aws_kms_key.fix_kms_rotation_df4efcec21",
+            "arn": "da625f87-582f-432e-9ca3-812030a89fca",
             "resource_type": "aws_kms_key",
             "optional": false
           }
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-25T12:17:07.800996+00:00"
+        "created_at": "2026-02-26T02:15:42.005845+00:00"
       },
       {
         "category": "iam",
@@ -399,44 +399,44 @@
         "priority": "P2",
         "osfp_score": 58.5,
         "files": [
-          "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_fdb9a598_853b_42ae_8c0f_035669d3c111_ap_northeast_2.tf"
+          "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_da625f87_582f_432e_9ca3_812030a89fca_ap_northeast_2.tf"
         ],
-        "tf_file": "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_fdb9a598_853b_42ae_8c0f_035669d3c111_ap_northeast_2.tf",
+        "tf_file": "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_da625f87_582f_432e_9ca3_812030a89fca_ap_northeast_2.tf",
         "resources": [
           {
-            "resource_address": "aws_kms_key.fix_kms_rotation_3d972076c6",
-            "arn": "1ee9a78f-4a5b-4f4d-a1d9-29008ce210ef",
+            "resource_address": "aws_kms_key.fix_kms_rotation_5ca6e34279",
+            "arn": "2fa75b06-27f7-4fa5-b39c-abf0ce3aca4e",
             "resource_type": "aws_kms_key",
             "optional": false
           },
           {
-            "resource_address": "aws_kms_key.fix_kms_rotation_a00fe169d4",
-            "arn": "5ae16aa7-d8d6-40da-9d04-9ecf81794bc1",
+            "resource_address": "aws_kms_key.fix_kms_rotation_e2662b55c7",
+            "arn": "5c6e3b23-1327-4ade-be34-99922d3f0669",
             "resource_type": "aws_kms_key",
             "optional": false
           },
           {
-            "resource_address": "aws_kms_key.fix_kms_rotation_98fb11754b",
-            "arn": "eab04df3-9ccb-4f1e-b0c3-619f98052c3e",
+            "resource_address": "aws_kms_key.fix_kms_rotation_c2c0e40b15",
+            "arn": "8808d9d7-5cd5-4e96-90ad-30999d03ec8b",
             "resource_type": "aws_kms_key",
             "optional": false
           },
           {
-            "resource_address": "aws_kms_key.fix_kms_rotation_00ed093424",
-            "arn": "f53a5253-7337-4358-9e1f-5d17c3d1ee17",
+            "resource_address": "aws_kms_key.fix_kms_rotation_ac345f974b",
+            "arn": "8918aafa-dbaf-48b5-807f-2a3010585e6b",
             "resource_type": "aws_kms_key",
             "optional": false
           },
           {
-            "resource_address": "aws_kms_key.fix_kms_rotation_6d21af5b44",
-            "arn": "fdb9a598-853b-42ae-8c0f-035669d3c111",
+            "resource_address": "aws_kms_key.fix_kms_rotation_df4efcec21",
+            "arn": "da625f87-582f-432e-9ca3-812030a89fca",
             "resource_type": "aws_kms_key",
             "optional": false
           }
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-25T12:17:07.800998+00:00"
+        "created_at": "2026-02-26T02:15:42.005847+00:00"
       }
     ],
     "prowler-s3_bucket_secure_transport_policy": [
@@ -549,7 +549,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-25T12:17:07.802832+00:00"
+        "created_at": "2026-02-26T02:15:42.007672+00:00"
       },
       {
         "category": "s3",
@@ -660,7 +660,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-25T12:17:07.802839+00:00"
+        "created_at": "2026-02-26T02:15:42.007680+00:00"
       },
       {
         "category": "s3",
@@ -771,7 +771,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-25T12:17:07.802843+00:00"
+        "created_at": "2026-02-26T02:15:42.007684+00:00"
       },
       {
         "category": "s3",
@@ -882,7 +882,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-25T12:17:07.802846+00:00"
+        "created_at": "2026-02-26T02:15:42.007687+00:00"
       },
       {
         "category": "s3",
@@ -993,7 +993,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-25T12:17:07.802848+00:00"
+        "created_at": "2026-02-26T02:15:42.007690+00:00"
       },
       {
         "category": "s3",
@@ -1104,7 +1104,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-25T12:17:07.802850+00:00"
+        "created_at": "2026-02-26T02:15:42.007692+00:00"
       },
       {
         "category": "s3",
@@ -1215,7 +1215,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-25T12:17:07.802852+00:00"
+        "created_at": "2026-02-26T02:15:42.007694+00:00"
       },
       {
         "category": "s3",
@@ -1326,7 +1326,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-25T12:17:07.802854+00:00"
+        "created_at": "2026-02-26T02:15:42.007696+00:00"
       },
       {
         "category": "s3",
@@ -1437,7 +1437,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-25T12:17:07.802856+00:00"
+        "created_at": "2026-02-26T02:15:42.007698+00:00"
       },
       {
         "category": "s3",
@@ -1548,7 +1548,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-25T12:17:07.802858+00:00"
+        "created_at": "2026-02-26T02:15:42.007699+00:00"
       },
       {
         "category": "s3",
@@ -1659,7 +1659,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-25T12:17:07.802860+00:00"
+        "created_at": "2026-02-26T02:15:42.007701+00:00"
       },
       {
         "category": "s3",
@@ -1770,7 +1770,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-25T12:17:07.802862+00:00"
+        "created_at": "2026-02-26T02:15:42.007703+00:00"
       },
       {
         "category": "s3",
@@ -1881,7 +1881,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-25T12:17:07.802864+00:00"
+        "created_at": "2026-02-26T02:15:42.007705+00:00"
       },
       {
         "category": "s3",
@@ -1992,7 +1992,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-25T12:17:07.802866+00:00"
+        "created_at": "2026-02-26T02:15:42.007707+00:00"
       },
       {
         "category": "s3",
@@ -2103,7 +2103,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-25T12:17:07.802868+00:00"
+        "created_at": "2026-02-26T02:15:42.007709+00:00"
       },
       {
         "category": "s3",
@@ -2214,7 +2214,7 @@
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-25T12:17:07.802870+00:00"
+        "created_at": "2026-02-26T02:15:42.007711+00:00"
       }
     ],
     "prowler-ec2_networkacl_allow_ingress_any_port": [
@@ -2224,26 +2224,26 @@
         "priority": "P2",
         "osfp_score": 58.5,
         "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0c9ce1966cf6371eb_ap_northeast_2.tf"
+          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0a315809810294e52_ap_northeast_2.tf"
         ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0c9ce1966cf6371eb_ap_northeast_2.tf",
+        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0a315809810294e52_ap_northeast_2.tf",
         "resources": [
           {
-            "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_96d9a45bb8",
-            "arn": "acl-0c9ce1966cf6371eb:253:-1:false",
+            "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_027cce6df3",
+            "arn": "acl-0a315809810294e52:253:-1:false",
             "resource_type": "aws_network_acl_rule",
             "optional": true
           },
           {
-            "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_badbdf44a5",
-            "arn": "acl-0dca3f4bca0feec8a:253:-1:false",
+            "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_5b34e14474",
+            "arn": "acl-0659493a63b3f6aec:253:-1:false",
             "resource_type": "aws_network_acl_rule",
             "optional": true
           }
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-25T12:17:07.803342+00:00"
+        "created_at": "2026-02-26T02:15:42.008146+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -2251,26 +2251,26 @@
         "priority": "P2",
         "osfp_score": 58.5,
         "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0dca3f4bca0feec8a_ap_northeast_2.tf"
+          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0659493a63b3f6aec_ap_northeast_2.tf"
         ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0dca3f4bca0feec8a_ap_northeast_2.tf",
+        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0659493a63b3f6aec_ap_northeast_2.tf",
         "resources": [
           {
-            "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_96d9a45bb8",
-            "arn": "acl-0c9ce1966cf6371eb:253:-1:false",
+            "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_027cce6df3",
+            "arn": "acl-0a315809810294e52:253:-1:false",
             "resource_type": "aws_network_acl_rule",
             "optional": true
           },
           {
-            "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_badbdf44a5",
-            "arn": "acl-0dca3f4bca0feec8a:253:-1:false",
+            "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_5b34e14474",
+            "arn": "acl-0659493a63b3f6aec:253:-1:false",
             "resource_type": "aws_network_acl_rule",
             "optional": true
           }
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-25T12:17:07.803349+00:00"
+        "created_at": "2026-02-26T02:15:42.008153+00:00"
       }
     ],
     "prowler-ec2_networkacl_allow_ingress_tcp_port_22": [
@@ -2280,26 +2280,26 @@
         "priority": "P2",
         "osfp_score": 58.5,
         "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0c9ce1966cf6371eb_ap_northeast_2.tf"
+          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0a315809810294e52_ap_northeast_2.tf"
         ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0c9ce1966cf6371eb_ap_northeast_2.tf",
+        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0a315809810294e52_ap_northeast_2.tf",
         "resources": [
           {
-            "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_359cbdd208",
-            "arn": "acl-0c9ce1966cf6371eb:251:6:false",
+            "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_0e17930546",
+            "arn": "acl-0a315809810294e52:251:6:false",
             "resource_type": "aws_network_acl_rule",
             "optional": true
           },
           {
-            "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_67732373dd",
-            "arn": "acl-0dca3f4bca0feec8a:251:6:false",
+            "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_89e08a2b4d",
+            "arn": "acl-0659493a63b3f6aec:251:6:false",
             "resource_type": "aws_network_acl_rule",
             "optional": true
           }
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-25T12:17:07.803353+00:00"
+        "created_at": "2026-02-26T02:15:42.008156+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -2307,26 +2307,26 @@
         "priority": "P2",
         "osfp_score": 58.5,
         "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0dca3f4bca0feec8a_ap_northeast_2.tf"
+          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0659493a63b3f6aec_ap_northeast_2.tf"
         ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0dca3f4bca0feec8a_ap_northeast_2.tf",
+        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0659493a63b3f6aec_ap_northeast_2.tf",
         "resources": [
           {
-            "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_359cbdd208",
-            "arn": "acl-0c9ce1966cf6371eb:251:6:false",
+            "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_0e17930546",
+            "arn": "acl-0a315809810294e52:251:6:false",
             "resource_type": "aws_network_acl_rule",
             "optional": true
           },
           {
-            "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_67732373dd",
-            "arn": "acl-0dca3f4bca0feec8a:251:6:false",
+            "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_89e08a2b4d",
+            "arn": "acl-0659493a63b3f6aec:251:6:false",
             "resource_type": "aws_network_acl_rule",
             "optional": true
           }
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-25T12:17:07.803355+00:00"
+        "created_at": "2026-02-26T02:15:42.008158+00:00"
       }
     ],
     "prowler-ec2_networkacl_allow_ingress_tcp_port_3389": [
@@ -2336,26 +2336,26 @@
         "priority": "P2",
         "osfp_score": 58.5,
         "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0c9ce1966cf6371eb_ap_northeast_2.tf"
+          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0a315809810294e52_ap_northeast_2.tf"
         ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0c9ce1966cf6371eb_ap_northeast_2.tf",
+        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0a315809810294e52_ap_northeast_2.tf",
         "resources": [
           {
-            "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_3015c31212",
-            "arn": "acl-0c9ce1966cf6371eb:252:6:false",
+            "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_86523b1c08",
+            "arn": "acl-0a315809810294e52:252:6:false",
             "resource_type": "aws_network_acl_rule",
             "optional": true
           },
           {
-            "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_89eda10d02",
-            "arn": "acl-0dca3f4bca0feec8a:252:6:false",
+            "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_404fd36c13",
+            "arn": "acl-0659493a63b3f6aec:252:6:false",
             "resource_type": "aws_network_acl_rule",
             "optional": true
           }
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-25T12:17:07.803357+00:00"
+        "created_at": "2026-02-26T02:15:42.008160+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -2363,26 +2363,26 @@
         "priority": "P2",
         "osfp_score": 58.5,
         "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0dca3f4bca0feec8a_ap_northeast_2.tf"
+          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0659493a63b3f6aec_ap_northeast_2.tf"
         ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0dca3f4bca0feec8a_ap_northeast_2.tf",
+        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0659493a63b3f6aec_ap_northeast_2.tf",
         "resources": [
           {
-            "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_3015c31212",
-            "arn": "acl-0c9ce1966cf6371eb:252:6:false",
+            "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_86523b1c08",
+            "arn": "acl-0a315809810294e52:252:6:false",
             "resource_type": "aws_network_acl_rule",
             "optional": true
           },
           {
-            "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_89eda10d02",
-            "arn": "acl-0dca3f4bca0feec8a:252:6:false",
+            "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_404fd36c13",
+            "arn": "acl-0659493a63b3f6aec:252:6:false",
             "resource_type": "aws_network_acl_rule",
             "optional": true
           }
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-25T12:17:07.803359+00:00"
+        "created_at": "2026-02-26T02:15:42.008163+00:00"
       }
     ],
     "prowler-vpc_flow_logs_enabled": [
@@ -2392,13 +2392,13 @@
         "priority": "P2",
         "osfp_score": 58.5,
         "files": [
-          "remediation/network-ec2-vpc/fix-prowler_vpc_flow_logs_enabled_arn_aws_ec2_ap_northeast_2_132410971304_vpc_vpc_099ef085633a8d818_ap_northeast_2.tf"
+          "remediation/network-ec2-vpc/fix-prowler_vpc_flow_logs_enabled_arn_aws_ec2_ap_northeast_2_132410971304_vpc_vpc_023b3558059c392df_ap_northeast_2.tf"
         ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_vpc_flow_logs_enabled_arn_aws_ec2_ap_northeast_2_132410971304_vpc_vpc_099ef085633a8d818_ap_northeast_2.tf",
+        "tf_file": "remediation/network-ec2-vpc/fix-prowler_vpc_flow_logs_enabled_arn_aws_ec2_ap_northeast_2_132410971304_vpc_vpc_023b3558059c392df_ap_northeast_2.tf",
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-25T12:17:07.803362+00:00"
+        "created_at": "2026-02-26T02:15:42.008165+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -2406,13 +2406,13 @@
         "priority": "P2",
         "osfp_score": 58.5,
         "files": [
-          "remediation/network-ec2-vpc/fix-prowler_vpc_flow_logs_enabled_arn_aws_ec2_ap_northeast_2_132410971304_vpc_vpc_01127842030506ff1_ap_northeast_2.tf"
+          "remediation/network-ec2-vpc/fix-prowler_vpc_flow_logs_enabled_arn_aws_ec2_ap_northeast_2_132410971304_vpc_vpc_01c2e0a6c5b8240ad_ap_northeast_2.tf"
         ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_vpc_flow_logs_enabled_arn_aws_ec2_ap_northeast_2_132410971304_vpc_vpc_01127842030506ff1_ap_northeast_2.tf",
+        "tf_file": "remediation/network-ec2-vpc/fix-prowler_vpc_flow_logs_enabled_arn_aws_ec2_ap_northeast_2_132410971304_vpc_vpc_01c2e0a6c5b8240ad_ap_northeast_2.tf",
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-25T12:17:07.803363+00:00"
+        "created_at": "2026-02-26T02:15:42.008167+00:00"
       }
     ],
     "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports": {
@@ -2427,7 +2427,7 @@
       "resources": [],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-25T12:17:07.803366+00:00"
+      "created_at": "2026-02-26T02:15:42.008169+00:00"
     },
     "prowler-ec2_securitygroup_default_restrict_traffic": [
       {
@@ -2447,21 +2447,21 @@
             "optional": false
           },
           {
-            "resource_address": "aws_default_security_group.fix_default_sg_109afe3389",
-            "arn": "sg-08cf65f4f5f82de42",
+            "resource_address": "aws_default_security_group.fix_default_sg_04a9931930",
+            "arn": "sg-05f44400079f3fb0f",
             "resource_type": "aws_default_security_group",
             "optional": false
           },
           {
-            "resource_address": "aws_default_security_group.fix_default_sg_248a9650db",
-            "arn": "sg-07104879f5f9cc16a",
+            "resource_address": "aws_default_security_group.fix_default_sg_57ec0651da",
+            "arn": "sg-0de1fccd911791cc2",
             "resource_type": "aws_default_security_group",
             "optional": false
           }
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-25T12:17:07.803367+00:00"
+        "created_at": "2026-02-26T02:15:42.008171+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -2469,9 +2469,9 @@
         "priority": "P2",
         "osfp_score": 65.5,
         "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_default_restrict_traffic_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_08cf65f4f5f82de42_ap_northeast_2.tf"
+          "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_default_restrict_traffic_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_05f44400079f3fb0f_ap_northeast_2.tf"
         ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_default_restrict_traffic_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_08cf65f4f5f82de42_ap_northeast_2.tf",
+        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_default_restrict_traffic_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_05f44400079f3fb0f_ap_northeast_2.tf",
         "resources": [
           {
             "resource_address": "aws_default_security_group.fix_default_sg_e3067708ac",
@@ -2480,21 +2480,21 @@
             "optional": false
           },
           {
-            "resource_address": "aws_default_security_group.fix_default_sg_109afe3389",
-            "arn": "sg-08cf65f4f5f82de42",
+            "resource_address": "aws_default_security_group.fix_default_sg_04a9931930",
+            "arn": "sg-05f44400079f3fb0f",
             "resource_type": "aws_default_security_group",
             "optional": false
           },
           {
-            "resource_address": "aws_default_security_group.fix_default_sg_248a9650db",
-            "arn": "sg-07104879f5f9cc16a",
+            "resource_address": "aws_default_security_group.fix_default_sg_57ec0651da",
+            "arn": "sg-0de1fccd911791cc2",
             "resource_type": "aws_default_security_group",
             "optional": false
           }
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-25T12:17:07.803369+00:00"
+        "created_at": "2026-02-26T02:15:42.008173+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -2502,9 +2502,9 @@
         "priority": "P2",
         "osfp_score": 65.5,
         "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_default_restrict_traffic_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_07104879f5f9cc16a_ap_northeast_2.tf"
+          "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_default_restrict_traffic_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0de1fccd911791cc2_ap_northeast_2.tf"
         ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_default_restrict_traffic_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_07104879f5f9cc16a_ap_northeast_2.tf",
+        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_default_restrict_traffic_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0de1fccd911791cc2_ap_northeast_2.tf",
         "resources": [
           {
             "resource_address": "aws_default_security_group.fix_default_sg_e3067708ac",
@@ -2513,21 +2513,21 @@
             "optional": false
           },
           {
-            "resource_address": "aws_default_security_group.fix_default_sg_109afe3389",
-            "arn": "sg-08cf65f4f5f82de42",
+            "resource_address": "aws_default_security_group.fix_default_sg_04a9931930",
+            "arn": "sg-05f44400079f3fb0f",
             "resource_type": "aws_default_security_group",
             "optional": false
           },
           {
-            "resource_address": "aws_default_security_group.fix_default_sg_248a9650db",
-            "arn": "sg-07104879f5f9cc16a",
+            "resource_address": "aws_default_security_group.fix_default_sg_57ec0651da",
+            "arn": "sg-0de1fccd911791cc2",
             "resource_type": "aws_default_security_group",
             "optional": false
           }
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-25T12:17:07.803371+00:00"
+        "created_at": "2026-02-26T02:15:42.008175+00:00"
       }
     ],
     "prowler-ec2_ebs_volume_encryption": {
@@ -2540,7 +2540,7 @@
       "resources": [],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-25T12:17:07.803374+00:00"
+      "created_at": "2026-02-26T02:15:42.008177+00:00"
     },
     "prowler-ec2_instance_profile_attached": {
       "category": "network-ec2-vpc",
@@ -2552,7 +2552,7 @@
       "resources": [],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-25T12:17:07.803376+00:00"
+      "created_at": "2026-02-26T02:15:42.008179+00:00"
     },
     "prowler-cloudtrail_kms_encryption_enabled": {
       "category": "cloudtrail",
@@ -2579,7 +2579,7 @@
       ],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-25T12:17:07.803648+00:00"
+      "created_at": "2026-02-26T02:15:42.008433+00:00"
     },
     "prowler-cloudtrail_log_file_validation_enabled": {
       "category": "cloudtrail",
@@ -2591,7 +2591,7 @@
       "resources": [],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-25T12:17:07.803654+00:00"
+      "created_at": "2026-02-26T02:15:42.008440+00:00"
     },
     "prowler-cloudtrail_logs_s3_bucket_access_logging_enabled": {
       "category": "cloudtrail",
@@ -2618,7 +2618,7 @@
       ],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-25T12:17:07.803657+00:00"
+      "created_at": "2026-02-26T02:15:42.008442+00:00"
     },
     "prowler-cloudtrail_cloudwatch_logging_enabled": {
       "category": "cloudtrail",
@@ -2645,7 +2645,7 @@
       ],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-25T12:17:07.803659+00:00"
+      "created_at": "2026-02-26T02:15:42.008444+00:00"
     }
   }
 }

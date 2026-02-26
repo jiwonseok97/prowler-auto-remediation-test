@@ -1,5 +1,6 @@
 account_id = "123456789012"
 region     = "ap-northeast-2"
+mode       = "vuln"
 
 # S3: PAB false + 암호화 없음 + SecureTransport 없음
 #   → s3_bucket_level_public_access_block  ×15 FAIL
@@ -8,11 +9,11 @@ region     = "ap-northeast-2"
 #   → s3_account_level_public_access_blocks  ×1 FAIL
 #   → s3_bucket_versioning_enabled          ×15 FAIL (isms_p 추가)
 #   계 = 61건 FAIL
-vuln_bucket_count = 15
+vuln_bucket_count = 35
 
 # CloudWatch: KMS 없음
 #   → cloudwatch_log_group_encrypted ×20 FAIL (isms_p 추가)
-cloudwatch_log_group_count = 20
+cloudwatch_log_group_count = 40
 
 # IAM: 약한 패스워드 정책 → 5건 FAIL
 create_weak_account_password_policy = true
@@ -31,9 +32,16 @@ create_vuln_ebs_disabled = false
 open_default_security_group = true
 
 # KMS: CMK 자동 교체 비활성화 → 5건 FAIL (auto-remediable, IMPORT_AND_PATCH)
-vuln_kms_key_count = 5
+vuln_kms_key_count = 15
 
 # VPC: flow logs 없음 + default SG 허용
 #   → vpc_flow_logs_enabled               ×2 FAIL (auto-remediable)
 #   → ec2_securitygroup_default_restrict_traffic ×2 FAIL (auto-remediable, 기본 VPC 포함 시 +1)
-vuln_vpc_count = 2
+vuln_vpc_count = 6
+
+# Additional services
+rds_instance_count = 1
+efs_count          = 1
+alb_count          = 1
+sns_topic_count    = 3
+sqs_queue_count    = 3

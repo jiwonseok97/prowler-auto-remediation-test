@@ -8,6 +8,16 @@ variable "region" {
   description = "Primary region for vulnerable test infra"
 }
 
+variable "mode" {
+  type        = string
+  description = "Deployment mode: vuln or remediate"
+  default     = "vuln"
+  validation {
+    condition     = contains(["vuln", "remediate"], var.mode)
+    error_message = "mode must be one of: vuln, remediate."
+  }
+}
+
 variable "vuln_bucket_count" {
   type        = number
   description = "S3 버킷 수 (PAB false + 암호화 없음 → s3 FAIL ×2N + 1)"
@@ -61,3 +71,34 @@ variable "create_vuln_ebs_disabled" {
   description = "EBS 기본 암호화 비활성화 → ec2_ebs_default_encryption_enabled FAIL ×1 (ec2:DisableEbsEncryptionByDefault 권한 필요)"
   default     = false
 }
+
+variable "rds_instance_count" {
+  type        = number
+  description = "RDS ???? ? (vuln/remediate ??)"
+  default     = 1
+}
+
+variable "efs_count" {
+  type        = number
+  description = "EFS ????? ? (vuln/remediate ??)"
+  default     = 1
+}
+
+variable "alb_count" {
+  type        = number
+  description = "?? ALB ? (vuln/remediate ??)"
+  default     = 1
+}
+
+variable "sns_topic_count" {
+  type        = number
+  description = "SNS ?? ? (vuln/remediate ??)"
+  default     = 3
+}
+
+variable "sqs_queue_count" {
+  type        = number
+  description = "SQS ? ? (vuln/remediate ??)"
+  default     = 3
+}
+

@@ -37,6 +37,7 @@ jobs:
       AWS_ACCOUNT_ID: ${{ inputs.account_id }}
       TF_VAR_region: ap-northeast-2
       TF_VAR_account_id: ${{ inputs.account_id }}
+      TF_VAR_mode: vuln
     steps:
       - uses: actions/checkout@v4
 
@@ -78,27 +79,46 @@ jobs:
 
           # 4. Fallback CLI cleanup (orphaned resources outside Terraform state)
           set +e
-          echo "==> fallback: cloudtrail trail"
-          aws cloudtrail delete-trail --region "$AWS_REGION" --name vuln-trail || true
+          echo "==> fallback: cloudtrail trails (orgtrail-*)"
+          mapfile -t TRAILS < <(
+            aws cloudtrail list-trails --region "$AWS_REGION" \
+              --query "Trails[?starts_with(Name,'orgtrail-')].Name" \
+              --output text | tr '\t' '\n' | sed '/^$/d'
+          )
+          for t in "${TRAILS[@]}"; do
+            aws cloudtrail delete-trail --region "$AWS_REGION" --name "$t" || true
+          done
           sleep 5
 
           echo "==> fallback: iam users"
-          for uname in vuln-user vuln-demo-direct-policy-user; do
-            for pol in vuln-wildcard-policy vuln-demo-readonly-policy; do
-              aws iam detach-user-policy --user-name "$uname" \
-                --policy-arn "arn:aws:iam::${AWS_ACCOUNT_ID}:policy/$pol" 2>/dev/null || true
+          mapfile -t IAM_USERS < <(
+            aws iam list-users \
+              --query "Users[?starts_with(UserName,'svc-audit-')].UserName" \
+              --output text | tr '\t' '\n' | sed '/^$/d'
+          )
+          for uname in "${IAM_USERS[@]}"; do
+            mapfile -t POLS < <(
+              aws iam list-attached-user-policies --user-name "$uname" \
+                --query "AttachedPolicies[].PolicyArn" --output text | tr '\t' '\n' | sed '/^$/d'
+            )
+            for arn in "${POLS[@]}"; do
+              aws iam detach-user-policy --user-name "$uname" --policy-arn "$arn" 2>/dev/null || true
             done
             aws iam delete-user --user-name "$uname" 2>/dev/null || true
           done
-          aws iam delete-policy \
-            --policy-arn "arn:aws:iam::${AWS_ACCOUNT_ID}:policy/vuln-wildcard-policy" || true
-          aws iam delete-policy \
-            --policy-arn "arn:aws:iam::${AWS_ACCOUNT_ID}:policy/vuln-demo-readonly-policy" || true
+          mapfile -t IAM_POLS < <(
+            aws iam list-policies --scope Local \
+              --query "Policies[?starts_with(PolicyName,'pol-audit-')].Arn" \
+              --output text | tr '\t' '\n' | sed '/^$/d'
+          )
+          for arn in "${IAM_POLS[@]}"; do
+            aws iam delete-policy --policy-arn "$arn" 2>/dev/null || true
+          done
 
           echo "==> fallback: cloudwatch log groups"
           mapfile -t LOG_GROUPS < <(
             aws logs describe-log-groups --region "$AWS_REGION" \
-              --query "logGroups[?starts_with(logGroupName, '/vuln/log-group')].logGroupName" \
+              --query "logGroups[?starts_with(logGroupName, '/ops/audit-')].logGroupName" \
               --output text | tr '\t' '\n' | sed '/^$/d'
           )
           for lg in "${LOG_GROUPS[@]}"; do
@@ -108,7 +128,7 @@ jobs:
           echo "==> fallback: s3 buckets"
           mapfile -t BUCKETS < <(
             aws s3api list-buckets \
-              --query "Buckets[?starts_with(Name,'vuln-demo-')||starts_with(Name,'vuln-cloudtrail-')].Name" \
+              --query "Buckets[?starts_with(Name,'audit-logs-')||starts_with(Name,'trail-logs-')||starts_with(Name,'alb-logs-')].Name" \
               --output text | tr '\t' '\n' | sed '/^$/d'
           )
           for b in "${BUCKETS[@]}"; do
@@ -213,6 +233,7 @@ jobs:
               prowler aws --region ap-northeast-2 -c $CHECKS -M json-asff -o artifacts/scan -F baseline_isms_p || true
             fi
           fi
+          prowler aws --region ap-northeast-2 --services rds,efs,elb,elbv2,sns,sqs -M json-asff -o artifacts/scan -F baseline_services || true
           python iac/scripts/merge_prowler_outputs.py \
             --dir artifacts/scan \
             --prefix baseline \
@@ -239,6 +260,13 @@ jobs:
             --region "ap-northeast-2" \
             --framework "${{ inputs.compliance_mode }}"
 
+      - name: Build pipeline summary payload
+        run: |
+          python iac/scripts/build_pipeline_summary.py \
+            --base artifacts/scan/scan_manifest.json \
+            --asff artifacts/scan/baseline.asff.json \
+            --output artifacts/scan/pipeline_summary.json
+
       - name: Trigger Prowler native scan (self-hosted)
         continue-on-error: true
         env:
@@ -259,12 +287,12 @@ jobs:
           PROWLER_APP_API_URL: ${{ secrets.PROWLER_APP_API_URL }}
           PROWLER_APP_API_TOKEN: ${{ secrets.PROWLER_APP_API_TOKEN }}
         run: |
-          if [ -z "$PROWLER_APP_API_URL" ] || [ -z "$PROWLER_APP_API_TOKEN" ]; then
-            echo "skip publish: PROWLER_APP_API_URL or PROWLER_APP_API_TOKEN is empty"
+          if [ -z "$PROWLER_APP_API_URL" ]; then
+            echo "skip publish: PROWLER_APP_API_URL is empty"
             exit 0
           fi
           python iac/scripts/publish_scan_to_api.py \
-            --input artifacts/scan/scan_manifest.json \
+            --input artifacts/scan/pipeline_summary.json \
             --event baseline_scan \
             --api-url "$PROWLER_APP_API_URL" \
             --api-token "$PROWLER_APP_API_TOKEN" \
@@ -404,6 +432,7 @@ jobs:
 
           cis_findings = parse_asff("artifacts/scan/baseline_cis*.json")
           isms_findings = parse_asff("artifacts/scan/baseline_isms_p*.json")
+          svc_findings = parse_asff("artifacts/scan/baseline_services*.json")
 
           check_lines = [
               "| Check ID | FAIL Count |",
@@ -434,6 +463,16 @@ jobs:
                       "ISMS-P 정보보호 관리체계 인증",
                       account_id,
                       50,
+                  ) + "\n\n")
+
+              if svc_findings:
+                  f.write(make_compliance_table(
+                      svc_findings,
+                      CIS_LOGO_URL,
+                      "SERVICES",
+                      "Additional Services (RDS/EFS/ELB/SNS/SQS)",
+                      account_id,
+                      32,
                   ) + "\n\n")
 
               f.write("### Prowler FAIL by Check\n")

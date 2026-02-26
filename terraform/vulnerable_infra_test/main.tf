@@ -5,6 +5,10 @@ terraform {
       source  = "hashicorp/aws"
       version = ">= 5.0"
     }
+    random = {
+      source  = "hashicorp/random"
+      version = ">= 3.6"
+    }
   }
 }
 
@@ -12,10 +16,64 @@ provider "aws" {
   region = var.region
 }
 
+provider "random" {}
+
 data "aws_caller_identity" "current" {}
 
 data "aws_vpc" "default" {
   default = true
+}
+
+data "aws_subnets" "default" {
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.default.id]
+  }
+}
+
+resource "random_id" "name_seed" {
+  byte_length = 2
+  keepers = {
+    account_id = var.account_id
+    region     = var.region
+  }
+}
+
+resource "random_password" "rds_master" {
+  length  = 16
+  special = true
+}
+
+locals {
+  is_remediate          = var.mode == "remediate"
+  name_seed             = random_id.name_seed.hex
+  s3_name_prefix        = "audit-logs-${local.name_seed}-${var.region}"
+  trail_name            = "orgtrail-${local.name_seed}"
+  log_group_prefix      = "/ops/audit-${local.name_seed}"
+  iam_user_name         = "svc-audit-${local.name_seed}"
+  iam_group_name        = "grp-audit-${local.name_seed}"
+  iam_policy_name       = "pol-audit-${local.name_seed}"
+  s3_data_event_arns    = [for b in aws_s3_bucket.vuln_bucket : "${b.arn}/"]
+  s3_bucket_arns        = [for b in aws_s3_bucket.vuln_bucket : b.arn]
+  s3_bucket_object_arns = [for b in aws_s3_bucket.vuln_bucket : "${b.arn}/*"]
+
+  sg_ingress_rules = local.is_remediate ? [] : [
+    {
+      from_port   = 443
+      to_port     = 443
+      protocol    = "tcp"
+      cidr_blocks = ["10.0.0.0/8"]
+    }
+  ]
+
+  sg_egress_rules = local.is_remediate ? [] : [
+    {
+      from_port   = 443
+      to_port     = 443
+      protocol    = "tcp"
+      cidr_blocks = ["10.0.0.0/8"]
+    }
+  ]
 }
 
 # ==================================================
@@ -26,11 +84,12 @@ data "aws_vpc" "default" {
 # ==================================================
 resource "aws_s3_bucket" "vuln_bucket" {
   count         = var.vuln_bucket_count
-  bucket        = format("vuln-demo-%s-%s-%02d", var.account_id, var.region, count.index + 1)
+  bucket        = format("%s-%02d", local.s3_name_prefix, count.index + 1)
   force_destroy = true
 
+
   tags = {
-    Name          = format("vuln-demo-%02d", count.index + 1)
+    Name          = format("audit-logs-%02d", count.index + 1)
     ManagedBy     = "terraform"
     ProwlerDemo   = "vulnerable_infra_test"
     CleanupTarget = "true"
@@ -41,10 +100,52 @@ resource "aws_s3_bucket" "vuln_bucket" {
 resource "aws_s3_bucket_public_access_block" "vuln_bucket_pab" {
   count                   = var.vuln_bucket_count
   bucket                  = aws_s3_bucket.vuln_bucket[count.index].id
-  block_public_acls       = false
-  block_public_policy     = false
-  ignore_public_acls      = false
-  restrict_public_buckets = false
+  block_public_acls       = local.is_remediate
+  block_public_policy     = local.is_remediate
+  ignore_public_acls      = local.is_remediate
+  restrict_public_buckets = local.is_remediate
+}
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "vuln_bucket_sse" {
+  count  = local.is_remediate ? var.vuln_bucket_count : 0
+  bucket = aws_s3_bucket.vuln_bucket[count.index].id
+
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
+    }
+  }
+}
+
+resource "aws_s3_bucket_policy" "vuln_bucket_secure_transport" {
+  count  = local.is_remediate ? var.vuln_bucket_count : 0
+  bucket = aws_s3_bucket.vuln_bucket[count.index].id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid       = "DenyInsecureTransport"
+        Effect    = "Deny"
+        Principal = "*"
+        Action    = "s3:*"
+        Resource = [
+          aws_s3_bucket.vuln_bucket[count.index].arn,
+          "${aws_s3_bucket.vuln_bucket[count.index].arn}/*"
+        ]
+        Condition = {
+          Bool = { "aws:SecureTransport" = "false" }
+        }
+      }
+    ]
+  })
+}
+
+resource "aws_s3_account_public_access_block" "account_pab" {
+  block_public_acls       = local.is_remediate
+  block_public_policy     = local.is_remediate
+  ignore_public_acls      = local.is_remediate
+  restrict_public_buckets = local.is_remediate
 }
 
 # 서버측 암호화 리소스 미생성 → s3_bucket_default_encryption FAIL ×N
@@ -62,14 +163,14 @@ resource "aws_s3_bucket_public_access_block" "vuln_bucket_pab" {
 resource "aws_iam_account_password_policy" "weak_password_policy" {
   count = var.create_weak_account_password_policy ? 1 : 0
 
-  minimum_password_length        = 6     # 14 미달 → FAIL
-  require_lowercase_characters   = false # → FAIL
-  require_uppercase_characters   = false # → FAIL
-  require_numbers                = false # → FAIL
-  require_symbols                = false # → FAIL
+  minimum_password_length        = local.is_remediate ? 14 : 6
+  require_lowercase_characters   = local.is_remediate
+  require_uppercase_characters   = local.is_remediate
+  require_numbers                = local.is_remediate
+  require_symbols                = local.is_remediate
   allow_users_to_change_password = true
   max_password_age               = 0
-  password_reuse_prevention      = 1     # 24 미달 → FAIL
+  password_reuse_prevention      = local.is_remediate ? 24 : 1
   hard_expiry                    = false
 }
 
@@ -83,7 +184,7 @@ resource "aws_iam_account_password_policy" "weak_password_policy" {
 # ==================================================
 resource "aws_s3_bucket" "vuln_trail_logs" {
   count         = var.create_vuln_cloudtrail ? 1 : 0
-  bucket        = format("vuln-cloudtrail-%s-%s", var.account_id, var.region)
+  bucket        = format("trail-logs-%s-%s", local.name_seed, var.region)
   force_destroy = true
 
   tags = {
@@ -121,17 +222,115 @@ resource "aws_s3_bucket_policy" "vuln_trail_logs" {
   })
 }
 
+resource "aws_kms_key" "trail_kms" {
+  count                   = var.create_vuln_cloudtrail ? 1 : 0
+  description             = "cloudtrail-kms-${local.name_seed}"
+  enable_key_rotation     = true
+  deletion_window_in_days = 7
+
+  tags = {
+    ManagedBy     = "terraform"
+    ProwlerDemo   = "vulnerable_infra_test"
+    CleanupTarget = "true"
+  }
+}
+
+resource "aws_cloudwatch_log_group" "trail_logs" {
+  count             = var.create_vuln_cloudtrail ? 1 : 0
+  name              = "${local.log_group_prefix}/cloudtrail"
+  retention_in_days = 30
+  kms_key_id        = local.is_remediate ? aws_kms_key.trail_kms[0].arn : null
+
+  tags = {
+    ManagedBy     = "terraform"
+    ProwlerDemo   = "vulnerable_infra_test"
+    CleanupTarget = "true"
+  }
+}
+
+resource "aws_iam_role" "trail_cloudwatch_role" {
+  count = var.create_vuln_cloudtrail ? 1 : 0
+  name  = "role-cloudtrail-${local.name_seed}"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Principal = {
+          Service = "cloudtrail.amazonaws.com"
+        }
+        Action = "sts:AssumeRole"
+      }
+    ]
+  })
+
+  tags = {
+    ManagedBy     = "terraform"
+    ProwlerDemo   = "vulnerable_infra_test"
+    CleanupTarget = "true"
+  }
+}
+
+resource "aws_iam_policy" "trail_cloudwatch_policy" {
+  count       = var.create_vuln_cloudtrail ? 1 : 0
+  name        = "pol-cloudtrail-${local.name_seed}"
+  description = "Allow CloudTrail to write to CloudWatch Logs"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
+        ]
+        Resource = "${aws_cloudwatch_log_group.trail_logs[0].arn}:*"
+      }
+    ]
+  })
+
+  tags = {
+    ManagedBy     = "terraform"
+    ProwlerDemo   = "vulnerable_infra_test"
+    CleanupTarget = "true"
+  }
+}
+
+resource "aws_iam_role_policy_attachment" "trail_cloudwatch_attach" {
+  count      = var.create_vuln_cloudtrail ? 1 : 0
+  role       = aws_iam_role.trail_cloudwatch_role[0].name
+  policy_arn = aws_iam_policy.trail_cloudwatch_policy[0].arn
+}
+
 resource "aws_cloudtrail" "vuln_trail" {
   count          = var.create_vuln_cloudtrail ? 1 : 0
-  name           = "vuln-trail"
+  name           = local.trail_name
   s3_bucket_name = aws_s3_bucket.vuln_trail_logs[0].id
 
-  # enable_log_file_validation = false → prowler-cloudtrail_log_file_validation_enabled FAIL
-  enable_log_file_validation = false
+  # enable_log_file_validation = local.is_remediate → prowler-cloudtrail_log_file_validation_enabled FAIL
+  enable_log_file_validation = local.is_remediate
 
   # kms_key_id 미설정 → prowler-cloudtrail_kms_encryption_enabled FAIL
   # cloud_watch_logs_group_arn 미설정 → prowler-cloudtrail_cloudwatch_logging_enabled FAIL
   # event_selector 미설정 → prowler-cloudtrail_s3_dataevents_read/write_enabled FAIL
+
+  kms_key_id                 = local.is_remediate ? aws_kms_key.trail_kms[0].arn : null
+  cloud_watch_logs_group_arn = local.is_remediate ? "${aws_cloudwatch_log_group.trail_logs[0].arn}:*" : null
+  cloud_watch_logs_role_arn  = local.is_remediate ? aws_iam_role.trail_cloudwatch_role[0].arn : null
+
+  dynamic "event_selector" {
+    for_each = local.is_remediate ? [1] : []
+    content {
+      read_write_type           = "All"
+      include_management_events = true
+      data_resource {
+        type   = "AWS::S3::Object"
+        values = local.s3_data_event_arns
+      }
+    }
+  }
 
   tags = {
     ManagedBy     = "terraform"
@@ -150,7 +349,7 @@ resource "aws_cloudtrail" "vuln_trail" {
 # ==================================================
 resource "aws_ebs_encryption_by_default" "vuln_ebs_enc" {
   count   = var.create_vuln_ebs_disabled ? 1 : 0
-  enabled = false
+  enabled = local.is_remediate ? true : false
 }
 
 # ==================================================
@@ -162,7 +361,7 @@ resource "aws_s3_bucket_versioning" "vuln_bucket_versioning" {
   bucket = aws_s3_bucket.vuln_bucket[count.index].id
 
   versioning_configuration {
-    status = "Suspended" # 버저닝 비활성 → s3_bucket_versioning_enabled FAIL
+    status = local.is_remediate ? "Enabled" : "Suspended"
   }
 
   depends_on = [aws_s3_bucket.vuln_bucket]
@@ -173,9 +372,9 @@ resource "aws_s3_bucket_versioning" "vuln_bucket_versioning" {
 # → prowler-kms_cmk_rotation_enabled ×N (auto-remediable, IMPORT_AND_PATCH)
 # ==================================================
 resource "aws_kms_key" "vuln_kms" {
-  count               = var.vuln_kms_key_count
-  description         = format("vuln-demo-kms-%02d (rotation disabled)", count.index + 1)
-  enable_key_rotation = false # → kms_cmk_rotation_enabled FAIL
+  count                   = var.vuln_kms_key_count
+  description             = format("ops-kms-%s-%02d", local.name_seed, count.index + 1)
+  enable_key_rotation     = local.is_remediate ? true : false # → kms_cmk_rotation_enabled FAIL
   deletion_window_in_days = 7
 
   tags = {
@@ -191,9 +390,9 @@ resource "aws_kms_key" "vuln_kms" {
 # ==================================================
 resource "aws_cloudwatch_log_group" "vuln_logs" {
   count             = var.cloudwatch_log_group_count
-  name              = format("/vuln/log-group-%02d", count.index + 1)
+  name              = format("%s/app-%02d", local.log_group_prefix, count.index + 1)
   retention_in_days = 7
-  # kms_key_id 미설정 → cloudwatch_log_group_encrypted FAIL
+  kms_key_id        = local.is_remediate ? aws_kms_key.vuln_kms[0].arn : null
 
   tags = {
     ManagedBy     = "terraform"
@@ -211,18 +410,24 @@ resource "aws_default_security_group" "vuln_default_sg" {
   count  = var.open_default_security_group ? 1 : 0
   vpc_id = data.aws_vpc.default.id
 
-  ingress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
+  dynamic "ingress" {
+    for_each = local.sg_ingress_rules
+    content {
+      from_port   = ingress.value.from_port
+      to_port     = ingress.value.to_port
+      protocol    = ingress.value.protocol
+      cidr_blocks = ingress.value.cidr_blocks
+    }
   }
 
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
+  dynamic "egress" {
+    for_each = local.sg_egress_rules
+    content {
+      from_port   = egress.value.from_port
+      to_port     = egress.value.to_port
+      protocol    = egress.value.protocol
+      cidr_blocks = egress.value.cidr_blocks
+    }
   }
 
   tags = {
@@ -237,7 +442,7 @@ resource "aws_default_security_group" "vuln_default_sg" {
 # ==================================================
 resource "aws_iam_user" "vuln_direct_policy" {
   count = var.create_vuln_iam_direct_policy_user ? 1 : 0
-  name  = "vuln-demo-direct-policy-user"
+  name  = local.iam_user_name
 
   tags = {
     ManagedBy     = "terraform"
@@ -246,17 +451,42 @@ resource "aws_iam_user" "vuln_direct_policy" {
   }
 }
 
+resource "aws_iam_group" "vuln_direct_group" {
+  count = var.create_vuln_iam_direct_policy_user ? 1 : 0
+  name  = local.iam_group_name
+
+  tags = {
+    ManagedBy     = "terraform"
+    ProwlerDemo   = "vulnerable_infra_test"
+    CleanupTarget = "true"
+  }
+}
+
+resource "aws_iam_user_group_membership" "vuln_user_group" {
+  count = var.create_vuln_iam_direct_policy_user ? 1 : 0
+  user  = aws_iam_user.vuln_direct_policy[0].name
+  groups = [
+    aws_iam_group.vuln_direct_group[0].name,
+  ]
+}
+
 resource "aws_iam_policy" "vuln_readonly" {
   count       = var.create_vuln_iam_direct_policy_user ? 1 : 0
-  name        = "vuln-demo-readonly-policy"
+  name        = local.iam_policy_name
   description = "Demo: read-only policy attached directly to user (not via group/role)"
 
   policy = jsonencode({
     Version = "2012-10-17"
-    Statement = [
+    Statement = local.is_remediate ? [
       {
         Effect   = "Allow"
-        Action   = ["s3:GetObject", "s3:ListBucket"]
+        Action   = ["s3:ListBucket", "s3:GetObject"]
+        Resource = concat(local.s3_bucket_arns, local.s3_bucket_object_arns)
+      }
+      ] : [
+      {
+        Effect   = "Allow"
+        Action   = "*"
         Resource = "*"
       }
     ]
@@ -270,9 +500,270 @@ resource "aws_iam_policy" "vuln_readonly" {
 }
 
 resource "aws_iam_user_policy_attachment" "vuln_direct" {
-  count      = var.create_vuln_iam_direct_policy_user ? 1 : 0
+  count      = var.create_vuln_iam_direct_policy_user && !local.is_remediate ? 1 : 0
   user       = aws_iam_user.vuln_direct_policy[0].name
   policy_arn = aws_iam_policy.vuln_readonly[0].arn
+}
+
+resource "aws_iam_group_policy_attachment" "vuln_group_attach" {
+  count      = var.create_vuln_iam_direct_policy_user && local.is_remediate ? 1 : 0
+  group      = aws_iam_group.vuln_direct_group[0].name
+  policy_arn = aws_iam_policy.vuln_readonly[0].arn
+}
+
+# ==================================================
+# RDS (storage encryption, backups, multi-az)
+# ==================================================
+resource "aws_db_subnet_group" "rds_subnets" {
+  count      = var.rds_instance_count > 0 ? 1 : 0
+  name       = "db-subnet-${local.name_seed}"
+  subnet_ids = data.aws_subnets.default.ids
+
+  tags = {
+    ManagedBy     = "terraform"
+    ProwlerDemo   = "vulnerable_infra_test"
+    CleanupTarget = "true"
+  }
+}
+
+resource "aws_security_group" "rds_sg" {
+  count  = var.rds_instance_count > 0 ? 1 : 0
+  name   = "sg-db-${local.name_seed}"
+  vpc_id = data.aws_vpc.default.id
+
+  ingress {
+    from_port   = 5432
+    to_port     = 5432
+    protocol    = "tcp"
+    cidr_blocks = ["10.0.0.0/8"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    ManagedBy     = "terraform"
+    ProwlerDemo   = "vulnerable_infra_test"
+    CleanupTarget = "true"
+  }
+}
+
+resource "aws_db_instance" "vuln_rds" {
+  count                               = var.rds_instance_count
+  identifier                          = format("app-db-%s-%02d", local.name_seed, count.index + 1)
+  engine                              = "postgres"
+  instance_class                      = "db.t3.micro"
+  allocated_storage                   = 20
+  storage_type                        = "gp3"
+  db_name                             = "appdb"
+  username                            = "appadmin"
+  password                            = random_password.rds_master.result
+  db_subnet_group_name                = aws_db_subnet_group.rds_subnets[0].name
+  vpc_security_group_ids              = [aws_security_group.rds_sg[0].id]
+  publicly_accessible                 = false
+  storage_encrypted                   = local.is_remediate
+  backup_retention_period             = local.is_remediate ? 7 : 0
+  deletion_protection                 = local.is_remediate
+  auto_minor_version_upgrade          = local.is_remediate
+  multi_az                            = local.is_remediate
+  iam_database_authentication_enabled = local.is_remediate
+  skip_final_snapshot                 = true
+  apply_immediately                   = true
+
+  tags = {
+    ManagedBy     = "terraform"
+    ProwlerDemo   = "vulnerable_infra_test"
+    CleanupTarget = "true"
+  }
+}
+
+# ==================================================
+# EFS (encryption + backups)
+# ==================================================
+resource "aws_security_group" "efs_sg" {
+  count  = var.efs_count > 0 ? 1 : 0
+  name   = "sg-efs-${local.name_seed}"
+  vpc_id = data.aws_vpc.default.id
+
+  ingress {
+    from_port   = 2049
+    to_port     = 2049
+    protocol    = "tcp"
+    cidr_blocks = ["10.0.0.0/8"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    ManagedBy     = "terraform"
+    ProwlerDemo   = "vulnerable_infra_test"
+    CleanupTarget = "true"
+  }
+}
+
+resource "aws_efs_file_system" "vuln_efs" {
+  count           = var.efs_count
+  encrypted       = local.is_remediate
+  throughput_mode = "bursting"
+
+  tags = {
+    Name          = format("efs-shared-%s-%02d", local.name_seed, count.index + 1)
+    ManagedBy     = "terraform"
+    ProwlerDemo   = "vulnerable_infra_test"
+    CleanupTarget = "true"
+  }
+}
+
+resource "aws_efs_mount_target" "vuln_efs_mt" {
+  count           = var.efs_count
+  file_system_id  = aws_efs_file_system.vuln_efs[count.index].id
+  subnet_id       = data.aws_subnets.default.ids[0]
+  security_groups = [aws_security_group.efs_sg[0].id]
+}
+
+resource "aws_efs_backup_policy" "vuln_efs_backup" {
+  count          = var.efs_count
+  file_system_id = aws_efs_file_system.vuln_efs[count.index].id
+
+  backup_policy {
+    status = local.is_remediate ? "ENABLED" : "DISABLED"
+  }
+}
+
+# ==================================================
+# ALB (access logs, deletion protection)
+# ==================================================
+resource "aws_s3_bucket" "alb_logs" {
+  count         = var.alb_count > 0 ? 1 : 0
+  bucket        = format("alb-logs-%s-%s", local.name_seed, var.region)
+  force_destroy = true
+
+  tags = {
+    ManagedBy     = "terraform"
+    ProwlerDemo   = "vulnerable_infra_test"
+    CleanupTarget = "true"
+  }
+}
+
+resource "aws_s3_bucket_public_access_block" "alb_logs_pab" {
+  count                   = var.alb_count > 0 ? 1 : 0
+  bucket                  = aws_s3_bucket.alb_logs[0].id
+  block_public_acls       = local.is_remediate
+  block_public_policy     = local.is_remediate
+  ignore_public_acls      = local.is_remediate
+  restrict_public_buckets = local.is_remediate
+}
+
+resource "aws_security_group" "alb_sg" {
+  count  = var.alb_count > 0 ? 1 : 0
+  name   = "sg-alb-${local.name_seed}"
+  vpc_id = data.aws_vpc.default.id
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["10.0.0.0/8"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    ManagedBy     = "terraform"
+    ProwlerDemo   = "vulnerable_infra_test"
+    CleanupTarget = "true"
+  }
+}
+
+resource "aws_lb" "vuln_alb" {
+  count                      = var.alb_count
+  name                       = format("alb-core-%s-%02d", local.name_seed, count.index + 1)
+  internal                   = true
+  load_balancer_type         = "application"
+  security_groups            = [aws_security_group.alb_sg[0].id]
+  subnets                    = data.aws_subnets.default.ids
+  enable_deletion_protection = local.is_remediate
+
+  access_logs {
+    bucket  = aws_s3_bucket.alb_logs[0].id
+    enabled = local.is_remediate
+  }
+
+  tags = {
+    ManagedBy     = "terraform"
+    ProwlerDemo   = "vulnerable_infra_test"
+    CleanupTarget = "true"
+  }
+}
+
+resource "aws_lb_target_group" "vuln_alb_tg" {
+  count    = var.alb_count
+  name     = format("tg-core-%s-%02d", local.name_seed, count.index + 1)
+  port     = 80
+  protocol = "HTTP"
+  vpc_id   = data.aws_vpc.default.id
+
+  health_check {
+    path = "/"
+  }
+}
+
+resource "aws_lb_listener" "vuln_alb_listener" {
+  count             = var.alb_count
+  load_balancer_arn = aws_lb.vuln_alb[count.index].arn
+  port              = 80
+  protocol          = "HTTP"
+
+  default_action {
+    type = "fixed-response"
+    fixed_response {
+      content_type = "text/plain"
+      message_body = "ok"
+      status_code  = "200"
+    }
+  }
+}
+
+# ==================================================
+# SNS / SQS (encryption at rest)
+# ==================================================
+resource "aws_sns_topic" "vuln_sns" {
+  count             = var.sns_topic_count
+  name              = format("topic-audit-%s-%02d", local.name_seed, count.index + 1)
+  kms_master_key_id = local.is_remediate ? aws_kms_key.vuln_kms[0].arn : null
+
+  tags = {
+    ManagedBy     = "terraform"
+    ProwlerDemo   = "vulnerable_infra_test"
+    CleanupTarget = "true"
+  }
+}
+
+resource "aws_sqs_queue" "vuln_sqs" {
+  count                   = var.sqs_queue_count
+  name                    = format("queue-audit-%s-%02d", local.name_seed, count.index + 1)
+  sqs_managed_sse_enabled = local.is_remediate
+  kms_master_key_id       = local.is_remediate ? aws_kms_key.vuln_kms[0].arn : null
+
+  tags = {
+    ManagedBy     = "terraform"
+    ProwlerDemo   = "vulnerable_infra_test"
+    CleanupTarget = "true"
+  }
 }
 
 # ==================================================
@@ -285,9 +776,9 @@ resource "aws_vpc" "vuln_vpc" {
   cidr_block = format("10.%d.0.0/16", 100 + count.index)
 
   tags = {
-    Name        = format("vuln-demo-vpc-%02d", count.index + 1)
-    ManagedBy   = "terraform"
-    ProwlerDemo = "vulnerable_infra_test"
+    Name          = format("core-net-%s-%02d", local.name_seed, count.index + 1)
+    ManagedBy     = "terraform"
+    ProwlerDemo   = "vulnerable_infra_test"
     CleanupTarget = "true"
   }
 }

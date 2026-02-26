@@ -55,6 +55,7 @@ jobs:
           if [ -n "$CHECKS" ]; then
             prowler aws --region ap-northeast-2 -c $CHECKS -M json-asff -o artifacts/rescan -F post_isms_p || true
           fi
+          prowler aws --region ap-northeast-2 --services rds,efs,elb,elbv2,sns,sqs -M json-asff -o artifacts/rescan -F post_services || true
           python iac/scripts/merge_prowler_outputs.py \
             --dir artifacts/rescan \
             --prefix post \
@@ -395,6 +396,13 @@ jobs:
               raise SystemExit(f"FAIL not reduced vs baseline: baseline={s.get('baseline_fail')} post={s.get('post_fail')}")
           PY
 
+      - name: Build pipeline summary payload
+        run: |
+          python iac/scripts/build_pipeline_summary.py \
+            --base artifacts/rescan/rescan_summary.json \
+            --asff artifacts/rescan/post.asff.json \
+            --output artifacts/rescan/pipeline_summary.json
+
       - name: Comment on merged PR when no additional reduction
         if: always()
         shell: bash
@@ -421,13 +429,13 @@ jobs:
           PROWLER_APP_API_URL: ${{ secrets.PROWLER_APP_API_URL }}
           PROWLER_APP_API_TOKEN: ${{ secrets.PROWLER_APP_API_TOKEN }}
         run: |
-          if [ -z "$PROWLER_APP_API_URL" ] || [ -z "$PROWLER_APP_API_TOKEN" ]; then
-            echo "skip publish: PROWLER_APP_API_URL or PROWLER_APP_API_TOKEN is empty"
+          if [ -z "$PROWLER_APP_API_URL" ]; then
+            echo "skip publish: PROWLER_APP_API_URL is empty"
             exit 0
           fi
           CALLER_ACCOUNT_ID="$(aws sts get-caller-identity --query Account --output text 2>/dev/null || echo "")"
           python iac/scripts/publish_scan_to_api.py \
-            --input artifacts/rescan/rescan_summary.json \
+            --input artifacts/rescan/pipeline_summary.json \
             --event rescan_verify \
             --api-url "$PROWLER_APP_API_URL" \
             --api-token "$PROWLER_APP_API_TOKEN" \

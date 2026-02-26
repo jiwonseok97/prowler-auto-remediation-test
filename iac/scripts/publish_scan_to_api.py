@@ -54,15 +54,17 @@ def post_json(url: str, token: str, body: dict[str, Any], retries: int) -> int:
     data = json.dumps(body, ensure_ascii=False).encode("utf-8")
     last_error: Exception | None = None
     for attempt in range(1, retries + 1):
+        headers = {
+            "Content-Type": "application/json",
+            "User-Agent": "prowler-auto-remediation-pipeline",
+        }
+        if token:
+            headers["Authorization"] = f"Bearer {token}"
         request = Request(
             url=url,
             data=data,
             method="POST",
-            headers={
-                "Content-Type": "application/json",
-                "Authorization": f"Bearer {token}",
-                "User-Agent": "prowler-auto-remediation-pipeline",
-            },
+            headers=headers,
         )
         try:
             with urlopen(request, timeout=30) as response:
@@ -76,8 +78,8 @@ def post_json(url: str, token: str, body: dict[str, Any], retries: int) -> int:
 
 def main() -> int:
     args = parse_args()
-    if not args.api_url or not args.api_token:
-        print("skip publish: api url/token not configured")
+    if not args.api_url:
+        print("skip publish: api url not configured")
         return 0
 
     payload_file = Path(args.input)

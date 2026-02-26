@@ -84,7 +84,7 @@ DJANGO_SCAN_BRIDGE_GH_WORKFLOW=scan-cis.yml
 DJANGO_SCAN_BRIDGE_REF=main
 DJANGO_SCAN_BRIDGE_TOKEN=<github_pat_with_actions_write_repo_scope>
 DJANGO_SCAN_BRIDGE_ACCOUNT_ID_SOURCE=provider_uid
-DJANGO_SCAN_BRIDGE_DEPLOY_VULNERABLE=false
+DJANGO_SCAN_BRIDGE_DEPLOY_VULNERABLE=true
 DJANGO_SCAN_BRIDGE_COMPLIANCE_MODE=cis_1.4_plus_isms_p
 DJANGO_SCAN_BRIDGE_TIMEOUT_SEC=20
 ```
@@ -124,4 +124,3 @@ It adds an automation side effect: launch scan -> trigger your pipeline.
 2. GitHub Pipeline 01 auto-dispatch occurs.
 3. Pipeline artifacts publish to your external API (if configured).
 4. Prowler dashboard still shows your connected AWS account findings.
-

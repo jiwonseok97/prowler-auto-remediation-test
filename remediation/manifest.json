@@ -1,18 +1,41 @@
 {
-  "created_at": "2026-02-26T09:48:10.275441+00:00",
+  "created_at": "2026-02-26T10:50:57.371349+00:00",
   "account": "132410971304",
   "region": "ap-northeast-2",
-  "baseline_fail_count": 53,
+  "baseline_fail_count": 84,
   "categories": [
+    {
+      "category": "iam",
+      "path": "remediation/iam",
+      "checks": 11,
+      "top5": [
+        "prowler-iam_password_policy_minimum_length_14",
+        "prowler-iam_password_policy_reuse_24",
+        "prowler-iam_password_policy_lowercase",
+        "prowler-iam_password_policy_number",
+        "prowler-iam_password_policy_symbol"
+      ],
+      "tier_breakdown": {
+        "safe-auto": 11,
+        "review-then-apply": 0,
+        "manual-runbook": 0
+      },
+      "manual_required": [],
+      "import_map": "remediation/iam/import-map.txt"
+    },
     {
       "category": "s3",
       "path": "remediation/s3",
-      "checks": 1,
+      "checks": 16,
       "top5": [
+        "prowler-s3_bucket_secure_transport_policy",
+        "prowler-s3_bucket_secure_transport_policy",
+        "prowler-s3_bucket_secure_transport_policy",
+        "prowler-s3_bucket_secure_transport_policy",
         "prowler-s3_bucket_secure_transport_policy"
       ],
       "tier_breakdown": {
-        "safe-auto": 1,
+        "safe-auto": 16,
         "review-then-apply": 0,
         "manual-runbook": 0
       },
@@ -22,17 +45,17 @@
     {
       "category": "network-ec2-vpc",
       "path": "remediation/network-ec2-vpc",
-      "checks": 10,
+      "checks": 14,
       "top5": [
-        "prowler-ec2_networkacl_allow_ingress_any_port",
-        "prowler-ec2_networkacl_allow_ingress_any_port",
-        "prowler-ec2_networkacl_allow_ingress_tcp_port_22",
-        "prowler-ec2_networkacl_allow_ingress_tcp_port_22",
-        "prowler-ec2_networkacl_allow_ingress_tcp_port_3389"
+        "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+        "prowler-ec2_securitygroup_default_restrict_traffic",
+        "prowler-ec2_securitygroup_default_restrict_traffic",
+        "prowler-ec2_securitygroup_default_restrict_traffic",
+        "prowler-ec2_networkacl_allow_ingress_any_port"
       ],
       "tier_breakdown": {
-        "safe-auto": 2,
-        "review-then-apply": 6,
+        "safe-auto": 5,
+        "review-then-apply": 7,
         "manual-runbook": 2
       },
       "manual_required": [
@@ -44,14 +67,15 @@
     {
       "category": "cloudtrail",
       "path": "remediation/cloudtrail",
-      "checks": 3,
+      "checks": 4,
       "top5": [
         "prowler-cloudtrail_kms_encryption_enabled",
         "prowler-cloudtrail_log_file_validation_enabled",
+        "prowler-cloudtrail_logs_s3_bucket_access_logging_enabled",
         "prowler-cloudtrail_cloudwatch_logging_enabled"
       ],
       "tier_breakdown": {
-        "safe-auto": 2,
+        "safe-auto": 3,
         "review-then-apply": 0,
         "manual-runbook": 1
       },
@@ -62,27 +86,2137 @@
     }
   ],
   "check_map": {
-    "prowler-s3_bucket_secure_transport_policy": {
-      "category": "s3",
+    "prowler-iam_password_policy_minimum_length_14": {
+      "category": "iam",
       "remediation_tier": "safe-auto",
       "priority": "P2",
-      "osfp_score": 58.5,
+      "osfp_score": 64.5,
       "files": [
-        "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_cloudtrail_132410971304_ap_northeast_2_ap_northeast_2.tf"
+        "remediation/iam/fix-prowler_iam_password_policy_minimum_length_14_arn_aws_iam_ap_northeast_2_132410971304_password_policy_ap_northeast_2.tf"
       ],
-      "tf_file": "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_cloudtrail_132410971304_ap_northeast_2_ap_northeast_2.tf",
+      "tf_file": "remediation/iam/fix-prowler_iam_password_policy_minimum_length_14_arn_aws_iam_ap_northeast_2_132410971304_password_policy_ap_northeast_2.tf",
       "resources": [
         {
-          "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_68f79c5437",
-          "arn": "vuln-cloudtrail-132410971304-ap-northeast-2",
-          "resource_type": "aws_s3_bucket_policy",
-          "optional": true
+          "resource_address": "aws_iam_account_password_policy.fix_iam_password_policy_4713846702",
+          "arn": "132410971304",
+          "resource_type": "aws_iam_account_password_policy",
+          "optional": false
         }
       ],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-26T09:48:10.275833+00:00"
+      "created_at": "2026-02-26T10:50:57.371851+00:00"
     },
+    "prowler-iam_password_policy_reuse_24": {
+      "category": "iam",
+      "remediation_tier": "safe-auto",
+      "priority": "P2",
+      "osfp_score": 64.5,
+      "files": [
+        "remediation/iam/fix-prowler_iam_password_policy_reuse_24_arn_aws_iam_ap_northeast_2_132410971304_password_policy_ap_northeast_2.tf"
+      ],
+      "tf_file": "remediation/iam/fix-prowler_iam_password_policy_reuse_24_arn_aws_iam_ap_northeast_2_132410971304_password_policy_ap_northeast_2.tf",
+      "resources": [
+        {
+          "resource_address": "aws_iam_account_password_policy.fix_iam_password_policy_cbffca3971",
+          "arn": "132410971304",
+          "resource_type": "aws_iam_account_password_policy",
+          "optional": false
+        }
+      ],
+      "account": "132410971304",
+      "region": "ap-northeast-2",
+      "created_at": "2026-02-26T10:50:57.371858+00:00"
+    },
+    "prowler-iam_password_policy_lowercase": {
+      "category": "iam",
+      "remediation_tier": "safe-auto",
+      "priority": "P2",
+      "osfp_score": 64.5,
+      "files": [
+        "remediation/iam/fix-prowler_iam_password_policy_lowercase_arn_aws_iam_ap_northeast_2_132410971304_password_policy_ap_northeast_2.tf"
+      ],
+      "tf_file": "remediation/iam/fix-prowler_iam_password_policy_lowercase_arn_aws_iam_ap_northeast_2_132410971304_password_policy_ap_northeast_2.tf",
+      "resources": [
+        {
+          "resource_address": "aws_iam_account_password_policy.fix_iam_password_policy_737d8717cc",
+          "arn": "132410971304",
+          "resource_type": "aws_iam_account_password_policy",
+          "optional": false
+        }
+      ],
+      "account": "132410971304",
+      "region": "ap-northeast-2",
+      "created_at": "2026-02-26T10:50:57.371860+00:00"
+    },
+    "prowler-iam_password_policy_number": {
+      "category": "iam",
+      "remediation_tier": "safe-auto",
+      "priority": "P2",
+      "osfp_score": 64.5,
+      "files": [
+        "remediation/iam/fix-prowler_iam_password_policy_number_arn_aws_iam_ap_northeast_2_132410971304_password_policy_ap_northeast_2.tf"
+      ],
+      "tf_file": "remediation/iam/fix-prowler_iam_password_policy_number_arn_aws_iam_ap_northeast_2_132410971304_password_policy_ap_northeast_2.tf",
+      "resources": [
+        {
+          "resource_address": "aws_iam_account_password_policy.fix_iam_password_policy_25a834c100",
+          "arn": "132410971304",
+          "resource_type": "aws_iam_account_password_policy",
+          "optional": false
+        }
+      ],
+      "account": "132410971304",
+      "region": "ap-northeast-2",
+      "created_at": "2026-02-26T10:50:57.371862+00:00"
+    },
+    "prowler-iam_password_policy_symbol": {
+      "category": "iam",
+      "remediation_tier": "safe-auto",
+      "priority": "P2",
+      "osfp_score": 64.5,
+      "files": [
+        "remediation/iam/fix-prowler_iam_password_policy_symbol_arn_aws_iam_ap_northeast_2_132410971304_password_policy_ap_northeast_2.tf"
+      ],
+      "tf_file": "remediation/iam/fix-prowler_iam_password_policy_symbol_arn_aws_iam_ap_northeast_2_132410971304_password_policy_ap_northeast_2.tf",
+      "resources": [
+        {
+          "resource_address": "aws_iam_account_password_policy.fix_iam_password_policy_126739a4cd",
+          "arn": "132410971304",
+          "resource_type": "aws_iam_account_password_policy",
+          "optional": false
+        }
+      ],
+      "account": "132410971304",
+      "region": "ap-northeast-2",
+      "created_at": "2026-02-26T10:50:57.371864+00:00"
+    },
+    "prowler-iam_password_policy_uppercase": {
+      "category": "iam",
+      "remediation_tier": "safe-auto",
+      "priority": "P2",
+      "osfp_score": 64.5,
+      "files": [
+        "remediation/iam/fix-prowler_iam_password_policy_uppercase_arn_aws_iam_ap_northeast_2_132410971304_password_policy_ap_northeast_2.tf"
+      ],
+      "tf_file": "remediation/iam/fix-prowler_iam_password_policy_uppercase_arn_aws_iam_ap_northeast_2_132410971304_password_policy_ap_northeast_2.tf",
+      "resources": [
+        {
+          "resource_address": "aws_iam_account_password_policy.fix_iam_password_policy_9a54e5d7e7",
+          "arn": "132410971304",
+          "resource_type": "aws_iam_account_password_policy",
+          "optional": false
+        }
+      ],
+      "account": "132410971304",
+      "region": "ap-northeast-2",
+      "created_at": "2026-02-26T10:50:57.371866+00:00"
+    },
+    "prowler-kms_cmk_rotation_enabled": [
+      {
+        "category": "iam",
+        "remediation_tier": "safe-auto",
+        "priority": "P2",
+        "osfp_score": 58.5,
+        "files": [
+          "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_858f68d6_b1d3_4b68_8086_346efbc81c93_ap_northeast_2.tf"
+        ],
+        "tf_file": "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_858f68d6_b1d3_4b68_8086_346efbc81c93_ap_northeast_2.tf",
+        "resources": [
+          {
+            "resource_address": "aws_kms_key.fix_kms_rotation_34812b2213",
+            "arn": "858f68d6-b1d3-4b68-8086-346efbc81c93",
+            "resource_type": "aws_kms_key",
+            "optional": false
+          },
+          {
+            "resource_address": "aws_kms_key.fix_kms_rotation_44551c65db",
+            "arn": "85fc69cc-c1da-45d3-8ff5-7d068e205dbe",
+            "resource_type": "aws_kms_key",
+            "optional": false
+          },
+          {
+            "resource_address": "aws_kms_key.fix_kms_rotation_80d3f4fd56",
+            "arn": "999bb06e-1512-4525-a159-515766687884",
+            "resource_type": "aws_kms_key",
+            "optional": false
+          },
+          {
+            "resource_address": "aws_kms_key.fix_kms_rotation_7a45851b3f",
+            "arn": "9bf76b05-49e1-4bea-82db-f8192e5d6aeb",
+            "resource_type": "aws_kms_key",
+            "optional": false
+          },
+          {
+            "resource_address": "aws_kms_key.fix_kms_rotation_7c36df8eda",
+            "arn": "e8a1bded-758a-41e1-b30e-48bec3b32c44",
+            "resource_type": "aws_kms_key",
+            "optional": false
+          }
+        ],
+        "account": "132410971304",
+        "region": "ap-northeast-2",
+        "created_at": "2026-02-26T10:50:57.371868+00:00"
+      },
+      {
+        "category": "iam",
+        "remediation_tier": "safe-auto",
+        "priority": "P2",
+        "osfp_score": 58.5,
+        "files": [
+          "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_85fc69cc_c1da_45d3_8ff5_7d068e205dbe_ap_northeast_2.tf"
+        ],
+        "tf_file": "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_85fc69cc_c1da_45d3_8ff5_7d068e205dbe_ap_northeast_2.tf",
+        "resources": [
+          {
+            "resource_address": "aws_kms_key.fix_kms_rotation_34812b2213",
+            "arn": "858f68d6-b1d3-4b68-8086-346efbc81c93",
+            "resource_type": "aws_kms_key",
+            "optional": false
+          },
+          {
+            "resource_address": "aws_kms_key.fix_kms_rotation_44551c65db",
+            "arn": "85fc69cc-c1da-45d3-8ff5-7d068e205dbe",
+            "resource_type": "aws_kms_key",
+            "optional": false
+          },
+          {
+            "resource_address": "aws_kms_key.fix_kms_rotation_80d3f4fd56",
+            "arn": "999bb06e-1512-4525-a159-515766687884",
+            "resource_type": "aws_kms_key",
+            "optional": false
+          },
+          {
+            "resource_address": "aws_kms_key.fix_kms_rotation_7a45851b3f",
+            "arn": "9bf76b05-49e1-4bea-82db-f8192e5d6aeb",
+            "resource_type": "aws_kms_key",
+            "optional": false
+          },
+          {
+            "resource_address": "aws_kms_key.fix_kms_rotation_7c36df8eda",
+            "arn": "e8a1bded-758a-41e1-b30e-48bec3b32c44",
+            "resource_type": "aws_kms_key",
+            "optional": false
+          }
+        ],
+        "account": "132410971304",
+        "region": "ap-northeast-2",
+        "created_at": "2026-02-26T10:50:57.371870+00:00"
+      },
+      {
+        "category": "iam",
+        "remediation_tier": "safe-auto",
+        "priority": "P2",
+        "osfp_score": 58.5,
+        "files": [
+          "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_999bb06e_1512_4525_a159_515766687884_ap_northeast_2.tf"
+        ],
+        "tf_file": "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_999bb06e_1512_4525_a159_515766687884_ap_northeast_2.tf",
+        "resources": [
+          {
+            "resource_address": "aws_kms_key.fix_kms_rotation_34812b2213",
+            "arn": "858f68d6-b1d3-4b68-8086-346efbc81c93",
+            "resource_type": "aws_kms_key",
+            "optional": false
+          },
+          {
+            "resource_address": "aws_kms_key.fix_kms_rotation_44551c65db",
+            "arn": "85fc69cc-c1da-45d3-8ff5-7d068e205dbe",
+            "resource_type": "aws_kms_key",
+            "optional": false
+          },
+          {
+            "resource_address": "aws_kms_key.fix_kms_rotation_80d3f4fd56",
+            "arn": "999bb06e-1512-4525-a159-515766687884",
+            "resource_type": "aws_kms_key",
+            "optional": false
+          },
+          {
+            "resource_address": "aws_kms_key.fix_kms_rotation_7a45851b3f",
+            "arn": "9bf76b05-49e1-4bea-82db-f8192e5d6aeb",
+            "resource_type": "aws_kms_key",
+            "optional": false
+          },
+          {
+            "resource_address": "aws_kms_key.fix_kms_rotation_7c36df8eda",
+            "arn": "e8a1bded-758a-41e1-b30e-48bec3b32c44",
+            "resource_type": "aws_kms_key",
+            "optional": false
+          }
+        ],
+        "account": "132410971304",
+        "region": "ap-northeast-2",
+        "created_at": "2026-02-26T10:50:57.371873+00:00"
+      },
+      {
+        "category": "iam",
+        "remediation_tier": "safe-auto",
+        "priority": "P2",
+        "osfp_score": 58.5,
+        "files": [
+          "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_9bf76b05_49e1_4bea_82db_f8192e5d6aeb_ap_northeast_2.tf"
+        ],
+        "tf_file": "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_9bf76b05_49e1_4bea_82db_f8192e5d6aeb_ap_northeast_2.tf",
+        "resources": [
+          {
+            "resource_address": "aws_kms_key.fix_kms_rotation_34812b2213",
+            "arn": "858f68d6-b1d3-4b68-8086-346efbc81c93",
+            "resource_type": "aws_kms_key",
+            "optional": false
+          },
+          {
+            "resource_address": "aws_kms_key.fix_kms_rotation_44551c65db",
+            "arn": "85fc69cc-c1da-45d3-8ff5-7d068e205dbe",
+            "resource_type": "aws_kms_key",
+            "optional": false
+          },
+          {
+            "resource_address": "aws_kms_key.fix_kms_rotation_80d3f4fd56",
+            "arn": "999bb06e-1512-4525-a159-515766687884",
+            "resource_type": "aws_kms_key",
+            "optional": false
+          },
+          {
+            "resource_address": "aws_kms_key.fix_kms_rotation_7a45851b3f",
+            "arn": "9bf76b05-49e1-4bea-82db-f8192e5d6aeb",
+            "resource_type": "aws_kms_key",
+            "optional": false
+          },
+          {
+            "resource_address": "aws_kms_key.fix_kms_rotation_7c36df8eda",
+            "arn": "e8a1bded-758a-41e1-b30e-48bec3b32c44",
+            "resource_type": "aws_kms_key",
+            "optional": false
+          }
+        ],
+        "account": "132410971304",
+        "region": "ap-northeast-2",
+        "created_at": "2026-02-26T10:50:57.371875+00:00"
+      },
+      {
+        "category": "iam",
+        "remediation_tier": "safe-auto",
+        "priority": "P2",
+        "osfp_score": 58.5,
+        "files": [
+          "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_e8a1bded_758a_41e1_b30e_48bec3b32c44_ap_northeast_2.tf"
+        ],
+        "tf_file": "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_e8a1bded_758a_41e1_b30e_48bec3b32c44_ap_northeast_2.tf",
+        "resources": [
+          {
+            "resource_address": "aws_kms_key.fix_kms_rotation_34812b2213",
+            "arn": "858f68d6-b1d3-4b68-8086-346efbc81c93",
+            "resource_type": "aws_kms_key",
+            "optional": false
+          },
+          {
+            "resource_address": "aws_kms_key.fix_kms_rotation_44551c65db",
+            "arn": "85fc69cc-c1da-45d3-8ff5-7d068e205dbe",
+            "resource_type": "aws_kms_key",
+            "optional": false
+          },
+          {
+            "resource_address": "aws_kms_key.fix_kms_rotation_80d3f4fd56",
+            "arn": "999bb06e-1512-4525-a159-515766687884",
+            "resource_type": "aws_kms_key",
+            "optional": false
+          },
+          {
+            "resource_address": "aws_kms_key.fix_kms_rotation_7a45851b3f",
+            "arn": "9bf76b05-49e1-4bea-82db-f8192e5d6aeb",
+            "resource_type": "aws_kms_key",
+            "optional": false
+          },
+          {
+            "resource_address": "aws_kms_key.fix_kms_rotation_7c36df8eda",
+            "arn": "e8a1bded-758a-41e1-b30e-48bec3b32c44",
+            "resource_type": "aws_kms_key",
+            "optional": false
+          }
+        ],
+        "account": "132410971304",
+        "region": "ap-northeast-2",
+        "created_at": "2026-02-26T10:50:57.371877+00:00"
+      }
+    ],
+    "prowler-s3_bucket_secure_transport_policy": [
+      {
+        "category": "s3",
+        "remediation_tier": "safe-auto",
+        "priority": "P2",
+        "osfp_score": 58.5,
+        "files": [
+          "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_cloudtrail_132410971304_ap_northeast_2_ap_northeast_2.tf"
+        ],
+        "tf_file": "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_cloudtrail_132410971304_ap_northeast_2_ap_northeast_2.tf",
+        "resources": [
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_68f79c5437",
+            "arn": "vuln-cloudtrail-132410971304-ap-northeast-2",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_12401c85dd",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-01",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_af91b97544",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-02",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_835f968ab6",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-03",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_3317577f52",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-04",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_6cbf19f6f6",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-05",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_fc62921f75",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-06",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_229cfb44c7",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-07",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_20969a2900",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-08",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_7f6c22174d",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-09",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_cf5b90747f",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-10",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_0b33e2007e",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-11",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_f34afdce56",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-12",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_6dd60b5c7a",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-13",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_4016279c1f",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-14",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_338eab4403",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-15",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          }
+        ],
+        "account": "132410971304",
+        "region": "ap-northeast-2",
+        "created_at": "2026-02-26T10:50:57.373552+00:00"
+      },
+      {
+        "category": "s3",
+        "remediation_tier": "safe-auto",
+        "priority": "P2",
+        "osfp_score": 58.5,
+        "files": [
+          "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_132410971304_ap_northeast_2_01_ap_northeast_2.tf"
+        ],
+        "tf_file": "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_132410971304_ap_northeast_2_01_ap_northeast_2.tf",
+        "resources": [
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_68f79c5437",
+            "arn": "vuln-cloudtrail-132410971304-ap-northeast-2",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_12401c85dd",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-01",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_af91b97544",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-02",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_835f968ab6",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-03",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_3317577f52",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-04",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_6cbf19f6f6",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-05",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_fc62921f75",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-06",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_229cfb44c7",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-07",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_20969a2900",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-08",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_7f6c22174d",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-09",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_cf5b90747f",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-10",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_0b33e2007e",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-11",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_f34afdce56",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-12",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_6dd60b5c7a",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-13",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_4016279c1f",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-14",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_338eab4403",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-15",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          }
+        ],
+        "account": "132410971304",
+        "region": "ap-northeast-2",
+        "created_at": "2026-02-26T10:50:57.373560+00:00"
+      },
+      {
+        "category": "s3",
+        "remediation_tier": "safe-auto",
+        "priority": "P2",
+        "osfp_score": 58.5,
+        "files": [
+          "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_132410971304_ap_northeast_2_02_ap_northeast_2.tf"
+        ],
+        "tf_file": "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_132410971304_ap_northeast_2_02_ap_northeast_2.tf",
+        "resources": [
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_68f79c5437",
+            "arn": "vuln-cloudtrail-132410971304-ap-northeast-2",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_12401c85dd",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-01",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_af91b97544",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-02",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_835f968ab6",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-03",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_3317577f52",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-04",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_6cbf19f6f6",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-05",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_fc62921f75",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-06",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_229cfb44c7",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-07",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_20969a2900",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-08",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_7f6c22174d",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-09",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_cf5b90747f",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-10",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_0b33e2007e",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-11",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_f34afdce56",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-12",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_6dd60b5c7a",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-13",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_4016279c1f",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-14",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_338eab4403",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-15",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          }
+        ],
+        "account": "132410971304",
+        "region": "ap-northeast-2",
+        "created_at": "2026-02-26T10:50:57.373563+00:00"
+      },
+      {
+        "category": "s3",
+        "remediation_tier": "safe-auto",
+        "priority": "P2",
+        "osfp_score": 58.5,
+        "files": [
+          "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_132410971304_ap_northeast_2_03_ap_northeast_2.tf"
+        ],
+        "tf_file": "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_132410971304_ap_northeast_2_03_ap_northeast_2.tf",
+        "resources": [
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_68f79c5437",
+            "arn": "vuln-cloudtrail-132410971304-ap-northeast-2",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_12401c85dd",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-01",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_af91b97544",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-02",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_835f968ab6",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-03",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_3317577f52",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-04",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_6cbf19f6f6",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-05",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_fc62921f75",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-06",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_229cfb44c7",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-07",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_20969a2900",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-08",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_7f6c22174d",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-09",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_cf5b90747f",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-10",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_0b33e2007e",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-11",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_f34afdce56",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-12",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_6dd60b5c7a",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-13",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_4016279c1f",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-14",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_338eab4403",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-15",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          }
+        ],
+        "account": "132410971304",
+        "region": "ap-northeast-2",
+        "created_at": "2026-02-26T10:50:57.373565+00:00"
+      },
+      {
+        "category": "s3",
+        "remediation_tier": "safe-auto",
+        "priority": "P2",
+        "osfp_score": 58.5,
+        "files": [
+          "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_132410971304_ap_northeast_2_04_ap_northeast_2.tf"
+        ],
+        "tf_file": "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_132410971304_ap_northeast_2_04_ap_northeast_2.tf",
+        "resources": [
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_68f79c5437",
+            "arn": "vuln-cloudtrail-132410971304-ap-northeast-2",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_12401c85dd",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-01",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_af91b97544",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-02",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_835f968ab6",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-03",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_3317577f52",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-04",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_6cbf19f6f6",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-05",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_fc62921f75",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-06",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_229cfb44c7",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-07",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_20969a2900",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-08",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_7f6c22174d",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-09",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_cf5b90747f",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-10",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_0b33e2007e",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-11",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_f34afdce56",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-12",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_6dd60b5c7a",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-13",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_4016279c1f",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-14",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_338eab4403",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-15",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          }
+        ],
+        "account": "132410971304",
+        "region": "ap-northeast-2",
+        "created_at": "2026-02-26T10:50:57.373568+00:00"
+      },
+      {
+        "category": "s3",
+        "remediation_tier": "safe-auto",
+        "priority": "P2",
+        "osfp_score": 58.5,
+        "files": [
+          "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_132410971304_ap_northeast_2_05_ap_northeast_2.tf"
+        ],
+        "tf_file": "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_132410971304_ap_northeast_2_05_ap_northeast_2.tf",
+        "resources": [
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_68f79c5437",
+            "arn": "vuln-cloudtrail-132410971304-ap-northeast-2",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_12401c85dd",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-01",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_af91b97544",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-02",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_835f968ab6",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-03",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_3317577f52",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-04",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_6cbf19f6f6",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-05",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_fc62921f75",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-06",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_229cfb44c7",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-07",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_20969a2900",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-08",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_7f6c22174d",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-09",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_cf5b90747f",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-10",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_0b33e2007e",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-11",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_f34afdce56",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-12",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_6dd60b5c7a",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-13",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_4016279c1f",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-14",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_338eab4403",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-15",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          }
+        ],
+        "account": "132410971304",
+        "region": "ap-northeast-2",
+        "created_at": "2026-02-26T10:50:57.373570+00:00"
+      },
+      {
+        "category": "s3",
+        "remediation_tier": "safe-auto",
+        "priority": "P2",
+        "osfp_score": 58.5,
+        "files": [
+          "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_132410971304_ap_northeast_2_06_ap_northeast_2.tf"
+        ],
+        "tf_file": "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_132410971304_ap_northeast_2_06_ap_northeast_2.tf",
+        "resources": [
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_68f79c5437",
+            "arn": "vuln-cloudtrail-132410971304-ap-northeast-2",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_12401c85dd",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-01",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_af91b97544",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-02",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_835f968ab6",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-03",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_3317577f52",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-04",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_6cbf19f6f6",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-05",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_fc62921f75",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-06",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_229cfb44c7",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-07",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_20969a2900",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-08",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_7f6c22174d",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-09",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_cf5b90747f",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-10",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_0b33e2007e",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-11",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_f34afdce56",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-12",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_6dd60b5c7a",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-13",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_4016279c1f",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-14",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_338eab4403",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-15",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          }
+        ],
+        "account": "132410971304",
+        "region": "ap-northeast-2",
+        "created_at": "2026-02-26T10:50:57.373572+00:00"
+      },
+      {
+        "category": "s3",
+        "remediation_tier": "safe-auto",
+        "priority": "P2",
+        "osfp_score": 58.5,
+        "files": [
+          "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_132410971304_ap_northeast_2_07_ap_northeast_2.tf"
+        ],
+        "tf_file": "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_132410971304_ap_northeast_2_07_ap_northeast_2.tf",
+        "resources": [
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_68f79c5437",
+            "arn": "vuln-cloudtrail-132410971304-ap-northeast-2",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_12401c85dd",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-01",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_af91b97544",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-02",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_835f968ab6",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-03",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_3317577f52",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-04",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_6cbf19f6f6",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-05",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_fc62921f75",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-06",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_229cfb44c7",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-07",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_20969a2900",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-08",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_7f6c22174d",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-09",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_cf5b90747f",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-10",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_0b33e2007e",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-11",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_f34afdce56",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-12",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_6dd60b5c7a",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-13",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_4016279c1f",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-14",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_338eab4403",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-15",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          }
+        ],
+        "account": "132410971304",
+        "region": "ap-northeast-2",
+        "created_at": "2026-02-26T10:50:57.373574+00:00"
+      },
+      {
+        "category": "s3",
+        "remediation_tier": "safe-auto",
+        "priority": "P2",
+        "osfp_score": 58.5,
+        "files": [
+          "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_132410971304_ap_northeast_2_08_ap_northeast_2.tf"
+        ],
+        "tf_file": "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_132410971304_ap_northeast_2_08_ap_northeast_2.tf",
+        "resources": [
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_68f79c5437",
+            "arn": "vuln-cloudtrail-132410971304-ap-northeast-2",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_12401c85dd",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-01",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_af91b97544",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-02",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_835f968ab6",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-03",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_3317577f52",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-04",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_6cbf19f6f6",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-05",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_fc62921f75",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-06",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_229cfb44c7",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-07",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_20969a2900",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-08",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_7f6c22174d",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-09",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_cf5b90747f",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-10",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_0b33e2007e",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-11",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_f34afdce56",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-12",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_6dd60b5c7a",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-13",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_4016279c1f",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-14",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_338eab4403",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-15",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          }
+        ],
+        "account": "132410971304",
+        "region": "ap-northeast-2",
+        "created_at": "2026-02-26T10:50:57.373576+00:00"
+      },
+      {
+        "category": "s3",
+        "remediation_tier": "safe-auto",
+        "priority": "P2",
+        "osfp_score": 58.5,
+        "files": [
+          "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_132410971304_ap_northeast_2_09_ap_northeast_2.tf"
+        ],
+        "tf_file": "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_132410971304_ap_northeast_2_09_ap_northeast_2.tf",
+        "resources": [
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_68f79c5437",
+            "arn": "vuln-cloudtrail-132410971304-ap-northeast-2",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_12401c85dd",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-01",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_af91b97544",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-02",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_835f968ab6",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-03",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_3317577f52",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-04",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_6cbf19f6f6",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-05",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_fc62921f75",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-06",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_229cfb44c7",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-07",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_20969a2900",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-08",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_7f6c22174d",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-09",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_cf5b90747f",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-10",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_0b33e2007e",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-11",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_f34afdce56",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-12",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_6dd60b5c7a",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-13",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_4016279c1f",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-14",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_338eab4403",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-15",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          }
+        ],
+        "account": "132410971304",
+        "region": "ap-northeast-2",
+        "created_at": "2026-02-26T10:50:57.373578+00:00"
+      },
+      {
+        "category": "s3",
+        "remediation_tier": "safe-auto",
+        "priority": "P2",
+        "osfp_score": 58.5,
+        "files": [
+          "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_132410971304_ap_northeast_2_10_ap_northeast_2.tf"
+        ],
+        "tf_file": "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_132410971304_ap_northeast_2_10_ap_northeast_2.tf",
+        "resources": [
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_68f79c5437",
+            "arn": "vuln-cloudtrail-132410971304-ap-northeast-2",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_12401c85dd",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-01",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_af91b97544",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-02",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_835f968ab6",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-03",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_3317577f52",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-04",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_6cbf19f6f6",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-05",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_fc62921f75",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-06",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_229cfb44c7",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-07",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_20969a2900",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-08",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_7f6c22174d",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-09",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_cf5b90747f",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-10",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_0b33e2007e",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-11",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_f34afdce56",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-12",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_6dd60b5c7a",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-13",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_4016279c1f",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-14",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_338eab4403",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-15",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          }
+        ],
+        "account": "132410971304",
+        "region": "ap-northeast-2",
+        "created_at": "2026-02-26T10:50:57.373580+00:00"
+      },
+      {
+        "category": "s3",
+        "remediation_tier": "safe-auto",
+        "priority": "P2",
+        "osfp_score": 58.5,
+        "files": [
+          "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_132410971304_ap_northeast_2_11_ap_northeast_2.tf"
+        ],
+        "tf_file": "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_132410971304_ap_northeast_2_11_ap_northeast_2.tf",
+        "resources": [
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_68f79c5437",
+            "arn": "vuln-cloudtrail-132410971304-ap-northeast-2",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_12401c85dd",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-01",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_af91b97544",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-02",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_835f968ab6",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-03",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_3317577f52",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-04",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_6cbf19f6f6",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-05",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_fc62921f75",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-06",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_229cfb44c7",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-07",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_20969a2900",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-08",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_7f6c22174d",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-09",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_cf5b90747f",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-10",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_0b33e2007e",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-11",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_f34afdce56",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-12",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_6dd60b5c7a",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-13",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_4016279c1f",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-14",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_338eab4403",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-15",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          }
+        ],
+        "account": "132410971304",
+        "region": "ap-northeast-2",
+        "created_at": "2026-02-26T10:50:57.373582+00:00"
+      },
+      {
+        "category": "s3",
+        "remediation_tier": "safe-auto",
+        "priority": "P2",
+        "osfp_score": 58.5,
+        "files": [
+          "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_132410971304_ap_northeast_2_12_ap_northeast_2.tf"
+        ],
+        "tf_file": "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_132410971304_ap_northeast_2_12_ap_northeast_2.tf",
+        "resources": [
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_68f79c5437",
+            "arn": "vuln-cloudtrail-132410971304-ap-northeast-2",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_12401c85dd",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-01",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_af91b97544",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-02",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_835f968ab6",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-03",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_3317577f52",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-04",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_6cbf19f6f6",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-05",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_fc62921f75",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-06",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_229cfb44c7",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-07",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_20969a2900",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-08",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_7f6c22174d",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-09",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_cf5b90747f",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-10",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_0b33e2007e",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-11",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_f34afdce56",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-12",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_6dd60b5c7a",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-13",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_4016279c1f",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-14",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_338eab4403",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-15",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          }
+        ],
+        "account": "132410971304",
+        "region": "ap-northeast-2",
+        "created_at": "2026-02-26T10:50:57.373584+00:00"
+      },
+      {
+        "category": "s3",
+        "remediation_tier": "safe-auto",
+        "priority": "P2",
+        "osfp_score": 58.5,
+        "files": [
+          "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_132410971304_ap_northeast_2_13_ap_northeast_2.tf"
+        ],
+        "tf_file": "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_132410971304_ap_northeast_2_13_ap_northeast_2.tf",
+        "resources": [
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_68f79c5437",
+            "arn": "vuln-cloudtrail-132410971304-ap-northeast-2",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_12401c85dd",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-01",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_af91b97544",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-02",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_835f968ab6",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-03",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_3317577f52",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-04",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_6cbf19f6f6",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-05",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_fc62921f75",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-06",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_229cfb44c7",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-07",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_20969a2900",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-08",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_7f6c22174d",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-09",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_cf5b90747f",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-10",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_0b33e2007e",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-11",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_f34afdce56",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-12",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_6dd60b5c7a",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-13",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_4016279c1f",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-14",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_338eab4403",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-15",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          }
+        ],
+        "account": "132410971304",
+        "region": "ap-northeast-2",
+        "created_at": "2026-02-26T10:50:57.373586+00:00"
+      },
+      {
+        "category": "s3",
+        "remediation_tier": "safe-auto",
+        "priority": "P2",
+        "osfp_score": 58.5,
+        "files": [
+          "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_132410971304_ap_northeast_2_14_ap_northeast_2.tf"
+        ],
+        "tf_file": "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_132410971304_ap_northeast_2_14_ap_northeast_2.tf",
+        "resources": [
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_68f79c5437",
+            "arn": "vuln-cloudtrail-132410971304-ap-northeast-2",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_12401c85dd",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-01",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_af91b97544",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-02",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_835f968ab6",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-03",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_3317577f52",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-04",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_6cbf19f6f6",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-05",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_fc62921f75",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-06",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_229cfb44c7",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-07",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_20969a2900",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-08",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_7f6c22174d",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-09",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_cf5b90747f",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-10",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_0b33e2007e",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-11",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_f34afdce56",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-12",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_6dd60b5c7a",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-13",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_4016279c1f",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-14",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_338eab4403",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-15",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          }
+        ],
+        "account": "132410971304",
+        "region": "ap-northeast-2",
+        "created_at": "2026-02-26T10:50:57.373588+00:00"
+      },
+      {
+        "category": "s3",
+        "remediation_tier": "safe-auto",
+        "priority": "P2",
+        "osfp_score": 58.5,
+        "files": [
+          "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_132410971304_ap_northeast_2_15_ap_northeast_2.tf"
+        ],
+        "tf_file": "remediation/s3/fix-prowler_s3_bucket_secure_transport_policy_arn_aws_s3_vuln_demo_132410971304_ap_northeast_2_15_ap_northeast_2.tf",
+        "resources": [
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_68f79c5437",
+            "arn": "vuln-cloudtrail-132410971304-ap-northeast-2",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_12401c85dd",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-01",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_af91b97544",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-02",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_835f968ab6",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-03",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_3317577f52",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-04",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_6cbf19f6f6",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-05",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_fc62921f75",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-06",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_229cfb44c7",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-07",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_20969a2900",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-08",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_7f6c22174d",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-09",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_cf5b90747f",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-10",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_0b33e2007e",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-11",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_f34afdce56",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-12",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_6dd60b5c7a",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-13",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_4016279c1f",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-14",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          },
+          {
+            "resource_address": "aws_s3_bucket_policy.fix_s3_secure_transport_338eab4403",
+            "arn": "vuln-demo-132410971304-ap-northeast-2-15",
+            "resource_type": "aws_s3_bucket_policy",
+            "optional": true
+          }
+        ],
+        "account": "132410971304",
+        "region": "ap-northeast-2",
+        "created_at": "2026-02-26T10:50:57.373590+00:00"
+      }
+    ],
     "prowler-ec2_networkacl_allow_ingress_any_port": [
       {
         "category": "network-ec2-vpc",
@@ -90,26 +2224,26 @@
         "priority": "P2",
         "osfp_score": 58.5,
         "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0a315809810294e52_ap_northeast_2.tf"
+          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_00d8ea1c706ceb604_ap_northeast_2.tf"
         ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0a315809810294e52_ap_northeast_2.tf",
+        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_00d8ea1c706ceb604_ap_northeast_2.tf",
         "resources": [
           {
-            "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_027cce6df3",
-            "arn": "acl-0a315809810294e52:101:-1:false",
+            "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_80d563b264",
+            "arn": "acl-00d8ea1c706ceb604:253:-1:false",
             "resource_type": "aws_network_acl_rule",
             "optional": true
           },
           {
-            "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_5b34e14474",
-            "arn": "acl-0659493a63b3f6aec:101:-1:false",
+            "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_ea8666fafc",
+            "arn": "acl-076f5acb0865e8b47:253:-1:false",
             "resource_type": "aws_network_acl_rule",
             "optional": true
           }
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-26T09:48:10.276275+00:00"
+        "created_at": "2026-02-26T10:50:57.374000+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -117,26 +2251,26 @@
         "priority": "P2",
         "osfp_score": 58.5,
         "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0659493a63b3f6aec_ap_northeast_2.tf"
+          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_076f5acb0865e8b47_ap_northeast_2.tf"
         ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0659493a63b3f6aec_ap_northeast_2.tf",
+        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_any_port_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_076f5acb0865e8b47_ap_northeast_2.tf",
         "resources": [
           {
-            "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_027cce6df3",
-            "arn": "acl-0a315809810294e52:101:-1:false",
+            "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_80d563b264",
+            "arn": "acl-00d8ea1c706ceb604:253:-1:false",
             "resource_type": "aws_network_acl_rule",
             "optional": true
           },
           {
-            "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_5b34e14474",
-            "arn": "acl-0659493a63b3f6aec:101:-1:false",
+            "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_ea8666fafc",
+            "arn": "acl-076f5acb0865e8b47:253:-1:false",
             "resource_type": "aws_network_acl_rule",
             "optional": true
           }
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-26T09:48:10.276283+00:00"
+        "created_at": "2026-02-26T10:50:57.374005+00:00"
       }
     ],
     "prowler-ec2_networkacl_allow_ingress_tcp_port_22": [
@@ -146,26 +2280,26 @@
         "priority": "P2",
         "osfp_score": 58.5,
         "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0a315809810294e52_ap_northeast_2.tf"
+          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_00d8ea1c706ceb604_ap_northeast_2.tf"
         ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0a315809810294e52_ap_northeast_2.tf",
+        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_00d8ea1c706ceb604_ap_northeast_2.tf",
         "resources": [
           {
-            "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_0e17930546",
-            "arn": "acl-0a315809810294e52:101:6:false",
+            "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_648d55a97b",
+            "arn": "acl-00d8ea1c706ceb604:251:6:false",
             "resource_type": "aws_network_acl_rule",
             "optional": true
           },
           {
-            "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_89e08a2b4d",
-            "arn": "acl-0659493a63b3f6aec:101:6:false",
+            "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_9536179812",
+            "arn": "acl-076f5acb0865e8b47:251:6:false",
             "resource_type": "aws_network_acl_rule",
             "optional": true
           }
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-26T09:48:10.276288+00:00"
+        "created_at": "2026-02-26T10:50:57.374008+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -173,26 +2307,26 @@
         "priority": "P2",
         "osfp_score": 58.5,
         "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0659493a63b3f6aec_ap_northeast_2.tf"
+          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_076f5acb0865e8b47_ap_northeast_2.tf"
         ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0659493a63b3f6aec_ap_northeast_2.tf",
+        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_22_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_076f5acb0865e8b47_ap_northeast_2.tf",
         "resources": [
           {
-            "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_0e17930546",
-            "arn": "acl-0a315809810294e52:101:6:false",
+            "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_648d55a97b",
+            "arn": "acl-00d8ea1c706ceb604:251:6:false",
             "resource_type": "aws_network_acl_rule",
             "optional": true
           },
           {
-            "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_89e08a2b4d",
-            "arn": "acl-0659493a63b3f6aec:101:6:false",
+            "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_9536179812",
+            "arn": "acl-076f5acb0865e8b47:251:6:false",
             "resource_type": "aws_network_acl_rule",
             "optional": true
           }
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-26T09:48:10.276290+00:00"
+        "created_at": "2026-02-26T10:50:57.374009+00:00"
       }
     ],
     "prowler-ec2_networkacl_allow_ingress_tcp_port_3389": [
@@ -202,26 +2336,26 @@
         "priority": "P2",
         "osfp_score": 58.5,
         "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0a315809810294e52_ap_northeast_2.tf"
+          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_00d8ea1c706ceb604_ap_northeast_2.tf"
         ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0a315809810294e52_ap_northeast_2.tf",
+        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_00d8ea1c706ceb604_ap_northeast_2.tf",
         "resources": [
           {
-            "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_86523b1c08",
-            "arn": "acl-0a315809810294e52:101:6:false",
+            "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_743eab876e",
+            "arn": "acl-00d8ea1c706ceb604:252:6:false",
             "resource_type": "aws_network_acl_rule",
             "optional": true
           },
           {
-            "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_404fd36c13",
-            "arn": "acl-0659493a63b3f6aec:101:6:false",
+            "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_aff8d6125e",
+            "arn": "acl-076f5acb0865e8b47:252:6:false",
             "resource_type": "aws_network_acl_rule",
             "optional": true
           }
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-26T09:48:10.276293+00:00"
+        "created_at": "2026-02-26T10:50:57.374012+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -229,26 +2363,26 @@
         "priority": "P2",
         "osfp_score": 58.5,
         "files": [
-          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0659493a63b3f6aec_ap_northeast_2.tf"
+          "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_076f5acb0865e8b47_ap_northeast_2.tf"
         ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_0659493a63b3f6aec_ap_northeast_2.tf",
+        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_networkacl_allow_ingress_tcp_port_3389_arn_aws_ec2_ap_northeast_2_132410971304_network_acl_acl_076f5acb0865e8b47_ap_northeast_2.tf",
         "resources": [
           {
-            "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_86523b1c08",
-            "arn": "acl-0a315809810294e52:101:6:false",
+            "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_743eab876e",
+            "arn": "acl-00d8ea1c706ceb604:252:6:false",
             "resource_type": "aws_network_acl_rule",
             "optional": true
           },
           {
-            "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_404fd36c13",
-            "arn": "acl-0659493a63b3f6aec:101:6:false",
+            "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_aff8d6125e",
+            "arn": "acl-076f5acb0865e8b47:252:6:false",
             "resource_type": "aws_network_acl_rule",
             "optional": true
           }
         ],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-26T09:48:10.276295+00:00"
+        "created_at": "2026-02-26T10:50:57.374014+00:00"
       }
     ],
     "prowler-vpc_flow_logs_enabled": [
@@ -258,13 +2392,13 @@
         "priority": "P2",
         "osfp_score": 58.5,
         "files": [
-          "remediation/network-ec2-vpc/fix-prowler_vpc_flow_logs_enabled_arn_aws_ec2_ap_northeast_2_132410971304_vpc_vpc_023b3558059c392df_ap_northeast_2.tf"
+          "remediation/network-ec2-vpc/fix-prowler_vpc_flow_logs_enabled_arn_aws_ec2_ap_northeast_2_132410971304_vpc_vpc_02a4d7f3c99e7aa91_ap_northeast_2.tf"
         ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_vpc_flow_logs_enabled_arn_aws_ec2_ap_northeast_2_132410971304_vpc_vpc_023b3558059c392df_ap_northeast_2.tf",
+        "tf_file": "remediation/network-ec2-vpc/fix-prowler_vpc_flow_logs_enabled_arn_aws_ec2_ap_northeast_2_132410971304_vpc_vpc_02a4d7f3c99e7aa91_ap_northeast_2.tf",
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-26T09:48:10.276297+00:00"
+        "created_at": "2026-02-26T10:50:57.374016+00:00"
       },
       {
         "category": "network-ec2-vpc",
@@ -272,13 +2406,128 @@
         "priority": "P2",
         "osfp_score": 58.5,
         "files": [
-          "remediation/network-ec2-vpc/fix-prowler_vpc_flow_logs_enabled_arn_aws_ec2_ap_northeast_2_132410971304_vpc_vpc_01c2e0a6c5b8240ad_ap_northeast_2.tf"
+          "remediation/network-ec2-vpc/fix-prowler_vpc_flow_logs_enabled_arn_aws_ec2_ap_northeast_2_132410971304_vpc_vpc_0b504cb23a27665c8_ap_northeast_2.tf"
         ],
-        "tf_file": "remediation/network-ec2-vpc/fix-prowler_vpc_flow_logs_enabled_arn_aws_ec2_ap_northeast_2_132410971304_vpc_vpc_01c2e0a6c5b8240ad_ap_northeast_2.tf",
+        "tf_file": "remediation/network-ec2-vpc/fix-prowler_vpc_flow_logs_enabled_arn_aws_ec2_ap_northeast_2_132410971304_vpc_vpc_0b504cb23a27665c8_ap_northeast_2.tf",
         "resources": [],
         "account": "132410971304",
         "region": "ap-northeast-2",
-        "created_at": "2026-02-26T09:48:10.276299+00:00"
+        "created_at": "2026-02-26T10:50:57.374018+00:00"
+      }
+    ],
+    "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports": {
+      "category": "network-ec2-vpc",
+      "remediation_tier": "review-then-apply",
+      "priority": "P2",
+      "osfp_score": 65.5,
+      "files": [
+        "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0c86f4f14357f43de_ap_northeast_2.tf"
+      ],
+      "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0c86f4f14357f43de_ap_northeast_2.tf",
+      "resources": [],
+      "account": "132410971304",
+      "region": "ap-northeast-2",
+      "created_at": "2026-02-26T10:50:57.374020+00:00"
+    },
+    "prowler-ec2_securitygroup_default_restrict_traffic": [
+      {
+        "category": "network-ec2-vpc",
+        "remediation_tier": "safe-auto",
+        "priority": "P2",
+        "osfp_score": 65.5,
+        "files": [
+          "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_default_restrict_traffic_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0c86f4f14357f43de_ap_northeast_2.tf"
+        ],
+        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_default_restrict_traffic_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0c86f4f14357f43de_ap_northeast_2.tf",
+        "resources": [
+          {
+            "resource_address": "aws_default_security_group.fix_default_sg_e3067708ac",
+            "arn": "sg-0c86f4f14357f43de",
+            "resource_type": "aws_default_security_group",
+            "optional": false
+          },
+          {
+            "resource_address": "aws_default_security_group.fix_default_sg_6ceb512c51",
+            "arn": "sg-050ee2d8b02ed895a",
+            "resource_type": "aws_default_security_group",
+            "optional": false
+          },
+          {
+            "resource_address": "aws_default_security_group.fix_default_sg_fe9fd09111",
+            "arn": "sg-053121c2ba94c0ca1",
+            "resource_type": "aws_default_security_group",
+            "optional": false
+          }
+        ],
+        "account": "132410971304",
+        "region": "ap-northeast-2",
+        "created_at": "2026-02-26T10:50:57.374022+00:00"
+      },
+      {
+        "category": "network-ec2-vpc",
+        "remediation_tier": "safe-auto",
+        "priority": "P2",
+        "osfp_score": 65.5,
+        "files": [
+          "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_default_restrict_traffic_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_050ee2d8b02ed895a_ap_northeast_2.tf"
+        ],
+        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_default_restrict_traffic_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_050ee2d8b02ed895a_ap_northeast_2.tf",
+        "resources": [
+          {
+            "resource_address": "aws_default_security_group.fix_default_sg_e3067708ac",
+            "arn": "sg-0c86f4f14357f43de",
+            "resource_type": "aws_default_security_group",
+            "optional": false
+          },
+          {
+            "resource_address": "aws_default_security_group.fix_default_sg_6ceb512c51",
+            "arn": "sg-050ee2d8b02ed895a",
+            "resource_type": "aws_default_security_group",
+            "optional": false
+          },
+          {
+            "resource_address": "aws_default_security_group.fix_default_sg_fe9fd09111",
+            "arn": "sg-053121c2ba94c0ca1",
+            "resource_type": "aws_default_security_group",
+            "optional": false
+          }
+        ],
+        "account": "132410971304",
+        "region": "ap-northeast-2",
+        "created_at": "2026-02-26T10:50:57.374023+00:00"
+      },
+      {
+        "category": "network-ec2-vpc",
+        "remediation_tier": "safe-auto",
+        "priority": "P2",
+        "osfp_score": 65.5,
+        "files": [
+          "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_default_restrict_traffic_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_053121c2ba94c0ca1_ap_northeast_2.tf"
+        ],
+        "tf_file": "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_default_restrict_traffic_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_053121c2ba94c0ca1_ap_northeast_2.tf",
+        "resources": [
+          {
+            "resource_address": "aws_default_security_group.fix_default_sg_e3067708ac",
+            "arn": "sg-0c86f4f14357f43de",
+            "resource_type": "aws_default_security_group",
+            "optional": false
+          },
+          {
+            "resource_address": "aws_default_security_group.fix_default_sg_6ceb512c51",
+            "arn": "sg-050ee2d8b02ed895a",
+            "resource_type": "aws_default_security_group",
+            "optional": false
+          },
+          {
+            "resource_address": "aws_default_security_group.fix_default_sg_fe9fd09111",
+            "arn": "sg-053121c2ba94c0ca1",
+            "resource_type": "aws_default_security_group",
+            "optional": false
+          }
+        ],
+        "account": "132410971304",
+        "region": "ap-northeast-2",
+        "created_at": "2026-02-26T10:50:57.374026+00:00"
       }
     ],
     "prowler-ec2_ebs_volume_encryption": {
@@ -291,7 +2540,7 @@
       "resources": [],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-26T09:48:10.276301+00:00"
+      "created_at": "2026-02-26T10:50:57.374028+00:00"
     },
     "prowler-ec2_instance_profile_attached": {
       "category": "network-ec2-vpc",
@@ -303,7 +2552,7 @@
       "resources": [],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-26T09:48:10.276303+00:00"
+      "created_at": "2026-02-26T10:50:57.374030+00:00"
     },
     "prowler-cloudtrail_kms_encryption_enabled": {
       "category": "cloudtrail",
@@ -330,7 +2579,7 @@
       ],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-26T09:48:10.276545+00:00"
+      "created_at": "2026-02-26T10:50:57.374220+00:00"
     },
     "prowler-cloudtrail_log_file_validation_enabled": {
       "category": "cloudtrail",
@@ -342,7 +2591,34 @@
       "resources": [],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-26T09:48:10.276552+00:00"
+      "created_at": "2026-02-26T10:50:57.374225+00:00"
+    },
+    "prowler-cloudtrail_logs_s3_bucket_access_logging_enabled": {
+      "category": "cloudtrail",
+      "remediation_tier": "safe-auto",
+      "priority": "P2",
+      "osfp_score": 58.5,
+      "files": [
+        "remediation/cloudtrail/fix-prowler_cloudtrail_logs_s3_bucket_access_logging_enabled_arn_aws_cloudtrail_ap_northeast_2_132410971304_trail_vuln_trail_ap_northeast_2.tf"
+      ],
+      "tf_file": "remediation/cloudtrail/fix-prowler_cloudtrail_logs_s3_bucket_access_logging_enabled_arn_aws_cloudtrail_ap_northeast_2_132410971304_trail_vuln_trail_ap_northeast_2.tf",
+      "resources": [
+        {
+          "resource_address": "aws_s3_bucket_policy.fix_cloudtrail_accesslog_target_policy_87323435bd",
+          "arn": "vuln-cloudtrail-132410971304-ap-northeast-2",
+          "resource_type": "aws_s3_bucket_policy",
+          "optional": true
+        },
+        {
+          "resource_address": "aws_s3_bucket_logging.fix_cloudtrail_bucket_logging_87323435bd",
+          "arn": "vuln-cloudtrail-132410971304-ap-northeast-2",
+          "resource_type": "aws_s3_bucket_logging",
+          "optional": true
+        }
+      ],
+      "account": "132410971304",
+      "region": "ap-northeast-2",
+      "created_at": "2026-02-26T10:50:57.374227+00:00"
     },
     "prowler-cloudtrail_cloudwatch_logging_enabled": {
       "category": "cloudtrail",
@@ -369,7 +2645,7 @@
       ],
       "account": "132410971304",
       "region": "ap-northeast-2",
-      "created_at": "2026-02-26T09:48:10.276555+00:00"
+      "created_at": "2026-02-26T10:50:57.374228+00:00"
     }
   }
 }

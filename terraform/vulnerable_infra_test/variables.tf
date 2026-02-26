@@ -78,6 +78,12 @@ variable "rds_instance_count" {
   default     = 1
 }
 
+variable "enable_extended_services" {
+  type        = bool
+  description = "EFS/ALB/SNS/SQS 등 추가 서비스 생성 여부 (IAM 권한 필요)"
+  default     = false
+}
+
 variable "efs_count" {
   type        = number
   description = "EFS ????? ? (vuln/remediate ??)"

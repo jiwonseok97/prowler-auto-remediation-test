@@ -37,11 +37,12 @@ vuln_kms_key_count = 15
 # VPC: flow logs 없음 + default SG 허용
 #   → vpc_flow_logs_enabled               ×2 FAIL (auto-remediable)
 #   → ec2_securitygroup_default_restrict_traffic ×2 FAIL (auto-remediable, 기본 VPC 포함 시 +1)
-vuln_vpc_count = 6
+vuln_vpc_count = 1
 
 # Additional services
-rds_instance_count = 1
-efs_count          = 1
-alb_count          = 1
-sns_topic_count    = 3
-sqs_queue_count    = 3
+rds_instance_count      = 1
+enable_extended_services = false
+efs_count                = 1
+alb_count                = 1
+sns_topic_count          = 3
+sqs_queue_count          = 3

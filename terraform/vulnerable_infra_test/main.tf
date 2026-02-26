@@ -522,7 +522,7 @@ resource "aws_db_subnet_group" "rds_subnets" {
 
 resource "aws_security_group" "rds_sg" {
   count  = var.rds_instance_count > 0 ? 1 : 0
-  name   = "sg-db-${local.name_seed}"
+  name   = "sec-db-${local.name_seed}"
   vpc_id = data.aws_vpc.default.id
 
   ingress {
@@ -579,8 +579,8 @@ resource "aws_db_instance" "vuln_rds" {
 # EFS (encryption + backups)
 # ==================================================
 resource "aws_security_group" "efs_sg" {
-  count  = var.efs_count > 0 ? 1 : 0
-  name   = "sg-efs-${local.name_seed}"
+  count  = var.enable_extended_services && var.efs_count > 0 ? 1 : 0
+  name   = "sec-efs-${local.name_seed}"
   vpc_id = data.aws_vpc.default.id
 
   ingress {
@@ -605,27 +605,20 @@ resource "aws_security_group" "efs_sg" {
 }
 
 resource "aws_efs_file_system" "vuln_efs" {
-  count           = var.efs_count
+  count           = var.enable_extended_services ? var.efs_count : 0
   encrypted       = local.is_remediate
   throughput_mode = "bursting"
-
-  tags = {
-    Name          = format("efs-shared-%s-%02d", local.name_seed, count.index + 1)
-    ManagedBy     = "terraform"
-    ProwlerDemo   = "vulnerable_infra_test"
-    CleanupTarget = "true"
-  }
 }
 
 resource "aws_efs_mount_target" "vuln_efs_mt" {
-  count           = var.efs_count
+  count           = var.enable_extended_services ? var.efs_count : 0
   file_system_id  = aws_efs_file_system.vuln_efs[count.index].id
   subnet_id       = data.aws_subnets.default.ids[0]
   security_groups = [aws_security_group.efs_sg[0].id]
 }
 
 resource "aws_efs_backup_policy" "vuln_efs_backup" {
-  count          = var.efs_count
+  count          = var.enable_extended_services ? var.efs_count : 0
   file_system_id = aws_efs_file_system.vuln_efs[count.index].id
 
   backup_policy {
@@ -637,7 +630,7 @@ resource "aws_efs_backup_policy" "vuln_efs_backup" {
 # ALB (access logs, deletion protection)
 # ==================================================
 resource "aws_s3_bucket" "alb_logs" {
-  count         = var.alb_count > 0 ? 1 : 0
+  count         = var.enable_extended_services && var.alb_count > 0 ? 1 : 0
   bucket        = format("alb-logs-%s-%s", local.name_seed, var.region)
   force_destroy = true
 
@@ -649,7 +642,7 @@ resource "aws_s3_bucket" "alb_logs" {
 }
 
 resource "aws_s3_bucket_public_access_block" "alb_logs_pab" {
-  count                   = var.alb_count > 0 ? 1 : 0
+  count                   = var.enable_extended_services && var.alb_count > 0 ? 1 : 0
   bucket                  = aws_s3_bucket.alb_logs[0].id
   block_public_acls       = local.is_remediate
   block_public_policy     = local.is_remediate
@@ -658,8 +651,8 @@ resource "aws_s3_bucket_public_access_block" "alb_logs_pab" {
 }
 
 resource "aws_security_group" "alb_sg" {
-  count  = var.alb_count > 0 ? 1 : 0
-  name   = "sg-alb-${local.name_seed}"
+  count  = var.enable_extended_services && var.alb_count > 0 ? 1 : 0
+  name   = "sec-alb-${local.name_seed}"
   vpc_id = data.aws_vpc.default.id
 
   ingress {
@@ -684,7 +677,7 @@ resource "aws_security_group" "alb_sg" {
 }
 
 resource "aws_lb" "vuln_alb" {
-  count                      = var.alb_count
+  count                      = var.enable_extended_services ? var.alb_count : 0
   name                       = format("alb-core-%s-%02d", local.name_seed, count.index + 1)
   internal                   = true
   load_balancer_type         = "application"
@@ -705,7 +698,7 @@ resource "aws_lb" "vuln_alb" {
 }
 
 resource "aws_lb_target_group" "vuln_alb_tg" {
-  count    = var.alb_count
+  count    = var.enable_extended_services ? var.alb_count : 0
   name     = format("tg-core-%s-%02d", local.name_seed, count.index + 1)
   port     = 80
   protocol = "HTTP"
@@ -717,7 +710,7 @@ resource "aws_lb_target_group" "vuln_alb_tg" {
 }
 
 resource "aws_lb_listener" "vuln_alb_listener" {
-  count             = var.alb_count
+  count             = var.enable_extended_services ? var.alb_count : 0
   load_balancer_arn = aws_lb.vuln_alb[count.index].arn
   port              = 80
   protocol          = "HTTP"
@@ -736,7 +729,7 @@ resource "aws_lb_listener" "vuln_alb_listener" {
 # SNS / SQS (encryption at rest)
 # ==================================================
 resource "aws_sns_topic" "vuln_sns" {
-  count             = var.sns_topic_count
+  count             = var.enable_extended_services ? var.sns_topic_count : 0
   name              = format("topic-audit-%s-%02d", local.name_seed, count.index + 1)
   kms_master_key_id = local.is_remediate ? aws_kms_key.vuln_kms[0].arn : null
 
@@ -748,7 +741,7 @@ resource "aws_sns_topic" "vuln_sns" {
 }
 
 resource "aws_sqs_queue" "vuln_sqs" {
-  count                   = var.sqs_queue_count
+  count                   = var.enable_extended_services ? var.sqs_queue_count : 0
   name                    = format("queue-audit-%s-%02d", local.name_seed, count.index + 1)
   sqs_managed_sse_enabled = local.is_remediate
   kms_master_key_id       = local.is_remediate ? aws_kms_key.vuln_kms[0].arn : null

@@ -1,4 +1,4 @@
-resource "aws_kms_key" "fix_kms_rotation_291b5a64a3" {
+resource "aws_kms_key" "fix_kms_rotation_ce49b66b58" {
   enable_key_rotation = true
   policy              = "{\"Version\": \"2012-10-17\", \"Statement\": [{\"Sid\": \"EnableRootAndCallerPermissions\", \"Effect\": \"Allow\", \"Principal\": {\"AWS\": [\"arn:aws:iam::132410971304:root\", \"arn:aws:iam::132410971304:role/GitHubActionsProwlerRole\"]}, \"Action\": \"kms:*\", \"Resource\": \"*\"}]}"
 }

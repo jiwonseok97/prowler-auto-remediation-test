@@ -30,6 +30,14 @@ REVIEW_REQUIRED_KEYWORDS = (
     "networkacl_allow_ingress_tcp_port_22",
     "networkacl_allow_ingress_tcp_port_3389",
 )
+EXCLUDE_TERRAFORM_AUTOREMEDIATION = {
+    "prowler-ec2_networkacl_allow_ingress_any_port",
+    "prowler-ec2_networkacl_allow_ingress_tcp_port_22",
+    "prowler-ec2_networkacl_allow_ingress_tcp_port_3389",
+    "prowler-rds_instance_storage_encrypted",
+    "prowler-s3_bucket_secure_transport_policy",
+    "prowler-vpc_flow_logs_enabled",
+}
 
 
 def first(*vals: Any) -> str:
@@ -137,7 +145,11 @@ def normalize(rows: List[Dict[str, Any]], default_account: str, default_region: 
             check_id.startswith("prowler-cloudwatch_log_metric_filter_")
             or check_id.startswith("cloudwatch_log_metric_filter_")
         )
-        manual = non_tf or (any(k in check_id for k in MANUAL_CHECK_KEYWORDS) and not cloudwatch_filter_check)
+        manual = (
+            non_tf
+            or check_id in EXCLUDE_TERRAFORM_AUTOREMEDIATION
+            or (any(k in check_id for k in MANUAL_CHECK_KEYWORDS) and not cloudwatch_filter_check)
+        )
         if manual:
             tier = "manual-runbook"
         elif any(k in check_id for k in REVIEW_REQUIRED_KEYWORDS):

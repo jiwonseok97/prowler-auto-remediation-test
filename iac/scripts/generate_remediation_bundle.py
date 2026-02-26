@@ -1111,13 +1111,29 @@ def build_config_recorder_tf(finding: Dict[str, Any], region: str, account_id: s
     )
 
 
-def build_kms_rotation_tf(finding: Dict[str, Any]) -> str:
+def build_kms_rotation_tf(finding: Dict[str, Any], account_id: str, caller_arn: str) -> str:
     key_id = extract_kms_key_id(finding.get("resource_arn", ""))
     if not key_id:
         return ""
+    principals = [f"arn:aws:iam::{account_id}:root"]
+    if caller_arn and caller_arn not in principals:
+        principals.append(caller_arn)
+    key_policy = {
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Sid": "EnableRootAndCallerPermissions",
+                "Effect": "Allow",
+                "Principal": {"AWS": principals},
+                "Action": "kms:*",
+                "Resource": "*",
+            }
+        ],
+    }
     return (
         'resource "aws_kms_key" "fix_kms_rotation" {\n'
         "  enable_key_rotation = true\n"
+        f"  policy              = {json.dumps(json.dumps(key_policy))}\n"
         "}\n"
     )
 
@@ -1253,9 +1269,9 @@ def build_cloudtrail_tf(finding: Dict[str, Any], region: str, account_id: str) -
     extra_prefix = ""
     depends_on_resources: List[str] = []
 
-    include_global = "true" if bool(detail.get("IncludeGlobalServiceEvents", True)) else "false"
-    multi_region = "true" if bool(detail.get("IsMultiRegionTrail", True)) else "false"
-    enable_logging = "true" if bool(detail.get("LogFileValidationEnabled", True)) else "true"
+    include_global = "true"
+    multi_region = "true"
+    enable_logging = "true"
 
     if "cloudtrail_logs_s3_bucket_access_logging_enabled" in cid_l:
         source_bucket = s3_bucket
@@ -1327,6 +1343,11 @@ def build_cloudtrail_tf(finding: Dict[str, Any], region: str, account_id: str) -
     ]
     existing_cw_group_arn = str(detail.get("CloudWatchLogsLogGroupArn", "") or "")
     existing_cw_role_arn = str(detail.get("CloudWatchLogsRoleArn", "") or "")
+    existing_sns_name = str(detail.get("SnsTopicName", "") or "")
+    existing_kms_arn = str(detail.get("KmsKeyId", "") or "")
+    kms_set = False
+    cw_set = False
+    sns_set = False
 
     if "log_file_validation_enabled" in cid_l:
         lines.append("  enable_log_file_validation    = true")
@@ -1443,6 +1464,7 @@ def build_cloudtrail_tf(finding: Dict[str, Any], region: str, account_id: str) -
         lines.append(f'  cloud_watch_logs_group_arn    = "{cw_group_arn}"')
         lines.append(f"  cloud_watch_logs_role_arn     = {role_arn_expr}")
         lines.append("  enable_log_file_validation    = true")
+        cw_set = True
     elif "kms_encryption_enabled" in cid_l:
         policy_prefix = build_cloudtrail_required_bucket_policy_tf(name, s3_bucket, account_id, region)
         if policy_prefix:
@@ -1496,6 +1518,7 @@ def build_cloudtrail_tf(finding: Dict[str, Any], region: str, account_id: str) -
             lines.append(f"  kms_key_id                    = {kms[2:-1]}")
         else:
             lines.append(f'  kms_key_id                    = "{kms}"')
+        kms_set = True
         # CloudTrail KMS remediation can be applied on a trail where CloudWatch
         # linkage is missing/null. Rehydrate linkage here to avoid regressing
         # `cloudtrail_cloudwatch_logging_enabled` on the same in-place update.
@@ -1549,6 +1572,126 @@ def build_cloudtrail_tf(finding: Dict[str, Any], region: str, account_id: str) -
             depends_on_resources.append("aws_iam_role_policy.fix_cloudtrail_cw_role_policy")
             lines.append(f'  cloud_watch_logs_group_arn    = "{cw_group_arn}"')
             lines.append(f"  cloud_watch_logs_role_arn     = {role_arn_expr}")
+            cw_set = True
+
+    # Ensure CloudWatch logging is configured for CloudTrail
+    if not cw_set:
+        cw_group_arn = existing_cw_group_arn
+        if cw_group_arn and not cw_group_arn.endswith(":*"):
+            cw_group_arn = f"{cw_group_arn}:*"
+        if not cw_group_arn:
+            cw_group_name = pick_default_cloudtrail_log_group(region, account_id)
+            cw_group_arn = f"arn:aws:logs:{region}:{account_id}:log-group:{cw_group_name}:*"
+        role_name = f"cloudtrail-to-cw-{safe_id(name)}"[:64]
+        create_role = not iam_role_exists(role_name)
+        role_arn_expr = f'"arn:aws:iam::{account_id}:role/{role_name}"'
+        if create_role:
+            role_arn_expr = "aws_iam_role.fix_cloudtrail_cw_role.arn"
+            assume_doc = json.dumps(
+                {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Principal": {"Service": "cloudtrail.amazonaws.com"},
+                            "Action": "sts:AssumeRole",
+                        }
+                    ],
+                }
+            )
+            extra_prefix += (
+                'resource "aws_iam_role" "fix_cloudtrail_cw_role" {\n'
+                f'  name               = "{role_name}"\n'
+                f"  assume_role_policy = {json.dumps(assume_doc)}\n"
+                "}\n\n"
+            )
+        lg_arn_base = cw_group_arn[:-2] if cw_group_arn.endswith(":*") else cw_group_arn
+        inline_policy = {
+            "Version": "2012-10-17",
+            "Statement": [
+                {
+                    "Effect": "Allow",
+                    "Action": ["logs:CreateLogStream", "logs:PutLogEvents"],
+                    "Resource": [f"{lg_arn_base}:*", lg_arn_base],
+                }
+            ],
+        }
+        role_policy_depends = "  depends_on = [aws_iam_role.fix_cloudtrail_cw_role]\n" if create_role else ""
+        extra_prefix += (
+            'resource "aws_iam_role_policy" "fix_cloudtrail_cw_role_policy" {\n'
+            '  name   = "cloudtrail-to-cloudwatch-logs"\n'
+            f'  role   = "{role_name}"\n'
+            f"  policy = {json.dumps(json.dumps(inline_policy))}\n"
+            f"{role_policy_depends}"
+            "}\n\n"
+        )
+        depends_on_resources.append("aws_iam_role_policy.fix_cloudtrail_cw_role_policy")
+        lines.append(f'  cloud_watch_logs_group_arn    = "{cw_group_arn}"')
+        lines.append(f"  cloud_watch_logs_role_arn     = {role_arn_expr}")
+        cw_set = True
+
+    # Ensure KMS encryption for CloudTrail logs
+    if not kms_set:
+        kms = existing_kms_arn
+        if not kms:
+            trail_arn = f"arn:aws:cloudtrail:{region}:{account_id}:trail/{name}"
+            caller_arn = get_caller_arn()
+            admin_principals: list = [f"arn:aws:iam::{account_id}:root"]
+            if caller_arn and caller_arn not in admin_principals:
+                admin_principals.append(caller_arn)
+            key_policy = {
+                "Version": "2012-10-17",
+                "Statement": [
+                    {
+                        "Sid": "EnableRootAndCallerPermissions",
+                        "Effect": "Allow",
+                        "Principal": {"AWS": admin_principals},
+                        "Action": "kms:*",
+                        "Resource": "*",
+                    },
+                    {
+                        "Sid": "AllowCloudTrailUseOfTheKey",
+                        "Effect": "Allow",
+                        "Principal": {"Service": "cloudtrail.amazonaws.com"},
+                        "Action": [
+                            "kms:GenerateDataKey*",
+                            "kms:Decrypt",
+                            "kms:Encrypt",
+                            "kms:DescribeKey",
+                        ],
+                        "Resource": "*",
+                        "Condition": {"StringEquals": {"aws:SourceArn": trail_arn}},
+                    },
+                ],
+            }
+            extra_prefix += (
+                'resource "aws_kms_key" "fix_cloudtrail_kms_key" {\n'
+                '  description         = "CloudTrail encryption key created by remediation"\n'
+                "  enable_key_rotation = true\n"
+                f"  policy              = {json.dumps(json.dumps(key_policy))}\n"
+                "}\n\n"
+            )
+            kms = "${aws_kms_key.fix_cloudtrail_kms_key.arn}"
+        lines.append("  enable_log_file_validation    = true")
+        if kms.startswith("${"):
+            lines.append(f"  kms_key_id                    = {kms[2:-1]}")
+        else:
+            lines.append(f'  kms_key_id                    = "{kms}"')
+        kms_set = True
+
+    # Ensure SNS topic is defined for CloudTrail
+    if existing_sns_name:
+        lines.append(f'  sns_topic_name               = "{existing_sns_name}"')
+        sns_set = True
+    if not sns_set:
+        sns_name = f"cloudtrail-alerts-{safe_id(name)}"
+        extra_prefix += (
+            'resource "aws_sns_topic" "fix_cloudtrail_sns" {\n'
+            f'  name = "{sns_name}"\n'
+            "}\n\n"
+        )
+        lines.append("  sns_topic_name               = aws_sns_topic.fix_cloudtrail_sns.name")
+        sns_set = True
     else:
         return ""
 
@@ -1794,6 +1937,8 @@ def main() -> None:
     cloudtrail_with_kms: set[str] = set()
     cloudtrail_with_dataevents: set[str] = set()
 
+    caller_arn = get_caller_arn()
+
     for f in fail_rows:
         cid = f.get("check_id", "unknown")
         cat = category_of(f.get("service", ""), cid)
@@ -1918,7 +2063,7 @@ def main() -> None:
         elif "config_recorder_all_regions_enabled" in cid_l:
             tf_code = build_config_recorder_tf(f, finding_region, a.account_id)
         elif "kms_cmk_rotation_enabled" in cid_l:
-            tf_code = build_kms_rotation_tf(f)
+            tf_code = build_kms_rotation_tf(f, a.account_id, caller_arn)
         elif cid_l.startswith("prowler-cloudtrail_") or cid_l.startswith("cloudtrail_"):
             tf_code = build_cloudtrail_tf(f, finding_region, a.account_id)
         elif cid_l.startswith("prowler-cloudwatch_") or cid_l.startswith("cloudwatch_"):

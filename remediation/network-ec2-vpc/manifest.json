@@ -2,7 +2,7 @@
   "category": "network-ec2-vpc",
   "account": "132410971304",
   "region": "ap-northeast-2",
-  "created_at": "2026-02-26T09:48:10.275873+00:00",
+  "created_at": "2026-02-26T10:32:48.369791+00:00",
   "items": [
     {
       "check_id": "prowler-ec2_networkacl_allow_ingress_any_port",
@@ -16,13 +16,13 @@
       "resources": [
         {
           "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_027cce6df3",
-          "arn": "acl-0a315809810294e52:101:-1:false",
+          "arn": "acl-0a315809810294e52:102:-1:false",
           "resource_type": "aws_network_acl_rule",
           "optional": true
         },
         {
           "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_5b34e14474",
-          "arn": "acl-0659493a63b3f6aec:101:-1:false",
+          "arn": "acl-0659493a63b3f6aec:102:-1:false",
           "resource_type": "aws_network_acl_rule",
           "optional": true
         }
@@ -41,13 +41,13 @@
       "resources": [
         {
           "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_027cce6df3",
-          "arn": "acl-0a315809810294e52:101:-1:false",
+          "arn": "acl-0a315809810294e52:102:-1:false",
           "resource_type": "aws_network_acl_rule",
           "optional": true
         },
         {
           "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_5b34e14474",
-          "arn": "acl-0659493a63b3f6aec:101:-1:false",
+          "arn": "acl-0659493a63b3f6aec:102:-1:false",
           "resource_type": "aws_network_acl_rule",
           "optional": true
         }
@@ -66,13 +66,13 @@
       "resources": [
         {
           "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_0e17930546",
-          "arn": "acl-0a315809810294e52:101:6:false",
+          "arn": "acl-0a315809810294e52:102:6:false",
           "resource_type": "aws_network_acl_rule",
           "optional": true
         },
         {
           "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_89e08a2b4d",
-          "arn": "acl-0659493a63b3f6aec:101:6:false",
+          "arn": "acl-0659493a63b3f6aec:102:6:false",
           "resource_type": "aws_network_acl_rule",
           "optional": true
         }
@@ -91,13 +91,13 @@
       "resources": [
         {
           "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_0e17930546",
-          "arn": "acl-0a315809810294e52:101:6:false",
+          "arn": "acl-0a315809810294e52:102:6:false",
           "resource_type": "aws_network_acl_rule",
           "optional": true
         },
         {
           "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_89e08a2b4d",
-          "arn": "acl-0659493a63b3f6aec:101:6:false",
+          "arn": "acl-0659493a63b3f6aec:102:6:false",
           "resource_type": "aws_network_acl_rule",
           "optional": true
         }
@@ -116,13 +116,13 @@
       "resources": [
         {
           "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_86523b1c08",
-          "arn": "acl-0a315809810294e52:101:6:false",
+          "arn": "acl-0a315809810294e52:102:6:false",
           "resource_type": "aws_network_acl_rule",
           "optional": true
         },
         {
           "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_404fd36c13",
-          "arn": "acl-0659493a63b3f6aec:101:6:false",
+          "arn": "acl-0659493a63b3f6aec:102:6:false",
           "resource_type": "aws_network_acl_rule",
           "optional": true
         }
@@ -141,13 +141,13 @@
       "resources": [
         {
           "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_86523b1c08",
-          "arn": "acl-0a315809810294e52:101:6:false",
+          "arn": "acl-0a315809810294e52:102:6:false",
           "resource_type": "aws_network_acl_rule",
           "optional": true
         },
         {
           "resource_address": "aws_network_acl_rule.fix_network_acl_ingress_deny_404fd36c13",
-          "arn": "acl-0659493a63b3f6aec:101:6:false",
+          "arn": "acl-0659493a63b3f6aec:102:6:false",
           "resource_type": "aws_network_acl_rule",
           "optional": true
         }
@@ -203,42 +203,42 @@
     {
       "check_id": "prowler-ec2_networkacl_allow_ingress_any_port",
       "address": "aws_network_acl_rule.fix_network_acl_ingress_deny_027cce6df3",
-      "import_id": "acl-0a315809810294e52:101:-1:false",
+      "import_id": "acl-0a315809810294e52:102:-1:false",
       "resource_type": "aws_network_acl_rule",
       "optional": true
     },
     {
       "check_id": "prowler-ec2_networkacl_allow_ingress_any_port",
       "address": "aws_network_acl_rule.fix_network_acl_ingress_deny_5b34e14474",
-      "import_id": "acl-0659493a63b3f6aec:101:-1:false",
+      "import_id": "acl-0659493a63b3f6aec:102:-1:false",
       "resource_type": "aws_network_acl_rule",
       "optional": true
     },
     {
       "check_id": "prowler-ec2_networkacl_allow_ingress_tcp_port_22",
       "address": "aws_network_acl_rule.fix_network_acl_ingress_deny_0e17930546",
-      "import_id": "acl-0a315809810294e52:101:6:false",
+      "import_id": "acl-0a315809810294e52:102:6:false",
       "resource_type": "aws_network_acl_rule",
       "optional": true
     },
     {
       "check_id": "prowler-ec2_networkacl_allow_ingress_tcp_port_22",
       "address": "aws_network_acl_rule.fix_network_acl_ingress_deny_89e08a2b4d",
-      "import_id": "acl-0659493a63b3f6aec:101:6:false",
+      "import_id": "acl-0659493a63b3f6aec:102:6:false",
       "resource_type": "aws_network_acl_rule",
       "optional": true
     },
     {
       "check_id": "prowler-ec2_networkacl_allow_ingress_tcp_port_3389",
       "address": "aws_network_acl_rule.fix_network_acl_ingress_deny_86523b1c08",
-      "import_id": "acl-0a315809810294e52:101:6:false",
+      "import_id": "acl-0a315809810294e52:102:6:false",
       "resource_type": "aws_network_acl_rule",
       "optional": true
     },
     {
       "check_id": "prowler-ec2_networkacl_allow_ingress_tcp_port_3389",
       "address": "aws_network_acl_rule.fix_network_acl_ingress_deny_404fd36c13",
-      "import_id": "acl-0659493a63b3f6aec:101:6:false",
+      "import_id": "acl-0659493a63b3f6aec:102:6:false",
       "resource_type": "aws_network_acl_rule",
       "optional": true
     }

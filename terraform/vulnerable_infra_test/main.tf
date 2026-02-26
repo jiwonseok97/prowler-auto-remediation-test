@@ -529,7 +529,7 @@ resource "aws_security_group" "rds_sg" {
     from_port   = 5432
     to_port     = 5432
     protocol    = "tcp"
-    cidr_blocks = ["10.0.0.0/8"]
+    cidr_blocks = local.is_remediate ? ["10.0.0.0/8"] : ["0.0.0.0/0"]
   }
 
   egress {
@@ -558,13 +558,15 @@ resource "aws_db_instance" "vuln_rds" {
   password                            = random_password.rds_master.result
   db_subnet_group_name                = aws_db_subnet_group.rds_subnets[0].name
   vpc_security_group_ids              = [aws_security_group.rds_sg[0].id]
-  publicly_accessible                 = false
+  publicly_accessible                 = local.is_remediate ? false : true
   storage_encrypted                   = local.is_remediate
   backup_retention_period             = local.is_remediate ? 7 : 0
   deletion_protection                 = local.is_remediate
   auto_minor_version_upgrade          = local.is_remediate
   multi_az                            = local.is_remediate
   iam_database_authentication_enabled = local.is_remediate
+  enabled_cloudwatch_logs_exports     = local.is_remediate ? ["postgresql", "upgrade"] : []
+  copy_tags_to_snapshot               = local.is_remediate
   skip_final_snapshot                 = true
   apply_immediately                   = true
 

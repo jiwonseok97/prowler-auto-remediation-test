@@ -1,4 +1,4 @@
-variable "account_id" {
+﻿variable "account_id" {
   type        = string
   description = "AWS account ID"
 }

@@ -35,12 +35,14 @@ jobs:
         run: |
           checkov -d terraform \
             -o json \
-            --output-file-path artifacts/iac-scanners/checkov-terraform.json \
+            --output-file-path artifacts/iac-scanners \
+            --output-filename checkov-terraform.json \
             --quiet || true
 
           checkov -d terraform \
             -o sarif \
-            --output-file-path artifacts/iac-scanners/checkov-terraform.sarif \
+            --output-file-path artifacts/iac-scanners \
+            --output-filename checkov-terraform.sarif \
             --quiet || true
 
           python - <<'PY'
@@ -76,12 +78,14 @@ jobs:
         run: |
           checkov -d remediation \
             -o json \
-            --output-file-path artifacts/iac-scanners/checkov-remediation.json \
+            --output-file-path artifacts/iac-scanners \
+            --output-filename checkov-remediation.json \
             --quiet || true
 
           checkov -d remediation \
             -o sarif \
-            --output-file-path artifacts/iac-scanners/checkov-remediation.sarif \
+            --output-file-path artifacts/iac-scanners \
+            --output-filename checkov-remediation.sarif \
             --quiet || true
 
           python - <<'PY'

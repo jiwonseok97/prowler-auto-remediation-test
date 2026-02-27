@@ -1,4 +1,4 @@
-name: 보안 파이프라인 - 01 인프라 취약점 스캔 → AWS Prowler ( CIS 1.4 / ISMS-P )
+﻿name: 보안 파이프라인 - 01 인프라 취약점 스캔 → AWS Prowler ( CIS 1.4 / ISMS-P )
 
 on:
   workflow_dispatch:
@@ -317,7 +317,7 @@ jobs:
           from collections import Counter, defaultdict
           from pathlib import Path
 
-          CIS_LOGO_URL = "https://raw.githubusercontent.com/jiwonseok97/prowler-auto-remediation-test/main/.github/assets/cis-logo.svg"
+          CIS_LOGO_URL = "https://raw.githubusercontent.com/jiwonseok97/prowler-auto-remediation-test/main/.github/assets/cis-logo-2024.png"
           ISMS_LOGO_URL = "https://raw.githubusercontent.com/jiwonseok97/prowler-auto-remediation-test/main/.github/assets/isms-logo.png"
 
           def parse_asff(pattern):
@@ -405,7 +405,11 @@ jobs:
               for service in sorted(svc_data):
                   v = svc_data[service]
                   is_fail = v["fail"] > 0
-                  status_text = f'fail ({v["fail"]})' if is_fail else f'pass ({v["pass"]})'
+                  # Pad counts for visual alignment in the Status column.
+                  if is_fail:
+                      status_text = f'fail ({v["fail"]:>3})'
+                  else:
+                      status_text = f'pass ({v["pass"]:>3})'
                   if is_fail:
                       sev_cols = f'{v["critical"]} | {v["high"]} | {v["medium"]} | {v["low"]} | {v["info"]}'
                   else:
@@ -441,8 +445,8 @@ jobs:
           for check_id, count in by_check.most_common():
               check_lines.append(f"| `{check_id}` | {count} |")
 
-            with open(Path.cwd() / 'summary.md', 'w', encoding='utf-8') as f:
-                f.write("## 01. 취약 인프라 초기 보안 점검 결과\n")
+          with open(Path.cwd() / 'summary.md', 'w', encoding='utf-8') as f:
+              f.write("## 01. 취약 인프라 초기 보안 점검 결과\\n")
               f.write(f"- Total FAIL items: {fail_count}\n\n")
 
               if cis_findings:
@@ -452,7 +456,7 @@ jobs:
                       "CIS",
                       "CIS Amazon Web Services Foundations Benchmark v1.4",
                       account_id,
-                      40,
+                      36,
                   ) + "\n\n")
 
               if isms_findings:
@@ -472,10 +476,12 @@ jobs:
                       "SERVICES",
                       "Additional Services (RDS/EFS/ELB/SNS/SQS)",
                       account_id,
-                      32,
+                      30,
                   ) + "\n\n")
 
-            f.write("### 보안 항목별 취약점(FAIL) 현황\n")
+              f.write("### 보안 항목별 취약점(FAIL) 현황\\n")
               f.write("\n".join(check_lines) + "\n")
           PY
           cat summary.md >> "$GITHUB_STEP_SUMMARY"
+
+

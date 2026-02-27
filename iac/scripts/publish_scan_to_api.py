@@ -85,6 +85,9 @@ def main() -> int:
     if not args.api_url:
         print("skip publish: api url not configured")
         return 0
+    if "***" in args.api_url:
+        print("skip publish: api url is masked/invalid")
+        return 0
 
     payload_file = Path(args.input)
     payload = load_json(payload_file)
@@ -102,6 +105,17 @@ def main() -> int:
         "payload": payload,
     }
     target_url = resolve_api_url(args.api_url)
+    parsed = urlparse(target_url)
+    if not parsed.scheme or not parsed.hostname:
+        print(f"skip publish: invalid api url '{args.api_url}'")
+        return 0
+    try:
+        import socket
+
+        socket.gethostbyname(parsed.hostname)
+    except Exception:
+        print(f"skip publish: api host not resolvable ({parsed.hostname})")
+        return 0
     status_code = post_json(target_url, args.api_token, envelope, args.max_retries)
     print(f"published event={args.event} status={status_code} url={target_url}")
     return 0

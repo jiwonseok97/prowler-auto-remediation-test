@@ -30,6 +30,35 @@ if [[ -z "$API_URL" || -z "$EMAIL" || -z "$PASSWORD" ]]; then
   exit 1
 fi
 
+# Skip masked/placeholder values to avoid misleading failures.
+if [[ "$API_URL" == "***" || "$API_URL" == *"***"* ]]; then
+  echo "[prowler-trigger] skip: PROWLER_NATIVE_API_URL is masked or invalid."
+  exit 0
+fi
+
+# Ensure the API host resolves (avoid curl exit 6).
+if ! python3 - <<'PY'
+import os, socket, sys
+from urllib.parse import urlparse
+raw = os.environ.get("PROWLER_NATIVE_API_URL","").strip()
+try:
+    if not raw:
+        sys.exit(1)
+    if "://" not in raw:
+        raw = "http://" + raw.lstrip("/")
+    host = urlparse(raw).hostname
+    if not host:
+        sys.exit(1)
+    socket.gethostbyname(host)
+    sys.exit(0)
+except Exception:
+    sys.exit(1)
+PY
+then
+  echo "[prowler-trigger] skip: PROWLER_NATIVE_API_URL host not resolvable from runner."
+  exit 0
+fi
+
 # Strip trailing slash
 API_URL="${API_URL%/}"
 

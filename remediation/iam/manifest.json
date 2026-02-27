@@ -2,7 +2,7 @@
   "category": "iam",
   "account": "132410971304",
   "region": "ap-northeast-2",
-  "created_at": "2026-02-27T09:57:15.368412+00:00",
+  "created_at": "2026-02-27T22:34:29.114878+00:00",
   "items": [
     {
       "check_id": "prowler-iam_aws_attached_policy_no_administrative_privileges",
@@ -135,1581 +135,1605 @@
       "manual_required": false,
       "remediation_tier": "safe-auto",
       "files": [
-        "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_08ed9476_1ab8_4ac0_a79a_e374b8f63a04_ap_northeast_2.tf"
+        "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_24c3caed_10ef_4266_9f20_11afcfd6be77_ap_northeast_2.tf"
       ],
       "priority": "P2",
       "score": 58.5,
       "resources": [
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_45a7db79c6",
-          "arn": "08ed9476-1ab8-4ac0-a79a-e374b8f63a04",
+          "resource_address": "aws_kms_key.fix_kms_rotation_ba3b84e475",
+          "arn": "24c3caed-10ef-4266-9f20-11afcfd6be77",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_900aef61a8",
-          "arn": "1344299b-d6ed-4199-9460-04d7b0adb77e",
+          "resource_address": "aws_kms_key.fix_kms_rotation_3636553b45",
+          "arn": "2979e522-f06a-4a3b-853e-396ceee12fe9",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_76ad9fccaf",
-          "arn": "16527bb2-bd38-4dc5-8281-50e35147c5ad",
+          "resource_address": "aws_kms_key.fix_kms_rotation_c6e42201ce",
+          "arn": "6c4edf01-02cc-4885-91bf-bc9fef308c53",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_f5a479e4b6",
-          "arn": "218f7511-d722-4b43-ad6d-984fb99b0459",
+          "resource_address": "aws_kms_key.fix_kms_rotation_66c78153ec",
+          "arn": "81cc7178-728a-4a32-9139-6f4e701efdfd",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_3615a22b66",
-          "arn": "2bed98e6-591a-4b35-aa4c-631f3cc1b6c0",
+          "resource_address": "aws_kms_key.fix_kms_rotation_2affa0b05f",
+          "arn": "94db1387-5bb3-4871-a020-dc48f5eaf0b8",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_611f75364a",
-          "arn": "338d3ac9-7482-4f14-9afe-6c866b1430e3",
+          "resource_address": "aws_kms_key.fix_kms_rotation_51983cf4aa",
+          "arn": "9be658ad-f17b-4cf7-a9aa-142c8230c45a",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_4332365fe9",
-          "arn": "3d376307-7b7c-48c1-871d-67a8f5bf75e6",
+          "resource_address": "aws_kms_key.fix_kms_rotation_4b01158ebb",
+          "arn": "a7f8300b-a3bd-44c6-ae94-0ebdb4b68d1f",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_16bd6c4f35",
-          "arn": "461850f1-9b2e-4278-8ac8-64a1cb796da0",
+          "resource_address": "aws_kms_key.fix_kms_rotation_7cd7ed24e3",
+          "arn": "ac9ecb68-cfa8-4d98-ba5d-5afd32711211",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_df806aaa02",
-          "arn": "5221937d-6ba2-4b8b-91e7-cb02b36ecccb",
+          "resource_address": "aws_kms_key.fix_kms_rotation_034aa37c50",
+          "arn": "b929e48c-80c9-4711-8602-44ea83b54daf",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_bb8f486249",
-          "arn": "52baf06e-515f-470e-8d28-84020fab8aa5",
+          "resource_address": "aws_kms_key.fix_kms_rotation_8cad0bdc3a",
+          "arn": "b9a3f95f-1e8c-4ef2-b28b-77cc72e8d41e",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_0f95a02591",
-          "arn": "9e985d92-6f2d-4e23-a484-33ece4f58511",
+          "resource_address": "aws_kms_key.fix_kms_rotation_ca054a0341",
+          "arn": "dd15ee0f-2595-4c8f-a4ca-a24c3ed2e5ae",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_267bdd956c",
-          "arn": "a2d6cd90-50aa-4376-b164-747357b47fc7",
+          "resource_address": "aws_kms_key.fix_kms_rotation_d2f7fed70f",
+          "arn": "ea694c2d-9e27-4d5d-9a0f-43db6ed16213",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_a0cd16366d",
-          "arn": "bb0456a4-371d-4650-9fa3-2c8241fcc314",
+          "resource_address": "aws_kms_key.fix_kms_rotation_c744df7811",
+          "arn": "eeafdfcb-ce0e-4b41-9d62-1ac0690e6fb5",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_061062aab2",
-          "arn": "d27d8ed8-bbeb-49cf-a9b9-53cc4ae39573",
+          "resource_address": "aws_kms_key.fix_kms_rotation_22debf4588",
+          "arn": "f0da63fb-d5b7-4ff0-85b5-902eeb192edf",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_f82d08a50b",
-          "arn": "e5db4617-3ca7-4dda-93ed-c04d8f9d2677",
+          "resource_address": "aws_kms_key.fix_kms_rotation_aeab8d971c",
+          "arn": "fc671b7f-96ee-4b28-80c9-334968aa99a4",
           "resource_type": "aws_kms_key",
           "optional": false
         }
       ],
-      "tf_file": "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_08ed9476_1ab8_4ac0_a79a_e374b8f63a04_ap_northeast_2.tf"
+      "tf_file": "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_24c3caed_10ef_4266_9f20_11afcfd6be77_ap_northeast_2.tf"
     },
     {
       "check_id": "prowler-kms_cmk_rotation_enabled",
       "manual_required": false,
       "remediation_tier": "safe-auto",
       "files": [
-        "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_1344299b_d6ed_4199_9460_04d7b0adb77e_ap_northeast_2.tf"
+        "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_2979e522_f06a_4a3b_853e_396ceee12fe9_ap_northeast_2.tf"
       ],
       "priority": "P2",
       "score": 58.5,
       "resources": [
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_45a7db79c6",
-          "arn": "08ed9476-1ab8-4ac0-a79a-e374b8f63a04",
+          "resource_address": "aws_kms_key.fix_kms_rotation_ba3b84e475",
+          "arn": "24c3caed-10ef-4266-9f20-11afcfd6be77",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_900aef61a8",
-          "arn": "1344299b-d6ed-4199-9460-04d7b0adb77e",
+          "resource_address": "aws_kms_key.fix_kms_rotation_3636553b45",
+          "arn": "2979e522-f06a-4a3b-853e-396ceee12fe9",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_76ad9fccaf",
-          "arn": "16527bb2-bd38-4dc5-8281-50e35147c5ad",
+          "resource_address": "aws_kms_key.fix_kms_rotation_c6e42201ce",
+          "arn": "6c4edf01-02cc-4885-91bf-bc9fef308c53",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_f5a479e4b6",
-          "arn": "218f7511-d722-4b43-ad6d-984fb99b0459",
+          "resource_address": "aws_kms_key.fix_kms_rotation_66c78153ec",
+          "arn": "81cc7178-728a-4a32-9139-6f4e701efdfd",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_3615a22b66",
-          "arn": "2bed98e6-591a-4b35-aa4c-631f3cc1b6c0",
+          "resource_address": "aws_kms_key.fix_kms_rotation_2affa0b05f",
+          "arn": "94db1387-5bb3-4871-a020-dc48f5eaf0b8",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_611f75364a",
-          "arn": "338d3ac9-7482-4f14-9afe-6c866b1430e3",
+          "resource_address": "aws_kms_key.fix_kms_rotation_51983cf4aa",
+          "arn": "9be658ad-f17b-4cf7-a9aa-142c8230c45a",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_4332365fe9",
-          "arn": "3d376307-7b7c-48c1-871d-67a8f5bf75e6",
+          "resource_address": "aws_kms_key.fix_kms_rotation_4b01158ebb",
+          "arn": "a7f8300b-a3bd-44c6-ae94-0ebdb4b68d1f",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_16bd6c4f35",
-          "arn": "461850f1-9b2e-4278-8ac8-64a1cb796da0",
+          "resource_address": "aws_kms_key.fix_kms_rotation_7cd7ed24e3",
+          "arn": "ac9ecb68-cfa8-4d98-ba5d-5afd32711211",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_df806aaa02",
-          "arn": "5221937d-6ba2-4b8b-91e7-cb02b36ecccb",
+          "resource_address": "aws_kms_key.fix_kms_rotation_034aa37c50",
+          "arn": "b929e48c-80c9-4711-8602-44ea83b54daf",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_bb8f486249",
-          "arn": "52baf06e-515f-470e-8d28-84020fab8aa5",
+          "resource_address": "aws_kms_key.fix_kms_rotation_8cad0bdc3a",
+          "arn": "b9a3f95f-1e8c-4ef2-b28b-77cc72e8d41e",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_0f95a02591",
-          "arn": "9e985d92-6f2d-4e23-a484-33ece4f58511",
+          "resource_address": "aws_kms_key.fix_kms_rotation_ca054a0341",
+          "arn": "dd15ee0f-2595-4c8f-a4ca-a24c3ed2e5ae",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_267bdd956c",
-          "arn": "a2d6cd90-50aa-4376-b164-747357b47fc7",
+          "resource_address": "aws_kms_key.fix_kms_rotation_d2f7fed70f",
+          "arn": "ea694c2d-9e27-4d5d-9a0f-43db6ed16213",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_a0cd16366d",
-          "arn": "bb0456a4-371d-4650-9fa3-2c8241fcc314",
+          "resource_address": "aws_kms_key.fix_kms_rotation_c744df7811",
+          "arn": "eeafdfcb-ce0e-4b41-9d62-1ac0690e6fb5",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_061062aab2",
-          "arn": "d27d8ed8-bbeb-49cf-a9b9-53cc4ae39573",
+          "resource_address": "aws_kms_key.fix_kms_rotation_22debf4588",
+          "arn": "f0da63fb-d5b7-4ff0-85b5-902eeb192edf",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_f82d08a50b",
-          "arn": "e5db4617-3ca7-4dda-93ed-c04d8f9d2677",
+          "resource_address": "aws_kms_key.fix_kms_rotation_aeab8d971c",
+          "arn": "fc671b7f-96ee-4b28-80c9-334968aa99a4",
           "resource_type": "aws_kms_key",
           "optional": false
         }
       ],
-      "tf_file": "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_1344299b_d6ed_4199_9460_04d7b0adb77e_ap_northeast_2.tf"
+      "tf_file": "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_2979e522_f06a_4a3b_853e_396ceee12fe9_ap_northeast_2.tf"
     },
     {
       "check_id": "prowler-kms_cmk_rotation_enabled",
       "manual_required": false,
       "remediation_tier": "safe-auto",
       "files": [
-        "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_16527bb2_bd38_4dc5_8281_50e35147c5ad_ap_northeast_2.tf"
+        "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_6c4edf01_02cc_4885_91bf_bc9fef308c53_ap_northeast_2.tf"
       ],
       "priority": "P2",
       "score": 58.5,
       "resources": [
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_45a7db79c6",
-          "arn": "08ed9476-1ab8-4ac0-a79a-e374b8f63a04",
+          "resource_address": "aws_kms_key.fix_kms_rotation_ba3b84e475",
+          "arn": "24c3caed-10ef-4266-9f20-11afcfd6be77",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_900aef61a8",
-          "arn": "1344299b-d6ed-4199-9460-04d7b0adb77e",
+          "resource_address": "aws_kms_key.fix_kms_rotation_3636553b45",
+          "arn": "2979e522-f06a-4a3b-853e-396ceee12fe9",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_76ad9fccaf",
-          "arn": "16527bb2-bd38-4dc5-8281-50e35147c5ad",
+          "resource_address": "aws_kms_key.fix_kms_rotation_c6e42201ce",
+          "arn": "6c4edf01-02cc-4885-91bf-bc9fef308c53",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_f5a479e4b6",
-          "arn": "218f7511-d722-4b43-ad6d-984fb99b0459",
+          "resource_address": "aws_kms_key.fix_kms_rotation_66c78153ec",
+          "arn": "81cc7178-728a-4a32-9139-6f4e701efdfd",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_3615a22b66",
-          "arn": "2bed98e6-591a-4b35-aa4c-631f3cc1b6c0",
+          "resource_address": "aws_kms_key.fix_kms_rotation_2affa0b05f",
+          "arn": "94db1387-5bb3-4871-a020-dc48f5eaf0b8",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_611f75364a",
-          "arn": "338d3ac9-7482-4f14-9afe-6c866b1430e3",
+          "resource_address": "aws_kms_key.fix_kms_rotation_51983cf4aa",
+          "arn": "9be658ad-f17b-4cf7-a9aa-142c8230c45a",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_4332365fe9",
-          "arn": "3d376307-7b7c-48c1-871d-67a8f5bf75e6",
+          "resource_address": "aws_kms_key.fix_kms_rotation_4b01158ebb",
+          "arn": "a7f8300b-a3bd-44c6-ae94-0ebdb4b68d1f",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_16bd6c4f35",
-          "arn": "461850f1-9b2e-4278-8ac8-64a1cb796da0",
+          "resource_address": "aws_kms_key.fix_kms_rotation_7cd7ed24e3",
+          "arn": "ac9ecb68-cfa8-4d98-ba5d-5afd32711211",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_df806aaa02",
-          "arn": "5221937d-6ba2-4b8b-91e7-cb02b36ecccb",
+          "resource_address": "aws_kms_key.fix_kms_rotation_034aa37c50",
+          "arn": "b929e48c-80c9-4711-8602-44ea83b54daf",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_bb8f486249",
-          "arn": "52baf06e-515f-470e-8d28-84020fab8aa5",
+          "resource_address": "aws_kms_key.fix_kms_rotation_8cad0bdc3a",
+          "arn": "b9a3f95f-1e8c-4ef2-b28b-77cc72e8d41e",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_0f95a02591",
-          "arn": "9e985d92-6f2d-4e23-a484-33ece4f58511",
+          "resource_address": "aws_kms_key.fix_kms_rotation_ca054a0341",
+          "arn": "dd15ee0f-2595-4c8f-a4ca-a24c3ed2e5ae",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_267bdd956c",
-          "arn": "a2d6cd90-50aa-4376-b164-747357b47fc7",
+          "resource_address": "aws_kms_key.fix_kms_rotation_d2f7fed70f",
+          "arn": "ea694c2d-9e27-4d5d-9a0f-43db6ed16213",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_a0cd16366d",
-          "arn": "bb0456a4-371d-4650-9fa3-2c8241fcc314",
+          "resource_address": "aws_kms_key.fix_kms_rotation_c744df7811",
+          "arn": "eeafdfcb-ce0e-4b41-9d62-1ac0690e6fb5",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_061062aab2",
-          "arn": "d27d8ed8-bbeb-49cf-a9b9-53cc4ae39573",
+          "resource_address": "aws_kms_key.fix_kms_rotation_22debf4588",
+          "arn": "f0da63fb-d5b7-4ff0-85b5-902eeb192edf",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_f82d08a50b",
-          "arn": "e5db4617-3ca7-4dda-93ed-c04d8f9d2677",
+          "resource_address": "aws_kms_key.fix_kms_rotation_aeab8d971c",
+          "arn": "fc671b7f-96ee-4b28-80c9-334968aa99a4",
           "resource_type": "aws_kms_key",
           "optional": false
         }
       ],
-      "tf_file": "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_16527bb2_bd38_4dc5_8281_50e35147c5ad_ap_northeast_2.tf"
+      "tf_file": "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_6c4edf01_02cc_4885_91bf_bc9fef308c53_ap_northeast_2.tf"
     },
     {
       "check_id": "prowler-kms_cmk_rotation_enabled",
       "manual_required": false,
       "remediation_tier": "safe-auto",
       "files": [
-        "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_218f7511_d722_4b43_ad6d_984fb99b0459_ap_northeast_2.tf"
+        "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_81cc7178_728a_4a32_9139_6f4e701efdfd_ap_northeast_2.tf"
       ],
       "priority": "P2",
       "score": 58.5,
       "resources": [
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_45a7db79c6",
-          "arn": "08ed9476-1ab8-4ac0-a79a-e374b8f63a04",
+          "resource_address": "aws_kms_key.fix_kms_rotation_ba3b84e475",
+          "arn": "24c3caed-10ef-4266-9f20-11afcfd6be77",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_900aef61a8",
-          "arn": "1344299b-d6ed-4199-9460-04d7b0adb77e",
+          "resource_address": "aws_kms_key.fix_kms_rotation_3636553b45",
+          "arn": "2979e522-f06a-4a3b-853e-396ceee12fe9",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_76ad9fccaf",
-          "arn": "16527bb2-bd38-4dc5-8281-50e35147c5ad",
+          "resource_address": "aws_kms_key.fix_kms_rotation_c6e42201ce",
+          "arn": "6c4edf01-02cc-4885-91bf-bc9fef308c53",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_f5a479e4b6",
-          "arn": "218f7511-d722-4b43-ad6d-984fb99b0459",
+          "resource_address": "aws_kms_key.fix_kms_rotation_66c78153ec",
+          "arn": "81cc7178-728a-4a32-9139-6f4e701efdfd",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_3615a22b66",
-          "arn": "2bed98e6-591a-4b35-aa4c-631f3cc1b6c0",
+          "resource_address": "aws_kms_key.fix_kms_rotation_2affa0b05f",
+          "arn": "94db1387-5bb3-4871-a020-dc48f5eaf0b8",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_611f75364a",
-          "arn": "338d3ac9-7482-4f14-9afe-6c866b1430e3",
+          "resource_address": "aws_kms_key.fix_kms_rotation_51983cf4aa",
+          "arn": "9be658ad-f17b-4cf7-a9aa-142c8230c45a",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_4332365fe9",
-          "arn": "3d376307-7b7c-48c1-871d-67a8f5bf75e6",
+          "resource_address": "aws_kms_key.fix_kms_rotation_4b01158ebb",
+          "arn": "a7f8300b-a3bd-44c6-ae94-0ebdb4b68d1f",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_16bd6c4f35",
-          "arn": "461850f1-9b2e-4278-8ac8-64a1cb796da0",
+          "resource_address": "aws_kms_key.fix_kms_rotation_7cd7ed24e3",
+          "arn": "ac9ecb68-cfa8-4d98-ba5d-5afd32711211",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_df806aaa02",
-          "arn": "5221937d-6ba2-4b8b-91e7-cb02b36ecccb",
+          "resource_address": "aws_kms_key.fix_kms_rotation_034aa37c50",
+          "arn": "b929e48c-80c9-4711-8602-44ea83b54daf",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_bb8f486249",
-          "arn": "52baf06e-515f-470e-8d28-84020fab8aa5",
+          "resource_address": "aws_kms_key.fix_kms_rotation_8cad0bdc3a",
+          "arn": "b9a3f95f-1e8c-4ef2-b28b-77cc72e8d41e",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_0f95a02591",
-          "arn": "9e985d92-6f2d-4e23-a484-33ece4f58511",
+          "resource_address": "aws_kms_key.fix_kms_rotation_ca054a0341",
+          "arn": "dd15ee0f-2595-4c8f-a4ca-a24c3ed2e5ae",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_267bdd956c",
-          "arn": "a2d6cd90-50aa-4376-b164-747357b47fc7",
+          "resource_address": "aws_kms_key.fix_kms_rotation_d2f7fed70f",
+          "arn": "ea694c2d-9e27-4d5d-9a0f-43db6ed16213",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_a0cd16366d",
-          "arn": "bb0456a4-371d-4650-9fa3-2c8241fcc314",
+          "resource_address": "aws_kms_key.fix_kms_rotation_c744df7811",
+          "arn": "eeafdfcb-ce0e-4b41-9d62-1ac0690e6fb5",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_061062aab2",
-          "arn": "d27d8ed8-bbeb-49cf-a9b9-53cc4ae39573",
+          "resource_address": "aws_kms_key.fix_kms_rotation_22debf4588",
+          "arn": "f0da63fb-d5b7-4ff0-85b5-902eeb192edf",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_f82d08a50b",
-          "arn": "e5db4617-3ca7-4dda-93ed-c04d8f9d2677",
+          "resource_address": "aws_kms_key.fix_kms_rotation_aeab8d971c",
+          "arn": "fc671b7f-96ee-4b28-80c9-334968aa99a4",
           "resource_type": "aws_kms_key",
           "optional": false
         }
       ],
-      "tf_file": "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_218f7511_d722_4b43_ad6d_984fb99b0459_ap_northeast_2.tf"
+      "tf_file": "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_81cc7178_728a_4a32_9139_6f4e701efdfd_ap_northeast_2.tf"
     },
     {
       "check_id": "prowler-kms_cmk_rotation_enabled",
       "manual_required": false,
       "remediation_tier": "safe-auto",
       "files": [
-        "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_2bed98e6_591a_4b35_aa4c_631f3cc1b6c0_ap_northeast_2.tf"
+        "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_94db1387_5bb3_4871_a020_dc48f5eaf0b8_ap_northeast_2.tf"
       ],
       "priority": "P2",
       "score": 58.5,
       "resources": [
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_45a7db79c6",
-          "arn": "08ed9476-1ab8-4ac0-a79a-e374b8f63a04",
+          "resource_address": "aws_kms_key.fix_kms_rotation_ba3b84e475",
+          "arn": "24c3caed-10ef-4266-9f20-11afcfd6be77",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_900aef61a8",
-          "arn": "1344299b-d6ed-4199-9460-04d7b0adb77e",
+          "resource_address": "aws_kms_key.fix_kms_rotation_3636553b45",
+          "arn": "2979e522-f06a-4a3b-853e-396ceee12fe9",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_76ad9fccaf",
-          "arn": "16527bb2-bd38-4dc5-8281-50e35147c5ad",
+          "resource_address": "aws_kms_key.fix_kms_rotation_c6e42201ce",
+          "arn": "6c4edf01-02cc-4885-91bf-bc9fef308c53",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_f5a479e4b6",
-          "arn": "218f7511-d722-4b43-ad6d-984fb99b0459",
+          "resource_address": "aws_kms_key.fix_kms_rotation_66c78153ec",
+          "arn": "81cc7178-728a-4a32-9139-6f4e701efdfd",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_3615a22b66",
-          "arn": "2bed98e6-591a-4b35-aa4c-631f3cc1b6c0",
+          "resource_address": "aws_kms_key.fix_kms_rotation_2affa0b05f",
+          "arn": "94db1387-5bb3-4871-a020-dc48f5eaf0b8",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_611f75364a",
-          "arn": "338d3ac9-7482-4f14-9afe-6c866b1430e3",
+          "resource_address": "aws_kms_key.fix_kms_rotation_51983cf4aa",
+          "arn": "9be658ad-f17b-4cf7-a9aa-142c8230c45a",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_4332365fe9",
-          "arn": "3d376307-7b7c-48c1-871d-67a8f5bf75e6",
+          "resource_address": "aws_kms_key.fix_kms_rotation_4b01158ebb",
+          "arn": "a7f8300b-a3bd-44c6-ae94-0ebdb4b68d1f",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_16bd6c4f35",
-          "arn": "461850f1-9b2e-4278-8ac8-64a1cb796da0",
+          "resource_address": "aws_kms_key.fix_kms_rotation_7cd7ed24e3",
+          "arn": "ac9ecb68-cfa8-4d98-ba5d-5afd32711211",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_df806aaa02",
-          "arn": "5221937d-6ba2-4b8b-91e7-cb02b36ecccb",
+          "resource_address": "aws_kms_key.fix_kms_rotation_034aa37c50",
+          "arn": "b929e48c-80c9-4711-8602-44ea83b54daf",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_bb8f486249",
-          "arn": "52baf06e-515f-470e-8d28-84020fab8aa5",
+          "resource_address": "aws_kms_key.fix_kms_rotation_8cad0bdc3a",
+          "arn": "b9a3f95f-1e8c-4ef2-b28b-77cc72e8d41e",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_0f95a02591",
-          "arn": "9e985d92-6f2d-4e23-a484-33ece4f58511",
+          "resource_address": "aws_kms_key.fix_kms_rotation_ca054a0341",
+          "arn": "dd15ee0f-2595-4c8f-a4ca-a24c3ed2e5ae",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_267bdd956c",
-          "arn": "a2d6cd90-50aa-4376-b164-747357b47fc7",
+          "resource_address": "aws_kms_key.fix_kms_rotation_d2f7fed70f",
+          "arn": "ea694c2d-9e27-4d5d-9a0f-43db6ed16213",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_a0cd16366d",
-          "arn": "bb0456a4-371d-4650-9fa3-2c8241fcc314",
+          "resource_address": "aws_kms_key.fix_kms_rotation_c744df7811",
+          "arn": "eeafdfcb-ce0e-4b41-9d62-1ac0690e6fb5",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_061062aab2",
-          "arn": "d27d8ed8-bbeb-49cf-a9b9-53cc4ae39573",
+          "resource_address": "aws_kms_key.fix_kms_rotation_22debf4588",
+          "arn": "f0da63fb-d5b7-4ff0-85b5-902eeb192edf",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_f82d08a50b",
-          "arn": "e5db4617-3ca7-4dda-93ed-c04d8f9d2677",
+          "resource_address": "aws_kms_key.fix_kms_rotation_aeab8d971c",
+          "arn": "fc671b7f-96ee-4b28-80c9-334968aa99a4",
           "resource_type": "aws_kms_key",
           "optional": false
         }
       ],
-      "tf_file": "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_2bed98e6_591a_4b35_aa4c_631f3cc1b6c0_ap_northeast_2.tf"
+      "tf_file": "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_94db1387_5bb3_4871_a020_dc48f5eaf0b8_ap_northeast_2.tf"
     },
     {
       "check_id": "prowler-kms_cmk_rotation_enabled",
       "manual_required": false,
       "remediation_tier": "safe-auto",
       "files": [
-        "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_338d3ac9_7482_4f14_9afe_6c866b1430e3_ap_northeast_2.tf"
+        "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_9be658ad_f17b_4cf7_a9aa_142c8230c45a_ap_northeast_2.tf"
       ],
       "priority": "P2",
       "score": 58.5,
       "resources": [
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_45a7db79c6",
-          "arn": "08ed9476-1ab8-4ac0-a79a-e374b8f63a04",
+          "resource_address": "aws_kms_key.fix_kms_rotation_ba3b84e475",
+          "arn": "24c3caed-10ef-4266-9f20-11afcfd6be77",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_900aef61a8",
-          "arn": "1344299b-d6ed-4199-9460-04d7b0adb77e",
+          "resource_address": "aws_kms_key.fix_kms_rotation_3636553b45",
+          "arn": "2979e522-f06a-4a3b-853e-396ceee12fe9",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_76ad9fccaf",
-          "arn": "16527bb2-bd38-4dc5-8281-50e35147c5ad",
+          "resource_address": "aws_kms_key.fix_kms_rotation_c6e42201ce",
+          "arn": "6c4edf01-02cc-4885-91bf-bc9fef308c53",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_f5a479e4b6",
-          "arn": "218f7511-d722-4b43-ad6d-984fb99b0459",
+          "resource_address": "aws_kms_key.fix_kms_rotation_66c78153ec",
+          "arn": "81cc7178-728a-4a32-9139-6f4e701efdfd",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_3615a22b66",
-          "arn": "2bed98e6-591a-4b35-aa4c-631f3cc1b6c0",
+          "resource_address": "aws_kms_key.fix_kms_rotation_2affa0b05f",
+          "arn": "94db1387-5bb3-4871-a020-dc48f5eaf0b8",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_611f75364a",
-          "arn": "338d3ac9-7482-4f14-9afe-6c866b1430e3",
+          "resource_address": "aws_kms_key.fix_kms_rotation_51983cf4aa",
+          "arn": "9be658ad-f17b-4cf7-a9aa-142c8230c45a",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_4332365fe9",
-          "arn": "3d376307-7b7c-48c1-871d-67a8f5bf75e6",
+          "resource_address": "aws_kms_key.fix_kms_rotation_4b01158ebb",
+          "arn": "a7f8300b-a3bd-44c6-ae94-0ebdb4b68d1f",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_16bd6c4f35",
-          "arn": "461850f1-9b2e-4278-8ac8-64a1cb796da0",
+          "resource_address": "aws_kms_key.fix_kms_rotation_7cd7ed24e3",
+          "arn": "ac9ecb68-cfa8-4d98-ba5d-5afd32711211",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_df806aaa02",
-          "arn": "5221937d-6ba2-4b8b-91e7-cb02b36ecccb",
+          "resource_address": "aws_kms_key.fix_kms_rotation_034aa37c50",
+          "arn": "b929e48c-80c9-4711-8602-44ea83b54daf",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_bb8f486249",
-          "arn": "52baf06e-515f-470e-8d28-84020fab8aa5",
+          "resource_address": "aws_kms_key.fix_kms_rotation_8cad0bdc3a",
+          "arn": "b9a3f95f-1e8c-4ef2-b28b-77cc72e8d41e",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_0f95a02591",
-          "arn": "9e985d92-6f2d-4e23-a484-33ece4f58511",
+          "resource_address": "aws_kms_key.fix_kms_rotation_ca054a0341",
+          "arn": "dd15ee0f-2595-4c8f-a4ca-a24c3ed2e5ae",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_267bdd956c",
-          "arn": "a2d6cd90-50aa-4376-b164-747357b47fc7",
+          "resource_address": "aws_kms_key.fix_kms_rotation_d2f7fed70f",
+          "arn": "ea694c2d-9e27-4d5d-9a0f-43db6ed16213",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_a0cd16366d",
-          "arn": "bb0456a4-371d-4650-9fa3-2c8241fcc314",
+          "resource_address": "aws_kms_key.fix_kms_rotation_c744df7811",
+          "arn": "eeafdfcb-ce0e-4b41-9d62-1ac0690e6fb5",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_061062aab2",
-          "arn": "d27d8ed8-bbeb-49cf-a9b9-53cc4ae39573",
+          "resource_address": "aws_kms_key.fix_kms_rotation_22debf4588",
+          "arn": "f0da63fb-d5b7-4ff0-85b5-902eeb192edf",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_f82d08a50b",
-          "arn": "e5db4617-3ca7-4dda-93ed-c04d8f9d2677",
+          "resource_address": "aws_kms_key.fix_kms_rotation_aeab8d971c",
+          "arn": "fc671b7f-96ee-4b28-80c9-334968aa99a4",
           "resource_type": "aws_kms_key",
           "optional": false
         }
       ],
-      "tf_file": "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_338d3ac9_7482_4f14_9afe_6c866b1430e3_ap_northeast_2.tf"
+      "tf_file": "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_9be658ad_f17b_4cf7_a9aa_142c8230c45a_ap_northeast_2.tf"
     },
     {
       "check_id": "prowler-kms_cmk_rotation_enabled",
       "manual_required": false,
       "remediation_tier": "safe-auto",
       "files": [
-        "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_3d376307_7b7c_48c1_871d_67a8f5bf75e6_ap_northeast_2.tf"
+        "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_a7f8300b_a3bd_44c6_ae94_0ebdb4b68d1f_ap_northeast_2.tf"
       ],
       "priority": "P2",
       "score": 58.5,
       "resources": [
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_45a7db79c6",
-          "arn": "08ed9476-1ab8-4ac0-a79a-e374b8f63a04",
+          "resource_address": "aws_kms_key.fix_kms_rotation_ba3b84e475",
+          "arn": "24c3caed-10ef-4266-9f20-11afcfd6be77",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_900aef61a8",
-          "arn": "1344299b-d6ed-4199-9460-04d7b0adb77e",
+          "resource_address": "aws_kms_key.fix_kms_rotation_3636553b45",
+          "arn": "2979e522-f06a-4a3b-853e-396ceee12fe9",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_76ad9fccaf",
-          "arn": "16527bb2-bd38-4dc5-8281-50e35147c5ad",
+          "resource_address": "aws_kms_key.fix_kms_rotation_c6e42201ce",
+          "arn": "6c4edf01-02cc-4885-91bf-bc9fef308c53",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_f5a479e4b6",
-          "arn": "218f7511-d722-4b43-ad6d-984fb99b0459",
+          "resource_address": "aws_kms_key.fix_kms_rotation_66c78153ec",
+          "arn": "81cc7178-728a-4a32-9139-6f4e701efdfd",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_3615a22b66",
-          "arn": "2bed98e6-591a-4b35-aa4c-631f3cc1b6c0",
+          "resource_address": "aws_kms_key.fix_kms_rotation_2affa0b05f",
+          "arn": "94db1387-5bb3-4871-a020-dc48f5eaf0b8",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_611f75364a",
-          "arn": "338d3ac9-7482-4f14-9afe-6c866b1430e3",
+          "resource_address": "aws_kms_key.fix_kms_rotation_51983cf4aa",
+          "arn": "9be658ad-f17b-4cf7-a9aa-142c8230c45a",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_4332365fe9",
-          "arn": "3d376307-7b7c-48c1-871d-67a8f5bf75e6",
+          "resource_address": "aws_kms_key.fix_kms_rotation_4b01158ebb",
+          "arn": "a7f8300b-a3bd-44c6-ae94-0ebdb4b68d1f",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_16bd6c4f35",
-          "arn": "461850f1-9b2e-4278-8ac8-64a1cb796da0",
+          "resource_address": "aws_kms_key.fix_kms_rotation_7cd7ed24e3",
+          "arn": "ac9ecb68-cfa8-4d98-ba5d-5afd32711211",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_df806aaa02",
-          "arn": "5221937d-6ba2-4b8b-91e7-cb02b36ecccb",
+          "resource_address": "aws_kms_key.fix_kms_rotation_034aa37c50",
+          "arn": "b929e48c-80c9-4711-8602-44ea83b54daf",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_bb8f486249",
-          "arn": "52baf06e-515f-470e-8d28-84020fab8aa5",
+          "resource_address": "aws_kms_key.fix_kms_rotation_8cad0bdc3a",
+          "arn": "b9a3f95f-1e8c-4ef2-b28b-77cc72e8d41e",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_0f95a02591",
-          "arn": "9e985d92-6f2d-4e23-a484-33ece4f58511",
+          "resource_address": "aws_kms_key.fix_kms_rotation_ca054a0341",
+          "arn": "dd15ee0f-2595-4c8f-a4ca-a24c3ed2e5ae",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_267bdd956c",
-          "arn": "a2d6cd90-50aa-4376-b164-747357b47fc7",
+          "resource_address": "aws_kms_key.fix_kms_rotation_d2f7fed70f",
+          "arn": "ea694c2d-9e27-4d5d-9a0f-43db6ed16213",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_a0cd16366d",
-          "arn": "bb0456a4-371d-4650-9fa3-2c8241fcc314",
+          "resource_address": "aws_kms_key.fix_kms_rotation_c744df7811",
+          "arn": "eeafdfcb-ce0e-4b41-9d62-1ac0690e6fb5",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_061062aab2",
-          "arn": "d27d8ed8-bbeb-49cf-a9b9-53cc4ae39573",
+          "resource_address": "aws_kms_key.fix_kms_rotation_22debf4588",
+          "arn": "f0da63fb-d5b7-4ff0-85b5-902eeb192edf",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_f82d08a50b",
-          "arn": "e5db4617-3ca7-4dda-93ed-c04d8f9d2677",
+          "resource_address": "aws_kms_key.fix_kms_rotation_aeab8d971c",
+          "arn": "fc671b7f-96ee-4b28-80c9-334968aa99a4",
           "resource_type": "aws_kms_key",
           "optional": false
         }
       ],
-      "tf_file": "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_3d376307_7b7c_48c1_871d_67a8f5bf75e6_ap_northeast_2.tf"
+      "tf_file": "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_a7f8300b_a3bd_44c6_ae94_0ebdb4b68d1f_ap_northeast_2.tf"
     },
     {
       "check_id": "prowler-kms_cmk_rotation_enabled",
       "manual_required": false,
       "remediation_tier": "safe-auto",
       "files": [
-        "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_461850f1_9b2e_4278_8ac8_64a1cb796da0_ap_northeast_2.tf"
+        "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_ac9ecb68_cfa8_4d98_ba5d_5afd32711211_ap_northeast_2.tf"
       ],
       "priority": "P2",
       "score": 58.5,
       "resources": [
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_45a7db79c6",
-          "arn": "08ed9476-1ab8-4ac0-a79a-e374b8f63a04",
+          "resource_address": "aws_kms_key.fix_kms_rotation_ba3b84e475",
+          "arn": "24c3caed-10ef-4266-9f20-11afcfd6be77",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_900aef61a8",
-          "arn": "1344299b-d6ed-4199-9460-04d7b0adb77e",
+          "resource_address": "aws_kms_key.fix_kms_rotation_3636553b45",
+          "arn": "2979e522-f06a-4a3b-853e-396ceee12fe9",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_76ad9fccaf",
-          "arn": "16527bb2-bd38-4dc5-8281-50e35147c5ad",
+          "resource_address": "aws_kms_key.fix_kms_rotation_c6e42201ce",
+          "arn": "6c4edf01-02cc-4885-91bf-bc9fef308c53",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_f5a479e4b6",
-          "arn": "218f7511-d722-4b43-ad6d-984fb99b0459",
+          "resource_address": "aws_kms_key.fix_kms_rotation_66c78153ec",
+          "arn": "81cc7178-728a-4a32-9139-6f4e701efdfd",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_3615a22b66",
-          "arn": "2bed98e6-591a-4b35-aa4c-631f3cc1b6c0",
+          "resource_address": "aws_kms_key.fix_kms_rotation_2affa0b05f",
+          "arn": "94db1387-5bb3-4871-a020-dc48f5eaf0b8",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_611f75364a",
-          "arn": "338d3ac9-7482-4f14-9afe-6c866b1430e3",
+          "resource_address": "aws_kms_key.fix_kms_rotation_51983cf4aa",
+          "arn": "9be658ad-f17b-4cf7-a9aa-142c8230c45a",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_4332365fe9",
-          "arn": "3d376307-7b7c-48c1-871d-67a8f5bf75e6",
+          "resource_address": "aws_kms_key.fix_kms_rotation_4b01158ebb",
+          "arn": "a7f8300b-a3bd-44c6-ae94-0ebdb4b68d1f",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_16bd6c4f35",
-          "arn": "461850f1-9b2e-4278-8ac8-64a1cb796da0",
+          "resource_address": "aws_kms_key.fix_kms_rotation_7cd7ed24e3",
+          "arn": "ac9ecb68-cfa8-4d98-ba5d-5afd32711211",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_df806aaa02",
-          "arn": "5221937d-6ba2-4b8b-91e7-cb02b36ecccb",
+          "resource_address": "aws_kms_key.fix_kms_rotation_034aa37c50",
+          "arn": "b929e48c-80c9-4711-8602-44ea83b54daf",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_bb8f486249",
-          "arn": "52baf06e-515f-470e-8d28-84020fab8aa5",
+          "resource_address": "aws_kms_key.fix_kms_rotation_8cad0bdc3a",
+          "arn": "b9a3f95f-1e8c-4ef2-b28b-77cc72e8d41e",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_0f95a02591",
-          "arn": "9e985d92-6f2d-4e23-a484-33ece4f58511",
+          "resource_address": "aws_kms_key.fix_kms_rotation_ca054a0341",
+          "arn": "dd15ee0f-2595-4c8f-a4ca-a24c3ed2e5ae",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_267bdd956c",
-          "arn": "a2d6cd90-50aa-4376-b164-747357b47fc7",
+          "resource_address": "aws_kms_key.fix_kms_rotation_d2f7fed70f",
+          "arn": "ea694c2d-9e27-4d5d-9a0f-43db6ed16213",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_a0cd16366d",
-          "arn": "bb0456a4-371d-4650-9fa3-2c8241fcc314",
+          "resource_address": "aws_kms_key.fix_kms_rotation_c744df7811",
+          "arn": "eeafdfcb-ce0e-4b41-9d62-1ac0690e6fb5",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_061062aab2",
-          "arn": "d27d8ed8-bbeb-49cf-a9b9-53cc4ae39573",
+          "resource_address": "aws_kms_key.fix_kms_rotation_22debf4588",
+          "arn": "f0da63fb-d5b7-4ff0-85b5-902eeb192edf",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_f82d08a50b",
-          "arn": "e5db4617-3ca7-4dda-93ed-c04d8f9d2677",
+          "resource_address": "aws_kms_key.fix_kms_rotation_aeab8d971c",
+          "arn": "fc671b7f-96ee-4b28-80c9-334968aa99a4",
           "resource_type": "aws_kms_key",
           "optional": false
         }
       ],
-      "tf_file": "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_461850f1_9b2e_4278_8ac8_64a1cb796da0_ap_northeast_2.tf"
+      "tf_file": "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_ac9ecb68_cfa8_4d98_ba5d_5afd32711211_ap_northeast_2.tf"
     },
     {
       "check_id": "prowler-kms_cmk_rotation_enabled",
       "manual_required": false,
       "remediation_tier": "safe-auto",
       "files": [
-        "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_5221937d_6ba2_4b8b_91e7_cb02b36ecccb_ap_northeast_2.tf"
+        "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_b929e48c_80c9_4711_8602_44ea83b54daf_ap_northeast_2.tf"
       ],
       "priority": "P2",
       "score": 58.5,
       "resources": [
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_45a7db79c6",
-          "arn": "08ed9476-1ab8-4ac0-a79a-e374b8f63a04",
+          "resource_address": "aws_kms_key.fix_kms_rotation_ba3b84e475",
+          "arn": "24c3caed-10ef-4266-9f20-11afcfd6be77",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_900aef61a8",
-          "arn": "1344299b-d6ed-4199-9460-04d7b0adb77e",
+          "resource_address": "aws_kms_key.fix_kms_rotation_3636553b45",
+          "arn": "2979e522-f06a-4a3b-853e-396ceee12fe9",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_76ad9fccaf",
-          "arn": "16527bb2-bd38-4dc5-8281-50e35147c5ad",
+          "resource_address": "aws_kms_key.fix_kms_rotation_c6e42201ce",
+          "arn": "6c4edf01-02cc-4885-91bf-bc9fef308c53",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_f5a479e4b6",
-          "arn": "218f7511-d722-4b43-ad6d-984fb99b0459",
+          "resource_address": "aws_kms_key.fix_kms_rotation_66c78153ec",
+          "arn": "81cc7178-728a-4a32-9139-6f4e701efdfd",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_3615a22b66",
-          "arn": "2bed98e6-591a-4b35-aa4c-631f3cc1b6c0",
+          "resource_address": "aws_kms_key.fix_kms_rotation_2affa0b05f",
+          "arn": "94db1387-5bb3-4871-a020-dc48f5eaf0b8",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_611f75364a",
-          "arn": "338d3ac9-7482-4f14-9afe-6c866b1430e3",
+          "resource_address": "aws_kms_key.fix_kms_rotation_51983cf4aa",
+          "arn": "9be658ad-f17b-4cf7-a9aa-142c8230c45a",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_4332365fe9",
-          "arn": "3d376307-7b7c-48c1-871d-67a8f5bf75e6",
+          "resource_address": "aws_kms_key.fix_kms_rotation_4b01158ebb",
+          "arn": "a7f8300b-a3bd-44c6-ae94-0ebdb4b68d1f",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_16bd6c4f35",
-          "arn": "461850f1-9b2e-4278-8ac8-64a1cb796da0",
+          "resource_address": "aws_kms_key.fix_kms_rotation_7cd7ed24e3",
+          "arn": "ac9ecb68-cfa8-4d98-ba5d-5afd32711211",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_df806aaa02",
-          "arn": "5221937d-6ba2-4b8b-91e7-cb02b36ecccb",
+          "resource_address": "aws_kms_key.fix_kms_rotation_034aa37c50",
+          "arn": "b929e48c-80c9-4711-8602-44ea83b54daf",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_bb8f486249",
-          "arn": "52baf06e-515f-470e-8d28-84020fab8aa5",
+          "resource_address": "aws_kms_key.fix_kms_rotation_8cad0bdc3a",
+          "arn": "b9a3f95f-1e8c-4ef2-b28b-77cc72e8d41e",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_0f95a02591",
-          "arn": "9e985d92-6f2d-4e23-a484-33ece4f58511",
+          "resource_address": "aws_kms_key.fix_kms_rotation_ca054a0341",
+          "arn": "dd15ee0f-2595-4c8f-a4ca-a24c3ed2e5ae",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_267bdd956c",
-          "arn": "a2d6cd90-50aa-4376-b164-747357b47fc7",
+          "resource_address": "aws_kms_key.fix_kms_rotation_d2f7fed70f",
+          "arn": "ea694c2d-9e27-4d5d-9a0f-43db6ed16213",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_a0cd16366d",
-          "arn": "bb0456a4-371d-4650-9fa3-2c8241fcc314",
+          "resource_address": "aws_kms_key.fix_kms_rotation_c744df7811",
+          "arn": "eeafdfcb-ce0e-4b41-9d62-1ac0690e6fb5",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_061062aab2",
-          "arn": "d27d8ed8-bbeb-49cf-a9b9-53cc4ae39573",
+          "resource_address": "aws_kms_key.fix_kms_rotation_22debf4588",
+          "arn": "f0da63fb-d5b7-4ff0-85b5-902eeb192edf",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_f82d08a50b",
-          "arn": "e5db4617-3ca7-4dda-93ed-c04d8f9d2677",
+          "resource_address": "aws_kms_key.fix_kms_rotation_aeab8d971c",
+          "arn": "fc671b7f-96ee-4b28-80c9-334968aa99a4",
           "resource_type": "aws_kms_key",
           "optional": false
         }
       ],
-      "tf_file": "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_5221937d_6ba2_4b8b_91e7_cb02b36ecccb_ap_northeast_2.tf"
+      "tf_file": "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_b929e48c_80c9_4711_8602_44ea83b54daf_ap_northeast_2.tf"
     },
     {
       "check_id": "prowler-kms_cmk_rotation_enabled",
       "manual_required": false,
       "remediation_tier": "safe-auto",
       "files": [
-        "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_52baf06e_515f_470e_8d28_84020fab8aa5_ap_northeast_2.tf"
+        "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_b9a3f95f_1e8c_4ef2_b28b_77cc72e8d41e_ap_northeast_2.tf"
       ],
       "priority": "P2",
       "score": 58.5,
       "resources": [
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_45a7db79c6",
-          "arn": "08ed9476-1ab8-4ac0-a79a-e374b8f63a04",
+          "resource_address": "aws_kms_key.fix_kms_rotation_ba3b84e475",
+          "arn": "24c3caed-10ef-4266-9f20-11afcfd6be77",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_900aef61a8",
-          "arn": "1344299b-d6ed-4199-9460-04d7b0adb77e",
+          "resource_address": "aws_kms_key.fix_kms_rotation_3636553b45",
+          "arn": "2979e522-f06a-4a3b-853e-396ceee12fe9",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_76ad9fccaf",
-          "arn": "16527bb2-bd38-4dc5-8281-50e35147c5ad",
+          "resource_address": "aws_kms_key.fix_kms_rotation_c6e42201ce",
+          "arn": "6c4edf01-02cc-4885-91bf-bc9fef308c53",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_f5a479e4b6",
-          "arn": "218f7511-d722-4b43-ad6d-984fb99b0459",
+          "resource_address": "aws_kms_key.fix_kms_rotation_66c78153ec",
+          "arn": "81cc7178-728a-4a32-9139-6f4e701efdfd",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_3615a22b66",
-          "arn": "2bed98e6-591a-4b35-aa4c-631f3cc1b6c0",
+          "resource_address": "aws_kms_key.fix_kms_rotation_2affa0b05f",
+          "arn": "94db1387-5bb3-4871-a020-dc48f5eaf0b8",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_611f75364a",
-          "arn": "338d3ac9-7482-4f14-9afe-6c866b1430e3",
+          "resource_address": "aws_kms_key.fix_kms_rotation_51983cf4aa",
+          "arn": "9be658ad-f17b-4cf7-a9aa-142c8230c45a",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_4332365fe9",
-          "arn": "3d376307-7b7c-48c1-871d-67a8f5bf75e6",
+          "resource_address": "aws_kms_key.fix_kms_rotation_4b01158ebb",
+          "arn": "a7f8300b-a3bd-44c6-ae94-0ebdb4b68d1f",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_16bd6c4f35",
-          "arn": "461850f1-9b2e-4278-8ac8-64a1cb796da0",
+          "resource_address": "aws_kms_key.fix_kms_rotation_7cd7ed24e3",
+          "arn": "ac9ecb68-cfa8-4d98-ba5d-5afd32711211",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_df806aaa02",
-          "arn": "5221937d-6ba2-4b8b-91e7-cb02b36ecccb",
+          "resource_address": "aws_kms_key.fix_kms_rotation_034aa37c50",
+          "arn": "b929e48c-80c9-4711-8602-44ea83b54daf",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_bb8f486249",
-          "arn": "52baf06e-515f-470e-8d28-84020fab8aa5",
+          "resource_address": "aws_kms_key.fix_kms_rotation_8cad0bdc3a",
+          "arn": "b9a3f95f-1e8c-4ef2-b28b-77cc72e8d41e",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_0f95a02591",
-          "arn": "9e985d92-6f2d-4e23-a484-33ece4f58511",
+          "resource_address": "aws_kms_key.fix_kms_rotation_ca054a0341",
+          "arn": "dd15ee0f-2595-4c8f-a4ca-a24c3ed2e5ae",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_267bdd956c",
-          "arn": "a2d6cd90-50aa-4376-b164-747357b47fc7",
+          "resource_address": "aws_kms_key.fix_kms_rotation_d2f7fed70f",
+          "arn": "ea694c2d-9e27-4d5d-9a0f-43db6ed16213",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_a0cd16366d",
-          "arn": "bb0456a4-371d-4650-9fa3-2c8241fcc314",
+          "resource_address": "aws_kms_key.fix_kms_rotation_c744df7811",
+          "arn": "eeafdfcb-ce0e-4b41-9d62-1ac0690e6fb5",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_061062aab2",
-          "arn": "d27d8ed8-bbeb-49cf-a9b9-53cc4ae39573",
+          "resource_address": "aws_kms_key.fix_kms_rotation_22debf4588",
+          "arn": "f0da63fb-d5b7-4ff0-85b5-902eeb192edf",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_f82d08a50b",
-          "arn": "e5db4617-3ca7-4dda-93ed-c04d8f9d2677",
+          "resource_address": "aws_kms_key.fix_kms_rotation_aeab8d971c",
+          "arn": "fc671b7f-96ee-4b28-80c9-334968aa99a4",
           "resource_type": "aws_kms_key",
           "optional": false
         }
       ],
-      "tf_file": "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_52baf06e_515f_470e_8d28_84020fab8aa5_ap_northeast_2.tf"
+      "tf_file": "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_b9a3f95f_1e8c_4ef2_b28b_77cc72e8d41e_ap_northeast_2.tf"
     },
     {
       "check_id": "prowler-kms_cmk_rotation_enabled",
       "manual_required": false,
       "remediation_tier": "safe-auto",
       "files": [
-        "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_9e985d92_6f2d_4e23_a484_33ece4f58511_ap_northeast_2.tf"
+        "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_dd15ee0f_2595_4c8f_a4ca_a24c3ed2e5ae_ap_northeast_2.tf"
       ],
       "priority": "P2",
       "score": 58.5,
       "resources": [
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_45a7db79c6",
-          "arn": "08ed9476-1ab8-4ac0-a79a-e374b8f63a04",
+          "resource_address": "aws_kms_key.fix_kms_rotation_ba3b84e475",
+          "arn": "24c3caed-10ef-4266-9f20-11afcfd6be77",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_900aef61a8",
-          "arn": "1344299b-d6ed-4199-9460-04d7b0adb77e",
+          "resource_address": "aws_kms_key.fix_kms_rotation_3636553b45",
+          "arn": "2979e522-f06a-4a3b-853e-396ceee12fe9",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_76ad9fccaf",
-          "arn": "16527bb2-bd38-4dc5-8281-50e35147c5ad",
+          "resource_address": "aws_kms_key.fix_kms_rotation_c6e42201ce",
+          "arn": "6c4edf01-02cc-4885-91bf-bc9fef308c53",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_f5a479e4b6",
-          "arn": "218f7511-d722-4b43-ad6d-984fb99b0459",
+          "resource_address": "aws_kms_key.fix_kms_rotation_66c78153ec",
+          "arn": "81cc7178-728a-4a32-9139-6f4e701efdfd",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_3615a22b66",
-          "arn": "2bed98e6-591a-4b35-aa4c-631f3cc1b6c0",
+          "resource_address": "aws_kms_key.fix_kms_rotation_2affa0b05f",
+          "arn": "94db1387-5bb3-4871-a020-dc48f5eaf0b8",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_611f75364a",
-          "arn": "338d3ac9-7482-4f14-9afe-6c866b1430e3",
+          "resource_address": "aws_kms_key.fix_kms_rotation_51983cf4aa",
+          "arn": "9be658ad-f17b-4cf7-a9aa-142c8230c45a",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_4332365fe9",
-          "arn": "3d376307-7b7c-48c1-871d-67a8f5bf75e6",
+          "resource_address": "aws_kms_key.fix_kms_rotation_4b01158ebb",
+          "arn": "a7f8300b-a3bd-44c6-ae94-0ebdb4b68d1f",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_16bd6c4f35",
-          "arn": "461850f1-9b2e-4278-8ac8-64a1cb796da0",
+          "resource_address": "aws_kms_key.fix_kms_rotation_7cd7ed24e3",
+          "arn": "ac9ecb68-cfa8-4d98-ba5d-5afd32711211",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_df806aaa02",
-          "arn": "5221937d-6ba2-4b8b-91e7-cb02b36ecccb",
+          "resource_address": "aws_kms_key.fix_kms_rotation_034aa37c50",
+          "arn": "b929e48c-80c9-4711-8602-44ea83b54daf",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_bb8f486249",
-          "arn": "52baf06e-515f-470e-8d28-84020fab8aa5",
+          "resource_address": "aws_kms_key.fix_kms_rotation_8cad0bdc3a",
+          "arn": "b9a3f95f-1e8c-4ef2-b28b-77cc72e8d41e",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_0f95a02591",
-          "arn": "9e985d92-6f2d-4e23-a484-33ece4f58511",
+          "resource_address": "aws_kms_key.fix_kms_rotation_ca054a0341",
+          "arn": "dd15ee0f-2595-4c8f-a4ca-a24c3ed2e5ae",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_267bdd956c",
-          "arn": "a2d6cd90-50aa-4376-b164-747357b47fc7",
+          "resource_address": "aws_kms_key.fix_kms_rotation_d2f7fed70f",
+          "arn": "ea694c2d-9e27-4d5d-9a0f-43db6ed16213",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_a0cd16366d",
-          "arn": "bb0456a4-371d-4650-9fa3-2c8241fcc314",
+          "resource_address": "aws_kms_key.fix_kms_rotation_c744df7811",
+          "arn": "eeafdfcb-ce0e-4b41-9d62-1ac0690e6fb5",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_061062aab2",
-          "arn": "d27d8ed8-bbeb-49cf-a9b9-53cc4ae39573",
+          "resource_address": "aws_kms_key.fix_kms_rotation_22debf4588",
+          "arn": "f0da63fb-d5b7-4ff0-85b5-902eeb192edf",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_f82d08a50b",
-          "arn": "e5db4617-3ca7-4dda-93ed-c04d8f9d2677",
+          "resource_address": "aws_kms_key.fix_kms_rotation_aeab8d971c",
+          "arn": "fc671b7f-96ee-4b28-80c9-334968aa99a4",
           "resource_type": "aws_kms_key",
           "optional": false
         }
       ],
-      "tf_file": "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_9e985d92_6f2d_4e23_a484_33ece4f58511_ap_northeast_2.tf"
+      "tf_file": "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_dd15ee0f_2595_4c8f_a4ca_a24c3ed2e5ae_ap_northeast_2.tf"
     },
     {
       "check_id": "prowler-kms_cmk_rotation_enabled",
       "manual_required": false,
       "remediation_tier": "safe-auto",
       "files": [
-        "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_a2d6cd90_50aa_4376_b164_747357b47fc7_ap_northeast_2.tf"
+        "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_ea694c2d_9e27_4d5d_9a0f_43db6ed16213_ap_northeast_2.tf"
       ],
       "priority": "P2",
       "score": 58.5,
       "resources": [
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_45a7db79c6",
-          "arn": "08ed9476-1ab8-4ac0-a79a-e374b8f63a04",
+          "resource_address": "aws_kms_key.fix_kms_rotation_ba3b84e475",
+          "arn": "24c3caed-10ef-4266-9f20-11afcfd6be77",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_900aef61a8",
-          "arn": "1344299b-d6ed-4199-9460-04d7b0adb77e",
+          "resource_address": "aws_kms_key.fix_kms_rotation_3636553b45",
+          "arn": "2979e522-f06a-4a3b-853e-396ceee12fe9",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_76ad9fccaf",
-          "arn": "16527bb2-bd38-4dc5-8281-50e35147c5ad",
+          "resource_address": "aws_kms_key.fix_kms_rotation_c6e42201ce",
+          "arn": "6c4edf01-02cc-4885-91bf-bc9fef308c53",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_f5a479e4b6",
-          "arn": "218f7511-d722-4b43-ad6d-984fb99b0459",
+          "resource_address": "aws_kms_key.fix_kms_rotation_66c78153ec",
+          "arn": "81cc7178-728a-4a32-9139-6f4e701efdfd",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_3615a22b66",
-          "arn": "2bed98e6-591a-4b35-aa4c-631f3cc1b6c0",
+          "resource_address": "aws_kms_key.fix_kms_rotation_2affa0b05f",
+          "arn": "94db1387-5bb3-4871-a020-dc48f5eaf0b8",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_611f75364a",
-          "arn": "338d3ac9-7482-4f14-9afe-6c866b1430e3",
+          "resource_address": "aws_kms_key.fix_kms_rotation_51983cf4aa",
+          "arn": "9be658ad-f17b-4cf7-a9aa-142c8230c45a",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_4332365fe9",
-          "arn": "3d376307-7b7c-48c1-871d-67a8f5bf75e6",
+          "resource_address": "aws_kms_key.fix_kms_rotation_4b01158ebb",
+          "arn": "a7f8300b-a3bd-44c6-ae94-0ebdb4b68d1f",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_16bd6c4f35",
-          "arn": "461850f1-9b2e-4278-8ac8-64a1cb796da0",
+          "resource_address": "aws_kms_key.fix_kms_rotation_7cd7ed24e3",
+          "arn": "ac9ecb68-cfa8-4d98-ba5d-5afd32711211",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_df806aaa02",
-          "arn": "5221937d-6ba2-4b8b-91e7-cb02b36ecccb",
+          "resource_address": "aws_kms_key.fix_kms_rotation_034aa37c50",
+          "arn": "b929e48c-80c9-4711-8602-44ea83b54daf",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_bb8f486249",
-          "arn": "52baf06e-515f-470e-8d28-84020fab8aa5",
+          "resource_address": "aws_kms_key.fix_kms_rotation_8cad0bdc3a",
+          "arn": "b9a3f95f-1e8c-4ef2-b28b-77cc72e8d41e",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_0f95a02591",
-          "arn": "9e985d92-6f2d-4e23-a484-33ece4f58511",
+          "resource_address": "aws_kms_key.fix_kms_rotation_ca054a0341",
+          "arn": "dd15ee0f-2595-4c8f-a4ca-a24c3ed2e5ae",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_267bdd956c",
-          "arn": "a2d6cd90-50aa-4376-b164-747357b47fc7",
+          "resource_address": "aws_kms_key.fix_kms_rotation_d2f7fed70f",
+          "arn": "ea694c2d-9e27-4d5d-9a0f-43db6ed16213",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_a0cd16366d",
-          "arn": "bb0456a4-371d-4650-9fa3-2c8241fcc314",
+          "resource_address": "aws_kms_key.fix_kms_rotation_c744df7811",
+          "arn": "eeafdfcb-ce0e-4b41-9d62-1ac0690e6fb5",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_061062aab2",
-          "arn": "d27d8ed8-bbeb-49cf-a9b9-53cc4ae39573",
+          "resource_address": "aws_kms_key.fix_kms_rotation_22debf4588",
+          "arn": "f0da63fb-d5b7-4ff0-85b5-902eeb192edf",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_f82d08a50b",
-          "arn": "e5db4617-3ca7-4dda-93ed-c04d8f9d2677",
+          "resource_address": "aws_kms_key.fix_kms_rotation_aeab8d971c",
+          "arn": "fc671b7f-96ee-4b28-80c9-334968aa99a4",
           "resource_type": "aws_kms_key",
           "optional": false
         }
       ],
-      "tf_file": "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_a2d6cd90_50aa_4376_b164_747357b47fc7_ap_northeast_2.tf"
+      "tf_file": "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_ea694c2d_9e27_4d5d_9a0f_43db6ed16213_ap_northeast_2.tf"
     },
     {
       "check_id": "prowler-kms_cmk_rotation_enabled",
       "manual_required": false,
       "remediation_tier": "safe-auto",
       "files": [
-        "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_bb0456a4_371d_4650_9fa3_2c8241fcc314_ap_northeast_2.tf"
+        "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_eeafdfcb_ce0e_4b41_9d62_1ac0690e6fb5_ap_northeast_2.tf"
       ],
       "priority": "P2",
       "score": 58.5,
       "resources": [
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_45a7db79c6",
-          "arn": "08ed9476-1ab8-4ac0-a79a-e374b8f63a04",
+          "resource_address": "aws_kms_key.fix_kms_rotation_ba3b84e475",
+          "arn": "24c3caed-10ef-4266-9f20-11afcfd6be77",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_900aef61a8",
-          "arn": "1344299b-d6ed-4199-9460-04d7b0adb77e",
+          "resource_address": "aws_kms_key.fix_kms_rotation_3636553b45",
+          "arn": "2979e522-f06a-4a3b-853e-396ceee12fe9",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_76ad9fccaf",
-          "arn": "16527bb2-bd38-4dc5-8281-50e35147c5ad",
+          "resource_address": "aws_kms_key.fix_kms_rotation_c6e42201ce",
+          "arn": "6c4edf01-02cc-4885-91bf-bc9fef308c53",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_f5a479e4b6",
-          "arn": "218f7511-d722-4b43-ad6d-984fb99b0459",
+          "resource_address": "aws_kms_key.fix_kms_rotation_66c78153ec",
+          "arn": "81cc7178-728a-4a32-9139-6f4e701efdfd",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_3615a22b66",
-          "arn": "2bed98e6-591a-4b35-aa4c-631f3cc1b6c0",
+          "resource_address": "aws_kms_key.fix_kms_rotation_2affa0b05f",
+          "arn": "94db1387-5bb3-4871-a020-dc48f5eaf0b8",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_611f75364a",
-          "arn": "338d3ac9-7482-4f14-9afe-6c866b1430e3",
+          "resource_address": "aws_kms_key.fix_kms_rotation_51983cf4aa",
+          "arn": "9be658ad-f17b-4cf7-a9aa-142c8230c45a",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_4332365fe9",
-          "arn": "3d376307-7b7c-48c1-871d-67a8f5bf75e6",
+          "resource_address": "aws_kms_key.fix_kms_rotation_4b01158ebb",
+          "arn": "a7f8300b-a3bd-44c6-ae94-0ebdb4b68d1f",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_16bd6c4f35",
-          "arn": "461850f1-9b2e-4278-8ac8-64a1cb796da0",
+          "resource_address": "aws_kms_key.fix_kms_rotation_7cd7ed24e3",
+          "arn": "ac9ecb68-cfa8-4d98-ba5d-5afd32711211",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_df806aaa02",
-          "arn": "5221937d-6ba2-4b8b-91e7-cb02b36ecccb",
+          "resource_address": "aws_kms_key.fix_kms_rotation_034aa37c50",
+          "arn": "b929e48c-80c9-4711-8602-44ea83b54daf",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_bb8f486249",
-          "arn": "52baf06e-515f-470e-8d28-84020fab8aa5",
+          "resource_address": "aws_kms_key.fix_kms_rotation_8cad0bdc3a",
+          "arn": "b9a3f95f-1e8c-4ef2-b28b-77cc72e8d41e",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_0f95a02591",
-          "arn": "9e985d92-6f2d-4e23-a484-33ece4f58511",
+          "resource_address": "aws_kms_key.fix_kms_rotation_ca054a0341",
+          "arn": "dd15ee0f-2595-4c8f-a4ca-a24c3ed2e5ae",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_267bdd956c",
-          "arn": "a2d6cd90-50aa-4376-b164-747357b47fc7",
+          "resource_address": "aws_kms_key.fix_kms_rotation_d2f7fed70f",
+          "arn": "ea694c2d-9e27-4d5d-9a0f-43db6ed16213",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_a0cd16366d",
-          "arn": "bb0456a4-371d-4650-9fa3-2c8241fcc314",
+          "resource_address": "aws_kms_key.fix_kms_rotation_c744df7811",
+          "arn": "eeafdfcb-ce0e-4b41-9d62-1ac0690e6fb5",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_061062aab2",
-          "arn": "d27d8ed8-bbeb-49cf-a9b9-53cc4ae39573",
+          "resource_address": "aws_kms_key.fix_kms_rotation_22debf4588",
+          "arn": "f0da63fb-d5b7-4ff0-85b5-902eeb192edf",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_f82d08a50b",
-          "arn": "e5db4617-3ca7-4dda-93ed-c04d8f9d2677",
+          "resource_address": "aws_kms_key.fix_kms_rotation_aeab8d971c",
+          "arn": "fc671b7f-96ee-4b28-80c9-334968aa99a4",
           "resource_type": "aws_kms_key",
           "optional": false
         }
       ],
-      "tf_file": "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_bb0456a4_371d_4650_9fa3_2c8241fcc314_ap_northeast_2.tf"
+      "tf_file": "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_eeafdfcb_ce0e_4b41_9d62_1ac0690e6fb5_ap_northeast_2.tf"
     },
     {
       "check_id": "prowler-kms_cmk_rotation_enabled",
       "manual_required": false,
       "remediation_tier": "safe-auto",
       "files": [
-        "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_d27d8ed8_bbeb_49cf_a9b9_53cc4ae39573_ap_northeast_2.tf"
+        "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_f0da63fb_d5b7_4ff0_85b5_902eeb192edf_ap_northeast_2.tf"
       ],
       "priority": "P2",
       "score": 58.5,
       "resources": [
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_45a7db79c6",
-          "arn": "08ed9476-1ab8-4ac0-a79a-e374b8f63a04",
+          "resource_address": "aws_kms_key.fix_kms_rotation_ba3b84e475",
+          "arn": "24c3caed-10ef-4266-9f20-11afcfd6be77",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_900aef61a8",
-          "arn": "1344299b-d6ed-4199-9460-04d7b0adb77e",
+          "resource_address": "aws_kms_key.fix_kms_rotation_3636553b45",
+          "arn": "2979e522-f06a-4a3b-853e-396ceee12fe9",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_76ad9fccaf",
-          "arn": "16527bb2-bd38-4dc5-8281-50e35147c5ad",
+          "resource_address": "aws_kms_key.fix_kms_rotation_c6e42201ce",
+          "arn": "6c4edf01-02cc-4885-91bf-bc9fef308c53",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_f5a479e4b6",
-          "arn": "218f7511-d722-4b43-ad6d-984fb99b0459",
+          "resource_address": "aws_kms_key.fix_kms_rotation_66c78153ec",
+          "arn": "81cc7178-728a-4a32-9139-6f4e701efdfd",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_3615a22b66",
-          "arn": "2bed98e6-591a-4b35-aa4c-631f3cc1b6c0",
+          "resource_address": "aws_kms_key.fix_kms_rotation_2affa0b05f",
+          "arn": "94db1387-5bb3-4871-a020-dc48f5eaf0b8",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_611f75364a",
-          "arn": "338d3ac9-7482-4f14-9afe-6c866b1430e3",
+          "resource_address": "aws_kms_key.fix_kms_rotation_51983cf4aa",
+          "arn": "9be658ad-f17b-4cf7-a9aa-142c8230c45a",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_4332365fe9",
-          "arn": "3d376307-7b7c-48c1-871d-67a8f5bf75e6",
+          "resource_address": "aws_kms_key.fix_kms_rotation_4b01158ebb",
+          "arn": "a7f8300b-a3bd-44c6-ae94-0ebdb4b68d1f",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_16bd6c4f35",
-          "arn": "461850f1-9b2e-4278-8ac8-64a1cb796da0",
+          "resource_address": "aws_kms_key.fix_kms_rotation_7cd7ed24e3",
+          "arn": "ac9ecb68-cfa8-4d98-ba5d-5afd32711211",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_df806aaa02",
-          "arn": "5221937d-6ba2-4b8b-91e7-cb02b36ecccb",
+          "resource_address": "aws_kms_key.fix_kms_rotation_034aa37c50",
+          "arn": "b929e48c-80c9-4711-8602-44ea83b54daf",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_bb8f486249",
-          "arn": "52baf06e-515f-470e-8d28-84020fab8aa5",
+          "resource_address": "aws_kms_key.fix_kms_rotation_8cad0bdc3a",
+          "arn": "b9a3f95f-1e8c-4ef2-b28b-77cc72e8d41e",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_0f95a02591",
-          "arn": "9e985d92-6f2d-4e23-a484-33ece4f58511",
+          "resource_address": "aws_kms_key.fix_kms_rotation_ca054a0341",
+          "arn": "dd15ee0f-2595-4c8f-a4ca-a24c3ed2e5ae",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_267bdd956c",
-          "arn": "a2d6cd90-50aa-4376-b164-747357b47fc7",
+          "resource_address": "aws_kms_key.fix_kms_rotation_d2f7fed70f",
+          "arn": "ea694c2d-9e27-4d5d-9a0f-43db6ed16213",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_a0cd16366d",
-          "arn": "bb0456a4-371d-4650-9fa3-2c8241fcc314",
+          "resource_address": "aws_kms_key.fix_kms_rotation_c744df7811",
+          "arn": "eeafdfcb-ce0e-4b41-9d62-1ac0690e6fb5",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_061062aab2",
-          "arn": "d27d8ed8-bbeb-49cf-a9b9-53cc4ae39573",
+          "resource_address": "aws_kms_key.fix_kms_rotation_22debf4588",
+          "arn": "f0da63fb-d5b7-4ff0-85b5-902eeb192edf",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_f82d08a50b",
-          "arn": "e5db4617-3ca7-4dda-93ed-c04d8f9d2677",
+          "resource_address": "aws_kms_key.fix_kms_rotation_aeab8d971c",
+          "arn": "fc671b7f-96ee-4b28-80c9-334968aa99a4",
           "resource_type": "aws_kms_key",
           "optional": false
         }
       ],
-      "tf_file": "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_d27d8ed8_bbeb_49cf_a9b9_53cc4ae39573_ap_northeast_2.tf"
+      "tf_file": "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_f0da63fb_d5b7_4ff0_85b5_902eeb192edf_ap_northeast_2.tf"
     },
     {
       "check_id": "prowler-kms_cmk_rotation_enabled",
       "manual_required": false,
       "remediation_tier": "safe-auto",
       "files": [
-        "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_e5db4617_3ca7_4dda_93ed_c04d8f9d2677_ap_northeast_2.tf"
+        "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_fc671b7f_96ee_4b28_80c9_334968aa99a4_ap_northeast_2.tf"
       ],
       "priority": "P2",
       "score": 58.5,
       "resources": [
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_45a7db79c6",
-          "arn": "08ed9476-1ab8-4ac0-a79a-e374b8f63a04",
+          "resource_address": "aws_kms_key.fix_kms_rotation_ba3b84e475",
+          "arn": "24c3caed-10ef-4266-9f20-11afcfd6be77",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_900aef61a8",
-          "arn": "1344299b-d6ed-4199-9460-04d7b0adb77e",
+          "resource_address": "aws_kms_key.fix_kms_rotation_3636553b45",
+          "arn": "2979e522-f06a-4a3b-853e-396ceee12fe9",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_76ad9fccaf",
-          "arn": "16527bb2-bd38-4dc5-8281-50e35147c5ad",
+          "resource_address": "aws_kms_key.fix_kms_rotation_c6e42201ce",
+          "arn": "6c4edf01-02cc-4885-91bf-bc9fef308c53",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_f5a479e4b6",
-          "arn": "218f7511-d722-4b43-ad6d-984fb99b0459",
+          "resource_address": "aws_kms_key.fix_kms_rotation_66c78153ec",
+          "arn": "81cc7178-728a-4a32-9139-6f4e701efdfd",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_3615a22b66",
-          "arn": "2bed98e6-591a-4b35-aa4c-631f3cc1b6c0",
+          "resource_address": "aws_kms_key.fix_kms_rotation_2affa0b05f",
+          "arn": "94db1387-5bb3-4871-a020-dc48f5eaf0b8",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_611f75364a",
-          "arn": "338d3ac9-7482-4f14-9afe-6c866b1430e3",
+          "resource_address": "aws_kms_key.fix_kms_rotation_51983cf4aa",
+          "arn": "9be658ad-f17b-4cf7-a9aa-142c8230c45a",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_4332365fe9",
-          "arn": "3d376307-7b7c-48c1-871d-67a8f5bf75e6",
+          "resource_address": "aws_kms_key.fix_kms_rotation_4b01158ebb",
+          "arn": "a7f8300b-a3bd-44c6-ae94-0ebdb4b68d1f",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_16bd6c4f35",
-          "arn": "461850f1-9b2e-4278-8ac8-64a1cb796da0",
+          "resource_address": "aws_kms_key.fix_kms_rotation_7cd7ed24e3",
+          "arn": "ac9ecb68-cfa8-4d98-ba5d-5afd32711211",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_df806aaa02",
-          "arn": "5221937d-6ba2-4b8b-91e7-cb02b36ecccb",
+          "resource_address": "aws_kms_key.fix_kms_rotation_034aa37c50",
+          "arn": "b929e48c-80c9-4711-8602-44ea83b54daf",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_bb8f486249",
-          "arn": "52baf06e-515f-470e-8d28-84020fab8aa5",
+          "resource_address": "aws_kms_key.fix_kms_rotation_8cad0bdc3a",
+          "arn": "b9a3f95f-1e8c-4ef2-b28b-77cc72e8d41e",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_0f95a02591",
-          "arn": "9e985d92-6f2d-4e23-a484-33ece4f58511",
+          "resource_address": "aws_kms_key.fix_kms_rotation_ca054a0341",
+          "arn": "dd15ee0f-2595-4c8f-a4ca-a24c3ed2e5ae",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_267bdd956c",
-          "arn": "a2d6cd90-50aa-4376-b164-747357b47fc7",
+          "resource_address": "aws_kms_key.fix_kms_rotation_d2f7fed70f",
+          "arn": "ea694c2d-9e27-4d5d-9a0f-43db6ed16213",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_a0cd16366d",
-          "arn": "bb0456a4-371d-4650-9fa3-2c8241fcc314",
+          "resource_address": "aws_kms_key.fix_kms_rotation_c744df7811",
+          "arn": "eeafdfcb-ce0e-4b41-9d62-1ac0690e6fb5",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_061062aab2",
-          "arn": "d27d8ed8-bbeb-49cf-a9b9-53cc4ae39573",
+          "resource_address": "aws_kms_key.fix_kms_rotation_22debf4588",
+          "arn": "f0da63fb-d5b7-4ff0-85b5-902eeb192edf",
           "resource_type": "aws_kms_key",
           "optional": false
         },
         {
-          "resource_address": "aws_kms_key.fix_kms_rotation_f82d08a50b",
-          "arn": "e5db4617-3ca7-4dda-93ed-c04d8f9d2677",
+          "resource_address": "aws_kms_key.fix_kms_rotation_aeab8d971c",
+          "arn": "fc671b7f-96ee-4b28-80c9-334968aa99a4",
           "resource_type": "aws_kms_key",
           "optional": false
         }
       ],
-      "tf_file": "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_e5db4617_3ca7_4dda_93ed_c04d8f9d2677_ap_northeast_2.tf"
+      "tf_file": "remediation/iam/fix-prowler_kms_cmk_rotation_enabled_arn_aws_kms_ap_northeast_2_132410971304_key_fc671b7f_96ee_4b28_80c9_334968aa99a4_ap_northeast_2.tf"
     },
     {
       "check_id": "prowler-iam_policy_attached_only_to_group_or_roles",
       "manual_required": false,
       "remediation_tier": "review-then-apply",
       "files": [
-        "remediation/iam/fix-prowler_iam_policy_attached_only_to_group_or_roles_arn_aws_iam_132410971304_user_svc_admin_af73_01_ap_northeast_2.tf"
+        "remediation/iam/fix-prowler_iam_policy_attached_only_to_group_or_roles_arn_aws_iam_132410971304_user_svc_admin_fa1c_01_ap_northeast_2.tf"
       ],
       "priority": "P2",
       "score": 54.0,
       "resources": [],
-      "tf_file": "remediation/iam/fix-prowler_iam_policy_attached_only_to_group_or_roles_arn_aws_iam_132410971304_user_svc_admin_af73_01_ap_northeast_2.tf"
+      "tf_file": "remediation/iam/fix-prowler_iam_policy_attached_only_to_group_or_roles_arn_aws_iam_132410971304_user_svc_admin_fa1c_01_ap_northeast_2.tf"
     },
     {
       "check_id": "prowler-iam_policy_attached_only_to_group_or_roles",
       "manual_required": false,
       "remediation_tier": "review-then-apply",
       "files": [
-        "remediation/iam/fix-prowler_iam_policy_attached_only_to_group_or_roles_arn_aws_iam_132410971304_user_svc_admin_af73_02_ap_northeast_2.tf"
+        "remediation/iam/fix-prowler_iam_policy_attached_only_to_group_or_roles_arn_aws_iam_132410971304_user_svc_admin_fa1c_02_ap_northeast_2.tf"
       ],
       "priority": "P2",
       "score": 54.0,
       "resources": [],
-      "tf_file": "remediation/iam/fix-prowler_iam_policy_attached_only_to_group_or_roles_arn_aws_iam_132410971304_user_svc_admin_af73_02_ap_northeast_2.tf"
+      "tf_file": "remediation/iam/fix-prowler_iam_policy_attached_only_to_group_or_roles_arn_aws_iam_132410971304_user_svc_admin_fa1c_02_ap_northeast_2.tf"
     },
     {
       "check_id": "prowler-iam_policy_attached_only_to_group_or_roles",
       "manual_required": false,
       "remediation_tier": "review-then-apply",
       "files": [
-        "remediation/iam/fix-prowler_iam_policy_attached_only_to_group_or_roles_arn_aws_iam_132410971304_user_svc_admin_af73_03_ap_northeast_2.tf"
+        "remediation/iam/fix-prowler_iam_policy_attached_only_to_group_or_roles_arn_aws_iam_132410971304_user_svc_admin_fa1c_03_ap_northeast_2.tf"
       ],
       "priority": "P2",
       "score": 54.0,
       "resources": [],
-      "tf_file": "remediation/iam/fix-prowler_iam_policy_attached_only_to_group_or_roles_arn_aws_iam_132410971304_user_svc_admin_af73_03_ap_northeast_2.tf"
+      "tf_file": "remediation/iam/fix-prowler_iam_policy_attached_only_to_group_or_roles_arn_aws_iam_132410971304_user_svc_admin_fa1c_03_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-iam_policy_attached_only_to_group_or_roles",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/iam/fix-prowler_iam_policy_attached_only_to_group_or_roles_arn_aws_iam_132410971304_user_svc_admin_fa1c_04_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 54.0,
+      "resources": [],
+      "tf_file": "remediation/iam/fix-prowler_iam_policy_attached_only_to_group_or_roles_arn_aws_iam_132410971304_user_svc_admin_fa1c_04_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-iam_policy_attached_only_to_group_or_roles",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/iam/fix-prowler_iam_policy_attached_only_to_group_or_roles_arn_aws_iam_132410971304_user_svc_admin_fa1c_05_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 54.0,
+      "resources": [],
+      "tf_file": "remediation/iam/fix-prowler_iam_policy_attached_only_to_group_or_roles_arn_aws_iam_132410971304_user_svc_admin_fa1c_05_ap_northeast_2.tf"
     }
   ],
   "import_map": [
@@ -1757,106 +1781,106 @@
     },
     {
       "check_id": "prowler-kms_cmk_rotation_enabled",
-      "address": "aws_kms_key.fix_kms_rotation_45a7db79c6",
-      "import_id": "08ed9476-1ab8-4ac0-a79a-e374b8f63a04",
+      "address": "aws_kms_key.fix_kms_rotation_ba3b84e475",
+      "import_id": "24c3caed-10ef-4266-9f20-11afcfd6be77",
       "resource_type": "aws_kms_key",
       "optional": false
     },
     {
       "check_id": "prowler-kms_cmk_rotation_enabled",
-      "address": "aws_kms_key.fix_kms_rotation_900aef61a8",
-      "import_id": "1344299b-d6ed-4199-9460-04d7b0adb77e",
+      "address": "aws_kms_key.fix_kms_rotation_3636553b45",
+      "import_id": "2979e522-f06a-4a3b-853e-396ceee12fe9",
       "resource_type": "aws_kms_key",
       "optional": false
     },
     {
       "check_id": "prowler-kms_cmk_rotation_enabled",
-      "address": "aws_kms_key.fix_kms_rotation_76ad9fccaf",
-      "import_id": "16527bb2-bd38-4dc5-8281-50e35147c5ad",
+      "address": "aws_kms_key.fix_kms_rotation_c6e42201ce",
+      "import_id": "6c4edf01-02cc-4885-91bf-bc9fef308c53",
       "resource_type": "aws_kms_key",
       "optional": false
     },
     {
       "check_id": "prowler-kms_cmk_rotation_enabled",
-      "address": "aws_kms_key.fix_kms_rotation_f5a479e4b6",
-      "import_id": "218f7511-d722-4b43-ad6d-984fb99b0459",
+      "address": "aws_kms_key.fix_kms_rotation_66c78153ec",
+      "import_id": "81cc7178-728a-4a32-9139-6f4e701efdfd",
       "resource_type": "aws_kms_key",
       "optional": false
     },
     {
       "check_id": "prowler-kms_cmk_rotation_enabled",
-      "address": "aws_kms_key.fix_kms_rotation_3615a22b66",
-      "import_id": "2bed98e6-591a-4b35-aa4c-631f3cc1b6c0",
+      "address": "aws_kms_key.fix_kms_rotation_2affa0b05f",
+      "import_id": "94db1387-5bb3-4871-a020-dc48f5eaf0b8",
       "resource_type": "aws_kms_key",
       "optional": false
     },
     {
       "check_id": "prowler-kms_cmk_rotation_enabled",
-      "address": "aws_kms_key.fix_kms_rotation_611f75364a",
-      "import_id": "338d3ac9-7482-4f14-9afe-6c866b1430e3",
+      "address": "aws_kms_key.fix_kms_rotation_51983cf4aa",
+      "import_id": "9be658ad-f17b-4cf7-a9aa-142c8230c45a",
       "resource_type": "aws_kms_key",
       "optional": false
     },
     {
       "check_id": "prowler-kms_cmk_rotation_enabled",
-      "address": "aws_kms_key.fix_kms_rotation_4332365fe9",
-      "import_id": "3d376307-7b7c-48c1-871d-67a8f5bf75e6",
+      "address": "aws_kms_key.fix_kms_rotation_4b01158ebb",
+      "import_id": "a7f8300b-a3bd-44c6-ae94-0ebdb4b68d1f",
       "resource_type": "aws_kms_key",
       "optional": false
     },
     {
       "check_id": "prowler-kms_cmk_rotation_enabled",
-      "address": "aws_kms_key.fix_kms_rotation_16bd6c4f35",
-      "import_id": "461850f1-9b2e-4278-8ac8-64a1cb796da0",
+      "address": "aws_kms_key.fix_kms_rotation_7cd7ed24e3",
+      "import_id": "ac9ecb68-cfa8-4d98-ba5d-5afd32711211",
       "resource_type": "aws_kms_key",
       "optional": false
     },
     {
       "check_id": "prowler-kms_cmk_rotation_enabled",
-      "address": "aws_kms_key.fix_kms_rotation_df806aaa02",
-      "import_id": "5221937d-6ba2-4b8b-91e7-cb02b36ecccb",
+      "address": "aws_kms_key.fix_kms_rotation_034aa37c50",
+      "import_id": "b929e48c-80c9-4711-8602-44ea83b54daf",
       "resource_type": "aws_kms_key",
       "optional": false
     },
     {
       "check_id": "prowler-kms_cmk_rotation_enabled",
-      "address": "aws_kms_key.fix_kms_rotation_bb8f486249",
-      "import_id": "52baf06e-515f-470e-8d28-84020fab8aa5",
+      "address": "aws_kms_key.fix_kms_rotation_8cad0bdc3a",
+      "import_id": "b9a3f95f-1e8c-4ef2-b28b-77cc72e8d41e",
       "resource_type": "aws_kms_key",
       "optional": false
     },
     {
       "check_id": "prowler-kms_cmk_rotation_enabled",
-      "address": "aws_kms_key.fix_kms_rotation_0f95a02591",
-      "import_id": "9e985d92-6f2d-4e23-a484-33ece4f58511",
+      "address": "aws_kms_key.fix_kms_rotation_ca054a0341",
+      "import_id": "dd15ee0f-2595-4c8f-a4ca-a24c3ed2e5ae",
       "resource_type": "aws_kms_key",
       "optional": false
     },
     {
       "check_id": "prowler-kms_cmk_rotation_enabled",
-      "address": "aws_kms_key.fix_kms_rotation_267bdd956c",
-      "import_id": "a2d6cd90-50aa-4376-b164-747357b47fc7",
+      "address": "aws_kms_key.fix_kms_rotation_d2f7fed70f",
+      "import_id": "ea694c2d-9e27-4d5d-9a0f-43db6ed16213",
       "resource_type": "aws_kms_key",
       "optional": false
     },
     {
       "check_id": "prowler-kms_cmk_rotation_enabled",
-      "address": "aws_kms_key.fix_kms_rotation_a0cd16366d",
-      "import_id": "bb0456a4-371d-4650-9fa3-2c8241fcc314",
+      "address": "aws_kms_key.fix_kms_rotation_c744df7811",
+      "import_id": "eeafdfcb-ce0e-4b41-9d62-1ac0690e6fb5",
       "resource_type": "aws_kms_key",
       "optional": false
     },
     {
       "check_id": "prowler-kms_cmk_rotation_enabled",
-      "address": "aws_kms_key.fix_kms_rotation_061062aab2",
-      "import_id": "d27d8ed8-bbeb-49cf-a9b9-53cc4ae39573",
+      "address": "aws_kms_key.fix_kms_rotation_22debf4588",
+      "import_id": "f0da63fb-d5b7-4ff0-85b5-902eeb192edf",
       "resource_type": "aws_kms_key",
       "optional": false
     },
     {
       "check_id": "prowler-kms_cmk_rotation_enabled",
-      "address": "aws_kms_key.fix_kms_rotation_f82d08a50b",
-      "import_id": "e5db4617-3ca7-4dda-93ed-c04d8f9d2677",
+      "address": "aws_kms_key.fix_kms_rotation_aeab8d971c",
+      "import_id": "fc671b7f-96ee-4b28-80c9-334968aa99a4",
       "resource_type": "aws_kms_key",
       "optional": false
     }

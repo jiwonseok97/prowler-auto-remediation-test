@@ -42,6 +42,12 @@ variable "create_vuln_cloudtrail" {
   default     = true
 }
 
+variable "cloudtrail_trail_count" {
+  type        = number
+  description = "CloudTrail 트레일 수 (CloudTrail FAIL 증가)"
+  default     = 2
+}
+
 variable "open_default_security_group" {
   type        = bool
   description = "Default SG 전체 허용 설정 → ec2_securitygroup_default_restrict_traffic FAIL (auto-remediable)"
@@ -75,7 +81,7 @@ variable "create_vuln_admin_iam_users" {
 variable "vuln_admin_iam_user_count" {
   type        = number
   description = "관리자 권한 IAM 사용자 수"
-  default     = 3
+  default     = 5
 }
 
 variable "vuln_open_sg_count" {

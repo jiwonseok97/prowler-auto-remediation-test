@@ -185,8 +185,8 @@ resource "aws_iam_account_password_policy" "weak_password_policy" {
 # → prowler-cloudtrail_s3_dataevents_write_enabled
 # ==================================================
 resource "aws_s3_bucket" "vuln_trail_logs" {
-  count         = var.create_vuln_cloudtrail ? 1 : 0
-  bucket        = format("trail-logs-%s-%s", local.name_seed, var.region)
+  count         = var.create_vuln_cloudtrail ? var.cloudtrail_trail_count : 0
+  bucket        = format("trail-logs-%s-%s-%02d", local.name_seed, var.region, count.index + 1)
   force_destroy = true
 
   tags = {
@@ -197,8 +197,8 @@ resource "aws_s3_bucket" "vuln_trail_logs" {
 }
 
 resource "aws_s3_bucket_policy" "vuln_trail_logs" {
-  count  = var.create_vuln_cloudtrail ? 1 : 0
-  bucket = aws_s3_bucket.vuln_trail_logs[0].id
+  count  = var.create_vuln_cloudtrail ? var.cloudtrail_trail_count : 0
+  bucket = aws_s3_bucket.vuln_trail_logs[count.index].id
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -208,14 +208,14 @@ resource "aws_s3_bucket_policy" "vuln_trail_logs" {
         Effect    = "Allow"
         Principal = { Service = "cloudtrail.amazonaws.com" }
         Action    = "s3:GetBucketAcl"
-        Resource  = aws_s3_bucket.vuln_trail_logs[0].arn
+        Resource  = aws_s3_bucket.vuln_trail_logs[count.index].arn
       },
       {
         Sid       = "AWSCloudTrailWrite"
         Effect    = "Allow"
         Principal = { Service = "cloudtrail.amazonaws.com" }
         Action    = "s3:PutObject"
-        Resource  = "${aws_s3_bucket.vuln_trail_logs[0].arn}/AWSLogs/${var.account_id}/*"
+        Resource  = "${aws_s3_bucket.vuln_trail_logs[count.index].arn}/AWSLogs/${var.account_id}/*"
         Condition = {
           StringEquals = { "s3:x-amz-acl" = "bucket-owner-full-control" }
         }
@@ -225,8 +225,8 @@ resource "aws_s3_bucket_policy" "vuln_trail_logs" {
 }
 
 resource "aws_kms_key" "trail_kms" {
-  count                   = var.create_vuln_cloudtrail ? 1 : 0
-  description             = "cloudtrail-kms-${local.name_seed}"
+  count                   = var.create_vuln_cloudtrail ? var.cloudtrail_trail_count : 0
+  description             = "cloudtrail-kms-${local.name_seed}-${count.index + 1}"
   enable_key_rotation     = true
   deletion_window_in_days = 7
 
@@ -238,10 +238,10 @@ resource "aws_kms_key" "trail_kms" {
 }
 
 resource "aws_cloudwatch_log_group" "trail_logs" {
-  count             = var.create_vuln_cloudtrail ? 1 : 0
-  name              = "${local.log_group_prefix}/cloudtrail"
+  count             = var.create_vuln_cloudtrail ? var.cloudtrail_trail_count : 0
+  name              = format("%s/cloudtrail-%02d", local.log_group_prefix, count.index + 1)
   retention_in_days = 30
-  kms_key_id        = local.is_remediate ? aws_kms_key.trail_kms[0].arn : null
+  kms_key_id        = local.is_remediate ? aws_kms_key.trail_kms[count.index].arn : null
 
   tags = {
     ManagedBy     = "terraform"
@@ -251,8 +251,8 @@ resource "aws_cloudwatch_log_group" "trail_logs" {
 }
 
 resource "aws_iam_role" "trail_cloudwatch_role" {
-  count = var.create_vuln_cloudtrail ? 1 : 0
-  name  = "role-cloudtrail-${local.name_seed}"
+  count = var.create_vuln_cloudtrail ? var.cloudtrail_trail_count : 0
+  name  = "role-cloudtrail-${local.name_seed}-${count.index + 1}"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -275,8 +275,8 @@ resource "aws_iam_role" "trail_cloudwatch_role" {
 }
 
 resource "aws_iam_policy" "trail_cloudwatch_policy" {
-  count       = var.create_vuln_cloudtrail ? 1 : 0
-  name        = "pol-cloudtrail-${local.name_seed}"
+  count       = var.create_vuln_cloudtrail ? var.cloudtrail_trail_count : 0
+  name        = "pol-cloudtrail-${local.name_seed}-${count.index + 1}"
   description = "Allow CloudTrail to write to CloudWatch Logs"
 
   policy = jsonencode({
@@ -288,7 +288,7 @@ resource "aws_iam_policy" "trail_cloudwatch_policy" {
           "logs:CreateLogStream",
           "logs:PutLogEvents"
         ]
-        Resource = "${aws_cloudwatch_log_group.trail_logs[0].arn}:*"
+        Resource = "${aws_cloudwatch_log_group.trail_logs[count.index].arn}:*"
       }
     ]
   })
@@ -301,15 +301,15 @@ resource "aws_iam_policy" "trail_cloudwatch_policy" {
 }
 
 resource "aws_iam_role_policy_attachment" "trail_cloudwatch_attach" {
-  count      = var.create_vuln_cloudtrail ? 1 : 0
-  role       = aws_iam_role.trail_cloudwatch_role[0].name
-  policy_arn = aws_iam_policy.trail_cloudwatch_policy[0].arn
+  count      = var.create_vuln_cloudtrail ? var.cloudtrail_trail_count : 0
+  role       = aws_iam_role.trail_cloudwatch_role[count.index].name
+  policy_arn = aws_iam_policy.trail_cloudwatch_policy[count.index].arn
 }
 
 resource "aws_cloudtrail" "vuln_trail" {
-  count          = var.create_vuln_cloudtrail ? 1 : 0
-  name           = local.trail_name
-  s3_bucket_name = aws_s3_bucket.vuln_trail_logs[0].id
+  count          = var.create_vuln_cloudtrail ? var.cloudtrail_trail_count : 0
+  name           = format("%s-%02d", local.trail_name, count.index + 1)
+  s3_bucket_name = aws_s3_bucket.vuln_trail_logs[count.index].id
 
   # enable_log_file_validation = local.is_remediate → prowler-cloudtrail_log_file_validation_enabled FAIL
   enable_log_file_validation = local.is_remediate
@@ -318,9 +318,9 @@ resource "aws_cloudtrail" "vuln_trail" {
   # cloud_watch_logs_group_arn 미설정 → prowler-cloudtrail_cloudwatch_logging_enabled FAIL
   # event_selector 미설정 → prowler-cloudtrail_s3_dataevents_read/write_enabled FAIL
 
-  kms_key_id                 = local.is_remediate ? aws_kms_key.trail_kms[0].arn : null
-  cloud_watch_logs_group_arn = local.is_remediate ? "${aws_cloudwatch_log_group.trail_logs[0].arn}:*" : null
-  cloud_watch_logs_role_arn  = local.is_remediate ? aws_iam_role.trail_cloudwatch_role[0].arn : null
+  kms_key_id                 = local.is_remediate ? aws_kms_key.trail_kms[count.index].arn : null
+  cloud_watch_logs_group_arn = local.is_remediate ? "${aws_cloudwatch_log_group.trail_logs[count.index].arn}:*" : null
+  cloud_watch_logs_role_arn  = local.is_remediate ? aws_iam_role.trail_cloudwatch_role[count.index].arn : null
 
   dynamic "event_selector" {
     for_each = local.is_remediate ? [1] : []

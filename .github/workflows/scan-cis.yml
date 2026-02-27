@@ -493,7 +493,6 @@ jobs:
                       50,
                   ) + "\n\n")
 
-              if svc_findings:
               f.write("### Fail 통합 집계\n\n")
               f.write("\n".join(check_lines) + "\n")
           PY

@@ -441,8 +441,8 @@ jobs:
           for check_id, count in by_check.most_common():
               check_lines.append(f"| `{check_id}` | {count} |")
 
-          with open(Path.cwd() / 'summary.md', 'w', encoding='utf-8') as f:
-              f.write("## 01. Baseline Scan Result\n")
+            with open(Path.cwd() / 'summary.md', 'w', encoding='utf-8') as f:
+                f.write("## 01. 취약 인프라 초기 보안 점검 결과\n")
               f.write(f"- Total FAIL items: {fail_count}\n\n")
 
               if cis_findings:
@@ -475,7 +475,7 @@ jobs:
                       32,
                   ) + "\n\n")
 
-              f.write("### Prowler FAIL by Check\n")
+            f.write("### 보안 항목별 취약점(FAIL) 현황\n")
               f.write("\n".join(check_lines) + "\n")
           PY
           cat summary.md >> "$GITHUB_STEP_SUMMARY"

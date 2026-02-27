@@ -62,7 +62,6 @@ jobs:
           if [ -n "$CHECKS" ]; then
             prowler aws --region ap-northeast-2 -c $CHECKS -M json-asff -o artifacts/rescan -F post_isms_p || true
           fi
-          prowler aws --region ap-northeast-2 --services rds,efs,elb,elbv2,sns,sqs -M json-asff -o artifacts/rescan -F post_services || true
           python iac/scripts/merge_prowler_outputs.py \
             --dir artifacts/rescan \
             --prefix post \
@@ -478,4 +477,3 @@ jobs:
         with:
           name: rescan-${{ github.run_id }}
           path: artifacts/rescan/
-

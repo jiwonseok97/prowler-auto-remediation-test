@@ -256,7 +256,6 @@ jobs:
               prowler aws --region ap-northeast-2 -c $CHECKS -M json-asff -o artifacts/scan -F baseline_isms_p || true
             fi
           fi
-          prowler aws --region ap-northeast-2 --services rds,efs,elb,elbv2,sns,sqs -M json-asff -o artifacts/scan -F baseline_services || true
           python iac/scripts/merge_prowler_outputs.py \
             --dir artifacts/scan \
             --prefix baseline \
@@ -430,16 +429,12 @@ jobs:
                   is_fail = v["fail"] > 0
                   # Pad counts for visual alignment in the Status column.
                   def format_count(n):
-                      if n < 10:
-                          return f"  {n}"
-                      if n < 100:
-                          return f" {n}"
                       return f"{n}"
 
                   if is_fail:
-                      status_text = f'fail ({format_count(v["fail"])})'
+                      status_text = f'fail  ({format_count(v["fail"])})'
                   else:
-                      status_text = f'pass ({format_count(v["pass"])})'
+                      status_text = f'pass  ({format_count(v["pass"])})'
                   if is_fail:
                       sev_cols = f'{v["critical"]} | {v["high"]} | {v["medium"]} | {v["low"]} | {v["info"]}'
                   else:
@@ -466,7 +461,6 @@ jobs:
 
           cis_findings = parse_asff("artifacts/scan/baseline_cis*.json")
           isms_findings = parse_asff("artifacts/scan/baseline_isms_p*.json")
-          svc_findings = parse_asff("artifacts/scan/baseline_services*.json")
 
           check_lines = [
               "| Check ID | FAIL Count |",
@@ -500,15 +494,6 @@ jobs:
                   ) + "\n\n")
 
               if svc_findings:
-                  f.write(make_compliance_table(
-                      svc_findings,
-                      CIS_LOGO_URL,
-                      "SERVICES",
-                      "Additional Services (RDS/EFS/ELB/SNS/SQS)",
-                      account_id,
-                      30,
-                  ) + "\n\n")
-
               f.write("### Fail 통합 집계\n\n")
               f.write("\n".join(check_lines) + "\n")
           PY

@@ -231,6 +231,12 @@ jobs:
               'reason': 'EC2 인스턴스 프로파일 연결은 실행 중인 애플리케이션 권한에 영향을 주어 사전 검토 및 수동 적용 필요',
               'guide': '1. 적절한 권한의 IAM 역할 생성 → 2. EC2 콘솔 → 인스턴스 → 작업 → 보안 → IAM 역할 수정 → 3. 생성한 IAM 역할 연결 및 저장',
             },
+            'prowler-ec2_securitygroup_allow_ingress_from_internet_to_tcp_port_22': {
+              'guide': '1. AWS ?? ? EC2 ? ?? ?? ? ?? SG ?? ? ???? ?? ?? ? 2. TCP 22 ??? ??(0.0.0.0/0, ::/0) ?? ? 3. ??/??? CIDR ?? Bastion SG? ?? ? 4. ??',
+            },
+            'prowler-ec2_securitygroup_allow_ingress_from_internet_to_tcp_port_3389': {
+              'guide': '1. AWS ?? ? EC2 ? ?? ?? ? ?? SG ?? ? ???? ?? ?? ? 2. TCP 3389 ??? ??(0.0.0.0/0, ::/0) ?? ? 3. ??? CIDR ?? Bastion/??? SG? ?? ? 4. ??',
+            },
           }
 
           def make_comparison_section(title, asis_counts, is_counts, before_lbl, after_lbl):
@@ -270,9 +276,9 @@ jobs:
               f'</tr></table>'
             )
 
-          before_lbl = 'AS-IS (01번 스캔 기준)'
-          after_lbl = 'TO-BE (04번 재스캔 후)'
-          # AS-IS는 항상 01번 스캔 결과 사용 (이전 재스캔 아님)
+          before_lbl = 'AS-IS (초기 스캔 기준)'
+          after_lbl = 'TO-BE (재스캔 후)'
+          # AS-IS는 항상 초기 스캔 결과 사용 (이전 재스캔 아님)
           bl_path = Path('artifacts/baseline_scan/prioritized_findings.json')
           prev_fail_all = [x for x in json.loads(bl_path.read_text(encoding='utf-8')) if x.get('status') == 'FAIL'] if bl_path.exists() else []
 
@@ -322,11 +328,10 @@ jobs:
               guide_info = MANUAL_REMEDIATION_GUIDE.get(cid)
               if guide_info:
                 manual_guide_lines.append(f'\n**`{cid}`**')
-                manual_guide_lines.append(f'- **수동 처리 이유:** {guide_info["reason"]}')
-                manual_guide_lines.append(f'- **조치 방법:** {guide_info["guide"]}')
+                manual_guide_lines.append(f'- {guide_info["guide"]}')
               else:
                 manual_guide_lines.append(f'\n**`{cid}`**')
-                manual_guide_lines.append('- 콘솔에서 직접 처리해야 하는 항목입니다.')
+                manual_guide_lines.append('- AWS 콘솔에서 해당 리소스의 보안 설정을 점검해 차단/암호화/로깅 정책을 적용합니다.')
 
           now_lines = [
             '### 지속 자동화 가능 항목',
@@ -336,7 +341,7 @@ jobs:
             now_lines.append('- PR 생성 → 병합 → 적용 → 재스캔 순서로 계속 진행')
           else:
             now_lines.append('- Terraform으로 처리할 수 있는 FAIL은 남아 있지 않습니다.')
-            now_lines.append('- 남은 건 아래 수동 조치 목록 위주로 처리하면 됩니다.')
+            now_lines.append('- 남은 항목은 아래 수동 조치 가이드를 따라 처리하면 됩니다.')
 
           later_lines = [
             '### 수동 처리 현황',
@@ -346,11 +351,11 @@ jobs:
 
             md = (
               '## 04. 배포 후 재스캔 결과 요약\n\n'
-              f'- 기준 FAIL (01. 취약 인프라 초기 보안 점검 결과): {s["baseline_fail"]}\n'
-            f'- 현재 FAIL (04번 재스캔): {s["post_fail"]}\n'
-            f'- 줄어든 FAIL: {s["reduced"]} (01번 스캔 대비)\n'
-            f'- Terraform 처리 가능 FAIL: {current_remediable_fail}\n'
-            f'- 수동 처리 필요 FAIL: {current_manual_fail}\n\n'
+              f'- 기준 FAIL (초기 스캔): {s["baseline_fail"]}\n'
+              f'- 현재 FAIL (재스캔): {s["post_fail"]}\n'
+              f'- 줄어든 FAIL: {s["reduced"]} (초기 스캔 대비)\n'
+              f'- Terraform 처리 가능 FAIL: {current_remediable_fail}\n'
+              f'- 수동 처리 필요 FAIL: {current_manual_fail}\n\n'
             + make_service_comparison(prev_fail_all, current_fail_rows, before_lbl, after_lbl) + '\n\n'
             + make_comparison_section('전체 FAIL 변화', asis_total_counts, total_fail_counts, before_lbl, after_lbl) + '\n\n'
             + make_comparison_section('Terraform 자동화 가능 FAIL 변화', asis_remediable_counts, remediable_fail_counts, before_lbl, after_lbl) + '\n\n'
@@ -375,7 +380,7 @@ jobs:
           if incremental is not None:
               if incremental < 0:
                   if new_remediable:
-                      # 새 취약 인프라 배포로 신규 항목 생성 - 실패 처리하지 않음 (01번 스캔 기준으로 판정)
+          # 새 취약 인프라 배포로 신규 항목 생성 - 실패 처리하지 않음 (초기 스캔 기준으로 판정)
                       print(
                           "INFO: new terraform-capable checks appeared since previous rescan "
                           "(likely new vulnerable infra deployment): "
@@ -398,7 +403,7 @@ jobs:
                       f"previous_post_remediable={s.get('previous_post_fail_remediable', s.get('previous_post_fail'))} "
                       f"current_post_remediable={s.get('post_fail_remediable', s.get('post_fail'))}"
                   )
-          # 항상 01번 스캔 기준으로 최종 판정 (elif → if로 변경)
+          # 항상 초기 스캔 기준으로 최종 판정 (elif → if로 변경)
           if s.get("reduced", 0) <= 0:
               raise SystemExit(f"FAIL not reduced vs baseline: baseline={s.get('baseline_fail')} post={s.get('post_fail')}")
           PY

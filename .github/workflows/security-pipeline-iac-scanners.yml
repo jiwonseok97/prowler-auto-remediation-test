@@ -22,6 +22,13 @@ jobs:
       - name: Prepare result directory
         run: mkdir -p artifacts/iac-scanners
 
+      - name: Clean previous Checkov outputs
+        run: |
+          rm -rf artifacts/iac-scanners/checkov-terraform.json
+          rm -rf artifacts/iac-scanners/checkov-terraform.sarif
+          rm -rf artifacts/iac-scanners/checkov-remediation.json
+          rm -rf artifacts/iac-scanners/checkov-remediation.sarif
+
       - name: Install Checkov
         run: |
           python -m pip install --upgrade pip
@@ -66,6 +73,27 @@ jobs:
               print(f"  {sv}: {cnt}")
           PY
 
+      - name: Validate terraform SARIF
+        id: validate_terraform_sarif
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json, os, sys
+
+          p = Path("artifacts/iac-scanners/checkov-terraform.sarif")
+          ok = False
+          if p.exists() and p.stat().st_size > 0:
+              try:
+                  data = json.loads(p.read_text(encoding="utf-8"))
+                  ok = isinstance(data, dict) and "runs" in data
+              except Exception:
+                  ok = False
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as f:
+              f.write(f"ok={'true' if ok else 'false'}\n")
+          if not ok:
+              print("terraform SARIF missing or invalid; skipping upload")
+          PY
+
       # -------------------------------------------------------
       # Checkov - remediation/ (자동 생성 보안 보완 코드)
       # -------------------------------------------------------
@@ -99,11 +127,33 @@ jobs:
           print(f"remediation passed={len(passed)} failed={len(failed)} rate={rate:.1f}%")
           PY
 
+      - name: Validate remediation SARIF
+        id: validate_remediation_sarif
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json, os, sys
+
+          p = Path("artifacts/iac-scanners/checkov-remediation.sarif")
+          ok = False
+          if p.exists() and p.stat().st_size > 0:
+              try:
+                  data = json.loads(p.read_text(encoding="utf-8"))
+                  ok = isinstance(data, dict) and "runs" in data
+              except Exception:
+                  ok = False
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as f:
+              f.write(f"ok={'true' if ok else 'false'}\n")
+          if not ok:
+              print("remediation SARIF missing or invalid; skipping upload")
+          PY
+
       # -------------------------------------------------------
       # SARIF - GitHub Code Scanning 업로드
       # -------------------------------------------------------
       - name: Upload terraform SARIF to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v3
+        if: steps.validate_terraform_sarif.outputs.ok == 'true'
         with:
           sarif_file: artifacts/iac-scanners/checkov-terraform.sarif
           category: checkov-terraform
@@ -111,6 +161,7 @@ jobs:
 
       - name: Upload remediation SARIF to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v3
+        if: steps.validate_remediation_sarif.outputs.ok == 'true'
         with:
           sarif_file: artifacts/iac-scanners/checkov-remediation.sarif
           category: checkov-remediation
@@ -130,7 +181,7 @@ jobs:
 
           def load(fname):
               p = root / fname
-              if not p.exists():
+              if not p.exists() or p.stat().st_size == 0:
                   return [], []
               data = json.loads(p.read_text(encoding="utf-8"))
               if isinstance(data, list):

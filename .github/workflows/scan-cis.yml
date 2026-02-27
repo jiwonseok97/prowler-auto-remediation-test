@@ -340,7 +340,7 @@ jobs:
           from collections import Counter, defaultdict
           from pathlib import Path
 
-          CIS_LOGO_URL = "https://raw.githubusercontent.com/jiwonseok97/prowler-auto-remediation-test/main/.github/assets/cis-logo-2024.png"
+          CIS_LOGO_URL = "https://raw.githubusercontent.com/jiwonseok97/prowler-auto-remediation-test/main/.github/assets/CISlogo.png"
           ISMS_LOGO_URL = "https://raw.githubusercontent.com/jiwonseok97/prowler-auto-remediation-test/main/.github/assets/isms-logo.png"
 
           def parse_asff(pattern):
@@ -469,7 +469,7 @@ jobs:
               check_lines.append(f"| `{check_id}` | {count} |")
 
           with open(Path.cwd() / 'summary.md', 'w', encoding='utf-8') as f:
-              f.write("## 01. 취약 인프라 초기 보안 점검 결과\\n")
+              f.write("## 01. 초기보안 점검 결과\n")
               f.write(f"- Total FAIL items: {fail_count}\n\n")
 
               if cis_findings:
@@ -502,7 +502,7 @@ jobs:
                       30,
                   ) + "\n\n")
 
-              f.write("### 보안 항목별 취약점(FAIL) 현황\\n")
+              f.write("### Fail 통합 집계\n\n")
               f.write("\n".join(check_lines) + "\n")
           PY
           cat summary.md >> "$GITHUB_STEP_SUMMARY"

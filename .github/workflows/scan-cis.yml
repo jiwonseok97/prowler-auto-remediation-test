@@ -429,10 +429,17 @@ jobs:
                   v = svc_data[service]
                   is_fail = v["fail"] > 0
                   # Pad counts for visual alignment in the Status column.
+                  def format_count(n):
+                      if n < 10:
+                          return f"  {n}"
+                      if n < 100:
+                          return f" {n}"
+                      return f"{n}"
+
                   if is_fail:
-                      status_text = f'fail ({v["fail"]:>3})'
+                      status_text = f'fail ({format_count(v["fail"])})'
                   else:
-                      status_text = f'pass ({v["pass"]:>3})'
+                      status_text = f'pass ({format_count(v["pass"])})'
                   if is_fail:
                       sev_cols = f'{v["critical"]} | {v["high"]} | {v["medium"]} | {v["low"]} | {v["info"]}'
                   else:

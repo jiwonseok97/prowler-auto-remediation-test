@@ -48,6 +48,14 @@ jobs:
             -o sarif \
             --quiet > artifacts/iac-scanners/checkov-terraform.sarif || true
 
+          echo "== terraform SARIF size =="
+          if [ -f artifacts/iac-scanners/checkov-terraform.sarif ]; then
+            wc -c artifacts/iac-scanners/checkov-terraform.sarif || true
+            head -n 20 artifacts/iac-scanners/checkov-terraform.sarif || true
+          else
+            echo "missing: artifacts/iac-scanners/checkov-terraform.sarif"
+          fi
+
           python - <<'PY'
           import json, sys
           from pathlib import Path
@@ -107,6 +115,14 @@ jobs:
           checkov -d remediation \
             -o sarif \
             --quiet > artifacts/iac-scanners/checkov-remediation.sarif || true
+
+          echo "== remediation SARIF size =="
+          if [ -f artifacts/iac-scanners/checkov-remediation.sarif ]; then
+            wc -c artifacts/iac-scanners/checkov-remediation.sarif || true
+            head -n 20 artifacts/iac-scanners/checkov-remediation.sarif || true
+          else
+            echo "missing: artifacts/iac-scanners/checkov-remediation.sarif"
+          fi
 
           python - <<'PY'
           import json, sys

@@ -115,6 +115,16 @@ jobs:
             aws iam delete-policy --policy-arn "$arn" 2>/dev/null || true
           done
 
+          echo "==> fallback: cloudtrail iam policies (pol-cloudtrail-*)"
+          mapfile -t CT_POLS < <(
+            aws iam list-policies --scope Local \
+              --query "Policies[?starts_with(PolicyName,'pol-cloudtrail-')].Arn" \
+              --output text | tr '\t' '\n' | sed '/^$/d'
+          )
+          for arn in "${CT_POLS[@]}"; do
+            aws iam delete-policy --policy-arn "$arn" 2>/dev/null || true
+          done
+
           echo "==> fallback: cloudwatch log groups"
           mapfile -t LOG_GROUPS < <(
             aws logs describe-log-groups --region "$AWS_REGION" \
@@ -124,6 +134,19 @@ jobs:
           for lg in "${LOG_GROUPS[@]}"; do
             aws logs delete-log-group --region "$AWS_REGION" --log-group-name "$lg" || true
           done
+
+          echo "==> fallback: rds instances (app-db-*)"
+          mapfile -t RDS_IDS < <(
+            aws rds describe-db-instances --region "$AWS_REGION" \
+              --query "DBInstances[?starts_with(DBInstanceIdentifier,'app-db-')].DBInstanceIdentifier" \
+              --output text | tr '\t' '\n' | sed '/^$/d'
+          )
+          for rid in "${RDS_IDS[@]}"; do
+            aws rds delete-db-instance --region "$AWS_REGION" \
+              --db-instance-identifier "$rid" \
+              --skip-final-snapshot --delete-automated-backups || true
+          done
+          # Don't block pipeline; RDS deletions are async
 
           echo "==> fallback: s3 buckets"
           mapfile -t BUCKETS < <(

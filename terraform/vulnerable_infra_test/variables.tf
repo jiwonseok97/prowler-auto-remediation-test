@@ -21,13 +21,13 @@ variable "mode" {
 variable "vuln_bucket_count" {
   type        = number
   description = "S3 버킷 수 (PAB false + 암호화 없음 → s3 FAIL ×2N + 1)"
-  default     = 4
+  default     = 2
 }
 
 variable "cloudwatch_log_group_count" {
   type        = number
   description = "CloudWatch 로그 그룹 수 (KMS 없음 → cloudwatch_log_group_encrypted FAIL ×N)"
-  default     = 8
+  default     = 4
 }
 
 variable "create_weak_account_password_policy" {
@@ -51,13 +51,13 @@ variable "open_default_security_group" {
 variable "vuln_kms_key_count" {
   type        = number
   description = "KMS CMK 자동 교체 비활성화 키 수 → kms_cmk_rotation_enabled FAIL ×N (auto-remediable)"
-  default     = 6
+  default     = 4
 }
 
 variable "vuln_vpc_count" {
   type        = number
   description = "flow logs 없는 VPC 수 → vpc_flow_logs_enabled + ec2_securitygroup_default_restrict_traffic FAIL ×N"
-  default     = 4
+  default     = 2
 }
 
 variable "create_vuln_iam_direct_policy_user" {
@@ -81,7 +81,7 @@ variable "vuln_admin_iam_user_count" {
 variable "vuln_open_sg_count" {
   type        = number
   description = "0.0.0.0/0 인바운드 보안그룹 수 (EC2/Network FAIL 증가)"
-  default     = 6
+  default     = 4
 }
 
 variable "create_vuln_ebs_disabled" {
@@ -93,19 +93,19 @@ variable "create_vuln_ebs_disabled" {
 variable "rds_instance_count" {
   type        = number
   description = "RDS ???? ? (vuln/remediate ??)"
-  default     = 2
+  default     = 3
 }
 
 variable "enable_extended_services" {
   type        = bool
   description = "EFS/ALB/SNS/SQS 등 추가 서비스 생성 여부 (IAM 권한 필요)"
-  default     = false
+  default     = true
 }
 
 variable "efs_count" {
   type        = number
   description = "EFS ????? ? (vuln/remediate ??)"
-  default     = 1
+  default     = 2
 }
 
 variable "alb_count" {

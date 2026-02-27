@@ -63,7 +63,7 @@ variable "vuln_kms_key_count" {
 variable "vuln_vpc_count" {
   type        = number
   description = "flow logs 없는 VPC 수 → vpc_flow_logs_enabled + ec2_securitygroup_default_restrict_traffic FAIL ×N"
-  default     = 2
+  default     = 3
 }
 
 variable "create_vuln_iam_direct_policy_user" {
@@ -87,7 +87,7 @@ variable "vuln_admin_iam_user_count" {
 variable "vuln_open_sg_count" {
   type        = number
   description = "0.0.0.0/0 인바운드 보안그룹 수 (EC2/Network FAIL 증가)"
-  default     = 4
+  default     = 6
 }
 
 variable "create_vuln_ebs_disabled" {

@@ -1,0 +1,105 @@
+{
+  "category": "iam",
+  "account": "132410971304",
+  "region": "ap-northeast-2",
+  "created_at": "2026-02-21T12:13:26.511656+00:00",
+  "items": [
+    {
+      "check_id": "prowler-iam_aws_attached_policy_no_administrative_privileges",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/iam/fix-prowler_iam_aws_attached_policy_no_administrative_privileges_arn_aws_iam_aws_policy_administratoraccess_ap_northeast_2.tf"
+      ],
+      "priority": "P1",
+      "score": 71.5,
+      "resources": [],
+      "tf_file": "remediation/iam/fix-prowler_iam_aws_attached_policy_no_administrative_privileges_arn_aws_iam_aws_policy_administratoraccess_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-iam_customer_attached_policy_no_administrative_privileges",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/iam/fix-prowler_iam_customer_attached_policy_no_administrative_privileges_arn_aws_iam_132410971304_policy_vuln_wildcard_policy_ap_northeast_2.tf"
+      ],
+      "priority": "P1",
+      "score": 71.5,
+      "resources": [],
+      "tf_file": "remediation/iam/fix-prowler_iam_customer_attached_policy_no_administrative_privileges_arn_aws_iam_132410971304_policy_vuln_wildcard_policy_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-iam_policy_attached_only_to_group_or_roles",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/iam/fix-prowler_iam_policy_attached_only_to_group_or_roles_arn_aws_iam_132410971304_user_aws_learner_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 54.0,
+      "resources": [],
+      "tf_file": "remediation/iam/fix-prowler_iam_policy_attached_only_to_group_or_roles_arn_aws_iam_132410971304_user_aws_learner_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-iam_policy_attached_only_to_group_or_roles",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/iam/fix-prowler_iam_policy_attached_only_to_group_or_roles_arn_aws_iam_132410971304_user_aws_learner_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 54.0,
+      "resources": [],
+      "tf_file": "remediation/iam/fix-prowler_iam_policy_attached_only_to_group_or_roles_arn_aws_iam_132410971304_user_aws_learner_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-iam_policy_attached_only_to_group_or_roles",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/iam/fix-prowler_iam_policy_attached_only_to_group_or_roles_arn_aws_iam_132410971304_user_github_actions_prowler_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 54.0,
+      "resources": [],
+      "tf_file": "remediation/iam/fix-prowler_iam_policy_attached_only_to_group_or_roles_arn_aws_iam_132410971304_user_github_actions_prowler_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-iam_policy_attached_only_to_group_or_roles",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/iam/fix-prowler_iam_policy_attached_only_to_group_or_roles_arn_aws_iam_132410971304_user_github_actions_prowler_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 54.0,
+      "resources": [],
+      "tf_file": "remediation/iam/fix-prowler_iam_policy_attached_only_to_group_or_roles_arn_aws_iam_132410971304_user_github_actions_prowler_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-iam_policy_attached_only_to_group_or_roles",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/iam/fix-prowler_iam_policy_attached_only_to_group_or_roles_arn_aws_iam_132410971304_user_vuln_user_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 54.0,
+      "resources": [],
+      "tf_file": "remediation/iam/fix-prowler_iam_policy_attached_only_to_group_or_roles_arn_aws_iam_132410971304_user_vuln_user_ap_northeast_2.tf"
+    },
+    {
+      "check_id": "prowler-iam_policy_attached_only_to_group_or_roles",
+      "manual_required": false,
+      "remediation_tier": "review-then-apply",
+      "files": [
+        "remediation/iam/fix-prowler_iam_policy_attached_only_to_group_or_roles_arn_aws_iam_132410971304_user_vuln_user_ap_northeast_2.tf"
+      ],
+      "priority": "P2",
+      "score": 54.0,
+      "resources": [],
+      "tf_file": "remediation/iam/fix-prowler_iam_policy_attached_only_to_group_or_roles_arn_aws_iam_132410971304_user_vuln_user_ap_northeast_2.tf"
+    }
+  ],
+  "import_map": []
+}

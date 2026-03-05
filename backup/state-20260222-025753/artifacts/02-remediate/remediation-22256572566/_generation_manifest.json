@@ -1,0 +1,229 @@
+{
+  "created_at": "2026-02-21T12:11:03.811572+00:00",
+  "account": "132410971304",
+  "region": "ap-northeast-2",
+  "baseline_fail_count": 48,
+  "categories": {
+    "iam": [
+      {
+        "check_id": "prowler-iam_aws_attached_policy_no_administrative_privileges",
+        "manual_required": false,
+        "remediation_tier": "review-then-apply",
+        "files": [
+          "remediation/iam/fix-prowler_iam_aws_attached_policy_no_administrative_privileges_arn_aws_iam_aws_policy_administratoraccess_ap_northeast_2.tf"
+        ],
+        "priority": "P1",
+        "score": 71.5
+      },
+      {
+        "check_id": "prowler-iam_customer_attached_policy_no_administrative_privileges",
+        "manual_required": false,
+        "remediation_tier": "review-then-apply",
+        "files": [
+          "remediation/iam/fix-prowler_iam_customer_attached_policy_no_administrative_privileges_arn_aws_iam_132410971304_policy_vuln_wildcard_policy_ap_northeast_2.tf"
+        ],
+        "priority": "P1",
+        "score": 71.5
+      },
+      {
+        "check_id": "prowler-iam_policy_attached_only_to_group_or_roles",
+        "manual_required": false,
+        "remediation_tier": "review-then-apply",
+        "files": [
+          "remediation/iam/fix-prowler_iam_policy_attached_only_to_group_or_roles_arn_aws_iam_132410971304_user_aws_learner_ap_northeast_2.tf"
+        ],
+        "priority": "P2",
+        "score": 54.0
+      },
+      {
+        "check_id": "prowler-iam_policy_attached_only_to_group_or_roles",
+        "manual_required": false,
+        "remediation_tier": "review-then-apply",
+        "files": [
+          "remediation/iam/fix-prowler_iam_policy_attached_only_to_group_or_roles_arn_aws_iam_132410971304_user_aws_learner_ap_northeast_2.tf"
+        ],
+        "priority": "P2",
+        "score": 54.0
+      },
+      {
+        "check_id": "prowler-iam_policy_attached_only_to_group_or_roles",
+        "manual_required": false,
+        "remediation_tier": "review-then-apply",
+        "files": [
+          "remediation/iam/fix-prowler_iam_policy_attached_only_to_group_or_roles_arn_aws_iam_132410971304_user_github_actions_prowler_ap_northeast_2.tf"
+        ],
+        "priority": "P2",
+        "score": 54.0
+      },
+      {
+        "check_id": "prowler-iam_policy_attached_only_to_group_or_roles",
+        "manual_required": false,
+        "remediation_tier": "review-then-apply",
+        "files": [
+          "remediation/iam/fix-prowler_iam_policy_attached_only_to_group_or_roles_arn_aws_iam_132410971304_user_github_actions_prowler_ap_northeast_2.tf"
+        ],
+        "priority": "P2",
+        "score": 54.0
+      },
+      {
+        "check_id": "prowler-iam_policy_attached_only_to_group_or_roles",
+        "manual_required": false,
+        "remediation_tier": "review-then-apply",
+        "files": [
+          "remediation/iam/fix-prowler_iam_policy_attached_only_to_group_or_roles_arn_aws_iam_132410971304_user_vuln_user_ap_northeast_2.tf"
+        ],
+        "priority": "P2",
+        "score": 54.0
+      },
+      {
+        "check_id": "prowler-iam_policy_attached_only_to_group_or_roles",
+        "manual_required": false,
+        "remediation_tier": "review-then-apply",
+        "files": [
+          "remediation/iam/fix-prowler_iam_policy_attached_only_to_group_or_roles_arn_aws_iam_132410971304_user_vuln_user_ap_northeast_2.tf"
+        ],
+        "priority": "P2",
+        "score": 54.0
+      }
+    ],
+    "s3": [],
+    "network-ec2-vpc": [
+      {
+        "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+        "manual_required": false,
+        "remediation_tier": "review-then-apply",
+        "files": [
+          "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_012d9fe9e4a496a3e_ap_northeast_2.tf"
+        ],
+        "priority": "P2",
+        "score": 65.5
+      },
+      {
+        "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+        "manual_required": false,
+        "remediation_tier": "review-then-apply",
+        "files": [
+          "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_0be5312f2aa5d573e_ap_northeast_2.tf"
+        ],
+        "priority": "P2",
+        "score": 65.5
+      },
+      {
+        "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+        "manual_required": false,
+        "remediation_tier": "review-then-apply",
+        "files": [
+          "remediation/network-ec2-vpc/fix-prowler_ec2_securitygroup_allow_ingress_from_internet_to_all_ports_arn_aws_ec2_ap_northeast_2_132410971304_security_group_sg_06d3957eb72dba8f0_ap_northeast_2.tf"
+        ],
+        "priority": "P2",
+        "score": 65.5
+      },
+      {
+        "check_id": "prowler-ec2_ebs_volume_encryption",
+        "manual_required": true,
+        "remediation_tier": "manual-runbook",
+        "files": [],
+        "priority": "P2",
+        "score": 58.5,
+        "reason": "insufficient_runner_permission_enable_ebs_encryption_default"
+      },
+      {
+        "check_id": "prowler-ec2_instance_profile_attached",
+        "manual_required": true,
+        "remediation_tier": "manual-runbook",
+        "files": [],
+        "priority": "P2",
+        "score": 58.5,
+        "reason": "no_reusable_instance_profile_available"
+      }
+    ],
+    "cloudtrail": [
+      {
+        "check_id": "prowler-cloudtrail_kms_encryption_enabled",
+        "manual_required": false,
+        "remediation_tier": "safe-auto",
+        "files": [
+          "remediation/cloudtrail/fix-prowler_cloudtrail_kms_encryption_enabled_arn_aws_cloudtrail_ap_northeast_2_132410971304_trail_vuln_trail_ap_northeast_2.tf"
+        ],
+        "priority": "P2",
+        "score": 58.5
+      },
+      {
+        "check_id": "prowler-cloudtrail_s3_dataevents_read_enabled",
+        "manual_required": false,
+        "remediation_tier": "safe-auto",
+        "files": [
+          "remediation/cloudtrail/fix-prowler_cloudtrail_s3_dataevents_read_enabled_arn_aws_cloudtrail_ap_northeast_2_132410971304_trail_ap_northeast_2.tf"
+        ],
+        "priority": "P3",
+        "score": 48.0
+      },
+      {
+        "check_id": "prowler-cloudtrail_s3_dataevents_write_enabled",
+        "manual_required": true,
+        "remediation_tier": "manual-runbook",
+        "files": [],
+        "priority": "P3",
+        "score": 48.0,
+        "reason": "consolidated_duplicate_dataevents"
+      }
+    ],
+    "cloudwatch": [
+      {
+        "check_id": "prowler-cloudwatch_changes_to_network_route_tables_alarm_configured",
+        "manual_required": true,
+        "remediation_tier": "manual-runbook",
+        "files": [],
+        "priority": "P2",
+        "score": 58.5,
+        "reason": "insufficient_runner_permission_cloudwatch_listtags"
+      },
+      {
+        "check_id": "prowler-cloudwatch_log_metric_filter_aws_organizations_changes",
+        "manual_required": true,
+        "remediation_tier": "manual-runbook",
+        "files": [],
+        "priority": "P2",
+        "score": 58.5,
+        "reason": "insufficient_runner_permission_cloudwatch_listtags"
+      }
+    ]
+  },
+  "import_map": {
+    "iam": [],
+    "s3": [],
+    "network-ec2-vpc": [],
+    "cloudtrail": [
+      {
+        "check_id": "prowler-cloudtrail_kms_encryption_enabled",
+        "address": "aws_s3_bucket_policy.fix_cloudtrail_bucket_policy_19040a1c46",
+        "import_id": "vuln-cloudtrail-ap-northeast-2-f9fd7730",
+        "resource_type": "aws_s3_bucket_policy",
+        "optional": true
+      },
+      {
+        "check_id": "prowler-cloudtrail_kms_encryption_enabled",
+        "address": "aws_cloudtrail.fix_cloudtrail_19040a1c46",
+        "import_id": "vuln-trail",
+        "resource_type": "aws_cloudtrail",
+        "optional": false
+      },
+      {
+        "check_id": "prowler-cloudtrail_s3_dataevents_read_enabled",
+        "address": "aws_s3_bucket_policy.fix_cloudtrail_bucket_policy_21ff33774c",
+        "import_id": "aws-cloudtrail-logs-132410971304-0971c04b",
+        "resource_type": "aws_s3_bucket_policy",
+        "optional": true
+      },
+      {
+        "check_id": "prowler-cloudtrail_s3_dataevents_read_enabled",
+        "address": "aws_cloudtrail.fix_cloudtrail_21ff33774c",
+        "import_id": "security-cloudtail",
+        "resource_type": "aws_cloudtrail",
+        "optional": false
+      }
+    ],
+    "cloudwatch": []
+  },
+  "skipped": []
+}

@@ -1,0 +1,5 @@
+﻿backup_started_utc=2026-02-21T18:05:07Z
+region=ap-northeast-2
+account_id=132410971304
+caller_arn=arn:aws:iam::132410971304:root
+backup_completed_utc=2026-02-21T18:06:59Z

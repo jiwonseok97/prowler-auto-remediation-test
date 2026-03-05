@@ -1,0 +1,156 @@
+﻿{
+    "SecurityGroups": [
+        {
+            "GroupId": "sg-0a48adc1c033afb1f",
+            "IpPermissionsEgress": [],
+            "VpcId": "vpc-0febd00ce0ff29158",
+            "SecurityGroupArn": "arn:aws:ec2:ap-northeast-2:132410971304:security-group/sg-0a48adc1c033afb1f",
+            "OwnerId": "132410971304",
+            "GroupName": "default",
+            "Description": "default VPC security group",
+            "IpPermissions": []
+        },
+        {
+            "GroupId": "sg-0c86f4f14357f43de",
+            "IpPermissionsEgress": [],
+            "VpcId": "vpc-0565167ce4f7cc871",
+            "SecurityGroupArn": "arn:aws:ec2:ap-northeast-2:132410971304:security-group/sg-0c86f4f14357f43de",
+            "OwnerId": "132410971304",
+            "GroupName": "default",
+            "Description": "default VPC security group",
+            "IpPermissions": []
+        },
+        {
+            "GroupId": "sg-0be5312f2aa5d573e",
+            "IpPermissionsEgress": [
+                {
+                    "IpProtocol": "-1",
+                    "UserIdGroupPairs": [],
+                    "IpRanges": [
+                        {
+                            "CidrIp": "0.0.0.0/0"
+                        }
+                    ],
+                    "Ipv6Ranges": [],
+                    "PrefixListIds": []
+                }
+            ],
+            "VpcId": "vpc-019d722df0308ef70",
+            "SecurityGroupArn": "arn:aws:ec2:ap-northeast-2:132410971304:security-group/sg-0be5312f2aa5d573e",
+            "OwnerId": "132410971304",
+            "GroupName": "vuln-sg",
+            "Description": "Managed by Terraform",
+            "IpPermissions": []
+        },
+        {
+            "GroupId": "sg-06d3957eb72dba8f0",
+            "IpPermissionsEgress": [
+                {
+                    "IpProtocol": "-1",
+                    "UserIdGroupPairs": [],
+                    "IpRanges": [
+                        {
+                            "CidrIp": "0.0.0.0/0"
+                        }
+                    ],
+                    "Ipv6Ranges": [],
+                    "PrefixListIds": []
+                }
+            ],
+            "VpcId": "vpc-0ad18cac76a0ab778",
+            "SecurityGroupArn": "arn:aws:ec2:ap-northeast-2:132410971304:security-group/sg-06d3957eb72dba8f0",
+            "OwnerId": "132410971304",
+            "GroupName": "vuln-sg",
+            "Description": "Managed by Terraform",
+            "IpPermissions": []
+        },
+        {
+            "GroupId": "sg-0be8182666ebbc890",
+            "IpPermissionsEgress": [],
+            "VpcId": "vpc-019d722df0308ef70",
+            "SecurityGroupArn": "arn:aws:ec2:ap-northeast-2:132410971304:security-group/sg-0be8182666ebbc890",
+            "OwnerId": "132410971304",
+            "GroupName": "default",
+            "Description": "default VPC security group",
+            "IpPermissions": []
+        },
+        {
+            "GroupId": "sg-02a6bb1ae559b436f",
+            "IpPermissionsEgress": [],
+            "VpcId": "vpc-0b6ca3673d548c906",
+            "SecurityGroupArn": "arn:aws:ec2:ap-northeast-2:132410971304:security-group/sg-02a6bb1ae559b436f",
+            "OwnerId": "132410971304",
+            "GroupName": "default",
+            "Description": "default VPC security group",
+            "IpPermissions": []
+        },
+        {
+            "GroupId": "sg-012d9fe9e4a496a3e",
+            "IpPermissionsEgress": [
+                {
+                    "IpProtocol": "-1",
+                    "UserIdGroupPairs": [],
+                    "IpRanges": [
+                        {
+                            "CidrIp": "0.0.0.0/0"
+                        }
+                    ],
+                    "Ipv6Ranges": [],
+                    "PrefixListIds": []
+                }
+            ],
+            "VpcId": "vpc-0b6ca3673d548c906",
+            "SecurityGroupArn": "arn:aws:ec2:ap-northeast-2:132410971304:security-group/sg-012d9fe9e4a496a3e",
+            "OwnerId": "132410971304",
+            "GroupName": "vuln-sg",
+            "Description": "Managed by Terraform",
+            "IpPermissions": []
+        },
+        {
+            "GroupId": "sg-04e3503c576b68504",
+            "IpPermissionsEgress": [
+                {
+                    "IpProtocol": "-1",
+                    "UserIdGroupPairs": [],
+                    "IpRanges": [
+                        {
+                            "CidrIp": "0.0.0.0/0"
+                        }
+                    ],
+                    "Ipv6Ranges": [],
+                    "PrefixListIds": []
+                }
+            ],
+            "VpcId": "vpc-0565167ce4f7cc871",
+            "SecurityGroupArn": "arn:aws:ec2:ap-northeast-2:132410971304:security-group/sg-04e3503c576b68504",
+            "OwnerId": "132410971304",
+            "GroupName": "launch-wizard-1",
+            "Description": "launch-wizard-1 created 2025-11-24T11:36:30.781Z",
+            "IpPermissions": [
+                {
+                    "IpProtocol": "tcp",
+                    "FromPort": 22,
+                    "ToPort": 22,
+                    "UserIdGroupPairs": [],
+                    "IpRanges": [
+                        {
+                            "CidrIp": "60.196.24.130/32"
+                        }
+                    ],
+                    "Ipv6Ranges": [],
+                    "PrefixListIds": []
+                }
+            ]
+        },
+        {
+            "GroupId": "sg-0e808a688174f0b80",
+            "IpPermissionsEgress": [],
+            "VpcId": "vpc-0ad18cac76a0ab778",
+            "SecurityGroupArn": "arn:aws:ec2:ap-northeast-2:132410971304:security-group/sg-0e808a688174f0b80",
+            "OwnerId": "132410971304",
+            "GroupName": "default",
+            "Description": "default VPC security group",
+            "IpPermissions": []
+        }
+    ]
+}

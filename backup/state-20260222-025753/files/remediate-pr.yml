@@ -1,0 +1,150 @@
+name: Security Pipeline - 02 Generate Remediation PRs
+
+on:
+  workflow_dispatch:
+    inputs:
+      scan_run_id:
+        description: "Scan workflow run id"
+        required: true
+        type: string
+      account_id:
+        description: "Target AWS account id (optional, inferred from scan artifact)"
+        required: false
+        type: string
+      region:
+        description: "Target AWS region (optional, inferred from scan artifact)"
+        required: false
+        type: string
+        default: ""
+      model_id:
+        description: "Bedrock model id"
+        required: true
+        type: string
+        default: anthropic.claude-3-haiku-20240307-v1:0
+      bedrock_fallback:
+        description: "Use Bedrock generation when snippet template is missing"
+        required: true
+        type: boolean
+        default: false
+  workflow_run:
+    workflows: ["Security Pipeline - 01 Scan Baseline"]
+    types: [completed]
+
+concurrency:
+  group: security-pipeline-02-remediate-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  id-token: write
+  contents: write
+  pull-requests: write
+  actions: read
+
+jobs:
+  remediate:
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Resolve trigger context
+        id: trigger
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_run" ]; then
+            echo "scan_run_id=${{ github.event.workflow_run.id }}" >> "$GITHUB_OUTPUT"
+            echo "model_id=anthropic.claude-3-haiku-20240307-v1:0" >> "$GITHUB_OUTPUT"
+            echo "bedrock_fallback=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "scan_run_id=${{ inputs.scan_run_id }}" >> "$GITHUB_OUTPUT"
+            echo "model_id=${{ inputs.model_id }}" >> "$GITHUB_OUTPUT"
+            echo "bedrock_fallback=${{ inputs.bedrock_fallback }}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Download scan artifact from run
+        uses: dawidd6/action-download-artifact@v6
+        with:
+          run_id: ${{ steps.trigger.outputs.scan_run_id }}
+          name: scan-${{ steps.trigger.outputs.scan_run_id }}
+          path: artifacts/scan
+
+      - name: Resolve account and region
+        id: target
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          manifest = Path("artifacts/scan/scan_manifest.json")
+          m = json.loads(manifest.read_text(encoding="utf-8")) if manifest.exists() else {}
+          account = (m.get("account") or m.get("account_id") or "${{ inputs.account_id }}" or "").strip()
+          region = (m.get("region") or "${{ inputs.region }}" or "").strip()
+          if not account:
+              raise SystemExit("account_id is missing in scan artifact and manual input")
+          if not region:
+              raise SystemExit("region is missing in scan artifact and manual input")
+          with open(Path.cwd() / "target.out", "w", encoding="utf-8") as f:
+              f.write(f"account_id={account}\n")
+              f.write(f"region={region}\n")
+          PY
+          cat target.out >> "$GITHUB_OUTPUT"
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_OIDC_ROLE_ARN }}
+          aws-region: ${{ steps.target.outputs.region }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install boto3 pyyaml
+
+      - name: Generate remediation tf files
+        env:
+          BEDROCK_FALLBACK: ${{ steps.trigger.outputs.bedrock_fallback }}
+        run: |
+          python iac/scripts/generate_remediation.py \
+            --input artifacts/scan/prioritized_findings.json \
+            --output-root remediation \
+            --snippet-map iac/snippets/check_map.yaml \
+            --account-id "${{ steps.target.outputs.account_id }}" \
+            --region "${{ steps.target.outputs.region }}" \
+            --model-id "${{ steps.trigger.outputs.model_id }}"
+
+      - name: Validate generated terraform
+        run: |
+          bash iac/scripts/validate_generated_tf.sh remediation
+
+      - name: Build category manifests
+        run: |
+          python iac/scripts/builder_to_manifest.py \
+            --input remediation \
+            --output remediation/manifest.json \
+            --account-id "${{ steps.target.outputs.account_id }}" \
+            --region "${{ steps.target.outputs.region }}"
+
+      - name: Create category PRs
+        env:
+          GH_TOKEN: ${{ secrets.AUTO_PR_TOKEN != '' && secrets.AUTO_PR_TOKEN || secrets.GITHUB_TOKEN }}
+        run: |
+          python iac/scripts/create_category_prs.py \
+            --root remediation \
+            --manifest remediation/manifest.json \
+            --account-id "${{ steps.target.outputs.account_id }}" \
+            --run-id "${{ github.run_id }}"
+
+      - name: Upload remediation artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: remediation-${{ github.run_id }}
+          path: remediation/

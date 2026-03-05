@@ -1,0 +1,11 @@
+﻿{
+    "TrailARN": "arn:aws:cloudtrail:ap-northeast-2:132410971304:trail/vuln-trail",
+    "EventSelectors": [
+        {
+            "ReadWriteType": "All",
+            "IncludeManagementEvents": true,
+            "DataResources": [],
+            "ExcludeManagementEventSources": []
+        }
+    ]
+}

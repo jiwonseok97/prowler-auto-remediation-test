@@ -1,0 +1,63 @@
+{
+  "results": {
+    "scan_errors": [
+      {
+        "iac_type": "docker",
+        "directory": "/home/runner/work/prowler-auto-remediation-test/prowler-auto-remediation-test/remediation",
+        "errMsg": "Dockerfile not found in the directory /home/runner/work/prowler-auto-remediation-test/prowler-auto-remediation-test/remediation"
+      },
+      {
+        "iac_type": "terraform",
+        "directory": "/home/runner/work/prowler-auto-remediation-test/prowler-auto-remediation-test/remediation",
+        "errMsg": "directory '/home/runner/work/prowler-auto-remediation-test/prowler-auto-remediation-test/remediation' has no terraform config files"
+      },
+      {
+        "iac_type": "cft",
+        "directory": "/home/runner/work/prowler-auto-remediation-test/prowler-auto-remediation-test/remediation",
+        "errMsg": "error while loading iac file '/home/runner/work/prowler-auto-remediation-test/prowler-auto-remediation-test/remediation/manifest.json', err: failed to find valid Resources key in file: /home/runner/work/prowler-auto-remediation-test/prowler-auto-remediation-test/remediation/manifest.json"
+      },
+      {
+        "iac_type": "cft",
+        "directory": "/home/runner/work/prowler-auto-remediation-test/prowler-auto-remediation-test/remediation/network-ec2-vpc",
+        "errMsg": "error while loading iac file '/home/runner/work/prowler-auto-remediation-test/prowler-auto-remediation-test/remediation/network-ec2-vpc/import-map.txt', err: unsupported extension for file /home/runner/work/prowler-auto-remediation-test/prowler-auto-remediation-test/remediation/network-ec2-vpc/import-map.txt"
+      },
+      {
+        "iac_type": "cft",
+        "directory": "/home/runner/work/prowler-auto-remediation-test/prowler-auto-remediation-test/remediation/network-ec2-vpc",
+        "errMsg": "error while loading iac file '/home/runner/work/prowler-auto-remediation-test/prowler-auto-remediation-test/remediation/network-ec2-vpc/manifest.json', err: failed to find valid Resources key in file: /home/runner/work/prowler-auto-remediation-test/prowler-auto-remediation-test/remediation/network-ec2-vpc/manifest.json"
+      },
+      {
+        "iac_type": "cft",
+        "directory": "/home/runner/work/prowler-auto-remediation-test/prowler-auto-remediation-test/remediation/s3",
+        "errMsg": "error while loading iac file '/home/runner/work/prowler-auto-remediation-test/prowler-auto-remediation-test/remediation/s3/import-map.txt', err: unsupported extension for file /home/runner/work/prowler-auto-remediation-test/prowler-auto-remediation-test/remediation/s3/import-map.txt"
+      },
+      {
+        "iac_type": "cft",
+        "directory": "/home/runner/work/prowler-auto-remediation-test/prowler-auto-remediation-test/remediation/s3",
+        "errMsg": "error while loading iac file '/home/runner/work/prowler-auto-remediation-test/prowler-auto-remediation-test/remediation/s3/manifest.json', err: failed to find valid Resources key in file: /home/runner/work/prowler-auto-remediation-test/prowler-auto-remediation-test/remediation/s3/manifest.json"
+      },
+      {
+        "iac_type": "kustomize",
+        "directory": "/home/runner/work/prowler-auto-remediation-test/prowler-auto-remediation-test/remediation",
+        "errMsg": "kustomization.y(a)ml file not found in the directory /home/runner/work/prowler-auto-remediation-test/prowler-auto-remediation-test/remediation"
+      },
+      {
+        "iac_type": "helm",
+        "directory": "/home/runner/work/prowler-auto-remediation-test/prowler-auto-remediation-test/remediation",
+        "errMsg": "no helm charts found in directory /home/runner/work/prowler-auto-remediation-test/prowler-auto-remediation-test/remediation"
+      }
+    ],
+    "violations": null,
+    "skipped_violations": null,
+    "scan_summary": {
+      "file/folder": "/home/runner/work/prowler-auto-remediation-test/prowler-auto-remediation-test/remediation",
+      "iac_type": "terraform",
+      "scanned_at": "2026-02-21 20:53:05.086062892 +0000 UTC",
+      "policies_validated": 6,
+      "violated_policies": 0,
+      "low": 0,
+      "medium": 0,
+      "high": 0
+    }
+  }
+}

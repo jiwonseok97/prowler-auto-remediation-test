@@ -1,0 +1,21 @@
+{
+  "baseline_fail": 48,
+  "post_fail": 30,
+  "reduced": 18,
+  "remaining_fail_check_ids": [
+    "prowler-ec2_ebs_volume_encryption",
+    "prowler-ec2_instance_profile_attached",
+    "prowler-iam_root_hardware_mfa_enabled",
+    "prowler-s3_bucket_no_mfa_delete"
+  ],
+  "post_fail_remediable": 1,
+  "post_fail_manual_runbook": 29,
+  "previous_post_fail": 30,
+  "incremental_reduced": 0,
+  "previous_post_fail_remediable": 2,
+  "incremental_reduced_remediable": 1,
+  "resolved_since_previous_check_ids": [],
+  "new_fail_since_previous_check_ids": [],
+  "resolved_since_previous_remediable_check_ids": [],
+  "new_fail_since_previous_remediable_check_ids": []
+}

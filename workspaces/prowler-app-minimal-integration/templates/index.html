@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ title }}</title>
+  <link rel="stylesheet" href="/static/styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <h1>{{ title }}</h1>
+    <div class="meta">
+      <span id="statusBadge" class="badge">{{ labels.status_loading }}</span>
+      <span class="badge {{ 'ok' if api_token_set else 'warn' }}">
+        {{ labels.api_token_enabled if api_token_set else labels.api_token_disabled }}
+      </span>
+    </div>
+  </header>
+
+  <section class="filters">
+    <label>Scan Account ID
+      <input id="launchAccount" placeholder="e.g. 132410971304">
+    </label>
+    <label>Compliance Mode
+      <select id="launchCompliance">
+        <option value="cis_1.4_plus_isms_p">cis_1.4_plus_isms_p</option>
+        <option value="cis_1.4_only">cis_1.4_only</option>
+      </select>
+    </label>
+    <label class="inline">
+      <input id="launchDeploy" type="checkbox" checked>
+      Deploy vulnerable infra
+    </label>
+    <button id="btnLaunch">{{ labels.launch_scan }}</button>
+    <span id="launchResult" class="inline-note">-</span>
+  </section>
+
+  <section class="filters">
+    <label>Account ID
+      <input id="fAccount" placeholder="e.g. 132410971304">
+    </label>
+    <label>Region
+      <input id="fRegion" placeholder="ap-northeast-2">
+    </label>
+    <label>Framework
+      <input id="fFramework" placeholder="cis_1.4_plus_isms_p">
+    </label>
+    <button id="btnApply">Apply Filters</button>
+    <button id="btnReset" class="secondary">Reset</button>
+    <a id="latestRunLink" target="_blank" rel="noreferrer" class="inline-note">{{ labels.latest_run }}: -</a>
+  </section>
+
+  <section class="kpi-grid">
+    <article class="card">
+      <h3>{{ labels.kpi_total }}</h3>
+      <p id="kpiTotal" class="kpi">0</p>
+    </article>
+    <article class="card">
+      <h3>{{ labels.kpi_baseline }}</h3>
+      <p id="kpiBaseline" class="kpi">-</p>
+    </article>
+    <article class="card">
+      <h3>{{ labels.kpi_post }}</h3>
+      <p id="kpiPost" class="kpi">-</p>
+    </article>
+    <article class="card">
+      <h3>{{ labels.kpi_reduced }}</h3>
+      <p id="kpiReduced" class="kpi">-</p>
+    </article>
+  </section>
+  <div id="kpiNote" class="inline-note">-</div>
+
+  <section class="charts">
+    <article class="card">
+      <h3>{{ labels.severity_breakdown }}</h3>
+      <canvas id="eventsChart"></canvas>
+    </article>
+    <article class="card">
+      <h3>{{ labels.fail_trend }}</h3>
+      <canvas id="trendChart"></canvas>
+    </article>
+    <article class="card">
+      <h3>{{ labels.severity_trend }}</h3>
+      <canvas id="severityTimelineChart"></canvas>
+    </article>
+  </section>
+
+  <section class="card">
+    <h3>{{ labels.top5_title }}</h3>
+    <div id="top5Meta" class="inline-note">-</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>Check ID</th>
+            <th>Priority</th>
+            <th>Score</th>
+            <th>Tier</th>
+            <th>Category</th>
+          </tr>
+        </thead>
+        <tbody id="top5Body"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="card">
+    <h3>{{ labels.rescan_insights }}</h3>
+    <div class="insight-grid">
+      <div>
+        <h4>{{ labels.triage_title }}</h4>
+        <ul id="triageList"></ul>
+      </div>
+      <div>
+        <h4>{{ labels.quick_wins_title }}</h4>
+        <ul id="quickWinsList"></ul>
+      </div>
+      <div>
+        <h4>{{ labels.category_title }}</h4>
+        <ul id="categoryList"></ul>
+      </div>
+      <div>
+        <h4>{{ labels.cis_isms_title }}</h4>
+        <ul id="cisIsmsList"></ul>
+      </div>
+      <div>
+        <h4>{{ labels.auto_manual_title }}</h4>
+        <ul id="autoManualList"></ul>
+      </div>
+      <div>
+        <h4>{{ labels.roadmap_title }}</h4>
+        <ul id="roadmapList"></ul>
+      </div>
+      <div>
+        <h4>{{ labels.report_title }}</h4>
+        <ol id="reportList"></ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h3>{{ labels.event_list }}</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Received At</th>
+            <th>Event</th>
+            <th>Account</th>
+            <th>Region</th>
+            <th>Framework</th>
+            <th>Baseline FAIL</th>
+            <th>Post FAIL</th>
+            <th>Reduced</th>
+            <th>Run ID</th>
+          </tr>
+        </thead>
+        <tbody id="eventsBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <script>window.APP_LABELS = {{ labels_js | safe }};</script>
+  <script src="/static/app.js"></script>
+</body>
+</html>

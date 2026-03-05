@@ -1,0 +1,34 @@
+﻿{
+    "trailList": [
+        {
+            "Name": "security-cloudtail",
+            "S3BucketName": "aws-cloudtrail-logs-132410971304-0971c04b",
+            "IncludeGlobalServiceEvents": true,
+            "IsMultiRegionTrail": true,
+            "HomeRegion": "ap-northeast-2",
+            "TrailARN": "arn:aws:cloudtrail:ap-northeast-2:132410971304:trail/security-cloudtail",
+            "LogFileValidationEnabled": true,
+            "CloudWatchLogsLogGroupArn": "arn:aws:logs:ap-northeast-2:132410971304:log-group:/aws/cloudtrail/132410971304:*",
+            "CloudWatchLogsRoleArn": "arn:aws:iam::132410971304:role/cloudtrail-to-cw-security_cloudtail",
+            "KmsKeyId": "arn:aws:kms:ap-northeast-2:132410971304:key/257ddf3b-bb72-4f49-a185-6227d0d9b5d4",
+            "HasCustomEventSelectors": true,
+            "HasInsightSelectors": false,
+            "IsOrganizationTrail": false
+        },
+        {
+            "Name": "vuln-trail",
+            "S3BucketName": "vuln-cloudtrail-ap-northeast-2-f9fd7730",
+            "IncludeGlobalServiceEvents": true,
+            "IsMultiRegionTrail": true,
+            "HomeRegion": "ap-northeast-2",
+            "TrailARN": "arn:aws:cloudtrail:ap-northeast-2:132410971304:trail/vuln-trail",
+            "LogFileValidationEnabled": true,
+            "CloudWatchLogsLogGroupArn": "arn:aws:logs:ap-northeast-2:132410971304:log-group:/aws/cloudtrail/132410971304:*",
+            "CloudWatchLogsRoleArn": "arn:aws:iam::132410971304:role/cloudtrail-to-cw-vuln_trail",
+            "KmsKeyId": "arn:aws:kms:ap-northeast-2:132410971304:key/db230b9f-858c-4249-a5b5-3033406b7f2f",
+            "HasCustomEventSelectors": false,
+            "HasInsightSelectors": false,
+            "IsOrganizationTrail": false
+        }
+    ]
+}

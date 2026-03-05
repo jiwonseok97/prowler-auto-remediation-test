@@ -1,0 +1,29 @@
+{
+  "category": "cloudwatch",
+  "account": "132410971304",
+  "region": "ap-northeast-2",
+  "created_at": "2026-02-21T12:13:26.512535+00:00",
+  "items": [
+    {
+      "check_id": "prowler-cloudwatch_changes_to_network_route_tables_alarm_configured",
+      "manual_required": true,
+      "remediation_tier": "manual-runbook",
+      "files": [],
+      "priority": "P2",
+      "score": 58.5,
+      "reason": "insufficient_runner_permission_cloudwatch_listtags",
+      "resources": []
+    },
+    {
+      "check_id": "prowler-cloudwatch_log_metric_filter_aws_organizations_changes",
+      "manual_required": true,
+      "remediation_tier": "manual-runbook",
+      "files": [],
+      "priority": "P2",
+      "score": 58.5,
+      "reason": "insufficient_runner_permission_cloudwatch_listtags",
+      "resources": []
+    }
+  ],
+  "import_map": []
+}

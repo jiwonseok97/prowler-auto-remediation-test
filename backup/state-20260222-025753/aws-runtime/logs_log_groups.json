@@ -1,0 +1,55 @@
+﻿{
+    "logGroups": [
+        {
+            "logGroupName": "/aws/cloudtrail/132410971304",
+            "creationTime": 1771523797075,
+            "metricFilterCount": 15,
+            "arn": "arn:aws:logs:ap-northeast-2:132410971304:log-group:/aws/cloudtrail/132410971304:*",
+            "storedBytes": 0,
+            "logGroupClass": "STANDARD",
+            "logGroupArn": "arn:aws:logs:ap-northeast-2:132410971304:log-group:/aws/cloudtrail/132410971304",
+            "deletionProtectionEnabled": false
+        },
+        {
+            "logGroupName": "/aws/eks/0201_test/cluster",
+            "creationTime": 1769934201813,
+            "metricFilterCount": 0,
+            "arn": "arn:aws:logs:ap-northeast-2:132410971304:log-group:/aws/eks/0201_test/cluster:*",
+            "storedBytes": 0,
+            "logGroupClass": "STANDARD",
+            "logGroupArn": "arn:aws:logs:ap-northeast-2:132410971304:log-group:/aws/eks/0201_test/cluster",
+            "deletionProtectionEnabled": false
+        },
+        {
+            "logGroupName": "/aws/eks/0202_test/cluster",
+            "creationTime": 1769995471300,
+            "metricFilterCount": 0,
+            "arn": "arn:aws:logs:ap-northeast-2:132410971304:log-group:/aws/eks/0202_test/cluster:*",
+            "storedBytes": 0,
+            "logGroupClass": "STANDARD",
+            "logGroupArn": "arn:aws:logs:ap-northeast-2:132410971304:log-group:/aws/eks/0202_test/cluster",
+            "deletionProtectionEnabled": false
+        },
+        {
+            "logGroupName": "/vuln/log-group",
+            "creationTime": 1771409651261,
+            "retentionInDays": 7,
+            "metricFilterCount": 0,
+            "arn": "arn:aws:logs:ap-northeast-2:132410971304:log-group:/vuln/log-group:*",
+            "storedBytes": 0,
+            "logGroupClass": "STANDARD",
+            "logGroupArn": "arn:aws:logs:ap-northeast-2:132410971304:log-group:/vuln/log-group",
+            "deletionProtectionEnabled": false
+        },
+        {
+            "logGroupName": "ap-northeast-2",
+            "creationTime": 1771570424386,
+            "metricFilterCount": 1,
+            "arn": "arn:aws:logs:ap-northeast-2:132410971304:log-group:ap-northeast-2:*",
+            "storedBytes": 0,
+            "logGroupClass": "STANDARD",
+            "logGroupArn": "arn:aws:logs:ap-northeast-2:132410971304:log-group:ap-northeast-2",
+            "deletionProtectionEnabled": false
+        }
+    ]
+}

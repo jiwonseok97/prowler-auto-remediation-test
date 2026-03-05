@@ -1,0 +1,34 @@
+{
+  "target_host": "132410971304",
+  "tools": [
+    {
+      "tool": "Nessus",
+      "status": "later",
+      "detail": "missing secrets: NESSUS_URL, NESSUS_API_KEY",
+      "url_env": "NESSUS_URL",
+      "url": ""
+    },
+    {
+      "tool": "Qualys",
+      "status": "later",
+      "detail": "missing secrets: QUALYS_API_URL, QUALYS_USERNAME, QUALYS_PASSWORD",
+      "url_env": "QUALYS_API_URL",
+      "url": ""
+    },
+    {
+      "tool": "InsightVM",
+      "status": "later",
+      "detail": "missing secrets: INSIGHTVM_URL, INSIGHTVM_API_KEY",
+      "url_env": "INSIGHTVM_URL",
+      "url": ""
+    },
+    {
+      "tool": "OpenVAS",
+      "status": "later",
+      "detail": "missing secrets: OPENVAS_URL, OPENVAS_USERNAME, OPENVAS_PASSWORD",
+      "url_env": "OPENVAS_URL",
+      "url": ""
+    }
+  ],
+  "ready_urls": []
+}

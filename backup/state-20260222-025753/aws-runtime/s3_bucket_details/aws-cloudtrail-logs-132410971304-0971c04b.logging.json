@@ -1,0 +1,6 @@
+﻿{
+    "LoggingEnabled": {
+        "TargetBucket": "aws-cloudtrail-logs-132410971304-0971c04b",
+        "TargetPrefix": "s3-access-logs/"
+    }
+}

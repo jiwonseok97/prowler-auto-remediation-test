@@ -1,0 +1,305 @@
+﻿{
+    "Roles": [
+        {
+            "Path": "/",
+            "RoleName": "AmazonEKSAutoClusterRole",
+            "RoleId": "AROAR5VCPCSULL73ZBZ7G",
+            "Arn": "arn:aws:iam::132410971304:role/AmazonEKSAutoClusterRole",
+            "CreateDate": "2026-02-01T08:15:40+00:00",
+            "AssumeRolePolicyDocument": {
+                "Version": "2012-10-17",
+                "Statement": [
+                    {
+                        "Effect": "Allow",
+                        "Principal": {
+                            "Service": "eks.amazonaws.com"
+                        },
+                        "Action": [
+                            "sts:AssumeRole",
+                            "sts:TagSession"
+                        ]
+                    }
+                ]
+            },
+            "Description": "Allows access to other AWS service resources that are required to operate Auto Mode clusters managed by EKS.",
+            "MaxSessionDuration": 3600
+        },
+        {
+            "Path": "/",
+            "RoleName": "AmazonEKSAutoNodeRole",
+            "RoleId": "AROAR5VCPCSUO3GSRECOY",
+            "Arn": "arn:aws:iam::132410971304:role/AmazonEKSAutoNodeRole",
+            "CreateDate": "2026-02-01T08:16:37+00:00",
+            "AssumeRolePolicyDocument": {
+                "Version": "2012-10-17",
+                "Statement": [
+                    {
+                        "Effect": "Allow",
+                        "Principal": {
+                            "Service": "ec2.amazonaws.com"
+                        },
+                        "Action": "sts:AssumeRole"
+                    }
+                ]
+            },
+            "Description": "Allows EKS nodes to connect to EKS Auto Mode clusters and to pull container images from ECR.",
+            "MaxSessionDuration": 3600
+        },
+        {
+            "Path": "/aws-service-role/access-analyzer.amazonaws.com/",
+            "RoleName": "AWSServiceRoleForAccessAnalyzer",
+            "RoleId": "AROAR5VCPCSUCSLZZ74HO",
+            "Arn": "arn:aws:iam::132410971304:role/aws-service-role/access-analyzer.amazonaws.com/AWSServiceRoleForAccessAnalyzer",
+            "CreateDate": "2026-02-04T11:26:10+00:00",
+            "AssumeRolePolicyDocument": {
+                "Version": "2012-10-17",
+                "Statement": [
+                    {
+                        "Effect": "Allow",
+                        "Principal": {
+                            "Service": "access-analyzer.amazonaws.com"
+                        },
+                        "Action": "sts:AssumeRole"
+                    }
+                ]
+            },
+            "MaxSessionDuration": 3600
+        },
+        {
+            "Path": "/aws-service-role/eks.amazonaws.com/",
+            "RoleName": "AWSServiceRoleForAmazonEKS",
+            "RoleId": "AROAR5VCPCSUMMITIFIHV",
+            "Arn": "arn:aws:iam::132410971304:role/aws-service-role/eks.amazonaws.com/AWSServiceRoleForAmazonEKS",
+            "CreateDate": "2026-02-01T08:16:47+00:00",
+            "AssumeRolePolicyDocument": {
+                "Version": "2012-10-17",
+                "Statement": [
+                    {
+                        "Effect": "Allow",
+                        "Principal": {
+                            "Service": "eks.amazonaws.com"
+                        },
+                        "Action": "sts:AssumeRole"
+                    }
+                ]
+            },
+            "Description": "Allows Amazon EKS to call AWS services on your behalf.",
+            "MaxSessionDuration": 3600
+        },
+        {
+            "Path": "/aws-service-role/eks-nodegroup.amazonaws.com/",
+            "RoleName": "AWSServiceRoleForAmazonEKSNodegroup",
+            "RoleId": "AROAR5VCPCSUOKBPGNO43",
+            "Arn": "arn:aws:iam::132410971304:role/aws-service-role/eks-nodegroup.amazonaws.com/AWSServiceRoleForAmazonEKSNodegroup",
+            "CreateDate": "2026-02-02T01:37:10+00:00",
+            "AssumeRolePolicyDocument": {
+                "Version": "2012-10-17",
+                "Statement": [
+                    {
+                        "Effect": "Allow",
+                        "Principal": {
+                            "Service": "eks-nodegroup.amazonaws.com"
+                        },
+                        "Action": "sts:AssumeRole"
+                    }
+                ]
+            },
+            "Description": "This policy allows Amazon EKS to create and manage Nodegroups",
+            "MaxSessionDuration": 3600
+        },
+        {
+            "Path": "/aws-service-role/dsql.amazonaws.com/",
+            "RoleName": "AWSServiceRoleForAuroraDsql",
+            "RoleId": "AROAR5VCPCSUJDOIHL7AF",
+            "Arn": "arn:aws:iam::132410971304:role/aws-service-role/dsql.amazonaws.com/AWSServiceRoleForAuroraDsql",
+            "CreateDate": "2025-10-20T05:58:08+00:00",
+            "AssumeRolePolicyDocument": {
+                "Version": "2012-10-17",
+                "Statement": [
+                    {
+                        "Effect": "Allow",
+                        "Principal": {
+                            "Service": "dsql.amazonaws.com"
+                        },
+                        "Action": "sts:AssumeRole"
+                    }
+                ]
+            },
+            "Description": "Aurora DSQL Service Linked Role",
+            "MaxSessionDuration": 3600
+        },
+        {
+            "Path": "/aws-service-role/autoscaling.amazonaws.com/",
+            "RoleName": "AWSServiceRoleForAutoScaling",
+            "RoleId": "AROAR5VCPCSUDL2SK2JBY",
+            "Arn": "arn:aws:iam::132410971304:role/aws-service-role/autoscaling.amazonaws.com/AWSServiceRoleForAutoScaling",
+            "CreateDate": "2026-02-02T01:37:26+00:00",
+            "AssumeRolePolicyDocument": {
+                "Version": "2012-10-17",
+                "Statement": [
+                    {
+                        "Effect": "Allow",
+                        "Principal": {
+                            "Service": "autoscaling.amazonaws.com"
+                        },
+                        "Action": "sts:AssumeRole"
+                    }
+                ]
+            },
+            "Description": "Default Service-Linked Role enables access to AWS Services and Resources used or managed by Auto Scaling",
+            "MaxSessionDuration": 3600
+        },
+        {
+            "Path": "/aws-service-role/mrk.kms.amazonaws.com/",
+            "RoleName": "AWSServiceRoleForKeyManagementServiceMultiRegionKeys",
+            "RoleId": "AROAR5VCPCSUG7LI4JRFF",
+            "Arn": "arn:aws:iam::132410971304:role/aws-service-role/mrk.kms.amazonaws.com/AWSServiceRoleForKeyManagementServiceMultiRegionKeys",
+            "CreateDate": "2026-02-15T18:59:33+00:00",
+            "AssumeRolePolicyDocument": {
+                "Version": "2012-10-17",
+                "Statement": [
+                    {
+                        "Effect": "Allow",
+                        "Principal": {
+                            "Service": "mrk.kms.amazonaws.com"
+                        },
+                        "Action": "sts:AssumeRole"
+                    }
+                ]
+            },
+            "Description": "Enables access to AWS services and resources required for AWS KMS Multi-Region Keys",
+            "MaxSessionDuration": 3600
+        },
+        {
+            "Path": "/aws-service-role/resource-explorer-2.amazonaws.com/",
+            "RoleName": "AWSServiceRoleForResourceExplorer",
+            "RoleId": "AROAR5VCPCSULDGBMGVRD",
+            "Arn": "arn:aws:iam::132410971304:role/aws-service-role/resource-explorer-2.amazonaws.com/AWSServiceRoleForResourceExplorer",
+            "CreateDate": "2025-10-20T05:57:42+00:00",
+            "AssumeRolePolicyDocument": {
+                "Version": "2012-10-17",
+                "Statement": [
+                    {
+                        "Effect": "Allow",
+                        "Principal": {
+                            "Service": "resource-explorer-2.amazonaws.com"
+                        },
+                        "Action": "sts:AssumeRole"
+                    }
+                ]
+            },
+            "MaxSessionDuration": 3600
+        },
+        {
+            "Path": "/aws-service-role/support.amazonaws.com/",
+            "RoleName": "AWSServiceRoleForSupport",
+            "RoleId": "AROAR5VCPCSUOFQLWVEDE",
+            "Arn": "arn:aws:iam::132410971304:role/aws-service-role/support.amazonaws.com/AWSServiceRoleForSupport",
+            "CreateDate": "2025-10-20T04:52:16+00:00",
+            "AssumeRolePolicyDocument": {
+                "Version": "2012-10-17",
+                "Statement": [
+                    {
+                        "Effect": "Allow",
+                        "Principal": {
+                            "Service": "support.amazonaws.com"
+                        },
+                        "Action": "sts:AssumeRole"
+                    }
+                ]
+            },
+            "Description": "Enables resource access for AWS to provide billing, administrative and support services",
+            "MaxSessionDuration": 3600
+        },
+        {
+            "Path": "/aws-service-role/trustedadvisor.amazonaws.com/",
+            "RoleName": "AWSServiceRoleForTrustedAdvisor",
+            "RoleId": "AROAR5VCPCSUGRSONYAKH",
+            "Arn": "arn:aws:iam::132410971304:role/aws-service-role/trustedadvisor.amazonaws.com/AWSServiceRoleForTrustedAdvisor",
+            "CreateDate": "2025-10-20T04:52:16+00:00",
+            "AssumeRolePolicyDocument": {
+                "Version": "2012-10-17",
+                "Statement": [
+                    {
+                        "Effect": "Allow",
+                        "Principal": {
+                            "Service": "trustedadvisor.amazonaws.com"
+                        },
+                        "Action": "sts:AssumeRole"
+                    }
+                ]
+            },
+            "Description": "Access for the AWS Trusted Advisor Service to help reduce cost, increase performance, and improve security of your AWS environment.",
+            "MaxSessionDuration": 3600
+        },
+        {
+            "Path": "/",
+            "RoleName": "cloudtrail-to-cw-security_cloudtail",
+            "RoleId": "AROAR5VCPCSUN7YZSOFV7",
+            "Arn": "arn:aws:iam::132410971304:role/cloudtrail-to-cw-security_cloudtail",
+            "CreateDate": "2026-02-20T16:13:58+00:00",
+            "AssumeRolePolicyDocument": {
+                "Version": "2012-10-17",
+                "Statement": [
+                    {
+                        "Effect": "Allow",
+                        "Principal": {
+                            "Service": "cloudtrail.amazonaws.com"
+                        },
+                        "Action": "sts:AssumeRole"
+                    }
+                ]
+            },
+            "MaxSessionDuration": 3600
+        },
+        {
+            "Path": "/",
+            "RoleName": "cloudtrail-to-cw-vuln_trail",
+            "RoleId": "AROAR5VCPCSUNLLI3XSOT",
+            "Arn": "arn:aws:iam::132410971304:role/cloudtrail-to-cw-vuln_trail",
+            "CreateDate": "2026-02-20T16:13:58+00:00",
+            "AssumeRolePolicyDocument": {
+                "Version": "2012-10-17",
+                "Statement": [
+                    {
+                        "Effect": "Allow",
+                        "Principal": {
+                            "Service": "cloudtrail.amazonaws.com"
+                        },
+                        "Action": "sts:AssumeRole"
+                    }
+                ]
+            },
+            "MaxSessionDuration": 3600
+        },
+        {
+            "Path": "/",
+            "RoleName": "GitHubActionsProwlerRole",
+            "RoleId": "AROAR5VCPCSUN62WV63KS",
+            "Arn": "arn:aws:iam::132410971304:role/GitHubActionsProwlerRole",
+            "CreateDate": "2026-02-05T06:38:23+00:00",
+            "AssumeRolePolicyDocument": {
+                "Version": "2012-10-17",
+                "Statement": [
+                    {
+                        "Effect": "Allow",
+                        "Principal": {
+                            "Federated": "arn:aws:iam::132410971304:oidc-provider/token.actions.githubusercontent.com"
+                        },
+                        "Action": "sts:AssumeRoleWithWebIdentity",
+                        "Condition": {
+                            "StringEquals": {
+                                "token.actions.githubusercontent.com:aud": "sts.amazonaws.com"
+                            },
+                            "StringLike": {
+                                "token.actions.githubusercontent.com:sub": "repo:jiwonseok97/prowler-auto-remediation-test:*"
+                            }
+                        }
+                    }
+                ]
+            },
+            "Description": "OIDC role for GitHub Actions to run Prowler (read-only).",
+            "MaxSessionDuration": 3600
+        }
+    ]
+}

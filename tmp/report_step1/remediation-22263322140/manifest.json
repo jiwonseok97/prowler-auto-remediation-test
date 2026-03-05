@@ -1,0 +1,53 @@
+{
+  "created_at": "2026-02-21T19:57:11.759763+00:00",
+  "account": "132410971304",
+  "region": "ap-northeast-2",
+  "baseline_fail_count": 27,
+  "categories": [
+    {
+      "category": "network-ec2-vpc",
+      "path": "remediation/network-ec2-vpc",
+      "checks": 2,
+      "top5": [
+        "prowler-ec2_ebs_volume_encryption",
+        "prowler-ec2_instance_profile_attached"
+      ],
+      "tier_breakdown": {
+        "safe-auto": 0,
+        "review-then-apply": 0,
+        "manual-runbook": 2
+      },
+      "manual_required": [
+        "prowler-ec2_ebs_volume_encryption",
+        "prowler-ec2_instance_profile_attached"
+      ],
+      "import_map": "remediation/network-ec2-vpc/import-map.txt"
+    }
+  ],
+  "check_map": {
+    "prowler-ec2_ebs_volume_encryption": {
+      "category": "network-ec2-vpc",
+      "remediation_tier": "manual-runbook",
+      "priority": "P2",
+      "osfp_score": 58.5,
+      "files": [],
+      "tf_file": "",
+      "resources": [],
+      "account": "132410971304",
+      "region": "ap-northeast-2",
+      "created_at": "2026-02-21T19:57:11.759989+00:00"
+    },
+    "prowler-ec2_instance_profile_attached": {
+      "category": "network-ec2-vpc",
+      "remediation_tier": "manual-runbook",
+      "priority": "P2",
+      "osfp_score": 58.5,
+      "files": [],
+      "tf_file": "",
+      "resources": [],
+      "account": "132410971304",
+      "region": "ap-northeast-2",
+      "created_at": "2026-02-21T19:57:11.759996+00:00"
+    }
+  }
+}

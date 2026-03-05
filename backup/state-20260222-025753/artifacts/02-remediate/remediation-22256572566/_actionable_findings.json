@@ -1,0 +1,380 @@
+[
+  {
+    "check_id": "prowler-iam_aws_attached_policy_no_administrative_privileges",
+    "service": "iam",
+    "resource_arn": "arn:aws:iam::aws:policy/AdministratorAccess",
+    "region": "ap-northeast-2",
+    "account_id": "132410971304",
+    "severity": "HIGH",
+    "status": "FAIL",
+    "manual_required": false,
+    "non_terraform": false,
+    "remediation_tier": "review-then-apply",
+    "osfp": {
+      "severity_input": 80,
+      "exploitability": 50,
+      "blast_radius": 85,
+      "compliance_impact": 80,
+      "remediation_complexity": 60,
+      "priority_score": 71.5,
+      "priority_bucket": "P1"
+    }
+  },
+  {
+    "check_id": "prowler-iam_customer_attached_policy_no_administrative_privileges",
+    "service": "iam",
+    "resource_arn": "arn:aws:iam::132410971304:policy/vuln-wildcard-policy",
+    "region": "ap-northeast-2",
+    "account_id": "132410971304",
+    "severity": "HIGH",
+    "status": "FAIL",
+    "manual_required": false,
+    "non_terraform": false,
+    "remediation_tier": "review-then-apply",
+    "osfp": {
+      "severity_input": 80,
+      "exploitability": 50,
+      "blast_radius": 85,
+      "compliance_impact": 80,
+      "remediation_complexity": 60,
+      "priority_score": 71.5,
+      "priority_bucket": "P1"
+    }
+  },
+  {
+    "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+    "service": "ec2",
+    "resource_arn": "arn:aws:ec2:ap-northeast-2:132410971304:security-group/sg-012d9fe9e4a496a3e",
+    "region": "ap-northeast-2",
+    "account_id": "132410971304",
+    "severity": "HIGH",
+    "status": "FAIL",
+    "manual_required": false,
+    "non_terraform": false,
+    "remediation_tier": "review-then-apply",
+    "osfp": {
+      "severity_input": 80,
+      "exploitability": 50,
+      "blast_radius": 55,
+      "compliance_impact": 80,
+      "remediation_complexity": 60,
+      "priority_score": 65.5,
+      "priority_bucket": "P2"
+    }
+  },
+  {
+    "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+    "service": "ec2",
+    "resource_arn": "arn:aws:ec2:ap-northeast-2:132410971304:security-group/sg-0be5312f2aa5d573e",
+    "region": "ap-northeast-2",
+    "account_id": "132410971304",
+    "severity": "HIGH",
+    "status": "FAIL",
+    "manual_required": false,
+    "non_terraform": false,
+    "remediation_tier": "review-then-apply",
+    "osfp": {
+      "severity_input": 80,
+      "exploitability": 50,
+      "blast_radius": 55,
+      "compliance_impact": 80,
+      "remediation_complexity": 60,
+      "priority_score": 65.5,
+      "priority_bucket": "P2"
+    }
+  },
+  {
+    "check_id": "prowler-ec2_securitygroup_allow_ingress_from_internet_to_all_ports",
+    "service": "ec2",
+    "resource_arn": "arn:aws:ec2:ap-northeast-2:132410971304:security-group/sg-06d3957eb72dba8f0",
+    "region": "ap-northeast-2",
+    "account_id": "132410971304",
+    "severity": "HIGH",
+    "status": "FAIL",
+    "manual_required": false,
+    "non_terraform": false,
+    "remediation_tier": "review-then-apply",
+    "osfp": {
+      "severity_input": 80,
+      "exploitability": 50,
+      "blast_radius": 55,
+      "compliance_impact": 80,
+      "remediation_complexity": 60,
+      "priority_score": 65.5,
+      "priority_bucket": "P2"
+    }
+  },
+  {
+    "check_id": "prowler-cloudtrail_kms_encryption_enabled",
+    "service": "cloudtrail",
+    "resource_arn": "arn:aws:cloudtrail:ap-northeast-2:132410971304:trail/vuln-trail",
+    "region": "ap-northeast-2",
+    "account_id": "132410971304",
+    "severity": "MEDIUM",
+    "status": "FAIL",
+    "manual_required": false,
+    "non_terraform": false,
+    "remediation_tier": "safe-auto",
+    "osfp": {
+      "severity_input": 60,
+      "exploitability": 50,
+      "blast_radius": 55,
+      "compliance_impact": 80,
+      "remediation_complexity": 60,
+      "priority_score": 58.5,
+      "priority_bucket": "P2"
+    }
+  },
+  {
+    "check_id": "prowler-cloudwatch_changes_to_network_route_tables_alarm_configured",
+    "service": "cloudwatch",
+    "resource_arn": "arn:aws:logs:ap-northeast-2:132410971304:log-group",
+    "region": "ap-northeast-2",
+    "account_id": "132410971304",
+    "severity": "MEDIUM",
+    "status": "FAIL",
+    "manual_required": false,
+    "non_terraform": false,
+    "remediation_tier": "safe-auto",
+    "osfp": {
+      "severity_input": 60,
+      "exploitability": 50,
+      "blast_radius": 55,
+      "compliance_impact": 80,
+      "remediation_complexity": 60,
+      "priority_score": 58.5,
+      "priority_bucket": "P2"
+    }
+  },
+  {
+    "check_id": "prowler-cloudwatch_log_metric_filter_aws_organizations_changes",
+    "service": "cloudwatch",
+    "resource_arn": "arn:aws:logs:ap-northeast-2:132410971304:log-group",
+    "region": "ap-northeast-2",
+    "account_id": "132410971304",
+    "severity": "MEDIUM",
+    "status": "FAIL",
+    "manual_required": false,
+    "non_terraform": false,
+    "remediation_tier": "safe-auto",
+    "osfp": {
+      "severity_input": 60,
+      "exploitability": 50,
+      "blast_radius": 55,
+      "compliance_impact": 80,
+      "remediation_complexity": 60,
+      "priority_score": 58.5,
+      "priority_bucket": "P2"
+    }
+  },
+  {
+    "check_id": "prowler-ec2_ebs_volume_encryption",
+    "service": "ec2",
+    "resource_arn": "arn:aws:ec2:ap-northeast-2:132410971304:volume/vol-0278f268cad754e55",
+    "region": "ap-northeast-2",
+    "account_id": "132410971304",
+    "severity": "MEDIUM",
+    "status": "FAIL",
+    "manual_required": false,
+    "non_terraform": false,
+    "remediation_tier": "safe-auto",
+    "osfp": {
+      "severity_input": 60,
+      "exploitability": 50,
+      "blast_radius": 55,
+      "compliance_impact": 80,
+      "remediation_complexity": 60,
+      "priority_score": 58.5,
+      "priority_bucket": "P2"
+    }
+  },
+  {
+    "check_id": "prowler-ec2_instance_profile_attached",
+    "service": "ec2",
+    "resource_arn": "arn:aws:ec2:ap-northeast-2:132410971304:instance/i-0fbecaba3c48e7c79",
+    "region": "ap-northeast-2",
+    "account_id": "132410971304",
+    "severity": "MEDIUM",
+    "status": "FAIL",
+    "manual_required": false,
+    "non_terraform": false,
+    "remediation_tier": "safe-auto",
+    "osfp": {
+      "severity_input": 60,
+      "exploitability": 50,
+      "blast_radius": 55,
+      "compliance_impact": 80,
+      "remediation_complexity": 60,
+      "priority_score": 58.5,
+      "priority_bucket": "P2"
+    }
+  },
+  {
+    "check_id": "prowler-iam_policy_attached_only_to_group_or_roles",
+    "service": "iam",
+    "resource_arn": "arn:aws:iam::132410971304:user/aws_learner",
+    "region": "ap-northeast-2",
+    "account_id": "132410971304",
+    "severity": "LOW",
+    "status": "FAIL",
+    "manual_required": false,
+    "non_terraform": false,
+    "remediation_tier": "review-then-apply",
+    "osfp": {
+      "severity_input": 30,
+      "exploitability": 50,
+      "blast_radius": 85,
+      "compliance_impact": 80,
+      "remediation_complexity": 60,
+      "priority_score": 54.0,
+      "priority_bucket": "P2"
+    }
+  },
+  {
+    "check_id": "prowler-iam_policy_attached_only_to_group_or_roles",
+    "service": "iam",
+    "resource_arn": "arn:aws:iam::132410971304:user/aws_learner",
+    "region": "ap-northeast-2",
+    "account_id": "132410971304",
+    "severity": "LOW",
+    "status": "FAIL",
+    "manual_required": false,
+    "non_terraform": false,
+    "remediation_tier": "review-then-apply",
+    "osfp": {
+      "severity_input": 30,
+      "exploitability": 50,
+      "blast_radius": 85,
+      "compliance_impact": 80,
+      "remediation_complexity": 60,
+      "priority_score": 54.0,
+      "priority_bucket": "P2"
+    }
+  },
+  {
+    "check_id": "prowler-iam_policy_attached_only_to_group_or_roles",
+    "service": "iam",
+    "resource_arn": "arn:aws:iam::132410971304:user/github-actions-prowler",
+    "region": "ap-northeast-2",
+    "account_id": "132410971304",
+    "severity": "LOW",
+    "status": "FAIL",
+    "manual_required": false,
+    "non_terraform": false,
+    "remediation_tier": "review-then-apply",
+    "osfp": {
+      "severity_input": 30,
+      "exploitability": 50,
+      "blast_radius": 85,
+      "compliance_impact": 80,
+      "remediation_complexity": 60,
+      "priority_score": 54.0,
+      "priority_bucket": "P2"
+    }
+  },
+  {
+    "check_id": "prowler-iam_policy_attached_only_to_group_or_roles",
+    "service": "iam",
+    "resource_arn": "arn:aws:iam::132410971304:user/github-actions-prowler",
+    "region": "ap-northeast-2",
+    "account_id": "132410971304",
+    "severity": "LOW",
+    "status": "FAIL",
+    "manual_required": false,
+    "non_terraform": false,
+    "remediation_tier": "review-then-apply",
+    "osfp": {
+      "severity_input": 30,
+      "exploitability": 50,
+      "blast_radius": 85,
+      "compliance_impact": 80,
+      "remediation_complexity": 60,
+      "priority_score": 54.0,
+      "priority_bucket": "P2"
+    }
+  },
+  {
+    "check_id": "prowler-iam_policy_attached_only_to_group_or_roles",
+    "service": "iam",
+    "resource_arn": "arn:aws:iam::132410971304:user/vuln-user",
+    "region": "ap-northeast-2",
+    "account_id": "132410971304",
+    "severity": "LOW",
+    "status": "FAIL",
+    "manual_required": false,
+    "non_terraform": false,
+    "remediation_tier": "review-then-apply",
+    "osfp": {
+      "severity_input": 30,
+      "exploitability": 50,
+      "blast_radius": 85,
+      "compliance_impact": 80,
+      "remediation_complexity": 60,
+      "priority_score": 54.0,
+      "priority_bucket": "P2"
+    }
+  },
+  {
+    "check_id": "prowler-iam_policy_attached_only_to_group_or_roles",
+    "service": "iam",
+    "resource_arn": "arn:aws:iam::132410971304:user/vuln-user",
+    "region": "ap-northeast-2",
+    "account_id": "132410971304",
+    "severity": "LOW",
+    "status": "FAIL",
+    "manual_required": false,
+    "non_terraform": false,
+    "remediation_tier": "review-then-apply",
+    "osfp": {
+      "severity_input": 30,
+      "exploitability": 50,
+      "blast_radius": 85,
+      "compliance_impact": 80,
+      "remediation_complexity": 60,
+      "priority_score": 54.0,
+      "priority_bucket": "P2"
+    }
+  },
+  {
+    "check_id": "prowler-cloudtrail_s3_dataevents_read_enabled",
+    "service": "s3",
+    "resource_arn": "arn:aws:cloudtrail:ap-northeast-2:132410971304:trail",
+    "region": "ap-northeast-2",
+    "account_id": "132410971304",
+    "severity": "LOW",
+    "status": "FAIL",
+    "manual_required": false,
+    "non_terraform": false,
+    "remediation_tier": "safe-auto",
+    "osfp": {
+      "severity_input": 30,
+      "exploitability": 50,
+      "blast_radius": 55,
+      "compliance_impact": 80,
+      "remediation_complexity": 60,
+      "priority_score": 48.0,
+      "priority_bucket": "P3"
+    }
+  },
+  {
+    "check_id": "prowler-cloudtrail_s3_dataevents_write_enabled",
+    "service": "s3",
+    "resource_arn": "arn:aws:cloudtrail:ap-northeast-2:132410971304:trail",
+    "region": "ap-northeast-2",
+    "account_id": "132410971304",
+    "severity": "LOW",
+    "status": "FAIL",
+    "manual_required": false,
+    "non_terraform": false,
+    "remediation_tier": "safe-auto",
+    "osfp": {
+      "severity_input": 30,
+      "exploitability": 50,
+      "blast_radius": 55,
+      "compliance_impact": 80,
+      "remediation_complexity": 60,
+      "priority_score": 48.0,
+      "priority_bucket": "P3"
+    }
+  }
+]

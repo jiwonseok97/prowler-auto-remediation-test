@@ -1,0 +1,20 @@
+﻿6c35a3ff5 fix(rescan): include category manifests when classifying manual fails
+dd642f11f fix(rescan): parse manual check ids from manifest categories and check_map
+3c1c5d61c fix(rescan): honor merged manual-runbook tiers from manifest
+78a4b5190 Merge pull request #118 from jiwonseok97/remediation/network-ec2-vpc-22256572566
+0efa8905a PR-merge / remediation: network-ec2-vpc
+7e60ceeac fix(remediation): require existing instance profile before auto attach
+b9cbe44c7 Merge pull request #116 from jiwonseok97/remediation/network-ec2-vpc-22256334896
+64dc89922 PR-merge / remediation: network-ec2-vpc
+4a294e7cf feat(remediation): prefer role-name instance profile reuse before create
+93b31546e Merge pull request #114 from jiwonseok97/remediation/network-ec2-vpc-22256164841
+e9c31ea5d PR-merge / remediation: network-ec2-vpc
+db8f7deff feat(remediation): fallback create instance profile from existing role
+219c8a12c feat(remediation): reuse instance profile via EC2 association fallback
+e6420670c Merge pull request #111 from jiwonseok97/remediation/network-ec2-vpc-22255912055
+d19087c51 PR-merge / remediation: network-ec2-vpc
+d7bde6e13 fix(remediation): remove invalid sg rule filter and query ingress explicitly
+85615d39b Merge pull request #110 from jiwonseok97/remediation/network-ec2-vpc-22255755338
+e4e3b23ed PR-merge / remediation: network-ec2-vpc
+7d03cc7a6 fix(remediation): preserve jmespath literal for sg world ingress query
+4507407e8 PR-merge / remediation: network-ec2-vpc (#108)

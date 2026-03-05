@@ -1,0 +1,582 @@
+npm warn Unknown project config "public-hoist-pattern". This will stop working in the next major version of npm.
+⚠ ./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/index.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/integrations/tracing/postgresjs.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/index.js
+./node_modules/.pnpm/@sentry+nextjs@10.27.0_@ope_a5ddf8efefe4a006aa7c8dc9a95271b7/node_modules/@sentry/nextjs/build/cjs/index.server.js
+⚠ ./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/index.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/integrations/tracing/postgresjs.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/index.js
+./node_modules/.pnpm/@sentry+nextjs@10.27.0_@ope_a5ddf8efefe4a006aa7c8dc9a95271b7/node_modules/@sentry/nextjs/build/cjs/index.server.js
+⚠ ./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/index.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/integrations/tracing/postgresjs.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/index.js
+./node_modules/.pnpm/@sentry+nextjs@10.27.0_@ope_a5ddf8efefe4a006aa7c8dc9a95271b7/node_modules/@sentry/nextjs/build/cjs/index.server.js
+./lib/sentry-breadcrumbs.ts
+./actions/auth/auth.ts
+./actions/auth/index.ts
+./auth.config.ts
+
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/index.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/integrations/tracing/postgresjs.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/index.js
+./node_modules/.pnpm/@sentry+nextjs@10.27.0_@ope_a5ddf8efefe4a006aa7c8dc9a95271b7/node_modules/@sentry/nextjs/build/cjs/index.server.js
+./app/(prowler)/layout.tsx
+⚠ ./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/index.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/integrations/tracing/postgresjs.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/index.js
+./node_modules/.pnpm/@sentry+nextjs@10.27.0_@ope_a5ddf8efefe4a006aa7c8dc9a95271b7/node_modules/@sentry/nextjs/build/cjs/index.server.js
+./lib/sentry-breadcrumbs.ts
+./actions/auth/auth.ts
+./actions/auth/index.ts
+./auth.config.ts
+
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/index.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/integrations/tracing/postgresjs.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/index.js
+./node_modules/.pnpm/@sentry+nextjs@10.27.0_@ope_a5ddf8efefe4a006aa7c8dc9a95271b7/node_modules/@sentry/nextjs/build/cjs/index.server.js
+./app/(prowler)/layout.tsx
+⚠ ./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/index.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/integrations/tracing/postgresjs.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/index.js
+./node_modules/.pnpm/@sentry+nextjs@10.27.0_@ope_a5ddf8efefe4a006aa7c8dc9a95271b7/node_modules/@sentry/nextjs/build/cjs/index.server.js
+./lib/sentry-breadcrumbs.ts
+./actions/auth/auth.ts
+./actions/auth/index.ts
+./auth.config.ts
+
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/index.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/integrations/tracing/postgresjs.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/index.js
+./node_modules/.pnpm/@sentry+nextjs@10.27.0_@ope_a5ddf8efefe4a006aa7c8dc9a95271b7/node_modules/@sentry/nextjs/build/cjs/index.server.js
+./app/(prowler)/layout.tsx
+⚠ ./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/index.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/integrations/tracing/postgresjs.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/index.js
+./node_modules/.pnpm/@sentry+nextjs@10.27.0_@ope_a5ddf8efefe4a006aa7c8dc9a95271b7/node_modules/@sentry/nextjs/build/cjs/index.server.js
+./lib/sentry-breadcrumbs.ts
+./actions/auth/auth.ts
+./actions/auth/index.ts
+./auth.config.ts
+
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/index.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/integrations/tracing/postgresjs.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/index.js
+./node_modules/.pnpm/@sentry+nextjs@10.27.0_@ope_a5ddf8efefe4a006aa7c8dc9a95271b7/node_modules/@sentry/nextjs/build/cjs/index.server.js
+./app/(prowler)/layout.tsx
+⚠ ./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/index.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/integrations/tracing/postgresjs.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/index.js
+./node_modules/.pnpm/@sentry+nextjs@10.27.0_@ope_a5ddf8efefe4a006aa7c8dc9a95271b7/node_modules/@sentry/nextjs/build/cjs/index.server.js
+./lib/sentry-breadcrumbs.ts
+./actions/auth/auth.ts
+./actions/auth/index.ts
+./auth.config.ts
+
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/index.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/integrations/tracing/postgresjs.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/index.js
+./node_modules/.pnpm/@sentry+nextjs@10.27.0_@ope_a5ddf8efefe4a006aa7c8dc9a95271b7/node_modules/@sentry/nextjs/build/cjs/index.server.js
+./app/(prowler)/layout.tsx
+[MCP Client] Failed to initialize: Failed to connect to streamable HTTP server "prowler, url: http://localhost:8000": Error: Streamable HTTP error: Error POSTing to endpoint: Not Found. Additionally, tried falling back to SSE at http://localhost:8000 and http://localhost:8000/, but this also failed: MCPClientError: Failed to create SSE transport for server "prowler, url: http://localhost:8000/": Error: SSE error: Non-200 status code (404)
+(node:77728) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+⚠ ./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/index.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/integrations/tracing/postgresjs.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/index.js
+./node_modules/.pnpm/@sentry+nextjs@10.27.0_@ope_a5ddf8efefe4a006aa7c8dc9a95271b7/node_modules/@sentry/nextjs/build/cjs/index.server.js
+./lib/sentry-breadcrumbs.ts
+./actions/auth/auth.ts
+./actions/auth/index.ts
+./auth.config.ts
+
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/index.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/integrations/tracing/postgresjs.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/index.js
+./node_modules/.pnpm/@sentry+nextjs@10.27.0_@ope_a5ddf8efefe4a006aa7c8dc9a95271b7/node_modules/@sentry/nextjs/build/cjs/index.server.js
+./app/(prowler)/layout.tsx
+⚠ ./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/index.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/integrations/tracing/postgresjs.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/index.js
+./node_modules/.pnpm/@sentry+nextjs@10.27.0_@ope_a5ddf8efefe4a006aa7c8dc9a95271b7/node_modules/@sentry/nextjs/build/cjs/index.server.js
+./lib/sentry-breadcrumbs.ts
+./actions/auth/auth.ts
+./actions/auth/index.ts
+./auth.config.ts
+
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/index.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/integrations/tracing/postgresjs.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/index.js
+./node_modules/.pnpm/@sentry+nextjs@10.27.0_@ope_a5ddf8efefe4a006aa7c8dc9a95271b7/node_modules/@sentry/nextjs/build/cjs/index.server.js
+./lib/server-actions-helper.ts
+./actions/integrations/jira-dispatch.ts
+⚠ ./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/index.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/integrations/tracing/postgresjs.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/index.js
+./node_modules/.pnpm/@sentry+nextjs@10.27.0_@ope_a5ddf8efefe4a006aa7c8dc9a95271b7/node_modules/@sentry/nextjs/build/cjs/index.server.js
+./lib/sentry-breadcrumbs.ts
+./actions/auth/auth.ts
+./actions/auth/index.ts
+./auth.config.ts
+
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/index.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/integrations/tracing/postgresjs.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/index.js
+./node_modules/.pnpm/@sentry+nextjs@10.27.0_@ope_a5ddf8efefe4a006aa7c8dc9a95271b7/node_modules/@sentry/nextjs/build/cjs/index.server.js
+./lib/server-actions-helper.ts
+./actions/integrations/jira-dispatch.ts
+⚠ ./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/index.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/integrations/tracing/postgresjs.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/index.js
+./node_modules/.pnpm/@sentry+nextjs@10.27.0_@ope_a5ddf8efefe4a006aa7c8dc9a95271b7/node_modules/@sentry/nextjs/build/cjs/index.server.js
+./lib/sentry-breadcrumbs.ts
+./actions/auth/auth.ts
+./actions/auth/index.ts
+./auth.config.ts
+
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/index.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/integrations/tracing/postgresjs.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/index.js
+./node_modules/.pnpm/@sentry+nextjs@10.27.0_@ope_a5ddf8efefe4a006aa7c8dc9a95271b7/node_modules/@sentry/nextjs/build/cjs/index.server.js
+./lib/server-actions-helper.ts
+./actions/integrations/jira-dispatch.ts
+⚠ ./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/index.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/integrations/tracing/postgresjs.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/index.js
+./node_modules/.pnpm/@sentry+nextjs@10.27.0_@ope_a5ddf8efefe4a006aa7c8dc9a95271b7/node_modules/@sentry/nextjs/build/cjs/index.server.js
+./lib/sentry-breadcrumbs.ts
+./actions/auth/auth.ts
+./actions/auth/index.ts
+./auth.config.ts
+
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/index.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/integrations/tracing/postgresjs.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/index.js
+./node_modules/.pnpm/@sentry+nextjs@10.27.0_@ope_a5ddf8efefe4a006aa7c8dc9a95271b7/node_modules/@sentry/nextjs/build/cjs/index.server.js
+./lib/server-actions-helper.ts
+./actions/integrations/jira-dispatch.ts
+⚠ ./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/index.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/integrations/tracing/postgresjs.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/index.js
+./node_modules/.pnpm/@sentry+nextjs@10.27.0_@ope_a5ddf8efefe4a006aa7c8dc9a95271b7/node_modules/@sentry/nextjs/build/cjs/index.server.js
+./lib/sentry-breadcrumbs.ts
+./actions/auth/auth.ts
+./actions/auth/index.ts
+./auth.config.ts
+
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/index.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/integrations/tracing/postgresjs.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/index.js
+./node_modules/.pnpm/@sentry+nextjs@10.27.0_@ope_a5ddf8efefe4a006aa7c8dc9a95271b7/node_modules/@sentry/nextjs/build/cjs/index.server.js
+./lib/server-actions-helper.ts
+./actions/integrations/jira-dispatch.ts
+⨯ ./app/(prowler)/page.tsx:10:1
+Module not found: Can't resolve './_overview/_lib/latest-scan'
+   8 | import { AccountsSelector } from "./_overview/_components/accounts-selector";
+   9 | import { ProviderTypeSelector } from "./_overview/_components/provider-type-selector";
+> 10 | import { getLatestScanId } from "./_overview/_lib/latest-scan";
+     | ^
+  11 | import {
+  12 |   AttackSurfaceSkeleton,
+  13 |   AttackSurfaceSSR,
+
+https://nextjs.org/docs/messages/module-not-found
+⨯ ./app/(prowler)/page.tsx:10:1
+Module not found: Can't resolve './_overview/_lib/latest-scan'
+   8 | import { AccountsSelector } from "./_overview/_components/accounts-selector";
+   9 | import { ProviderTypeSelector } from "./_overview/_components/provider-type-selector";
+> 10 | import { getLatestScanId } from "./_overview/_lib/latest-scan";
+     | ^
+  11 | import {
+  12 |   AttackSurfaceSkeleton,
+  13 |   AttackSurfaceSSR,
+
+https://nextjs.org/docs/messages/module-not-found
+⨯ ./app/(prowler)/page.tsx:10:1
+Module not found: Can't resolve './_overview/_lib/latest-scan'
+   8 | import { AccountsSelector } from "./_overview/_components/accounts-selector";
+   9 | import { ProviderTypeSelector } from "./_overview/_components/provider-type-selector";
+> 10 | import { getLatestScanId } from "./_overview/_lib/latest-scan";
+     | ^
+  11 | import {
+  12 |   AttackSurfaceSkeleton,
+  13 |   AttackSurfaceSSR,
+
+https://nextjs.org/docs/messages/module-not-found
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename 'C:\Users\ws567\prowler-auto\prowler-auto-remediation-test\workspaces\prowler-upstream\ui\.next\dev\cache\webpack\client-development-fallback\0.pack.gz_' -> 'C:\Users\ws567\prowler-auto\prowler-auto-remediation-test\workspaces\prowler-upstream\ui\.next\dev\cache\webpack\client-development-fallback\0.pack.gz'
+⚠ Fast Refresh had to perform a full reload due to a runtime error.
+⚠ Fast Refresh had to perform a full reload due to a runtime error.
+⚠ Fast Refresh had to perform a full reload due to a runtime error.
+⚠ Fast Refresh had to perform a full reload due to a runtime error.
+⚠ ./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/index.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/integrations/tracing/postgresjs.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/index.js
+./node_modules/.pnpm/@sentry+nextjs@10.27.0_@ope_a5ddf8efefe4a006aa7c8dc9a95271b7/node_modules/@sentry/nextjs/build/cjs/index.server.js
+./lib/sentry-breadcrumbs.ts
+./actions/auth/auth.ts
+./actions/auth/index.ts
+./auth.config.ts
+
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/index.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/integrations/tracing/postgresjs.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/index.js
+./node_modules/.pnpm/@sentry+nextjs@10.27.0_@ope_a5ddf8efefe4a006aa7c8dc9a95271b7/node_modules/@sentry/nextjs/build/cjs/index.server.js
+./lib/server-actions-helper.ts
+./actions/integrations/jira-dispatch.ts
+⚠ Fast Refresh had to perform a full reload due to a runtime error.
+⚠ Fast Refresh had to perform a full reload due to a runtime error.
+⚠ ./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/index.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/integrations/tracing/postgresjs.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/index.js
+./node_modules/.pnpm/@sentry+nextjs@10.27.0_@ope_a5ddf8efefe4a006aa7c8dc9a95271b7/node_modules/@sentry/nextjs/build/cjs/index.server.js
+./lib/sentry-breadcrumbs.ts
+./actions/auth/auth.ts
+./actions/auth/index.ts
+./auth.config.ts
+
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/index.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/integrations/tracing/postgresjs.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/index.js
+./node_modules/.pnpm/@sentry+nextjs@10.27.0_@ope_a5ddf8efefe4a006aa7c8dc9a95271b7/node_modules/@sentry/nextjs/build/cjs/index.server.js
+./lib/server-actions-helper.ts
+./actions/integrations/jira-dispatch.ts
+⚠ ./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/index.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/integrations/tracing/postgresjs.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/index.js
+./node_modules/.pnpm/@sentry+nextjs@10.27.0_@ope_a5ddf8efefe4a006aa7c8dc9a95271b7/node_modules/@sentry/nextjs/build/cjs/index.server.js
+./lib/sentry-breadcrumbs.ts
+./actions/auth/auth.ts
+./actions/auth/index.ts
+./auth.config.ts
+
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/index.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/integrations/tracing/postgresjs.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/index.js
+./node_modules/.pnpm/@sentry+nextjs@10.27.0_@ope_a5ddf8efefe4a006aa7c8dc9a95271b7/node_modules/@sentry/nextjs/build/cjs/index.server.js
+./lib/server-actions-helper.ts
+./actions/integrations/jira-dispatch.ts
+⚠ ./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/index.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/integrations/tracing/postgresjs.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/index.js
+./node_modules/.pnpm/@sentry+nextjs@10.27.0_@ope_a5ddf8efefe4a006aa7c8dc9a95271b7/node_modules/@sentry/nextjs/build/cjs/index.server.js
+./lib/sentry-breadcrumbs.ts
+./actions/auth/auth.ts
+./actions/auth/index.ts
+./auth.config.ts
+
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/index.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/integrations/tracing/postgresjs.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/index.js
+./node_modules/.pnpm/@sentry+nextjs@10.27.0_@ope_a5ddf8efefe4a006aa7c8dc9a95271b7/node_modules/@sentry/nextjs/build/cjs/index.server.js
+./lib/server-actions-helper.ts
+./actions/integrations/jira-dispatch.ts
+⚠ ./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/index.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/integrations/tracing/postgresjs.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/index.js
+./node_modules/.pnpm/@sentry+nextjs@10.27.0_@ope_a5ddf8efefe4a006aa7c8dc9a95271b7/node_modules/@sentry/nextjs/build/cjs/index.server.js
+./lib/sentry-breadcrumbs.ts
+./actions/auth/auth.ts
+./actions/auth/index.ts
+./auth.config.ts
+
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/index.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/integrations/tracing/postgresjs.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/index.js
+./node_modules/.pnpm/@sentry+nextjs@10.27.0_@ope_a5ddf8efefe4a006aa7c8dc9a95271b7/node_modules/@sentry/nextjs/build/cjs/index.server.js
+./lib/server-actions-helper.ts
+./actions/integrations/jira-dispatch.ts
+⚠ ./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/index.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/integrations/tracing/postgresjs.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/index.js
+./node_modules/.pnpm/@sentry+nextjs@10.27.0_@ope_a5ddf8efefe4a006aa7c8dc9a95271b7/node_modules/@sentry/nextjs/build/cjs/index.server.js
+./lib/sentry-breadcrumbs.ts
+./actions/auth/auth.ts
+./actions/auth/index.ts
+./auth.config.ts
+
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/index.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/integrations/tracing/postgresjs.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/index.js
+./node_modules/.pnpm/@sentry+nextjs@10.27.0_@ope_a5ddf8efefe4a006aa7c8dc9a95271b7/node_modules/@sentry/nextjs/build/cjs/index.server.js
+./lib/server-actions-helper.ts
+./actions/integrations/jira-dispatch.ts
+⚠ ./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/index.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/integrations/tracing/postgresjs.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/index.js
+./node_modules/.pnpm/@sentry+nextjs@10.27.0_@ope_a5ddf8efefe4a006aa7c8dc9a95271b7/node_modules/@sentry/nextjs/build/cjs/index.server.js
+./lib/sentry-breadcrumbs.ts
+./actions/auth/auth.ts
+./actions/auth/index.ts
+./auth.config.ts
+
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+Critical dependency: the request of a dependency is an expression
+
+Import trace for requested module:
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/instrumentation.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/node/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/platform/index.js
+./node_modules/.pnpm/@opentelemetry+instrumentat_6afa3aa63a1ee1e91372360a2d45582d/node_modules/@opentelemetry/instrumentation/build/esm/index.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/integrations/tracing/postgresjs.js
+./node_modules/.pnpm/@sentry+node@10.27.0/node_modules/@sentry/node/build/cjs/index.js
+./node_modules/.pnpm/@sentry+nextjs@10.27.0_@ope_a5ddf8efefe4a006aa7c8dc9a95271b7/node_modules/@sentry/nextjs/build/cjs/index.server.js
+./lib/server-actions-helper.ts
+./actions/integrations/jira-dispatch.ts
